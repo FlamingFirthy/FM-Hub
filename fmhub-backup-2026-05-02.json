@@ -1,0 +1,4706 @@
+{
+  "fmhub-saves": null,
+  "fmhub-squad": [
+    {
+      "name": "Sam Firth",
+      "position": "LW/RW",
+      "club": "Free Agent",
+      "role": "Prospect",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "20",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715304626_Me_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "8",
+          "Crossing": "12",
+          "Dribbling": "14",
+          "Finishing": "13",
+          "First Touch": "13",
+          "Free Kick Taking": "9",
+          "Heading": "8",
+          "Long Shots": "12",
+          "Long Throws": "6",
+          "Marking": "9",
+          "Passing": "12",
+          "Penalty Taking": "11",
+          "Tackling": "7",
+          "Technique": "14"
+        },
+        "Mental": {
+          "Aggression": "10",
+          "Anticipation": "13",
+          "Bravery": "10",
+          "Composure": "13",
+          "Concentration": "11",
+          "Decisions": "12",
+          "Determination": "13",
+          "Flair": "15",
+          "Leadership": "8",
+          "Off The Ball": "14",
+          "Positioning": "8",
+          "Teamwork": "11",
+          "Vision": "14",
+          "Work Rate": "10"
+        },
+        "Physical": {
+          "Acceleration": "14",
+          "Agility": "13",
+          "Balance": "12",
+          "Jumping Reach": "8",
+          "Natural Fitness": "12",
+          "Pace": "14",
+          "Stamina": "12",
+          "Strength": "10"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "10",
+          "Consistency": "13",
+          "Important Matches": "13",
+          "Injury Proneness": "6",
+          "Left Foot": "17",
+          "Right Foot": "11"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-12-20",
+          "Height": "175",
+          "Weight": "60",
+          "Preferred Foot": "Left",
+          "Personality": "Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Role": "Winger",
+          "Squad Number": "10",
+          "Value": "",
+          "Current Ability": "100",
+          "Potential Ability": "200"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Jack McPherson",
+      "position": "CAM/ ST",
+      "club": "Free Agent",
+      "role": "Starter",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "20",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715320518_Jack_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "12",
+          "Crossing": "12",
+          "Dribbling": "15",
+          "Finishing": "14",
+          "First Touch": "15",
+          "Free Kick Taking": "11",
+          "Heading": "10",
+          "Long Shots": "13",
+          "Long Throws": "6",
+          "Marking": "6",
+          "Passing": "14",
+          "Penalty Taking": "13",
+          "Tackling": "7",
+          "Technique": "15"
+        },
+        "Mental": {
+          "Aggression": "11",
+          "Anticipation": "14",
+          "Bravery": "11",
+          "Composure": "14",
+          "Concentration": "12",
+          "Decisions": "14",
+          "Determination": "14",
+          "Flair": "16",
+          "Leadership": "10",
+          "Off The Ball": "14",
+          "Positioning": "8",
+          "Teamwork": "12",
+          "Vision": "15",
+          "Work Rate": "12"
+        },
+        "Physical": {
+          "Acceleration": "14",
+          "Agility": "14",
+          "Balance": "13",
+          "Jumping Reach": "10",
+          "Natural Fitness": "13",
+          "Pace": "14",
+          "Stamina": "13",
+          "Strength": "11"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "13",
+          "Consistency": "15",
+          "Important Matches": "15",
+          "Injury Proneness": "6",
+          "Left Foot": "18",
+          "Right Foot": "13"
+        },
+        "Profile": {
+          "Age": "20",
+          "Date Of Birth": "2006-04-06",
+          "Height": "175",
+          "Weight": "65",
+          "Preferred Foot": "Right",
+          "Personality": "Professional",
+          "Media Handling": "Evasive",
+          "Preferred Role": "Attacking Midfielder",
+          "Squad Number": "9",
+          "Value": "",
+          "Current Ability": "110",
+          "Potential Ability": "200"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Christian Mansley",
+      "position": "CAM/ST",
+      "club": "Free Agent",
+      "role": "Starter",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "20",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715336096_Christian_player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "9",
+          "Crossing": "10",
+          "Dribbling": "13",
+          "Finishing": "14",
+          "First Touch": "13",
+          "Free Kick Taking": "8",
+          "Heading": "15",
+          "Long Shots": "12",
+          "Long Throws": "7",
+          "Marking": "8",
+          "Passing": "12",
+          "Penalty Taking": "13",
+          "Tackling": "9",
+          "Technique": "12"
+        },
+        "Mental": {
+          "Aggression": "14",
+          "Anticipation": "13",
+          "Bravery": "15",
+          "Composure": "13",
+          "Concentration": "12",
+          "Decisions": "12",
+          "Determination": "14",
+          "Flair": "10",
+          "Leadership": "11",
+          "Off The Ball": "14",
+          "Positioning": "10",
+          "Teamwork": "13",
+          "Vision": "11",
+          "Work Rate": "13"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "11",
+          "Balance": "14",
+          "Jumping Reach": "13",
+          "Natural Fitness": "15",
+          "Pace": "12",
+          "Stamina": "14",
+          "Strength": "17"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "11",
+          "Consistency": "14",
+          "Important Matches": "14",
+          "Injury Proneness": "7",
+          "Left Foot": "17",
+          "Right Foot": "15"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-12-24",
+          "Height": "180",
+          "Weight": "76",
+          "Preferred Foot": "Either",
+          "Personality": "Model Citizen",
+          "Media Handling": "Level-headed",
+          "Preferred Role": "Attacking Midfielder",
+          "Squad Number": "6",
+          "Value": "",
+          "Current Ability": "105",
+          "Potential Ability": "200"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Ricco Pepper-Edwards",
+      "position": "ST",
+      "club": "Free Agent",
+      "role": "Bench Player",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "21",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715361208_Ricco_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "7",
+          "Crossing": "8",
+          "Dribbling": "9",
+          "Finishing": "11",
+          "First Touch": "10",
+          "Free Kick Taking": "7",
+          "Heading": "11",
+          "Long Shots": "10",
+          "Long Throws": "6",
+          "Marking": "6",
+          "Passing": "10",
+          "Penalty Taking": "11",
+          "Tackling": "7",
+          "Technique": "10"
+        },
+        "Mental": {
+          "Aggression": "12",
+          "Anticipation": "11",
+          "Bravery": "12",
+          "Composure": "11",
+          "Concentration": "10",
+          "Decisions": "10",
+          "Determination": "13",
+          "Flair": "9",
+          "Leadership": "13",
+          "Off The Ball": "11",
+          "Positioning": "9",
+          "Teamwork": "13",
+          "Vision": "10",
+          "Work Rate": "12"
+        },
+        "Physical": {
+          "Acceleration": "9",
+          "Agility": "9",
+          "Balance": "11",
+          "Jumping Reach": "12",
+          "Natural Fitness": "11",
+          "Pace": "9",
+          "Stamina": "11",
+          "Strength": "13"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "6",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "3"
+        },
+        "Hidden": {
+          "Reputation": "7",
+          "Consistency": "11",
+          "Important Matches": "10",
+          "Injury Proneness": "10",
+          "Left Foot": "10",
+          "Right Foot": "15"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-03-23",
+          "Height": "185",
+          "Weight": "84",
+          "Preferred Foot": "Right",
+          "Personality": "Professional",
+          "Media Handling": "Evasive",
+          "Preferred Role": "Striker",
+          "Squad Number": "23",
+          "Value": "",
+          "Current Ability": "80",
+          "Potential Ability": "150"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Noah Van Tunien",
+      "position": "LM/RM",
+      "club": "Free Agent",
+      "role": "Starter",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "20",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715381104_Noah_player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "10",
+          "Crossing": "12",
+          "Dribbling": "12",
+          "Finishing": "9",
+          "First Touch": "11",
+          "Free Kick Taking": "9",
+          "Heading": "9",
+          "Long Shots": "10",
+          "Long Throws": "7",
+          "Marking": "11",
+          "Passing": "12",
+          "Penalty Taking": "8",
+          "Tackling": "11",
+          "Technique": "11"
+        },
+        "Mental": {
+          "Aggression": "12",
+          "Anticipation": "12",
+          "Bravery": "11",
+          "Composure": "11",
+          "Concentration": "11",
+          "Decisions": "11",
+          "Determination": "13",
+          "Flair": "10",
+          "Leadership": "9",
+          "Off The Ball": "12",
+          "Positioning": "12",
+          "Teamwork": "14",
+          "Vision": "11",
+          "Work Rate": "15"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "12",
+          "Balance": "12",
+          "Jumping Reach": "9",
+          "Natural Fitness": "13",
+          "Pace": "12",
+          "Stamina": "16",
+          "Strength": "11"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "8",
+          "Consistency": "13",
+          "Important Matches": "11",
+          "Injury Proneness": "6",
+          "Left Foot": "14",
+          "Right Foot": "13"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-10-27",
+          "Height": "186",
+          "Weight": "74",
+          "Preferred Foot": "Either",
+          "Personality": "Fairly Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Role": "Attacking Midfielder",
+          "Squad Number": "11",
+          "Value": "",
+          "Current Ability": "88",
+          "Potential Ability": "180"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Scott Coutts",
+      "position": "LW/RW",
+      "club": "Free Agent",
+      "role": "Bench Player",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "20",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715394186_Scott_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "7",
+          "Crossing": "10",
+          "Dribbling": "9",
+          "Finishing": "7",
+          "First Touch": "9",
+          "Free Kick Taking": "6",
+          "Heading": "8",
+          "Long Shots": "7",
+          "Long Throws": "6",
+          "Marking": "9",
+          "Passing": "9",
+          "Penalty Taking": "7",
+          "Tackling": "10",
+          "Technique": "8"
+        },
+        "Mental": {
+          "Aggression": "12",
+          "Anticipation": "10",
+          "Bravery": "12",
+          "Composure": "9",
+          "Concentration": "10",
+          "Decisions": "9",
+          "Determination": "15",
+          "Flair": "8",
+          "Leadership": "8",
+          "Off The Ball": "10",
+          "Positioning": "10",
+          "Teamwork": "14",
+          "Vision": "8",
+          "Work Rate": "15"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "11",
+          "Balance": "11",
+          "Jumping Reach": "8",
+          "Natural Fitness": "12",
+          "Pace": "12",
+          "Stamina": "14",
+          "Strength": "10"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "9",
+          "Consistency": "10",
+          "Important Matches": "9",
+          "Injury Proneness": "6",
+          "Left Foot": "13",
+          "Right Foot": "11"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-06-06",
+          "Height": "190",
+          "Weight": "65",
+          "Preferred Foot": "Either",
+          "Personality": "Balanced",
+          "Media Handling": "Evasive",
+          "Preferred Role": "Winger",
+          "Squad Number": "5",
+          "Value": "",
+          "Current Ability": "75",
+          "Potential Ability": "150"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Corey Iles",
+      "position": "RB",
+      "club": "Free Agent",
+      "role": "Bench Player",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "21",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715410043_Corey_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "6",
+          "Crossing": "9",
+          "Dribbling": "8",
+          "Finishing": "6",
+          "First Touch": "8",
+          "Free Kick Taking": "6",
+          "Heading": "11",
+          "Long Shots": "7",
+          "Long Throws": "7",
+          "Marking": "12",
+          "Passing": "9",
+          "Penalty Taking": "7",
+          "Tackling": "13",
+          "Technique": "7"
+        },
+        "Mental": {
+          "Aggression": "15",
+          "Anticipation": "11",
+          "Bravery": "13",
+          "Composure": "9",
+          "Concentration": "10",
+          "Decisions": "9",
+          "Determination": "14",
+          "Flair": "7",
+          "Leadership": "8",
+          "Off The Ball": "9",
+          "Positioning": "12",
+          "Teamwork": "11",
+          "Vision": "8",
+          "Work Rate": "11"
+        },
+        "Physical": {
+          "Acceleration": "11",
+          "Agility": "10",
+          "Balance": "12",
+          "Jumping Reach": "12",
+          "Natural Fitness": "11",
+          "Pace": "11",
+          "Stamina": "11",
+          "Strength": "14"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "6",
+          "Consistency": "10",
+          "Important Matches": "10",
+          "Injury Proneness": "7",
+          "Left Foot": "9",
+          "Right Foot": "14"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-04-27",
+          "Height": "172",
+          "Weight": "82",
+          "Preferred Foot": "Right",
+          "Personality": "Casual",
+          "Media Handling": "Level-headed",
+          "Preferred Role": "Full Back",
+          "Squad Number": "15",
+          "Value": "",
+          "Current Ability": "75",
+          "Potential Ability": "150"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Mason Williams",
+      "position": "CB",
+      "club": "Free Agent",
+      "role": "Starter",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "20",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715429572_Mason_player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "7",
+          "Crossing": "7",
+          "Dribbling": "9",
+          "Finishing": "7",
+          "First Touch": "11",
+          "Free Kick Taking": "6",
+          "Heading": "15",
+          "Long Shots": "8",
+          "Long Throws": "8",
+          "Marking": "14",
+          "Passing": "11",
+          "Penalty Taking": "8",
+          "Tackling": "14",
+          "Technique": "10"
+        },
+        "Mental": {
+          "Aggression": "13",
+          "Anticipation": "13",
+          "Bravery": "14",
+          "Composure": "12",
+          "Concentration": "13",
+          "Decisions": "12",
+          "Determination": "14",
+          "Flair": "7",
+          "Leadership": "13",
+          "Off The Ball": "9",
+          "Positioning": "14",
+          "Teamwork": "13",
+          "Vision": "10",
+          "Work Rate": "12"
+        },
+        "Physical": {
+          "Acceleration": "11",
+          "Agility": "10",
+          "Balance": "13",
+          "Jumping Reach": "15",
+          "Natural Fitness": "12",
+          "Pace": "11",
+          "Stamina": "12",
+          "Strength": "16"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "6",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "7",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "10",
+          "Consistency": "14",
+          "Important Matches": "13",
+          "Injury Proneness": "6",
+          "Left Foot": "10",
+          "Right Foot": "15"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-03-13",
+          "Height": "191",
+          "Weight": "91",
+          "Preferred Foot": "Right",
+          "Personality": "Professional",
+          "Media Handling": "Reserved",
+          "Preferred Role": "Centre Back",
+          "Squad Number": "2",
+          "Value": "",
+          "Current Ability": "95",
+          "Potential Ability": "180"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Hayden Wafer",
+      "position": "CB",
+      "club": "Free Agent",
+      "role": "Starter",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "20",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715446227_hayden_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "7",
+          "Crossing": "7",
+          "Dribbling": "10",
+          "Finishing": "6",
+          "First Touch": "12",
+          "Free Kick Taking": "6",
+          "Heading": "12",
+          "Long Shots": "7",
+          "Long Throws": "7",
+          "Marking": "13",
+          "Passing": "12",
+          "Penalty Taking": "7",
+          "Tackling": "13",
+          "Technique": "11"
+        },
+        "Mental": {
+          "Aggression": "11",
+          "Anticipation": "14",
+          "Bravery": "12",
+          "Composure": "13",
+          "Concentration": "13",
+          "Decisions": "13",
+          "Determination": "13",
+          "Flair": "8",
+          "Leadership": "11",
+          "Off The Ball": "8",
+          "Positioning": "14",
+          "Teamwork": "13",
+          "Vision": "11",
+          "Work Rate": "12"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "12",
+          "Balance": "12",
+          "Jumping Reach": "12",
+          "Natural Fitness": "12",
+          "Pace": "12",
+          "Stamina": "12",
+          "Strength": "12"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "6",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "7",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "7",
+          "Consistency": "13",
+          "Important Matches": "12",
+          "Injury Proneness": "6",
+          "Left Foot": "14",
+          "Right Foot": "11"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-08-24",
+          "Height": "179",
+          "Weight": "89",
+          "Preferred Foot": "Either",
+          "Personality": "Professional",
+          "Media Handling": "Reserved",
+          "Preferred Role": "Centre Back",
+          "Squad Number": "6",
+          "Value": "",
+          "Current Ability": "90",
+          "Potential Ability": "170"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Max West",
+      "position": "CM",
+      "club": "Free Agent",
+      "role": "Starter",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "20",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715465829_MaxW_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "12",
+          "Crossing": "10",
+          "Dribbling": "13",
+          "Finishing": "",
+          "First Touch": "14",
+          "Free Kick Taking": "11",
+          "Heading": "8",
+          "Long Shots": "11",
+          "Long Throws": "6",
+          "Marking": "8",
+          "Passing": "14",
+          "Penalty Taking": "10",
+          "Tackling": "9",
+          "Technique": "15"
+        },
+        "Mental": {
+          "Aggression": "10",
+          "Anticipation": "13",
+          "Bravery": "10",
+          "Composure": "14",
+          "Concentration": "13",
+          "Decisions": "14",
+          "Determination": "12",
+          "Flair": "13",
+          "Leadership": "10",
+          "Off The Ball": "11",
+          "Positioning": "10",
+          "Teamwork": "13",
+          "Vision": "15",
+          "Work Rate": "10"
+        },
+        "Physical": {
+          "Acceleration": "9",
+          "Agility": "10",
+          "Balance": "11",
+          "Jumping Reach": "8",
+          "Natural Fitness": "10",
+          "Pace": "9",
+          "Stamina": "10",
+          "Strength": "13"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "7",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "10",
+          "Consistency": "13",
+          "Important Matches": "12",
+          "Injury Proneness": "6",
+          "Left Foot": "15",
+          "Right Foot": "12"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-02-04",
+          "Height": "170",
+          "Weight": "83",
+          "Preferred Foot": "Right",
+          "Personality": "Fairly Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Role": "Central Midfielder",
+          "Squad Number": "8",
+          "Value": "",
+          "Current Ability": "95",
+          "Potential Ability": "180"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Alec O'Dell",
+      "position": "CM",
+      "club": "Free Agent",
+      "role": "Starter",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "21",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715486479_Alec_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "8",
+          "Crossing": "9",
+          "Dribbling": "10",
+          "Finishing": "10",
+          "First Touch": "10",
+          "Free Kick Taking": "10",
+          "Heading": "12",
+          "Long Shots": "10",
+          "Long Throws": "7",
+          "Marking": "8",
+          "Passing": "10",
+          "Penalty Taking": "8",
+          "Tackling": "12",
+          "Technique": "10"
+        },
+        "Mental": {
+          "Aggression": "14",
+          "Anticipation": "10",
+          "Bravery": "13",
+          "Composure": "9",
+          "Concentration": "9",
+          "Decisions": "8",
+          "Determination": "12",
+          "Flair": "8",
+          "Leadership": "8",
+          "Off The Ball": "10",
+          "Positioning": "10",
+          "Teamwork": "10",
+          "Vision": "8",
+          "Work Rate": "13"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "11",
+          "Balance": "12",
+          "Jumping Reach": "12",
+          "Natural Fitness": "13",
+          "Pace": "12",
+          "Stamina": "14",
+          "Strength": "14"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "7",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "9",
+          "Consistency": "9",
+          "Important Matches": "9",
+          "Injury Proneness": "6",
+          "Left Foot": "14",
+          "Right Foot": "12"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2004-05-29",
+          "Height": "174",
+          "Weight": "84",
+          "Preferred Foot": "Right",
+          "Personality": "Professional",
+          "Media Handling": "Reserved",
+          "Preferred Role": "Central Midfielder",
+          "Squad Number": "5",
+          "Value": "",
+          "Current Ability": "92",
+          "Potential Ability": "180"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Max Hillson-Barratt",
+      "position": "LB",
+      "club": "Free Agent",
+      "role": "Starter",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "20",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715501777_MaxHB_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "10",
+          "Crossing": "12",
+          "Dribbling": "12",
+          "Finishing": "8",
+          "First Touch": "12",
+          "Free Kick Taking": "9",
+          "Heading": "8",
+          "Long Shots": "10",
+          "Long Throws": "7",
+          "Marking": "11",
+          "Passing": "12",
+          "Penalty Taking": "8",
+          "Tackling": "11",
+          "Technique": "12"
+        },
+        "Mental": {
+          "Aggression": "10",
+          "Anticipation": "13",
+          "Bravery": "9",
+          "Composure": "13",
+          "Concentration": "12",
+          "Decisions": "13",
+          "Determination": "12",
+          "Flair": "13",
+          "Leadership": "9",
+          "Off The Ball": "12",
+          "Positioning": "13",
+          "Teamwork": "12",
+          "Vision": "12",
+          "Work Rate": "12"
+        },
+        "Physical": {
+          "Acceleration": "13",
+          "Agility": "14",
+          "Balance": "13",
+          "Jumping Reach": "7",
+          "Natural Fitness": "12",
+          "Pace": "13",
+          "Stamina": "12",
+          "Strength": "9"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "4",
+          "Reflexes": "3",
+          "Rushing Out": "3",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "",
+          "Consistency": "11",
+          "Important Matches": "11",
+          "Injury Proneness": "6",
+          "Left Foot": "15",
+          "Right Foot": "11"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-01-20",
+          "Height": "169",
+          "Weight": "76",
+          "Preferred Foot": "Either",
+          "Personality": "Model Professional",
+          "Media Handling": "Evasive",
+          "Preferred Role": "Full Back",
+          "Squad Number": "3",
+          "Value": "",
+          "Current Ability": "88",
+          "Potential Ability": "170"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Archie Firth",
+      "position": "CM/CAM",
+      "club": "Free Agent",
+      "role": "Prospect",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "15",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715525621_Archie_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "4",
+          "Crossing": "6",
+          "Dribbling": "11",
+          "Finishing": "9",
+          "First Touch": "8",
+          "Free Kick Taking": "3",
+          "Heading": "10",
+          "Long Shots": "7",
+          "Long Throws": "4",
+          "Marking": "8",
+          "Passing": "7",
+          "Penalty Taking": "6",
+          "Tackling": "9",
+          "Technique": "7"
+        },
+        "Mental": {
+          "Aggression": "14",
+          "Anticipation": "10",
+          "Bravery": "16",
+          "Composure": "5",
+          "Concentration": "6",
+          "Decisions": "4",
+          "Determination": "18",
+          "Flair": "13",
+          "Leadership": "6",
+          "Off The Ball": "15",
+          "Positioning": "6",
+          "Teamwork": "12",
+          "Vision": "5",
+          "Work Rate": "18"
+        },
+        "Physical": {
+          "Acceleration": "17",
+          "Agility": "17",
+          "Balance": "15",
+          "Jumping Reach": "12",
+          "Natural Fitness": "18",
+          "Pace": "17",
+          "Stamina": "18",
+          "Strength": "10"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "1",
+          "Command Of Area": "2",
+          "Communication": "3",
+          "Eccentricity": "3",
+          "Handling": "2",
+          "Kicking": "2",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "3",
+          "Throwing": "1"
+        },
+        "Hidden": {
+          "Reputation": "9",
+          "Consistency": "8",
+          "Important Matches": "10",
+          "Injury Proneness": "5",
+          "Left Foot": "12",
+          "Right Foot": "12"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2010-05-04",
+          "Height": "160",
+          "Weight": "69",
+          "Preferred Foot": "Either",
+          "Personality": "Fairly Professional",
+          "Media Handling": "Volatile",
+          "Preferred Role": "Attacking Midfielder",
+          "Squad Number": "4",
+          "Value": "",
+          "Current Ability": "70",
+          "Potential Ability": "190"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Steve Firth",
+      "position": "CDM",
+      "club": "Free Agent",
+      "role": "Vet",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "50",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715546457_Father_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "16",
+          "Crossing": "14",
+          "Dribbling": "15",
+          "Finishing": "15",
+          "First Touch": "18",
+          "Free Kick Taking": "17",
+          "Heading": "8",
+          "Long Shots": "16",
+          "Long Throws": "6",
+          "Marking": "9",
+          "Passing": "18",
+          "Penalty Taking": "17",
+          "Tackling": "8",
+          "Technique": "19"
+        },
+        "Mental": {
+          "Aggression": "8",
+          "Anticipation": "18",
+          "Bravery": "10",
+          "Composure": "18",
+          "Concentration": "17",
+          "Decisions": "19",
+          "Determination": "15",
+          "Flair": "18",
+          "Leadership": "17",
+          "Off The Ball": "17",
+          "Positioning": "16",
+          "Teamwork": "15",
+          "Vision": "20",
+          "Work Rate": "10"
+        },
+        "Physical": {
+          "Acceleration": "5",
+          "Agility": "5",
+          "Balance": "8",
+          "Jumping Reach": "6",
+          "Natural Fitness": "6",
+          "Pace": "4",
+          "Stamina": "6",
+          "Strength": "8"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "1",
+          "Command Of Area": "5",
+          "Communication": "5",
+          "Eccentricity": "4",
+          "Handling": "1",
+          "Kicking": "2",
+          "One On Ones": "1",
+          "Reflexes": "1",
+          "Rushing Out": "1",
+          "Throwing": "2"
+        },
+        "Hidden": {
+          "Reputation": "19",
+          "Consistency": "16",
+          "Important Matches": "17",
+          "Injury Proneness": "10",
+          "Left Foot": "15",
+          "Right Foot": "18"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "1975-07-05",
+          "Height": "160",
+          "Weight": "84",
+          "Preferred Foot": "Right",
+          "Personality": "Model Citizen",
+          "Media Handling": "Reserved",
+          "Preferred Role": "Defensive Midfielder",
+          "Squad Number": "7",
+          "Value": "",
+          "Current Ability": "130",
+          "Potential Ability": "200"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Fraser Lloyd",
+      "position": "GK",
+      "club": "Free Agent",
+      "role": "Starter",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ffffff",
+        "secondary": "#000000"
+      },
+      "seasons": [],
+      "age": "19",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715564507_Fraser_player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "1",
+          "Crossing": "3",
+          "Dribbling": "3",
+          "Finishing": "2",
+          "First Touch": "6",
+          "Free Kick Taking": "3",
+          "Heading": "4",
+          "Long Shots": "5",
+          "Long Throws": "6",
+          "Marking": "3",
+          "Passing": "5",
+          "Penalty Taking": "5",
+          "Tackling": "3",
+          "Technique": "6"
+        },
+        "Mental": {
+          "Aggression": "7",
+          "Anticipation": "14",
+          "Bravery": "14",
+          "Composure": "14",
+          "Concentration": "15",
+          "Decisions": "13",
+          "Determination": "4",
+          "Flair": "5",
+          "Leadership": "11",
+          "Off The Ball": "9",
+          "Positioning": "14",
+          "Teamwork": "7",
+          "Vision": "13",
+          "Work Rate": "11"
+        },
+        "Physical": {
+          "Acceleration": "13",
+          "Agility": "16",
+          "Balance": "14",
+          "Jumping Reach": "10",
+          "Natural Fitness": "13",
+          "Pace": "13",
+          "Stamina": "5",
+          "Strength": "11"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "11",
+          "Command Of Area": "12",
+          "Communication": "14",
+          "Eccentricity": "8",
+          "Handling": "15",
+          "Kicking": "13",
+          "One On Ones": "15",
+          "Reflexes": "16",
+          "Rushing Out": "14",
+          "Throwing": "13"
+        },
+        "Hidden": {
+          "Reputation": "11",
+          "Consistency": "15",
+          "Important Matches": "14",
+          "Injury Proneness": "6",
+          "Left Foot": "9",
+          "Right Foot": "14"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-12-20",
+          "Height": "178",
+          "Weight": "75",
+          "Preferred Foot": "Right",
+          "Personality": "Model Citizen",
+          "Media Handling": "Reserved",
+          "Preferred Role": "Goalkeeper",
+          "Squad Number": "1",
+          "Value": "",
+          "Current Ability": "100",
+          "Potential Ability": "200"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Jordan Olsen",
+      "position": "GK",
+      "club": "Free Agent",
+      "role": "Backup",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "20",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715588278_jordan_player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "1",
+          "Crossing": "2",
+          "Dribbling": "3",
+          "Finishing": "6",
+          "First Touch": "4",
+          "Free Kick Taking": "1",
+          "Heading": "6",
+          "Long Shots": "4",
+          "Long Throws": "6",
+          "Marking": "4",
+          "Passing": "5",
+          "Penalty Taking": "5",
+          "Tackling": "5",
+          "Technique": "4"
+        },
+        "Mental": {
+          "Aggression": "9",
+          "Anticipation": "13",
+          "Bravery": "8",
+          "Composure": "13",
+          "Concentration": "12",
+          "Decisions": "12",
+          "Determination": "10",
+          "Flair": "8",
+          "Leadership": "13",
+          "Off The Ball": "9",
+          "Positioning": "13",
+          "Teamwork": "12",
+          "Vision": "9",
+          "Work Rate": "7"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "13",
+          "Balance": "12",
+          "Jumping Reach": "15",
+          "Natural Fitness": "11",
+          "Pace": "12",
+          "Stamina": "8",
+          "Strength": "14"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "15",
+          "Command Of Area": "14",
+          "Communication": "12",
+          "Eccentricity": "7",
+          "Handling": "14",
+          "Kicking": "12",
+          "One On Ones": "13",
+          "Reflexes": "14",
+          "Rushing Out": "12",
+          "Throwing": "12"
+        },
+        "Hidden": {
+          "Reputation": "11",
+          "Consistency": "12",
+          "Important Matches": "12",
+          "Injury Proneness": "15",
+          "Left Foot": "4",
+          "Right Foot": "10"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-12-13",
+          "Height": "210",
+          "Weight": "87",
+          "Preferred Foot": "Right",
+          "Personality": "Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Role": "Goalkeeper",
+          "Squad Number": "13",
+          "Value": "",
+          "Current Ability": "95",
+          "Potential Ability": "180"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Mateo Bonny",
+      "position": "GK",
+      "club": "Free Agent",
+      "role": "Cup GoalKeeper",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "20",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715606817_Mateo_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "1",
+          "Crossing": "2",
+          "Dribbling": "2",
+          "Finishing": "4",
+          "First Touch": "4",
+          "Free Kick Taking": "3",
+          "Heading": "6",
+          "Long Shots": "3",
+          "Long Throws": "6",
+          "Marking": "3",
+          "Passing": "4",
+          "Penalty Taking": "4",
+          "Tackling": "4",
+          "Technique": "4"
+        },
+        "Mental": {
+          "Aggression": "10",
+          "Anticipation": "11",
+          "Bravery": "10",
+          "Composure": "11",
+          "Concentration": "8",
+          "Decisions": "10",
+          "Determination": "8",
+          "Flair": "6",
+          "Leadership": "6",
+          "Off The Ball": "8",
+          "Positioning": "11",
+          "Teamwork": "9",
+          "Vision": "7",
+          "Work Rate": "8"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "13",
+          "Balance": "12",
+          "Jumping Reach": "14",
+          "Natural Fitness": "12",
+          "Pace": "12",
+          "Stamina": "10",
+          "Strength": "13"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "14",
+          "Command Of Area": "13",
+          "Communication": "11",
+          "Eccentricity": "12",
+          "Handling": "13",
+          "Kicking": "13",
+          "One On Ones": "12",
+          "Reflexes": "14",
+          "Rushing Out": "13",
+          "Throwing": "12"
+        },
+        "Hidden": {
+          "Reputation": "8",
+          "Consistency": "10",
+          "Important Matches": "10",
+          "Injury Proneness": "7",
+          "Left Foot": "5",
+          "Right Foot": "9"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-06-03",
+          "Height": "207",
+          "Weight": "65",
+          "Preferred Foot": "Right",
+          "Personality": "Casual",
+          "Media Handling": "Evasive",
+          "Preferred Role": "Goalkeeper",
+          "Squad Number": "40",
+          "Value": "",
+          "Current Ability": "90",
+          "Potential Ability": "150"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    },
+    {
+      "name": "Carter Woods",
+      "position": "CB/LB/RB",
+      "club": "Free Agent",
+      "role": "Defense",
+      "notes": "",
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      },
+      "seasons": [],
+      "age": "20",
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715620584_Carter_Player.png",
+      "clubBadge": "",
+      "attributes": {
+        "Technical": {
+          "Corners": "7",
+          "Crossing": "10",
+          "Dribbling": "9",
+          "Finishing": "6",
+          "First Touch": "11",
+          "Free Kick Taking": "7",
+          "Heading": "12",
+          "Long Shots": "8",
+          "Long Throws": "8",
+          "Marking": "13",
+          "Passing": "11",
+          "Penalty Taking": "7",
+          "Tackling": "13",
+          "Technique": "11"
+        },
+        "Mental": {
+          "Aggression": "10",
+          "Anticipation": "14",
+          "Bravery": "11",
+          "Composure": "13",
+          "Concentration": "13",
+          "Decisions": "14",
+          "Determination": "12",
+          "Flair": "7",
+          "Leadership": "11",
+          "Off The Ball": "9",
+          "Positioning": "14",
+          "Teamwork": "13",
+          "Vision": "11",
+          "Work Rate": "11"
+        },
+        "Physical": {
+          "Acceleration": "9",
+          "Agility": "8",
+          "Balance": "11",
+          "Jumping Reach": "12",
+          "Natural Fitness": "10",
+          "Pace": "9",
+          "Stamina": "10",
+          "Strength": "12"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "9",
+          "Consistency": "13",
+          "Important Matches": "12",
+          "Injury Proneness": "6",
+          "Left Foot": "13",
+          "Right Foot": "14"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-01-14",
+          "Height": "172",
+          "Weight": "81",
+          "Preferred Foot": "Either",
+          "Personality": "Model Professional",
+          "Media Handling": "Reserved",
+          "Preferred Role": "Centre Back",
+          "Squad Number": "14",
+          "Value": "",
+          "Current Ability": "90",
+          "Potential Ability": "170"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      }
+    }
+  ],
+  "fmhub-people": [
+    {
+      "type": "player",
+      "name": "Sam Firth",
+      "role": "Prospect",
+      "club": "Free Agent",
+      "position": "LW/RW",
+      "secondaryPositions": "ST",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715304626_Me_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "8",
+          "Crossing": "12",
+          "Dribbling": "14",
+          "Finishing": "13",
+          "First Touch": "13",
+          "Free Kick Taking": "9",
+          "Heading": "8",
+          "Long Shots": "12",
+          "Long Throws": "6",
+          "Marking": "9",
+          "Passing": "12",
+          "Penalty Taking": "11",
+          "Tackling": "7",
+          "Technique": "14"
+        },
+        "Mental": {
+          "Aggression": "10",
+          "Anticipation": "13",
+          "Bravery": "10",
+          "Composure": "13",
+          "Concentration": "11",
+          "Decisions": "12",
+          "Determination": "13",
+          "Flair": "15",
+          "Leadership": "8",
+          "Off The Ball": "14",
+          "Positioning": "8",
+          "Teamwork": "11",
+          "Vision": "14",
+          "Work Rate": "10"
+        },
+        "Physical": {
+          "Acceleration": "14",
+          "Agility": "13",
+          "Balance": "12",
+          "Jumping Reach": "8",
+          "Natural Fitness": "12",
+          "Pace": "14",
+          "Stamina": "12",
+          "Strength": "10"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "10",
+          "Consistency": "13",
+          "Important Matches": "13",
+          "Injury Proneness": "6",
+          "Left Foot": "17",
+          "Right Foot": "11"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-12-20",
+          "Height": "175",
+          "Weight": "60",
+          "Preferred Foot": "Left",
+          "Personality": "Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Role": "Winger",
+          "Squad Number": "10",
+          "Value": "",
+          "Current Ability": "100",
+          "Potential Ability": "200"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Jack McPherson",
+      "role": "Starter",
+      "club": "Free Agent",
+      "position": "CAM/ ST",
+      "secondaryPositions": "LW/RW/CM",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715320518_Jack_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "12",
+          "Crossing": "12",
+          "Dribbling": "15",
+          "Finishing": "14",
+          "First Touch": "15",
+          "Free Kick Taking": "11",
+          "Heading": "10",
+          "Long Shots": "13",
+          "Long Throws": "6",
+          "Marking": "6",
+          "Passing": "14",
+          "Penalty Taking": "13",
+          "Tackling": "7",
+          "Technique": "15"
+        },
+        "Mental": {
+          "Aggression": "11",
+          "Anticipation": "14",
+          "Bravery": "11",
+          "Composure": "14",
+          "Concentration": "12",
+          "Decisions": "14",
+          "Determination": "14",
+          "Flair": "16",
+          "Leadership": "10",
+          "Off The Ball": "14",
+          "Positioning": "8",
+          "Teamwork": "12",
+          "Vision": "15",
+          "Work Rate": "12"
+        },
+        "Physical": {
+          "Acceleration": "14",
+          "Agility": "14",
+          "Balance": "13",
+          "Jumping Reach": "10",
+          "Natural Fitness": "13",
+          "Pace": "14",
+          "Stamina": "13",
+          "Strength": "11"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "13",
+          "Consistency": "15",
+          "Important Matches": "15",
+          "Injury Proneness": "6",
+          "Left Foot": "18",
+          "Right Foot": "13"
+        },
+        "Profile": {
+          "Age": "20",
+          "Date Of Birth": "2006-04-06",
+          "Height": "175",
+          "Weight": "65",
+          "Preferred Foot": "Right",
+          "Personality": "Professional",
+          "Media Handling": "Evasive",
+          "Preferred Role": "Attacking Midfielder",
+          "Squad Number": "9",
+          "Value": "",
+          "Current Ability": "110",
+          "Potential Ability": "200"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Christian Mansley",
+      "role": "Starter",
+      "club": "Free Agent",
+      "position": "CAM/ST",
+      "secondaryPositions": "CM/CDM",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715336096_Christian_player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "9",
+          "Crossing": "10",
+          "Dribbling": "13",
+          "Finishing": "14",
+          "First Touch": "13",
+          "Free Kick Taking": "8",
+          "Heading": "15",
+          "Long Shots": "12",
+          "Long Throws": "7",
+          "Marking": "8",
+          "Passing": "12",
+          "Penalty Taking": "13",
+          "Tackling": "9",
+          "Technique": "12"
+        },
+        "Mental": {
+          "Aggression": "14",
+          "Anticipation": "13",
+          "Bravery": "15",
+          "Composure": "13",
+          "Concentration": "12",
+          "Decisions": "12",
+          "Determination": "14",
+          "Flair": "10",
+          "Leadership": "11",
+          "Off The Ball": "14",
+          "Positioning": "10",
+          "Teamwork": "13",
+          "Vision": "11",
+          "Work Rate": "13"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "11",
+          "Balance": "14",
+          "Jumping Reach": "13",
+          "Natural Fitness": "15",
+          "Pace": "12",
+          "Stamina": "14",
+          "Strength": "17"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "11",
+          "Consistency": "14",
+          "Important Matches": "14",
+          "Injury Proneness": "7",
+          "Left Foot": "17",
+          "Right Foot": "15"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-12-24",
+          "Height": "180",
+          "Weight": "76",
+          "Preferred Foot": "Either",
+          "Personality": "Model Citizen",
+          "Media Handling": "Level-headed",
+          "Preferred Role": "Attacking Midfielder",
+          "Squad Number": "6",
+          "Value": "",
+          "Current Ability": "105",
+          "Potential Ability": "200"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Ricco Pepper-Edwards",
+      "role": "Bench Player",
+      "club": "Free Agent",
+      "position": "ST",
+      "secondaryPositions": "LW/RW/CAM",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715361208_Ricco_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "7",
+          "Crossing": "8",
+          "Dribbling": "9",
+          "Finishing": "11",
+          "First Touch": "10",
+          "Free Kick Taking": "7",
+          "Heading": "11",
+          "Long Shots": "10",
+          "Long Throws": "6",
+          "Marking": "6",
+          "Passing": "10",
+          "Penalty Taking": "11",
+          "Tackling": "7",
+          "Technique": "10"
+        },
+        "Mental": {
+          "Aggression": "12",
+          "Anticipation": "11",
+          "Bravery": "12",
+          "Composure": "11",
+          "Concentration": "10",
+          "Decisions": "10",
+          "Determination": "13",
+          "Flair": "9",
+          "Leadership": "13",
+          "Off The Ball": "11",
+          "Positioning": "9",
+          "Teamwork": "13",
+          "Vision": "10",
+          "Work Rate": "12"
+        },
+        "Physical": {
+          "Acceleration": "9",
+          "Agility": "9",
+          "Balance": "11",
+          "Jumping Reach": "12",
+          "Natural Fitness": "11",
+          "Pace": "9",
+          "Stamina": "11",
+          "Strength": "13"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "6",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "3"
+        },
+        "Hidden": {
+          "Reputation": "7",
+          "Consistency": "11",
+          "Important Matches": "10",
+          "Injury Proneness": "10",
+          "Left Foot": "10",
+          "Right Foot": "15"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-03-23",
+          "Height": "185",
+          "Weight": "84",
+          "Preferred Foot": "Right",
+          "Personality": "Professional",
+          "Media Handling": "Evasive",
+          "Preferred Role": "Striker",
+          "Squad Number": "23",
+          "Value": "",
+          "Current Ability": "80",
+          "Potential Ability": "150"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Noah Van Tunien",
+      "role": "Starter",
+      "club": "Free Agent",
+      "position": "LM/RM",
+      "secondaryPositions": "CM/CDM",
+      "nation": "Netherlands",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715381104_Noah_player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "10",
+          "Crossing": "12",
+          "Dribbling": "12",
+          "Finishing": "9",
+          "First Touch": "11",
+          "Free Kick Taking": "9",
+          "Heading": "9",
+          "Long Shots": "10",
+          "Long Throws": "7",
+          "Marking": "11",
+          "Passing": "12",
+          "Penalty Taking": "8",
+          "Tackling": "11",
+          "Technique": "11"
+        },
+        "Mental": {
+          "Aggression": "12",
+          "Anticipation": "12",
+          "Bravery": "11",
+          "Composure": "11",
+          "Concentration": "11",
+          "Decisions": "11",
+          "Determination": "13",
+          "Flair": "10",
+          "Leadership": "9",
+          "Off The Ball": "12",
+          "Positioning": "12",
+          "Teamwork": "14",
+          "Vision": "11",
+          "Work Rate": "15"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "12",
+          "Balance": "12",
+          "Jumping Reach": "9",
+          "Natural Fitness": "13",
+          "Pace": "12",
+          "Stamina": "16",
+          "Strength": "11"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "8",
+          "Consistency": "13",
+          "Important Matches": "11",
+          "Injury Proneness": "6",
+          "Left Foot": "14",
+          "Right Foot": "13"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-10-27",
+          "Height": "186",
+          "Weight": "74",
+          "Preferred Foot": "Either",
+          "Personality": "Fairly Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Role": "Attacking Midfielder",
+          "Squad Number": "11",
+          "Value": "",
+          "Current Ability": "88",
+          "Potential Ability": "180"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Scott Coutts",
+      "role": "Bench Player",
+      "club": "Free Agent",
+      "position": "LW/RW",
+      "secondaryPositions": "LWB/RWB",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715394186_Scott_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "7",
+          "Crossing": "10",
+          "Dribbling": "9",
+          "Finishing": "7",
+          "First Touch": "9",
+          "Free Kick Taking": "6",
+          "Heading": "8",
+          "Long Shots": "7",
+          "Long Throws": "6",
+          "Marking": "9",
+          "Passing": "9",
+          "Penalty Taking": "7",
+          "Tackling": "10",
+          "Technique": "8"
+        },
+        "Mental": {
+          "Aggression": "12",
+          "Anticipation": "10",
+          "Bravery": "12",
+          "Composure": "9",
+          "Concentration": "10",
+          "Decisions": "9",
+          "Determination": "15",
+          "Flair": "8",
+          "Leadership": "8",
+          "Off The Ball": "10",
+          "Positioning": "10",
+          "Teamwork": "14",
+          "Vision": "8",
+          "Work Rate": "15"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "11",
+          "Balance": "11",
+          "Jumping Reach": "8",
+          "Natural Fitness": "12",
+          "Pace": "12",
+          "Stamina": "14",
+          "Strength": "10"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "9",
+          "Consistency": "10",
+          "Important Matches": "9",
+          "Injury Proneness": "6",
+          "Left Foot": "13",
+          "Right Foot": "11"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-06-06",
+          "Height": "190",
+          "Weight": "65",
+          "Preferred Foot": "Either",
+          "Personality": "Balanced",
+          "Media Handling": "Evasive",
+          "Preferred Role": "Winger",
+          "Squad Number": "5",
+          "Value": "",
+          "Current Ability": "75",
+          "Potential Ability": "150"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Corey Iles",
+      "role": "Bench Player",
+      "club": "Free Agent",
+      "position": "RB",
+      "secondaryPositions": "CB",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715410043_Corey_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "6",
+          "Crossing": "9",
+          "Dribbling": "8",
+          "Finishing": "6",
+          "First Touch": "8",
+          "Free Kick Taking": "6",
+          "Heading": "11",
+          "Long Shots": "7",
+          "Long Throws": "7",
+          "Marking": "12",
+          "Passing": "9",
+          "Penalty Taking": "7",
+          "Tackling": "13",
+          "Technique": "7"
+        },
+        "Mental": {
+          "Aggression": "15",
+          "Anticipation": "11",
+          "Bravery": "13",
+          "Composure": "9",
+          "Concentration": "10",
+          "Decisions": "9",
+          "Determination": "14",
+          "Flair": "7",
+          "Leadership": "8",
+          "Off The Ball": "9",
+          "Positioning": "12",
+          "Teamwork": "11",
+          "Vision": "8",
+          "Work Rate": "11"
+        },
+        "Physical": {
+          "Acceleration": "11",
+          "Agility": "10",
+          "Balance": "12",
+          "Jumping Reach": "12",
+          "Natural Fitness": "11",
+          "Pace": "11",
+          "Stamina": "11",
+          "Strength": "14"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "6",
+          "Consistency": "10",
+          "Important Matches": "10",
+          "Injury Proneness": "7",
+          "Left Foot": "9",
+          "Right Foot": "14"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-04-27",
+          "Height": "172",
+          "Weight": "82",
+          "Preferred Foot": "Right",
+          "Personality": "Casual",
+          "Media Handling": "Level-headed",
+          "Preferred Role": "Full Back",
+          "Squad Number": "15",
+          "Value": "",
+          "Current Ability": "75",
+          "Potential Ability": "150"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Mason Williams",
+      "role": "Starter",
+      "club": "Free Agent",
+      "position": "CB",
+      "secondaryPositions": "LB/RB/CDM",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715429572_Mason_player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "7",
+          "Crossing": "7",
+          "Dribbling": "9",
+          "Finishing": "7",
+          "First Touch": "11",
+          "Free Kick Taking": "6",
+          "Heading": "15",
+          "Long Shots": "8",
+          "Long Throws": "8",
+          "Marking": "14",
+          "Passing": "11",
+          "Penalty Taking": "8",
+          "Tackling": "14",
+          "Technique": "10"
+        },
+        "Mental": {
+          "Aggression": "13",
+          "Anticipation": "13",
+          "Bravery": "14",
+          "Composure": "12",
+          "Concentration": "13",
+          "Decisions": "12",
+          "Determination": "14",
+          "Flair": "7",
+          "Leadership": "13",
+          "Off The Ball": "9",
+          "Positioning": "14",
+          "Teamwork": "13",
+          "Vision": "10",
+          "Work Rate": "12"
+        },
+        "Physical": {
+          "Acceleration": "11",
+          "Agility": "10",
+          "Balance": "13",
+          "Jumping Reach": "15",
+          "Natural Fitness": "12",
+          "Pace": "11",
+          "Stamina": "12",
+          "Strength": "16"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "6",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "7",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "10",
+          "Consistency": "14",
+          "Important Matches": "13",
+          "Injury Proneness": "6",
+          "Left Foot": "10",
+          "Right Foot": "15"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-03-13",
+          "Height": "191",
+          "Weight": "91",
+          "Preferred Foot": "Right",
+          "Personality": "Professional",
+          "Media Handling": "Reserved",
+          "Preferred Role": "Centre Back",
+          "Squad Number": "2",
+          "Value": "",
+          "Current Ability": "95",
+          "Potential Ability": "180"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Hayden Wafer",
+      "role": "Starter",
+      "club": "Free Agent",
+      "position": "CB",
+      "secondaryPositions": "LB/RB",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715446227_hayden_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "7",
+          "Crossing": "7",
+          "Dribbling": "10",
+          "Finishing": "6",
+          "First Touch": "12",
+          "Free Kick Taking": "6",
+          "Heading": "12",
+          "Long Shots": "7",
+          "Long Throws": "7",
+          "Marking": "13",
+          "Passing": "12",
+          "Penalty Taking": "7",
+          "Tackling": "13",
+          "Technique": "11"
+        },
+        "Mental": {
+          "Aggression": "11",
+          "Anticipation": "14",
+          "Bravery": "12",
+          "Composure": "13",
+          "Concentration": "13",
+          "Decisions": "13",
+          "Determination": "13",
+          "Flair": "8",
+          "Leadership": "11",
+          "Off The Ball": "8",
+          "Positioning": "14",
+          "Teamwork": "13",
+          "Vision": "11",
+          "Work Rate": "12"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "12",
+          "Balance": "12",
+          "Jumping Reach": "12",
+          "Natural Fitness": "12",
+          "Pace": "12",
+          "Stamina": "12",
+          "Strength": "12"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "6",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "7",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "7",
+          "Consistency": "13",
+          "Important Matches": "12",
+          "Injury Proneness": "6",
+          "Left Foot": "14",
+          "Right Foot": "11"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-08-24",
+          "Height": "179",
+          "Weight": "89",
+          "Preferred Foot": "Either",
+          "Personality": "Professional",
+          "Media Handling": "Reserved",
+          "Preferred Role": "Centre Back",
+          "Squad Number": "6",
+          "Value": "",
+          "Current Ability": "90",
+          "Potential Ability": "170"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Max West",
+      "role": "Starter",
+      "club": "Free Agent",
+      "position": "CM",
+      "secondaryPositions": "LM,RM,CDM,CB",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715465829_MaxW_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "12",
+          "Crossing": "10",
+          "Dribbling": "13",
+          "Finishing": "",
+          "First Touch": "14",
+          "Free Kick Taking": "11",
+          "Heading": "8",
+          "Long Shots": "11",
+          "Long Throws": "6",
+          "Marking": "8",
+          "Passing": "14",
+          "Penalty Taking": "10",
+          "Tackling": "9",
+          "Technique": "15"
+        },
+        "Mental": {
+          "Aggression": "10",
+          "Anticipation": "13",
+          "Bravery": "10",
+          "Composure": "14",
+          "Concentration": "13",
+          "Decisions": "14",
+          "Determination": "12",
+          "Flair": "13",
+          "Leadership": "10",
+          "Off The Ball": "11",
+          "Positioning": "10",
+          "Teamwork": "13",
+          "Vision": "15",
+          "Work Rate": "10"
+        },
+        "Physical": {
+          "Acceleration": "9",
+          "Agility": "10",
+          "Balance": "11",
+          "Jumping Reach": "8",
+          "Natural Fitness": "10",
+          "Pace": "9",
+          "Stamina": "10",
+          "Strength": "13"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "7",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "10",
+          "Consistency": "13",
+          "Important Matches": "12",
+          "Injury Proneness": "6",
+          "Left Foot": "15",
+          "Right Foot": "12"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-02-04",
+          "Height": "170",
+          "Weight": "83",
+          "Preferred Foot": "Right",
+          "Personality": "Fairly Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Role": "Central Midfielder",
+          "Squad Number": "8",
+          "Value": "",
+          "Current Ability": "95",
+          "Potential Ability": "180"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Alec O'Dell",
+      "role": "Starter",
+      "club": "Free Agent",
+      "position": "CM",
+      "secondaryPositions": "CDM,CB,RM,LM,CAM",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715486479_Alec_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "8",
+          "Crossing": "9",
+          "Dribbling": "10",
+          "Finishing": "10",
+          "First Touch": "10",
+          "Free Kick Taking": "10",
+          "Heading": "12",
+          "Long Shots": "10",
+          "Long Throws": "7",
+          "Marking": "8",
+          "Passing": "10",
+          "Penalty Taking": "8",
+          "Tackling": "12",
+          "Technique": "10"
+        },
+        "Mental": {
+          "Aggression": "14",
+          "Anticipation": "10",
+          "Bravery": "13",
+          "Composure": "9",
+          "Concentration": "9",
+          "Decisions": "8",
+          "Determination": "12",
+          "Flair": "8",
+          "Leadership": "8",
+          "Off The Ball": "10",
+          "Positioning": "10",
+          "Teamwork": "10",
+          "Vision": "8",
+          "Work Rate": "13"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "11",
+          "Balance": "12",
+          "Jumping Reach": "12",
+          "Natural Fitness": "13",
+          "Pace": "12",
+          "Stamina": "14",
+          "Strength": "14"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "7",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "9",
+          "Consistency": "9",
+          "Important Matches": "9",
+          "Injury Proneness": "6",
+          "Left Foot": "14",
+          "Right Foot": "12"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2004-05-29",
+          "Height": "174",
+          "Weight": "84",
+          "Preferred Foot": "Right",
+          "Personality": "Professional",
+          "Media Handling": "Reserved",
+          "Preferred Role": "Central Midfielder",
+          "Squad Number": "5",
+          "Value": "",
+          "Current Ability": "92",
+          "Potential Ability": "180"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Max Hillson-Barratt",
+      "role": "Starter",
+      "club": "Free Agent",
+      "position": "LB",
+      "secondaryPositions": "LWB,LM,CB,CDM",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715501777_MaxHB_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "10",
+          "Crossing": "12",
+          "Dribbling": "12",
+          "Finishing": "8",
+          "First Touch": "12",
+          "Free Kick Taking": "9",
+          "Heading": "8",
+          "Long Shots": "10",
+          "Long Throws": "7",
+          "Marking": "11",
+          "Passing": "12",
+          "Penalty Taking": "8",
+          "Tackling": "11",
+          "Technique": "12"
+        },
+        "Mental": {
+          "Aggression": "10",
+          "Anticipation": "13",
+          "Bravery": "9",
+          "Composure": "13",
+          "Concentration": "12",
+          "Decisions": "13",
+          "Determination": "12",
+          "Flair": "13",
+          "Leadership": "9",
+          "Off The Ball": "12",
+          "Positioning": "13",
+          "Teamwork": "12",
+          "Vision": "12",
+          "Work Rate": "12"
+        },
+        "Physical": {
+          "Acceleration": "13",
+          "Agility": "14",
+          "Balance": "13",
+          "Jumping Reach": "7",
+          "Natural Fitness": "12",
+          "Pace": "13",
+          "Stamina": "12",
+          "Strength": "9"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "4",
+          "Reflexes": "3",
+          "Rushing Out": "3",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "",
+          "Consistency": "11",
+          "Important Matches": "11",
+          "Injury Proneness": "6",
+          "Left Foot": "15",
+          "Right Foot": "11"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-01-20",
+          "Height": "169",
+          "Weight": "76",
+          "Preferred Foot": "Either",
+          "Personality": "Model Professional",
+          "Media Handling": "Evasive",
+          "Preferred Role": "Full Back",
+          "Squad Number": "3",
+          "Value": "",
+          "Current Ability": "88",
+          "Potential Ability": "170"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Archie Firth",
+      "role": "Prospect",
+      "club": "Free Agent",
+      "position": "CM/CAM",
+      "secondaryPositions": "ST/RW/LW",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715525621_Archie_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "4",
+          "Crossing": "6",
+          "Dribbling": "11",
+          "Finishing": "9",
+          "First Touch": "8",
+          "Free Kick Taking": "3",
+          "Heading": "10",
+          "Long Shots": "7",
+          "Long Throws": "4",
+          "Marking": "8",
+          "Passing": "7",
+          "Penalty Taking": "6",
+          "Tackling": "9",
+          "Technique": "7"
+        },
+        "Mental": {
+          "Aggression": "14",
+          "Anticipation": "10",
+          "Bravery": "16",
+          "Composure": "5",
+          "Concentration": "6",
+          "Decisions": "4",
+          "Determination": "18",
+          "Flair": "13",
+          "Leadership": "6",
+          "Off The Ball": "15",
+          "Positioning": "6",
+          "Teamwork": "12",
+          "Vision": "5",
+          "Work Rate": "18"
+        },
+        "Physical": {
+          "Acceleration": "17",
+          "Agility": "17",
+          "Balance": "15",
+          "Jumping Reach": "12",
+          "Natural Fitness": "18",
+          "Pace": "17",
+          "Stamina": "18",
+          "Strength": "10"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "1",
+          "Command Of Area": "2",
+          "Communication": "3",
+          "Eccentricity": "3",
+          "Handling": "2",
+          "Kicking": "2",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "3",
+          "Throwing": "1"
+        },
+        "Hidden": {
+          "Reputation": "9",
+          "Consistency": "8",
+          "Important Matches": "10",
+          "Injury Proneness": "5",
+          "Left Foot": "12",
+          "Right Foot": "12"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2010-05-04",
+          "Height": "160",
+          "Weight": "69",
+          "Preferred Foot": "Either",
+          "Personality": "Fairly Professional",
+          "Media Handling": "Volatile",
+          "Preferred Role": "Attacking Midfielder",
+          "Squad Number": "4",
+          "Value": "",
+          "Current Ability": "70",
+          "Potential Ability": "190"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Steve Firth",
+      "role": "Vet",
+      "club": "Free Agent",
+      "position": "CDM",
+      "secondaryPositions": "CM",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715546457_Father_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "16",
+          "Crossing": "14",
+          "Dribbling": "15",
+          "Finishing": "15",
+          "First Touch": "18",
+          "Free Kick Taking": "17",
+          "Heading": "8",
+          "Long Shots": "16",
+          "Long Throws": "6",
+          "Marking": "9",
+          "Passing": "18",
+          "Penalty Taking": "17",
+          "Tackling": "8",
+          "Technique": "19"
+        },
+        "Mental": {
+          "Aggression": "8",
+          "Anticipation": "18",
+          "Bravery": "10",
+          "Composure": "18",
+          "Concentration": "17",
+          "Decisions": "19",
+          "Determination": "15",
+          "Flair": "18",
+          "Leadership": "17",
+          "Off The Ball": "17",
+          "Positioning": "16",
+          "Teamwork": "15",
+          "Vision": "20",
+          "Work Rate": "10"
+        },
+        "Physical": {
+          "Acceleration": "5",
+          "Agility": "5",
+          "Balance": "8",
+          "Jumping Reach": "6",
+          "Natural Fitness": "6",
+          "Pace": "4",
+          "Stamina": "6",
+          "Strength": "8"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "1",
+          "Command Of Area": "5",
+          "Communication": "5",
+          "Eccentricity": "4",
+          "Handling": "1",
+          "Kicking": "2",
+          "One On Ones": "1",
+          "Reflexes": "1",
+          "Rushing Out": "1",
+          "Throwing": "2"
+        },
+        "Hidden": {
+          "Reputation": "19",
+          "Consistency": "16",
+          "Important Matches": "17",
+          "Injury Proneness": "10",
+          "Left Foot": "15",
+          "Right Foot": "18"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "1975-07-05",
+          "Height": "160",
+          "Weight": "84",
+          "Preferred Foot": "Right",
+          "Personality": "Model Citizen",
+          "Media Handling": "Reserved",
+          "Preferred Role": "Defensive Midfielder",
+          "Squad Number": "7",
+          "Value": "",
+          "Current Ability": "130",
+          "Potential Ability": "200"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Fraser Lloyd",
+      "role": "Starter",
+      "club": "Free Agent",
+      "position": "GK",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715564507_Fraser_player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "1",
+          "Crossing": "3",
+          "Dribbling": "3",
+          "Finishing": "2",
+          "First Touch": "6",
+          "Free Kick Taking": "3",
+          "Heading": "4",
+          "Long Shots": "5",
+          "Long Throws": "6",
+          "Marking": "3",
+          "Passing": "5",
+          "Penalty Taking": "5",
+          "Tackling": "3",
+          "Technique": "6"
+        },
+        "Mental": {
+          "Aggression": "7",
+          "Anticipation": "14",
+          "Bravery": "14",
+          "Composure": "14",
+          "Concentration": "15",
+          "Decisions": "13",
+          "Determination": "4",
+          "Flair": "5",
+          "Leadership": "11",
+          "Off The Ball": "9",
+          "Positioning": "14",
+          "Teamwork": "7",
+          "Vision": "13",
+          "Work Rate": "11"
+        },
+        "Physical": {
+          "Acceleration": "13",
+          "Agility": "16",
+          "Balance": "14",
+          "Jumping Reach": "10",
+          "Natural Fitness": "13",
+          "Pace": "13",
+          "Stamina": "5",
+          "Strength": "11"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "11",
+          "Command Of Area": "12",
+          "Communication": "14",
+          "Eccentricity": "8",
+          "Handling": "15",
+          "Kicking": "13",
+          "One On Ones": "15",
+          "Reflexes": "16",
+          "Rushing Out": "14",
+          "Throwing": "13"
+        },
+        "Hidden": {
+          "Reputation": "11",
+          "Consistency": "15",
+          "Important Matches": "14",
+          "Injury Proneness": "6",
+          "Left Foot": "9",
+          "Right Foot": "14"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-12-20",
+          "Height": "178",
+          "Weight": "75",
+          "Preferred Foot": "Right",
+          "Personality": "Model Citizen",
+          "Media Handling": "Reserved",
+          "Preferred Role": "Goalkeeper",
+          "Squad Number": "1",
+          "Value": "",
+          "Current Ability": "100",
+          "Potential Ability": "200"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ffffff",
+        "secondary": "#000000"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Jordan Olsen",
+      "role": "Backup",
+      "club": "Free Agent",
+      "position": "GK",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715588278_jordan_player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "1",
+          "Crossing": "2",
+          "Dribbling": "3",
+          "Finishing": "6",
+          "First Touch": "4",
+          "Free Kick Taking": "1",
+          "Heading": "6",
+          "Long Shots": "4",
+          "Long Throws": "6",
+          "Marking": "4",
+          "Passing": "5",
+          "Penalty Taking": "5",
+          "Tackling": "5",
+          "Technique": "4"
+        },
+        "Mental": {
+          "Aggression": "9",
+          "Anticipation": "13",
+          "Bravery": "8",
+          "Composure": "13",
+          "Concentration": "12",
+          "Decisions": "12",
+          "Determination": "10",
+          "Flair": "8",
+          "Leadership": "13",
+          "Off The Ball": "9",
+          "Positioning": "13",
+          "Teamwork": "12",
+          "Vision": "9",
+          "Work Rate": "7"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "13",
+          "Balance": "12",
+          "Jumping Reach": "15",
+          "Natural Fitness": "11",
+          "Pace": "12",
+          "Stamina": "8",
+          "Strength": "14"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "15",
+          "Command Of Area": "14",
+          "Communication": "12",
+          "Eccentricity": "7",
+          "Handling": "14",
+          "Kicking": "12",
+          "One On Ones": "13",
+          "Reflexes": "14",
+          "Rushing Out": "12",
+          "Throwing": "12"
+        },
+        "Hidden": {
+          "Reputation": "11",
+          "Consistency": "12",
+          "Important Matches": "12",
+          "Injury Proneness": "15",
+          "Left Foot": "4",
+          "Right Foot": "10"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-12-13",
+          "Height": "210",
+          "Weight": "87",
+          "Preferred Foot": "Right",
+          "Personality": "Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Role": "Goalkeeper",
+          "Squad Number": "13",
+          "Value": "",
+          "Current Ability": "95",
+          "Potential Ability": "180"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Mateo Bonny",
+      "role": "Cup GoalKeeper",
+      "club": "Free Agent",
+      "position": "GK",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715606817_Mateo_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "1",
+          "Crossing": "2",
+          "Dribbling": "2",
+          "Finishing": "4",
+          "First Touch": "4",
+          "Free Kick Taking": "3",
+          "Heading": "6",
+          "Long Shots": "3",
+          "Long Throws": "6",
+          "Marking": "3",
+          "Passing": "4",
+          "Penalty Taking": "4",
+          "Tackling": "4",
+          "Technique": "4"
+        },
+        "Mental": {
+          "Aggression": "10",
+          "Anticipation": "11",
+          "Bravery": "10",
+          "Composure": "11",
+          "Concentration": "8",
+          "Decisions": "10",
+          "Determination": "8",
+          "Flair": "6",
+          "Leadership": "6",
+          "Off The Ball": "8",
+          "Positioning": "11",
+          "Teamwork": "9",
+          "Vision": "7",
+          "Work Rate": "8"
+        },
+        "Physical": {
+          "Acceleration": "12",
+          "Agility": "13",
+          "Balance": "12",
+          "Jumping Reach": "14",
+          "Natural Fitness": "12",
+          "Pace": "12",
+          "Stamina": "10",
+          "Strength": "13"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "14",
+          "Command Of Area": "13",
+          "Communication": "11",
+          "Eccentricity": "12",
+          "Handling": "13",
+          "Kicking": "13",
+          "One On Ones": "12",
+          "Reflexes": "14",
+          "Rushing Out": "13",
+          "Throwing": "12"
+        },
+        "Hidden": {
+          "Reputation": "8",
+          "Consistency": "10",
+          "Important Matches": "10",
+          "Injury Proneness": "7",
+          "Left Foot": "5",
+          "Right Foot": "9"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-06-03",
+          "Height": "207",
+          "Weight": "65",
+          "Preferred Foot": "Right",
+          "Personality": "Casual",
+          "Media Handling": "Evasive",
+          "Preferred Role": "Goalkeeper",
+          "Squad Number": "40",
+          "Value": "",
+          "Current Ability": "90",
+          "Potential Ability": "150"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "player",
+      "name": "Carter Woods",
+      "role": "Defense",
+      "club": "Free Agent",
+      "position": "CB/LB/RB",
+      "secondaryPositions": "RWB/LWB/CDM",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715620584_Carter_Player.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Technical": {
+          "Corners": "7",
+          "Crossing": "10",
+          "Dribbling": "9",
+          "Finishing": "6",
+          "First Touch": "11",
+          "Free Kick Taking": "7",
+          "Heading": "12",
+          "Long Shots": "8",
+          "Long Throws": "8",
+          "Marking": "13",
+          "Passing": "11",
+          "Penalty Taking": "7",
+          "Tackling": "13",
+          "Technique": "11"
+        },
+        "Mental": {
+          "Aggression": "10",
+          "Anticipation": "14",
+          "Bravery": "11",
+          "Composure": "13",
+          "Concentration": "13",
+          "Decisions": "14",
+          "Determination": "12",
+          "Flair": "7",
+          "Leadership": "11",
+          "Off The Ball": "9",
+          "Positioning": "14",
+          "Teamwork": "13",
+          "Vision": "11",
+          "Work Rate": "11"
+        },
+        "Physical": {
+          "Acceleration": "9",
+          "Agility": "8",
+          "Balance": "11",
+          "Jumping Reach": "12",
+          "Natural Fitness": "10",
+          "Pace": "9",
+          "Stamina": "10",
+          "Strength": "12"
+        },
+        "Goalkeeping": {
+          "Aerial Reach": "3",
+          "Command Of Area": "3",
+          "Communication": "5",
+          "Eccentricity": "5",
+          "Handling": "3",
+          "Kicking": "6",
+          "One On Ones": "3",
+          "Reflexes": "3",
+          "Rushing Out": "4",
+          "Throwing": "5"
+        },
+        "Hidden": {
+          "Reputation": "9",
+          "Consistency": "13",
+          "Important Matches": "12",
+          "Injury Proneness": "6",
+          "Left Foot": "13",
+          "Right Foot": "14"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-01-14",
+          "Height": "172",
+          "Weight": "81",
+          "Preferred Foot": "Either",
+          "Personality": "Model Professional",
+          "Media Handling": "Reserved",
+          "Preferred Role": "Centre Back",
+          "Squad Number": "14",
+          "Value": "",
+          "Current Ability": "90",
+          "Potential Ability": "170"
+        },
+        "Contract": {
+          "Wage": "",
+          "Contract Expiry": "",
+          "Transfer Status": "",
+          "Loan Status": ""
+        },
+        "Development": {
+          "Homegrown Status": "",
+          "Potential Notes": "",
+          "Mentoring Group": "",
+          "Training Focus": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "manager",
+      "name": "Sam Firth",
+      "role": "",
+      "club": "Free Agent",
+      "position": "",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715642013_Me_Manager.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Coaching": {
+          "Attacking": "14",
+          "Defending": "14",
+          "Fitness": "11",
+          "Goalkeepers": "8",
+          "Mental": "15",
+          "Possession": "15",
+          "Tactical": "16",
+          "Technical": "15",
+          "Working With Youngsters": "14"
+        },
+        "Mental": {
+          "Adaptability": "15",
+          "Determination": "14",
+          "Level Of Discipline": "14",
+          "Motivating": "14",
+          "People Management": "15"
+        },
+        "Knowledge": {
+          "Judging Player Ability": "15",
+          "Judging Player Potential": "16",
+          "Tactical Knowledge": "16"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-12-20",
+          "Nationality": "New Zealand",
+          "Second Nationality": "England",
+          "Personality": "Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Formation": "4-2-3-1",
+          "Current Ability": "150",
+          "Potential Ability": "200"
+        },
+        "Career": {
+          "Current Job": "",
+          "Past Clubs": "",
+          "Contract Expiry": "",
+          "Wage": "",
+          "Coaching Licence": "Pro Licence"
+        },
+        "Style": {
+          "Favoured Mentality": "Balanced",
+          "Favoured Pressing": "High",
+          "Youth Focus": "High",
+          "Transfer Style": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "manager",
+      "name": "Max Hillson-Barratt",
+      "role": "",
+      "club": "Free Agent",
+      "position": "",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715660089_MaxHB_Manager.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Coaching": {
+          "Attacking": "13",
+          "Defending": "12",
+          "Fitness": "11",
+          "Goalkeepers": "5",
+          "Mental": "14",
+          "Possession": "14",
+          "Tactical": "15",
+          "Technical": "14",
+          "Working With Youngsters": "13"
+        },
+        "Mental": {
+          "Adaptability": "15",
+          "Determination": "13",
+          "Level Of Discipline": "11",
+          "Motivating": "13",
+          "People Management": "13"
+        },
+        "Knowledge": {
+          "Judging Player Ability": "14",
+          "Judging Player Potential": "14",
+          "Tactical Knowledge": "14"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-01-20",
+          "Nationality": "New Zealand",
+          "Second Nationality": "",
+          "Personality": "Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Formation": "4-3-3",
+          "Current Ability": "",
+          "Potential Ability": ""
+        },
+        "Career": {
+          "Current Job": "",
+          "Past Clubs": "",
+          "Contract Expiry": "",
+          "Wage": "",
+          "Coaching Licence": "Continental A"
+        },
+        "Style": {
+          "Favoured Mentality": "Positive",
+          "Favoured Pressing": "High",
+          "Youth Focus": "Medium",
+          "Transfer Style": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ffffff",
+        "secondary": "#000000"
+      }
+    },
+    {
+      "type": "manager",
+      "name": "Jordan Olsen",
+      "role": "",
+      "club": "Free Agent",
+      "position": "",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715673535_Jordan_Manager.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Coaching": {
+          "Attacking": "11",
+          "Defending": "14",
+          "Fitness": "10",
+          "Goalkeepers": "20",
+          "Mental": "12",
+          "Possession": "11",
+          "Tactical": "13",
+          "Technical": "11",
+          "Working With Youngsters": "11"
+        },
+        "Mental": {
+          "Adaptability": "11",
+          "Determination": "12",
+          "Level Of Discipline": "13",
+          "Motivating": "13",
+          "People Management": "12"
+        },
+        "Knowledge": {
+          "Judging Player Ability": "12",
+          "Judging Player Potential": "12",
+          "Tactical Knowledge": "13"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-12-13",
+          "Nationality": "New Zealand",
+          "Second Nationality": "",
+          "Personality": "Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Formation": "5-3-2",
+          "Current Ability": "",
+          "Potential Ability": ""
+        },
+        "Career": {
+          "Current Job": "",
+          "Past Clubs": "",
+          "Contract Expiry": "",
+          "Wage": "",
+          "Coaching Licence": "Continental B"
+        },
+        "Style": {
+          "Favoured Mentality": "Defensive",
+          "Favoured Pressing": "Low",
+          "Youth Focus": "Medium",
+          "Transfer Style": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "manager",
+      "name": "Jack McPherson",
+      "role": "",
+      "club": "Free Agent",
+      "position": "",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715688287_Jack_manager.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Coaching": {
+          "Attacking": "17",
+          "Defending": "14",
+          "Fitness": "11",
+          "Goalkeepers": "9",
+          "Mental": "14",
+          "Possession": "15",
+          "Tactical": "15",
+          "Technical": "16",
+          "Working With Youngsters": "13"
+        },
+        "Mental": {
+          "Adaptability": "15",
+          "Determination": "15",
+          "Level Of Discipline": "12",
+          "Motivating": "15",
+          "People Management": "15"
+        },
+        "Knowledge": {
+          "Judging Player Ability": "15",
+          "Judging Player Potential": "16",
+          "Tactical Knowledge": "15"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-04-06",
+          "Nationality": "New Zealand",
+          "Second Nationality": "",
+          "Personality": "Professional",
+          "Media Handling": "Evasive",
+          "Preferred Formation": "4-2-3-1",
+          "Current Ability": "",
+          "Potential Ability": ""
+        },
+        "Career": {
+          "Current Job": "",
+          "Past Clubs": "",
+          "Contract Expiry": "",
+          "Wage": "",
+          "Coaching Licence": "Pro Licence"
+        },
+        "Style": {
+          "Favoured Mentality": "Attacking",
+          "Favoured Pressing": "High",
+          "Youth Focus": "Medium",
+          "Transfer Style": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ffffff",
+        "secondary": "#000000"
+      }
+    },
+    {
+      "type": "manager",
+      "name": "Christian Mansley",
+      "role": "",
+      "club": "",
+      "position": "",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715702717_Christian_Manager.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Coaching": {
+          "Attacking": "15",
+          "Defending": "12",
+          "Fitness": "14",
+          "Goalkeepers": "5",
+          "Mental": "12",
+          "Possession": "12",
+          "Tactical": "13",
+          "Technical": "12",
+          "Working With Youngsters": "12"
+        },
+        "Mental": {
+          "Adaptability": "12",
+          "Determination": "14",
+          "Level Of Discipline": "13",
+          "Motivating": "14",
+          "People Management": "13"
+        },
+        "Knowledge": {
+          "Judging Player Ability": "13",
+          "Judging Player Potential": "14",
+          "Tactical Knowledge": "13"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-12-24",
+          "Nationality": "New Zealand",
+          "Second Nationality": "England",
+          "Personality": "Model Citizen",
+          "Media Handling": "Reserved",
+          "Preferred Formation": "4-4-2",
+          "Current Ability": "",
+          "Potential Ability": ""
+        },
+        "Career": {
+          "Current Job": "",
+          "Past Clubs": "",
+          "Contract Expiry": "",
+          "Wage": "",
+          "Coaching Licence": "Continental A"
+        },
+        "Style": {
+          "Favoured Mentality": "Positive",
+          "Favoured Pressing": "High",
+          "Youth Focus": "High",
+          "Transfer Style": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "manager",
+      "name": "Ricco Pepper-Edwards",
+      "role": "",
+      "club": "",
+      "position": "",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715718636_Ricco_Manager.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Coaching": {
+          "Attacking": "13",
+          "Defending": "11",
+          "Fitness": "15",
+          "Goalkeepers": "4",
+          "Mental": "15",
+          "Possession": "11",
+          "Tactical": "12",
+          "Technical": "11",
+          "Working With Youngsters": "12"
+        },
+        "Mental": {
+          "Adaptability": "12",
+          "Determination": "15",
+          "Level Of Discipline": "14",
+          "Motivating": "17",
+          "People Management": "16"
+        },
+        "Knowledge": {
+          "Judging Player Ability": "12",
+          "Judging Player Potential": "13",
+          "Tactical Knowledge": "12"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-03-23",
+          "Nationality": "New Zealand",
+          "Second Nationality": "",
+          "Personality": "Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Formation": "4-4-2",
+          "Current Ability": "",
+          "Potential Ability": ""
+        },
+        "Career": {
+          "Current Job": "",
+          "Past Clubs": "",
+          "Contract Expiry": "",
+          "Wage": "",
+          "Coaching Licence": "Pro Licence"
+        },
+        "Style": {
+          "Favoured Mentality": "Balanced",
+          "Favoured Pressing": "Standard",
+          "Youth Focus": "Medium",
+          "Transfer Style": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "manager",
+      "name": "Max West",
+      "role": "",
+      "club": "Free Agent",
+      "position": "",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715733201_MaxW_Manager.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Coaching": {
+          "Attacking": "13",
+          "Defending": "14",
+          "Fitness": "10",
+          "Goalkeepers": "6",
+          "Mental": "16",
+          "Possession": "17",
+          "Tactical": "17",
+          "Technical": "16",
+          "Working With Youngsters": "14"
+        },
+        "Mental": {
+          "Adaptability": "15",
+          "Determination": "14",
+          "Level Of Discipline": "15",
+          "Motivating": "13",
+          "People Management": "13"
+        },
+        "Knowledge": {
+          "Judging Player Ability": "16",
+          "Judging Player Potential": "16",
+          "Tactical Knowledge": "18"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-02-04",
+          "Nationality": "New Zealand",
+          "Second Nationality": "England",
+          "Personality": "Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Formation": "4-3-3",
+          "Current Ability": "",
+          "Potential Ability": ""
+        },
+        "Career": {
+          "Current Job": "",
+          "Past Clubs": "",
+          "Contract Expiry": "",
+          "Wage": "",
+          "Coaching Licence": "Pro Licence"
+        },
+        "Style": {
+          "Favoured Mentality": "Balanced",
+          "Favoured Pressing": "Standard",
+          "Youth Focus": "Medium",
+          "Transfer Style": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "manager",
+      "name": "Alec O'Dell",
+      "role": "",
+      "club": "Free Agent",
+      "position": "",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715749660_Alec_Manager.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Coaching": {
+          "Attacking": "12",
+          "Defending": "12",
+          "Fitness": "15",
+          "Goalkeepers": "4",
+          "Mental": "11",
+          "Possession": "10",
+          "Tactical": "11",
+          "Technical": "10",
+          "Working With Youngsters": "17"
+        },
+        "Mental": {
+          "Adaptability": "11",
+          "Determination": "13",
+          "Level Of Discipline": "10",
+          "Motivating": "13",
+          "People Management": "12"
+        },
+        "Knowledge": {
+          "Judging Player Ability": "11",
+          "Judging Player Potential": "20",
+          "Tactical Knowledge": "11"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2004-05-29",
+          "Nationality": "New Zealand",
+          "Second Nationality": "England",
+          "Personality": "Professional",
+          "Media Handling": "Reserved",
+          "Preferred Formation": "4-2-3-1",
+          "Current Ability": "",
+          "Potential Ability": ""
+        },
+        "Career": {
+          "Current Job": "",
+          "Past Clubs": "",
+          "Contract Expiry": "",
+          "Wage": "",
+          "Coaching Licence": "Continental B"
+        },
+        "Style": {
+          "Favoured Mentality": "Positive",
+          "Favoured Pressing": "Very High",
+          "Youth Focus": "High",
+          "Transfer Style": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "manager",
+      "name": "Carter Woods",
+      "role": "",
+      "club": "Free Agent",
+      "position": "",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715764445_Carter_Manager.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Coaching": {
+          "Attacking": "11",
+          "Defending": "16",
+          "Fitness": "11",
+          "Goalkeepers": "7",
+          "Mental": "14",
+          "Possession": "12",
+          "Tactical": "15",
+          "Technical": "12",
+          "Working With Youngsters": "13"
+        },
+        "Mental": {
+          "Adaptability": "13",
+          "Determination": "13",
+          "Level Of Discipline": "15",
+          "Motivating": "13",
+          "People Management": "13"
+        },
+        "Knowledge": {
+          "Judging Player Ability": "14",
+          "Judging Player Potential": "14",
+          "Tactical Knowledge": "15"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2006-01-14",
+          "Nationality": "New Zealand",
+          "Second Nationality": "Australia",
+          "Personality": "Model Professional",
+          "Media Handling": "Level-headed",
+          "Preferred Formation": "5-3-2",
+          "Current Ability": "",
+          "Potential Ability": ""
+        },
+        "Career": {
+          "Current Job": "",
+          "Past Clubs": "",
+          "Contract Expiry": "",
+          "Wage": "",
+          "Coaching Licence": "Continental A"
+        },
+        "Style": {
+          "Favoured Mentality": "Defensive",
+          "Favoured Pressing": "Standard",
+          "Youth Focus": "Low",
+          "Transfer Style": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "manager",
+      "name": "Scott Coutts",
+      "role": "",
+      "club": "Free Agent",
+      "position": "",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715783562_Scott_Manager.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Coaching": {
+          "Attacking": "12",
+          "Defending": "13",
+          "Fitness": "16",
+          "Goalkeepers": "5",
+          "Mental": "14",
+          "Possession": "11",
+          "Tactical": "12",
+          "Technical": "11",
+          "Working With Youngsters": "14"
+        },
+        "Mental": {
+          "Adaptability": "13",
+          "Determination": "17",
+          "Level Of Discipline": "13",
+          "Motivating": "15",
+          "People Management": "14"
+        },
+        "Knowledge": {
+          "Judging Player Ability": "12",
+          "Judging Player Potential": "13",
+          "Tactical Knowledge": "12"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2005-06-06",
+          "Nationality": "New Zealand",
+          "Second Nationality": "",
+          "Personality": "Resolute",
+          "Media Handling": "Evasive",
+          "Preferred Formation": "4-4-2",
+          "Current Ability": "",
+          "Potential Ability": ""
+        },
+        "Career": {
+          "Current Job": "",
+          "Past Clubs": "",
+          "Contract Expiry": "",
+          "Wage": "",
+          "Coaching Licence": "Continental B"
+        },
+        "Style": {
+          "Favoured Mentality": "Attacking",
+          "Favoured Pressing": "High",
+          "Youth Focus": "Medium",
+          "Transfer Style": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "manager",
+      "name": "Steve Firth",
+      "role": "",
+      "club": "Free Agent",
+      "position": "",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715795589_Father_Manager.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Coaching": {
+          "Attacking": "16",
+          "Defending": "13",
+          "Fitness": "8",
+          "Goalkeepers": "7",
+          "Mental": "17",
+          "Possession": "18",
+          "Tactical": "18",
+          "Technical": "18",
+          "Working With Youngsters": "15"
+        },
+        "Mental": {
+          "Adaptability": "17",
+          "Determination": "15",
+          "Level Of Discipline": "14",
+          "Motivating": "15",
+          "People Management": "17"
+        },
+        "Knowledge": {
+          "Judging Player Ability": "18",
+          "Judging Player Potential": "18",
+          "Tactical Knowledge": "18"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "1975-07-05",
+          "Nationality": "New Zealand",
+          "Second Nationality": "England",
+          "Personality": "Model Citizen",
+          "Media Handling": "Reserved",
+          "Preferred Formation": "4-4-2",
+          "Current Ability": "",
+          "Potential Ability": ""
+        },
+        "Career": {
+          "Current Job": "",
+          "Past Clubs": "",
+          "Contract Expiry": "",
+          "Wage": "",
+          "Coaching Licence": "Pro Licence"
+        },
+        "Style": {
+          "Favoured Mentality": "Balanced",
+          "Favoured Pressing": "High",
+          "Youth Focus": "High",
+          "Transfer Style": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    },
+    {
+      "type": "manager",
+      "name": "Archie Firth",
+      "role": "",
+      "club": "Free Agent",
+      "position": "",
+      "secondaryPositions": "",
+      "nation": "New Zealand",
+      "notes": "",
+      "linkedSaves": [],
+      "image": "C:\\Users\\samfi\\AppData\\Roaming\\fm-hub-app\\images\\1777715806779_Archie_Manager.png",
+      "clubBadge": "",
+      "seasons": [],
+      "attributes": {
+        "Coaching": {
+          "Attacking": "11",
+          "Defending": "9",
+          "Fitness": "18",
+          "Goalkeepers": "4",
+          "Mental": "10",
+          "Possession": "8",
+          "Tactical": "9",
+          "Technical": "9",
+          "Working With Youngsters": "12"
+        },
+        "Mental": {
+          "Adaptability": "14",
+          "Determination": "18",
+          "Level Of Discipline": "6",
+          "Motivating": "14",
+          "People Management": "12"
+        },
+        "Knowledge": {
+          "Judging Player Ability": "8",
+          "Judging Player Potential": "9",
+          "Tactical Knowledge": "9"
+        },
+        "Profile": {
+          "Age": "",
+          "Date Of Birth": "2010-05-04",
+          "Nationality": "New Zealand",
+          "Second Nationality": "",
+          "Personality": "Fairly Professional",
+          "Media Handling": "Evasive",
+          "Preferred Formation": "3-5-2",
+          "Current Ability": "",
+          "Potential Ability": ""
+        },
+        "Career": {
+          "Current Job": "",
+          "Past Clubs": "",
+          "Contract Expiry": "",
+          "Wage": "",
+          "Coaching Licence": "National A"
+        },
+        "Style": {
+          "Favoured Mentality": "Attacking",
+          "Favoured Pressing": "Very High",
+          "Youth Focus": "High",
+          "Transfer Style": ""
+        }
+      },
+      "clubColors": {
+        "primary": "#ff3b3b",
+        "secondary": "#0b0612"
+      }
+    }
+  ],
+  "fmhub-notes": null,
+  "fmhub-links": [
+    {
+      "id": "link-1zdn8b5mmiw-mol9k3wu",
+      "title": "FM Scout",
+      "url": "https://www.fmscout.com",
+      "category": "Scout",
+      "description": "Useful for wonderkid lists, tactic ideas, shortlists and general Football Manager content.",
+      "quick": true,
+      "priority": "favourite"
+    },
+    {
+      "id": "link-z9nm34nmbx-mol9k3wu",
+      "title": "Sortitoutsi",
+      "url": "https://sortitoutsi.net",
+      "category": "Database",
+      "description": "Great for custom databases, graphics, facepacks, badges and save-related downloads.",
+      "quick": true,
+      "priority": "favourite"
+    },
+    {
+      "id": "link-yog33b6vh5-mol9k3wu",
+      "title": "Transfermarkt",
+      "url": "https://www.transfermarkt.com",
+      "category": "Research",
+      "description": "Handy for checking player history, values, contracts and club information outside the game.",
+      "quick": true,
+      "priority": "normal"
+    },
+    {
+      "id": "link-jbhhwytp8p-mol9k3wu",
+      "title": "YouTube Tactics",
+      "url": "https://www.youtube.com",
+      "category": "Tactics",
+      "description": "Quick access to creators who explain systems, roles, training ideas and rebuild saves.",
+      "quick": true,
+      "priority": "normal"
+    },
+    {
+      "id": "link-o7bm7andelb-mol9k3wu",
+      "title": "Reddit FM Community",
+      "url": "https://www.reddit.com/r/footballmanagergames",
+      "category": "Community",
+      "description": "Good for ideas, troubleshooting, save stories and seeing how other people are using the game.",
+      "quick": false,
+      "priority": "normal"
+    },
+    {
+      "id": "link-n1is1girljq-mol9k3wu",
+      "title": "Club / League Research",
+      "url": "",
+      "category": "General",
+      "description": "Use this card for any extra website you want to keep nearby for your save, challenge or rebuild.",
+      "quick": false,
+      "priority": "normal"
+    }
+  ],
+  "fmhub-theme": "blue",
+  "fmhub-last-backup": "2026-05-02T09:57:11.130Z",
+  "backupCreatedAt": "2026-05-02T09:57:11.130Z",
+  "backupVersion": "FM Hub Backup v1"
+}
