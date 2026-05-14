@@ -1603,6 +1603,11 @@
        0
       </div>
      </div>
+
+      <p class="muted" id="firebaseStatus" style="margin-top:6px;font-size:.8rem">
+       Firebase: Not tested
+      </p>
+
     </div>
    </section>
    <section>
@@ -1851,6 +1856,10 @@
       <button class="btn btn-secondary" onclick="clearFMHubData()" type="button">
        Clear Data
       </button>
+      <button class="btn btn-secondary" onclick="testFirebaseNow()" type="button">
+       Test Firebase
+      </button>
+
      </div>
     </div>
    </section>
@@ -1873,11 +1882,73 @@
     </div>
    </div>
   </div>
+  <script type="module" src="firebase.js"></script>
   <script>
    const savesKey='fmhub-saves', squadKey='fmhub-squad', peopleKey='fmhub-people';
     let currentModal=null;
+    let cloudLoadComplete=false;
+    let syncingFromCloud=false;
+
     function safeRead(key,fallback){try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):fallback}catch(e){return fallback}}
-    function safeSet(key,data){try{localStorage.setItem(key,JSON.stringify(data))}catch(e){}}
+
+    function getFMHubCloudData(){
+      return {
+        saves: safeRead(savesKey, []),
+        squad: safeRead(squadKey, []),
+        people: safeRead(peopleKey, []),
+        notes: safeRead('fmhub-notes', []),
+        links: safeRead('fmhub-links', []),
+        theme: localStorage.getItem('fmhub-theme') || 'red',
+        updatedAt: new Date().toISOString()
+      };
+    }
+
+    async function syncFMHubToCloud(){
+      if(syncingFromCloud) return;
+      if(!window.FMCloud || typeof window.FMCloud.saveToCloud !== 'function') return;
+      try{
+        await window.FMCloud.saveToCloud(getFMHubCloudData());
+        console.log('FM Hub cloud sync complete');
+      }catch(e){
+        console.log('FM Hub cloud sync failed:', e);
+      }
+    }
+
+    async function loadFMHubFromCloud(){
+      if(!window.FMCloud || typeof window.FMCloud.loadFromCloud !== 'function') return;
+      try{
+        const cloud = await window.FMCloud.loadFromCloud();
+        cloudLoadComplete=true;
+        if(!cloud) return;
+
+        syncingFromCloud=true;
+        if(Array.isArray(cloud.saves)) localStorage.setItem(savesKey, JSON.stringify(cloud.saves));
+        if(Array.isArray(cloud.squad)) localStorage.setItem(squadKey, JSON.stringify(cloud.squad));
+        if(Array.isArray(cloud.people)) localStorage.setItem(peopleKey, JSON.stringify(cloud.people));
+        if(Array.isArray(cloud.notes)) localStorage.setItem('fmhub-notes', JSON.stringify(cloud.notes));
+        if(Array.isArray(cloud.links)) localStorage.setItem('fmhub-links', JSON.stringify(cloud.links));
+        if(cloud.theme) localStorage.setItem('fmhub-theme', cloud.theme);
+        syncingFromCloud=false;
+
+        initTheme();
+        updateHomepageStats();
+        updateLastBackupDisplay();
+        console.log('FM Hub cloud data loaded');
+      }catch(e){
+        cloudLoadComplete=true;
+        syncingFromCloud=false;
+        console.log('FM Hub cloud load failed:', e);
+      }
+    }
+
+    function safeSet(key,data){
+      try{
+        localStorage.setItem(key,JSON.stringify(data));
+        syncFMHubToCloud();
+      }catch(e){
+        console.log('FM Hub save failed:', e);
+      }
+    }
     function escapeHtml(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
     function normaliseSave(save){if(typeof save==='string')return{name:save,status:'Active',club:'-',season:'-',type:'Main Save',goal:'-',logo:'',transfers:[],timeline:[],seasons:[],playerStats:[],matchHighlights:[],currentSituation:{}};return{name:save?.name||save?.title||save?.saveName||'Unnamed Save',status:save?.status||'Active',club:save?.club||'-',season:save?.season||'-',type:save?.type||'Main Save',goal:save?.goal||'-',logo:save?.logo||save?.badge||save?.clubLogo||'',transfers:Array.isArray(save?.transfers)?save.transfers:[],timeline:Array.isArray(save?.timeline)?save.timeline:[],seasons:Array.isArray(save?.seasons)?save.seasons:[],playerStats:Array.isArray(save?.playerStats)?save.playerStats:[],matchHighlights:Array.isArray(save?.matchHighlights)?save.matchHighlights:[],currentSituation:save?.currentSituation&&typeof save.currentSituation==='object'?save.currentSituation:{}}}
     function initials(name){return String(name||'FM').split(/\s+/).map(p=>p[0]).join('').slice(0,2).toUpperCase()||'FM'}
@@ -1911,7 +1982,7 @@
     function openModal(type){currentModal=type;const overlay=document.getElementById('modalOverlay'),title=document.getElementById('modalTitle'),content=document.getElementById('modalContent');overlay.style.display='flex';if(type==='save'){title.textContent='Add Save';content.innerHTML='<input id="modalSaveName" placeholder="Save name" style="margin-bottom:10px"><input id="modalSaveClub" placeholder="Club" style="margin-bottom:10px"><input id="modalSaveSeason" placeholder="Season">'}if(type==='player'){title.textContent='Add Player';content.innerHTML='<input id="modalPlayerName" placeholder="Player name" style="margin-bottom:10px"><input id="modalPlayerPosition" placeholder="Position">'}if(type==='person'){title.textContent='Add Person';content.innerHTML='<input id="modalPersonName" placeholder="Person name" style="margin-bottom:10px"><input id="modalPersonType" placeholder="Player / Manager / Staff">'}if(type==='note'){title.textContent='Add Note';content.innerHTML='<textarea id="modalNoteText" placeholder="Write note..."></textarea>'}if(type==='link'){title.textContent='Add Link';content.innerHTML='<input id="modalLinkTitle" placeholder="Link title" style="margin-bottom:10px"><input id="modalLinkUrl" placeholder="URL">'}}
     function closeModal(){document.getElementById('modalOverlay').style.display='none';currentModal=null}
     function submitModal(){if(currentModal==='save'){const saves=safeRead(savesKey,[]);saves.push({name:document.getElementById('modalSaveName').value||'Unnamed Save',club:document.getElementById('modalSaveClub').value||'-',season:document.getElementById('modalSaveSeason').value||'-',status:'Active',type:'Main Save',goal:'-',transfers:[],timeline:[],seasons:[],playerStats:[],matchHighlights:[],currentSituation:{}});safeSet(savesKey,saves)}if(currentModal==='player'){const squad=safeRead(squadKey,[]);squad.push({name:document.getElementById('modalPlayerName').value||'Unnamed Player',position:document.getElementById('modalPlayerPosition').value||'-'});safeSet(squadKey,squad)}if(currentModal==='person'){const people=safeRead(peopleKey,[]);people.push({name:document.getElementById('modalPersonName').value||'Unnamed Person',type:document.getElementById('modalPersonType').value||'Person'});safeSet(peopleKey,people)}if(currentModal==='note'){const notes=safeRead('fmhub-notes',[]);notes.push({text:document.getElementById('modalNoteText').value||''});safeSet('fmhub-notes',notes)}if(currentModal==='link'){const links=safeRead('fmhub-links',[]);links.push({title:document.getElementById('modalLinkTitle').value||'Link',url:document.getElementById('modalLinkUrl').value||''});safeSet('fmhub-links',links)}closeModal();updateHomepageStats()}
-    function applyTheme(theme){const safe=['red','purple','classic','blue','orange','gold','minimal'].includes(theme)?theme:'red';document.body.setAttribute('data-theme',safe);const select=document.getElementById('themeSwitch');if(select)select.value=safe;try{localStorage.setItem('fmhub-theme',safe)}catch(e){} updateThemeDropdown(safe)}
+    function applyTheme(theme){const safe=['red','purple','classic','blue','orange','gold','minimal'].includes(theme)?theme:'red';document.body.setAttribute('data-theme',safe);const select=document.getElementById('themeSwitch');if(select)select.value=safe;try{localStorage.setItem('fmhub-theme',safe);syncFMHubToCloud()}catch(e){} updateThemeDropdown(safe)}
     
     const themeLabels={red:'Red',purple:'Purple',classic:'Classic Green',blue:'Blue',orange:'Orange',gold:'Gold',minimal:'Minimal'};
     function updateThemeDropdown(theme){
@@ -2022,6 +2093,7 @@
             localStorage.setItem('fmhub-last-backup', data['fmhub-last-backup']);
           }
 
+          syncFMHubToCloud();
           alert('Backup imported successfully!');
           location.reload();
         } catch (error) {
@@ -2037,6 +2109,7 @@
       if (!confirm('Are you sure you want to delete ALL FM Hub data? This cannot be undone.')) return;
 
       backupKeys.forEach(key => localStorage.removeItem(key));
+      syncFMHubToCloud();
 
       alert('All FM Hub data cleared.');
       location.reload();
@@ -2061,9 +2134,49 @@
       el.textContent = `Last backup: ${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
     }
 
+
+    async function testFirebaseNow() {
+      const status = document.getElementById('firebaseStatus');
+
+      try {
+
+        if (!window.FMCloud || typeof window.FMCloud.saveToCloud !== 'function') {
+          status.textContent = 'Firebase: not connected';
+          alert('Firebase is not connected properly yet.');
+          return;
+        }
+
+        const testData = {
+          test: true,
+          message: 'Firebase test worked',
+          time: new Date().toISOString()
+        };
+
+        await window.FMCloud.saveToCloud(testData);
+
+        const loaded = await window.FMCloud.loadFromCloud();
+
+        console.log('Firebase loaded:', loaded);
+
+        status.textContent = 'Firebase: working ✅';
+        alert('Firebase is working!');
+
+      } catch (err) {
+
+        console.error(err);
+
+        status.textContent = 'Firebase: failed ❌';
+        alert('Firebase failed. Check browser console.');
+
+      }
+    }
+
+
     function initTheme(){let t='red';try{t=localStorage.getItem('fmhub-theme')||'red'}catch(e){}applyTheme(t)}
     document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target.id==='modalOverlay')closeModal()});
     initTheme();updateHomepageStats();updateLastBackupDisplay();
+    window.addEventListener('FMCloudReady', loadFMHubFromCloud);
+    setTimeout(loadFMHubFromCloud, 800);
     window.addEventListener('storage',e=>{if(['fmhub-theme',savesKey,squadKey,peopleKey].includes(e.key)){if(e.key==='fmhub-theme')initTheme();updateHomepageStats()}});
   </script>
   <footer>

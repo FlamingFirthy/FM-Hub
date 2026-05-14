@@ -1,0 +1,35 @@
+{
+  "name": "fm-hub-app",
+  "version": "1.0.0",
+  "description": "FM Hub desktop app",
+  "main": "main.js",
+  "author": "Firthy",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^29.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.firthy.fmhub",
+    "productName": "FM Hub",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "FM Hub"
+    }
+  }
+}

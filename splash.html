@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FM Hub</title>
+
+<style>
+:root {
+  --bg: #050507;
+  --accent: #ff3b3b;
+  --text: #ffffff;
+  --muted: #a0a0a0;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background:
+    radial-gradient(circle at top, var(--accent-soft, rgba(255,59,59,0.15)), transparent 40%),
+    var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* Glow */
+.glow {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, var(--accent-soft, rgba(255,59,59,0.25)), transparent 70%);
+  border-radius: 50%;
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+/* Content */
+.container {
+  text-align: center;
+  z-index: 1;
+  animation: fadeIn 0.8s ease;
+}
+
+.logo {
+  font-size: 2.8rem;
+  margin: 0;
+  letter-spacing: 2px;
+  color: var(--accent);
+  animation: logoPulse 1.6s infinite ease-in-out;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin: 10px 0 20px;
+  font-size: 0.95rem;
+}
+
+.loader {
+  width: 44px;
+  height: 44px;
+  border: 4px solid rgba(255,255,255,0.08);
+  border-top: 4px solid var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+/* Animations */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes logoPulse {
+  0% { transform: scale(1); text-shadow: 0 0 8px var(--accent); }
+  50% { transform: scale(1.08); text-shadow: 0 0 20px var(--accent); }
+  100% { transform: scale(1); text-shadow: 0 0 8px var(--accent); }
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.3); opacity: 0.25; }
+  100% { transform: scale(1); opacity: 0.6; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="glow"></div>
+
+<div class="container">
+  <h1 class="logo">FM HUB</h1>
+  <p class="subtitle">Loading your save universe...</p>
+  <div class="loader"></div>
+</div>
+
+<script>
+// Theme system (same as your app)
+const themes = {
+  red: { accent: "#ff3b3b", soft: "rgba(255,59,59,0.15)" },
+  purple: { accent: "#8b5cf6", soft: "rgba(139,92,246,0.15)" },
+  classic: { accent: "#42f59e", soft: "rgba(66,245,158,0.15)" },
+  blue: { accent: "#3b82f6", soft: "rgba(59,130,246,0.15)" },
+  orange: { accent: "#f97316", soft: "rgba(249,115,22,0.15)" },
+  gold: { accent: "#facc15", soft: "rgba(250,204,21,0.18)" },
+  minimal: { accent: "#ffffff", soft: "rgba(255,255,255,0.08)" }
+};
+
+let savedTheme = localStorage.getItem('fmhub-theme') || 'red';
+let theme = themes[savedTheme] || themes.red;
+
+document.documentElement.style.setProperty('--accent', theme.accent);
+document.documentElement.style.setProperty('--accent-soft', theme.soft);
+</script>
+
+</body>
+</html>

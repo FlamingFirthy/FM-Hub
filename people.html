@@ -1420,9 +1420,8 @@
           });
         });
 
-        if (latestTransfer && person.club !== latestTransfer.destination) {
-          person.club = latestTransfer.destination;
-          person.lastTransfer = {
+        if (latestTransfer) {
+          const nextLastTransfer = {
             save: saves[latestTransfer.saveIndex]?.name || '',
             season: latestTransfer.transfer.season || '',
             type: latestTransfer.transfer.type || '',
@@ -1430,7 +1429,12 @@
             to: latestTransfer.destination,
             fee: latestTransfer.transfer.fee || ''
           };
-          changed = true;
+
+          if (person.club !== latestTransfer.destination || JSON.stringify(person.lastTransfer || {}) !== JSON.stringify(nextLastTransfer)) {
+            person.club = latestTransfer.destination;
+            person.lastTransfer = nextLastTransfer;
+            changed = true;
+          }
         }
       });
 
@@ -1794,6 +1798,8 @@
           clubColors: person.clubColors || getDefaultClubColors(),
           seasons: Array.isArray(person.seasons) ? person.seasons : [],
           age: getPersonAge(person) || '',
+          image: person.image || '',
+          clubBadge: person.clubBadge || '',
           attributes: person.attributes || {}
         }));
       localStorage.setItem(squadKey, JSON.stringify(players));
@@ -1842,6 +1848,20 @@
         reader.onload = () => resolve(reader.result);
         reader.onerror = error => reject(error);
       });
+    }
+
+    async function saveUploadedImage(file) {
+      if (!file) return '';
+
+      if (window.electronAPI && typeof window.electronAPI.saveImage === 'function') {
+        const arrayBuffer = await file.arrayBuffer();
+        return await window.electronAPI.saveImage({
+          name: file.name,
+          data: Array.from(new Uint8Array(arrayBuffer))
+        });
+      }
+
+      return await toBase64(file);
     }
 
     function getDefaultClubColors() {
@@ -2280,10 +2300,10 @@
       let badgeData = '';
 
       if (fileInput && fileInput.files && fileInput.files[0]) {
-        imageData = await toBase64(fileInput.files[0]);
+        imageData = await saveUploadedImage(fileInput.files[0]);
       }
       if (badgeInput && badgeInput.files && badgeInput.files[0]) {
-        badgeData = await toBase64(badgeInput.files[0]);
+        badgeData = await saveUploadedImage(badgeInput.files[0]);
       }
 
       const person = {
@@ -2298,6 +2318,10 @@
         linkedSaves: [...selectedAddSaves],
         image: imageData,
         clubBadge: badgeData,
+        clubColors: {
+          primary: document.getElementById('clubPrimaryColor')?.value || getDefaultClubColors().primary,
+          secondary: document.getElementById('clubSecondaryColor')?.value || getDefaultClubColors().secondary
+        },
         
         seasons: [],
         attributes: collectAttributes(document.getElementById('personType').value)
@@ -2530,10 +2554,10 @@
       const editImageInput = document.getElementById('editPersonImage');
       const editBadgeInput = document.getElementById('editPersonClubBadge');
       if (editImageInput && editImageInput.files && editImageInput.files[0]) {
-        person.image = await toBase64(editImageInput.files[0]);
+        person.image = await saveUploadedImage(editImageInput.files[0]);
       }
       if (editBadgeInput && editBadgeInput.files && editBadgeInput.files[0]) {
-        person.clubBadge = await toBase64(editBadgeInput.files[0]);
+        person.clubBadge = await saveUploadedImage(editBadgeInput.files[0]);
       }
 
       people[currentPersonIndex] = person;
