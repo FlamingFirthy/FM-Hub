@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#ff3b3b">
+  <meta id="themeMeta" name="theme-color" content="#111111">
   <title>FM Notes</title>
   <style>
     :root {
@@ -985,13 +985,39 @@
       return JSON.parse(localStorage.getItem(peopleKey) || '[]');
     }
 
-    function applyTheme(theme) {
-      const safeTheme = ['red', 'purple', 'classic', 'blue', 'orange', 'gold', 'minimal'].includes(theme) ? theme : 'red';
-      document.body.setAttribute('data-theme', safeTheme);
-      const select = document.getElementById('themeSwitch');
-      if (select) select.value = safeTheme;
-      try { localStorage.setItem('fmhub-theme', safeTheme); syncFMHubToCloud(); } catch (e) {}
+  function applyTheme(theme) {
+    const safeTheme = ['red','purple','classic','blue','orange','gold','minimal']
+      .includes(theme) ? theme : 'red';
+
+    document.body.setAttribute('data-theme', safeTheme);
+
+    const themeColors = {
+      red:'#ff3b3b',
+      purple:'#8b5cf6',
+      classic:'#04110a',
+      blue:'#3b82f6',
+      orange:'#f97316',
+      gold:'#facc15',
+      minimal:'#111111'
+    };
+
+    const meta = document.getElementById('themeMeta');
+
+    if(meta){
+      meta.setAttribute(
+        'content',
+        themeColors[safeTheme] || '#111111'
+      );
     }
+
+    const select = document.getElementById('themeSwitch');
+    if(select) select.value = safeTheme;
+
+    try {
+      localStorage.setItem('fmhub-theme', safeTheme);
+      syncFMHubToCloud();
+    } catch(e){}
+  }
 
     function initTheme() {
       let storedTheme = 'red';
