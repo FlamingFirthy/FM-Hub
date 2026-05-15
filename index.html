@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ff3b3b">
+  <title>
+   FM Hub Dashboard
+  </title>
+  <style>
+   :root {
+
+    --bg: #050507;
+    --bg-2: #0b0612;
+    --card: rgba(14,10,24,.94);
+    --card-2: rgba(23,14,36,.95);
+    --text: #eef4ff;
+    --muted: #9fb0c9;
+    --accent: #ff3b3b;
+    --accent-soft: rgba(255,59,59,.15);
+    --border: rgba(255,255,255,.08);
+    --soft-line: rgba(255,255,255,.07);
+    --shadow: 0 16px 36px rgba(0,0,0,.24);
+    --radius: 22px;
+    --max-width: 1360px;
+    --glow-1: rgba(255,59,59,.10);
+    --glow-2: rgba(250,204,21,.05);
+    --hover-border: rgba(255,59,59,.35);
+    --hover-glow: rgba(255,59,59,.25);
+    --btn-glow: rgba(255,59,59,.35);
+
+  }
+
+  body[data-theme="purple"] {
+
+    --accent: #8b5cf6;
+    --accent-soft: rgba(139,92,246,.15);
+    --glow-1: rgba(139,92,246,.12);
+    --hover-border: rgba(139,92,246,.35);
+    --hover-glow: rgba(139,92,246,.25);
+    --btn-glow: rgba(139,92,246,.35);
+
+  }
+
+  body[data-theme="classic"] {
+
+    --bg: #04110a;
+    --bg-2: #061810;
+    --card: rgba(8,23,16,.94);
+    --card-2: rgba(11,31,21,.95);
+    --accent: #42f59e;
+    --accent-soft: rgba(66,245,158,.15);
+    --glow-1: rgba(66,245,158,.10);
+    --hover-border: rgba(66,245,158,.35);
+    --hover-glow: rgba(66,245,158,.25);
+    --btn-glow: rgba(66,245,158,.35);
+
+  }
+
+  body[data-theme="blue"] {
+
+    --accent: #3b82f6;
+    --accent-soft: rgba(59,130,246,.15);
+    --glow-1: rgba(59,130,246,.10);
+    --hover-border: rgba(59,130,246,.35);
+    --hover-glow: rgba(59,130,246,.25);
+    --btn-glow: rgba(59,130,246,.35);
+
+  }
+
+  body[data-theme="orange"] {
+
+    --accent: #f97316;
+    --accent-soft: rgba(249,115,22,.15);
+    --glow-1: rgba(249,115,22,.10);
+    --hover-border: rgba(249,115,22,.35);
+    --hover-glow: rgba(249,115,22,.25);
+    --btn-glow: rgba(249,115,22,.35);
+
+  }
+
+  body[data-theme="gold"] {
+
+    --accent: #facc15;
+    --accent-soft: rgba(250,204,21,.18);
+    --glow-1: rgba(250,204,21,.12);
+    --hover-border: rgba(250,204,21,.40);
+    --hover-glow: rgba(250,204,21,.28);
+    --btn-glow: rgba(250,204,21,.35);
+
+  }
+
+  body[data-theme="minimal"] {
+
+    --accent: #fff;
+    --accent-soft: rgba(255,255,255,.08);
+    --glow-1: rgba(255,255,255,.08);
+    --hover-border: rgba(255,255,255,.25);
+    --hover-glow: rgba(255,255,255,.18);
+    --btn-glow: rgba(255,255,255,.25);
+
+  }
+
+  * {
+
+    box-sizing: border-box;
+
+  }
+
+  html {
+
+    scroll-behavior: smooth;
+
+  }
+
+  body {
+
+    margin: 0;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 15.5px;
+    color: var(--text);
+    line-height: 1.55;
+    background: radial-gradient(circle at 85% -10%,var(--glow-1),transparent 26%),radial-gradient(circle at 12% 0%,var(--glow-2),transparent 22%),linear-gradient(180deg,var(--bg),var(--bg-2));
+
+  }
+
+  a {
+
+    color: inherit;
+    text-decoration: none;
+
+  }
+
+  .container {
+
+    width: min(94%,var(--max-width));
+    margin: 0 auto;
+
+  }
+
+  .muted {
+
+    color: var(--muted);
+
+  }
+
+  header {
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    background: rgba(5,5,7,.78);
+    backdrop-filter: blur(14px);
+
+  }
+
+  .nav-wrap {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    min-height: 74px;
+    padding: 18px 0;
+    flex-wrap: wrap;
+
+  }
+
+  .logo {
+
+    font-weight: 900;
+    font-size: 1.45rem;
+    letter-spacing: -.02em;
+
+  }
+
+  nav {
+
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 5px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.045);
+
+  }
+
+  nav a {
+
+    color: var(--muted);
+    padding: 9px 11px;
+    border-radius: 999px;
+    font-size: .96rem;
+    transition: .18s ease;
+    white-space: nowrap;
+
+  }
+
+  nav a:hover,nav a.active {
+
+    background: var(--accent-soft);
+    color: var(--text);
+
+  }
+
+  .theme-row {
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+  }
+
+  .theme-row label {
+
+    font-size: .8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+
+  }
+
+  .theme-wrapper {
+
+    position: relative;
+    display: inline-block;
+
+  }
+
+  #themeSwitch {
+
+    appearance: none;
+    background: linear-gradient(145deg,var(--card-2),var(--card));
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: 14px;
+    padding: 10px 38px 10px 14px;
+    font-weight: 700;
+    min-width: 170px;
+    cursor: pointer;
+
+  }
+
+  #themeSwitch:focus {
+
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+
+  }
+
+  #themeSwitch option {
+
+    background: #0b0b0f;
+    color: #fff;
+
+  }
+
+  .theme-wrapper span {
+
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--muted);
+
+  }
+
+  main {
+
+    padding-bottom: 34px;
+
+  }
+
+  .hero {
+
+    padding: 28px 0 16px;
+
+  }
+
+  .home-hero {
+
+    display: grid;
+    grid-template-columns: minmax(0,1.15fr) minmax(360px,.85fr);
+    gap: 18px;
+    align-items: stretch;
+
+  }
+
+  .hero-card,.panel,.home-card,.mini-card,.resume-card,.action-card,.modal-box {
+
+    border: 1px solid var(--soft-line);
+    background: radial-gradient(circle at top right,var(--accent-soft),transparent 30%),linear-gradient(180deg,rgba(255,255,255,.040),rgba(255,255,255,.014));
+    box-shadow: var(--shadow);
+    border-radius: var(--radius);
+
+  }
+
+  .hero-card {
+
+    position: relative;
+    overflow: hidden;
+    padding: 30px;
+    border-radius: 30px;
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+  }
+
+  .hero-card:after {
+
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    right: -90px;
+    bottom: -100px;
+    border-radius: 50%;
+    background: radial-gradient(circle,var(--accent-soft),transparent 70%);
+    pointer-events: none;
+
+  }
+
+  .eyebrow,.tag,.mini-label {
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: .075em;
+    font-size: .72rem;
+    font-weight: 900;
+
+  }
+
+  .eyebrow {
+
+    width: max-content;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    margin-bottom: 14px;
+
+  }
+
+  h1,h2,h3,h4 {
+
+    margin: 0;
+    line-height: 1.1;
+
+  }
+
+  h1 {
+
+    font-size: clamp(2.35rem,5vw,4.15rem);
+    letter-spacing: -.04em;
+    max-width: 12ch;
+    margin-bottom: 14px;
+
+  }
+
+  .hero-copy {
+
+    max-width: 72ch;
+    color: rgba(238,244,255,.72);
+    font-size: 1.02rem;
+
+  }
+
+  .hero-actions {
+
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+
+  }
+
+  .btn,button {
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font: inherit;
+    font-weight: 850;
+    cursor: pointer;
+    transition: .18s ease;
+
+  }
+
+  .btn:hover,button:hover {
+
+    transform: translateY(-2px);
+    box-shadow: 0 0 14px var(--btn-glow);
+
+  }
+
+  .btn:active,button:active {
+
+    transform: translateY(0) scale(.985);
+
+  }
+
+  .btn-primary {
+
+    background: var(--accent);
+    border-color: transparent;
+    color: #fff;
+
+  }
+
+  .btn-secondary {
+
+    background: rgba(255,255,255,.035);
+    color: var(--text);
+
+  }
+
+  .resume-card {
+
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+  }
+
+  .resume-top {
+
+    display: grid;
+    grid-template-columns: 70px minmax(0,1fr);
+    gap: 14px;
+    align-items: center;
+
+  }
+
+  .save-badge {
+
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: linear-gradient(135deg,var(--accent),rgba(255,255,255,.16));
+    border: 1px solid rgba(255,255,255,.13);
+    font-weight: 900;
+    font-size: 1.15rem;
+    box-shadow: 0 0 16px var(--btn-glow);
+
+  }
+
+  .save-badge img {
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+  }
+
+  .resume-card h2 {
+
+    font-size: 1.45rem;
+    overflow-wrap: anywhere;
+
+  }
+
+  .resume-list {
+
+    display: grid;
+    gap: 9px;
+    margin-top: 4px;
+
+  }
+
+  .resume-row {
+
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+
+  }
+
+  .resume-row:last-child {
+
+    border-bottom: none;
+
+  }
+
+  .resume-row span {
+
+    color: var(--muted);
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: .7rem;
+    letter-spacing: .07em;
+
+  }
+
+  .resume-row strong {
+
+    text-align: right;
+    overflow-wrap: anywhere;
+
+  }
+
+  .form-strip {
+
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+
+  }
+
+  .form-badge {
+
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    font-size: .76rem;
+    background: rgba(255,255,255,.06);
+    color: var(--muted);
+    border: 1px solid rgba(255,255,255,.08);
+
+  }
+
+  .form-badge.w {
+
+    background: rgba(74,222,128,.18);
+    color: #4ade80;
+
+  }
+
+  .form-badge.d {
+
+    background: rgba(250,204,21,.18);
+    color: #facc15;
+
+  }
+
+  .form-badge.l {
+
+    background: rgba(255,107,107,.18);
+    color: #ff8a8a;
+
+  }
+
+  section {
+
+    padding: 12px 0 18px;
+
+  }
+
+  .home-strip {
+
+    display: grid;
+    grid-template-columns: repeat(4,minmax(0,1fr));
+    gap: 12px;
+
+  }
+
+  .mini-card {
+
+    padding: 18px;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: .22s ease;
+
+  }
+
+  .mini-card:hover,.home-card:hover,.action-card:hover {
+
+    transform: translateY(-3px);
+    border-color: var(--hover-border);
+    box-shadow: 0 18px 42px rgba(0,0,0,.30),0 0 18px var(--hover-glow);
+
+  }
+
+  .mini-label {
+
+    color: var(--muted);
+    margin-bottom: 8px;
+
+  }
+
+  .mini-value {
+
+    font-size: 1.35rem;
+    font-weight: 950;
+    letter-spacing: -.02em;
+    color: var(--accent);
+
+  }
+
+  .section-head {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+
+  }
+
+  .section-head p {
+
+    margin: 6px 0 0;
+
+  }
+
+  .home-layout {
+
+    display: grid;
+    grid-template-columns: minmax(0,1fr) minmax(360px,.42fr);
+    gap: 18px;
+    align-items: start;
+
+  }
+
+  .home-card {
+
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: .22s ease;
+
+  }
+
+  .home-card:before,.action-card:before {
+
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    border-radius: 999px;
+    background: linear-gradient(180deg,var(--accent),transparent 85%);
+    opacity: .9;
+
+  }
+
+  .home-card h3 {
+
+    font-size: 1.08rem;
+
+  }
+
+  .home-card p {
+
+    margin: 10px 0 0;
+
+  }
+
+  .dashboard-grid {
+
+    display: grid;
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 12px;
+
+  }
+
+  .live-feed {
+
+    display: grid;
+    gap: 12px;
+
+  }
+
+  .feed-card {
+
+    display: grid;
+    grid-template-columns: 38px minmax(0,1fr);
+    gap: 12px;
+    align-items: start;
+    padding: 14px;
+    border-radius: 18px;
+    background: linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.014));
+    border: 1px solid rgba(255,255,255,.065);
+
+  }
+
+  .feed-icon {
+
+    width: 38px;
+    height: 38px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 900;
+
+  }
+
+  .feed-card strong {
+
+    display: block;
+    overflow-wrap: anywhere;
+
+  }
+
+  .feed-card span {
+
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: .86rem;
+
+  }
+
+  .actions-grid {
+
+    display: grid;
+    grid-template-columns: repeat(5,minmax(0,1fr));
+    gap: 12px;
+
+  }
+
+  .action-card {
+
+    padding: 18px;
+    min-height: 122px;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+
+  }
+
+  .action-icon {
+
+    width: 42px;
+    height: 42px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 900;
+    margin-bottom: 12px;
+
+  }
+
+  .tag {
+
+    margin-top: 12px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+
+  }
+
+  .empty-state {
+
+    min-height: 135px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 24px;
+    border-radius: 20px;
+    border: 1px dashed rgba(255,255,255,.16);
+    color: rgba(238,244,255,.68);
+    background: linear-gradient(180deg,rgba(255,255,255,.030),rgba(255,255,255,.012));
+
+  }
+
+  .modal-overlay {
+
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.7);
+    backdrop-filter: blur(8px);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+
+  }
+
+  .modal-box {
+
+    width: min(92%,520px);
+    padding: 22px;
+    background: radial-gradient(circle at top right,var(--accent-soft),transparent 30%),linear-gradient(180deg,rgba(20,14,31,.98),rgba(10,7,18,.98));
+    box-shadow: 0 24px 70px rgba(0,0,0,.5);
+
+  }
+
+  input,textarea,select {
+
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.075);
+    background: rgba(255,255,255,.035);
+    color: var(--text);
+    font: inherit;
+
+  }
+
+  textarea {
+
+    min-height: 105px;
+    resize: vertical;
+
+  }
+
+  input:focus,textarea:focus,select:focus {
+
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+
+  }
+
+  footer {
+
+    padding: 26px 0 36px;
+    color: var(--muted);
+    text-align: center;
+
+  }
+
+  .page-fade-in {
+
+    animation: pageFadeIn .26s ease both;
+
+  }
+
+  @keyframes pageFadeIn {
+
+    from {
+
+      opacity: 0;
+      transform: translateY(8px);
+
+    }
+
+    to {
+
+      opacity: 1;
+      transform: translateY(0);
+
+    }
+
+  }
+
+  @media (max-width:1050px) {
+
+    .home-hero,.home-layout {
+
+      grid-template-columns: 1fr;
+
+    }
+
+    .actions-grid {
+
+      grid-template-columns: repeat(3,minmax(0,1fr));
+
+    }
+
+    .dashboard-grid,.home-strip {
+
+      grid-template-columns: repeat(2,minmax(0,1fr));
+
+    }
+
+  }
+
+  @media (max-width:720px) {
+
+    nav {
+
+      width: 100%;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+
+    }
+
+    .hero-card {
+
+      min-height: auto;
+      padding: 24px;
+
+    }
+
+    .home-strip,.dashboard-grid,.actions-grid {
+
+      grid-template-columns: 1fr;
+
+    }
+
+    .nav-wrap {
+
+      align-items: flex-start;
+
+    }
+
+    .resume-top {
+
+      grid-template-columns: 58px minmax(0,1fr);
+
+    }
+
+    .save-badge {
+
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+
+    }
+
+    .theme-row {
+
+      width: 100%;
+
+    }
+
+  }
+
+  /* Matched app nav + colour-card theme dropdown */
+
+  .main-nav {
+
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 5px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.045);
+
+  }
+
+  .main-nav a {
+
+    color: var(--muted);
+    padding: 9px 11px;
+    border-radius: 999px;
+    font-size: .96rem;
+    font-weight: 750;
+    transition: .18s ease;
+    white-space: nowrap;
+
+  }
+
+  .main-nav a:hover,.main-nav a.active {
+
+    background: var(--accent-soft);
+    color: var(--text);
+    text-shadow: none;
+
+  }
+
+  .custom-theme-select {
+
+    position: relative;
+    min-width: 210px;
+
+  }
+
+  .hidden-theme-select {
+
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 1px;
+    height: 1px;
+
+  }
+
+  .theme-select-btn {
+
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+    padding: 10px 12px;
+    border-radius: 15px;
+    background: linear-gradient(145deg,var(--card-2),var(--card));
+    border: 1px solid rgba(255,255,255,.10);
+    color: var(--text);
+    font-weight: 850;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+
+  }
+
+  .theme-select-btn:hover {
+
+    border-color: var(--hover-border);
+    box-shadow: 0 0 12px var(--hover-glow);
+
+  }
+
+  .theme-chevron {
+
+    margin-left: auto;
+    color: var(--muted);
+    font-size: .72rem;
+
+  }
+
+  .theme-dot {
+
+    width: 13px;
+    height: 13px;
+    border-radius: 999px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    background: var(--accent);
+    box-shadow: 0 0 10px currentColor;
+    border: 1px solid rgba(255,255,255,.20);
+
+  }
+
+  .theme-red {
+
+    background: #ff3b3b;
+    color: #ff3b3b;
+
+  }
+
+  .theme-purple {
+
+    background: #8b5cf6;
+    color: #8b5cf6;
+
+  }
+
+  .theme-classic {
+
+    background: #42f59e;
+    color: #42f59e;
+
+  }
+
+  .theme-blue {
+
+    background: #3b82f6;
+    color: #3b82f6;
+
+  }
+
+  .theme-orange {
+
+    background: #f97316;
+    color: #f97316;
+
+  }
+
+  .theme-gold {
+
+    background: #facc15;
+    color: #facc15;
+
+  }
+
+  .theme-minimal {
+
+    background: #ffffff;
+    color: #ffffff;
+
+  }
+
+  .theme-menu {
+
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    z-index: 250;
+    width: min(300px,90vw);
+    display: grid;
+    gap: 7px;
+    padding: 10px;
+    border-radius: 20px;
+    background: rgba(8,7,12,.96);
+    border: 1px solid rgba(255,255,255,.10);
+    box-shadow: 0 22px 60px rgba(0,0,0,.48),0 0 18px var(--hover-glow);
+    backdrop-filter: blur(16px);
+    animation: themeMenuIn .16s ease;
+
+  }
+
+  .theme-menu.hidden {
+
+    display: none;
+
+  }
+
+  .theme-option {
+
+    width: 100%;
+    display: grid;
+    grid-template-columns: 16px minmax(0,1fr);
+    gap: 11px;
+    align-items: center;
+    text-align: left;
+    padding: 11px;
+    border-radius: 15px;
+    background: rgba(255,255,255,.030);
+    border: 1px solid rgba(255,255,255,.055);
+    color: var(--text);
+
+  }
+
+  .theme-option:hover,.theme-option.active {
+
+    transform: none;
+    background: var(--accent-soft);
+    border-color: var(--hover-border);
+    box-shadow: none;
+
+  }
+
+  .theme-option strong {
+
+    display: block;
+    font-size: .9rem;
+
+  }
+
+  .theme-option em {
+
+    display: block;
+    margin-top: 2px;
+    color: var(--muted);
+    font-style: normal;
+    font-size: .74rem;
+    line-height: 1.25;
+
+  }
+
+  @keyframes themeMenuIn {
+
+    from {
+
+      opacity: 0;
+      transform: translateY(-5px) scale(.98);
+
+    }
+
+    to {
+
+      opacity: 1;
+      transform: translateY(0) scale(1);
+
+    }
+
+  }
+
+  @media (max-width:720px) {
+
+    .custom-theme-select {
+
+      width: 100%;
+
+    }
+
+    .theme-menu {
+
+      left: 0;
+      right: auto;
+      width: 100%;
+
+    }
+
+  }
+
+  /* ============================= */
+
+  /* Navbar match with other pages  */
+
+  /* ============================= */
+
+  header {
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+    background: rgba(5, 5, 7, 0.88);
+    backdrop-filter: blur(12px);
+
+  }
+
+  header .nav-wrap {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 0;
+    min-height: 0;
+    flex-wrap: wrap;
+
+  }
+
+  header .logo {
+
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    font-size: 1.08rem;
+
+  }
+
+  header nav, header .main-nav {
+
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+
+  }
+
+  header nav a, header .main-nav a {
+
+    color: var(--muted);
+    transition: 0.18s ease;
+    position: relative;
+    padding: 6px 2px;
+    border-radius: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    background: transparent;
+    text-shadow: none;
+    white-space: nowrap;
+
+  }
+
+  header nav a::after, header .main-nav a::after {
+
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--nav-glow);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.22s ease;
+    box-shadow: 0 0 10px var(--btn-glow);
+
+  }
+
+  header nav a:hover, header nav a.active, header .main-nav a:hover, header .main-nav a.active {
+
+    color: var(--text);
+    background: transparent;
+    text-shadow: 0 0 10px var(--nav-text-glow);
+
+  }
+
+  header nav a:hover::after, header nav a.active::after, header .main-nav a:hover::after, header .main-nav a.active::after {
+
+    transform: scaleX(1);
+
+  }
+
+  header .theme-row {
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+  }
+
+  header .theme-label, header label[for="themeSwitch"] {
+
+    font-size: 0.9rem !important;
+    margin: 0;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--muted);
+
+  }
+
+  @media (max-width: 720px) {
+
+    header .nav-wrap {
+
+      align-items: flex-start;
+
+    }
+
+    header nav, header .main-nav {
+
+      width: 100%;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+
+    }
+
+  }
+  </style>
+ </head>
+ <body>
+  <header>
+   <div class="container nav-wrap">
+    <div class="logo">
+     FM HUB
+    </div>
+    <nav class="main-nav">
+     <a class="active" href="index.html">
+      Home
+     </a>
+     <a href="saves.html">
+      Saves
+     </a>
+     <a href="squad.html">
+      Squad
+     </a>
+     <a href="people.html">
+      People
+     </a>
+     <a href="notes.html">
+      Notes
+     </a>
+     <a href="links.html">
+      Links
+     </a>
+    </nav>
+    <div class="theme-row">
+     <label class="muted">
+      Theme
+     </label>
+     <div class="custom-theme-select" id="customThemeSelect">
+      <button aria-expanded="false" aria-haspopup="listbox" class="theme-select-btn" onclick="toggleThemeMenu(event)" type="button">
+       <span class="theme-dot" id="themeActiveDot">
+       </span>
+       <span id="themeActiveLabel">
+        Red
+       </span>
+       <span class="theme-chevron">
+        ▼
+       </span>
+      </button>
+      <div class="theme-menu hidden" id="themeMenu" role="listbox">
+       <button class="theme-option" data-theme-option="red" onclick="chooseTheme('red')" type="button">
+        <span class="theme-dot theme-red">
+        </span>
+        <span>
+         <strong>
+          Red
+         </strong>
+         <em>
+          Default FM hub colour
+         </em>
+        </span>
+       </button>
+       <button class="theme-option" data-theme-option="purple" onclick="chooseTheme('purple')" type="button">
+        <span class="theme-dot theme-purple">
+        </span>
+        <span>
+         <strong>
+          Purple
+         </strong>
+         <em>
+          Modern dark purple
+         </em>
+        </span>
+       </button>
+       <button class="theme-option" data-theme-option="classic" onclick="chooseTheme('classic')" type="button">
+        <span class="theme-dot theme-classic">
+        </span>
+        <span>
+         <strong>
+          Classic Green
+         </strong>
+         <em>
+          Old-school football feel
+         </em>
+        </span>
+       </button>
+       <button class="theme-option" data-theme-option="blue" onclick="chooseTheme('blue')" type="button">
+        <span class="theme-dot theme-blue">
+        </span>
+        <span>
+         <strong>
+          Blue
+         </strong>
+         <em>
+          Clean cool dashboard
+         </em>
+        </span>
+       </button>
+       <button class="theme-option" data-theme-option="orange" onclick="chooseTheme('orange')" type="button">
+        <span class="theme-dot theme-orange">
+        </span>
+        <span>
+         <strong>
+          Orange
+         </strong>
+         <em>
+          Warm highlight style
+         </em>
+        </span>
+       </button>
+       <button class="theme-option" data-theme-option="gold" onclick="chooseTheme('gold')" type="button">
+        <span class="theme-dot theme-gold">
+        </span>
+        <span>
+         <strong>
+          Gold
+         </strong>
+         <em>
+          Trophy cabinet look
+         </em>
+        </span>
+       </button>
+       <button class="theme-option" data-theme-option="minimal" onclick="chooseTheme('minimal')" type="button">
+        <span class="theme-dot theme-minimal">
+        </span>
+        <span>
+         <strong>
+          Minimal
+         </strong>
+         <em>
+          Simple black and white
+         </em>
+        </span>
+       </button>
+      </div>
+      <select aria-hidden="true" class="hidden-theme-select" id="themeSwitch" onchange="applyTheme(this.value)" tabindex="-1">
+       <option value="red">
+        Red
+       </option>
+       <option value="purple">
+        Purple
+       </option>
+       <option value="classic">
+        Classic Green
+       </option>
+       <option value="blue">
+        Blue
+       </option>
+       <option value="orange">
+        Orange
+       </option>
+       <option value="gold">
+        Gold
+       </option>
+       <option value="minimal">
+        Minimal
+       </option>
+      </select>
+     </div>
+    </div>
+   </div>
+  </header>
+  <main class="container page-fade-in">
+   <section class="hero">
+    <div class="home-hero">
+     <div class="hero-card">
+      <div class="eyebrow">
+       Football Manager Home
+      </div>
+      <h1>
+       Your FM universe starts here.
+      </h1>
+      <p class="hero-copy">
+       A proper home screen for jumping back into saves, checking what changed, and moving quickly between your squad, people, notes, and stories.
+      </p>
+      <div class="hero-actions">
+       <a class="btn btn-primary" href="saves.html">
+        Continue Save
+       </a>
+       <a class="btn btn-secondary" href="squad.html">
+        Open Squad
+       </a>
+       <a class="btn btn-secondary" href="people.html">
+        Open People
+       </a>
+      </div>
+     </div>
+     <aside class="resume-card" id="resumeSaveCard">
+      <div class="resume-top">
+       <div class="save-badge" id="resumeSaveLogo">
+        FM
+       </div>
+       <div>
+        <div class="eyebrow" style="margin-bottom:9px">
+         Resume
+        </div>
+        <h2 id="resumeSaveName">
+         No active save yet
+        </h2>
+        <p class="muted" id="resumeSaveGoal" style="margin:8px 0 0">
+         Create or open a save to make this card come alive.
+        </p>
+       </div>
+      </div>
+      <div class="resume-list">
+       <div class="resume-row">
+        <span>
+         Club
+        </span>
+        <strong id="resumeSaveClub">
+         -
+        </strong>
+       </div>
+       <div class="resume-row">
+        <span>
+         Season
+        </span>
+        <strong id="resumeSaveSeason">
+         -
+        </strong>
+       </div>
+       <div class="resume-row">
+        <span>
+         League
+        </span>
+        <strong id="resumeSaveLeague">
+         -
+        </strong>
+       </div>
+       <div class="resume-row">
+        <span>
+         Status
+        </span>
+        <strong id="resumeSaveStatus">
+         -
+        </strong>
+       </div>
+       <div class="resume-row">
+        <span>
+         Form
+        </span>
+        <strong id="resumeSaveForm">
+         -
+        </strong>
+       </div>
+      </div>
+      <div class="hero-actions" style="margin-top:auto">
+       <a class="btn btn-primary" href="saves.html">
+        Open Saves
+       </a>
+       <a class="btn btn-secondary" href="notes.html">
+        Write Note
+       </a>
+      </div>
+     </aside>
+    </div>
+   </section>
+   <section>
+    <div class="home-strip">
+     <div class="mini-card">
+      <div class="mini-label">
+       Total Saves
+      </div>
+      <div class="mini-value" id="statTotalSaves">
+       0
+      </div>
+     </div>
+     <div class="mini-card">
+      <div class="mini-label">
+       Squad Players
+      </div>
+      <div class="mini-value" id="statSquadPlayers">
+       0
+      </div>
+     </div>
+     <div class="mini-card">
+      <div class="mini-label">
+       People
+      </div>
+      <div class="mini-value" id="statPeopleTemplates">
+       0
+      </div>
+     </div>
+     <div class="mini-card">
+      <div class="mini-label">
+       Tracked Seasons
+      </div>
+      <div class="mini-value" id="statSeasonCount">
+       0
+      </div>
+     </div>
+
+      <p class="muted" id="firebaseStatus" style="margin-top:6px;font-size:.8rem">
+       Firebase: Not tested
+      </p>
+
+    </div>
+   </section>
+   <section>
+    <div class="section-head">
+     <div>
+      <h2>
+       Start Here
+      </h2>
+      <p class="muted">
+       Quick routes into the main parts of your hub.
+      </p>
+     </div>
+    </div>
+    <div class="actions-grid">
+     <a class="action-card" href="saves.html">
+      <div class="action-icon">
+       💾
+      </div>
+      <h3>
+       Saves
+      </h3>
+      <p class="muted">
+       Careers, seasons, transfers, awards.
+      </p>
+      <span class="tag" id="savesCardCount">
+       0 saves
+      </span>
+     </a>
+     <a class="action-card" href="squad.html">
+      <div class="action-icon">
+       ⚽
+      </div>
+      <h3>
+       Squad
+      </h3>
+      <p class="muted">
+       Lineups, players, positions, stats.
+      </p>
+      <span class="tag" id="squadCardCount">
+       0 players
+      </span>
+     </a>
+     <a class="action-card" href="people.html">
+      <div class="action-icon">
+       👥
+      </div>
+      <h3>
+       People
+      </h3>
+      <p class="muted">
+       Players, managers, profiles.
+      </p>
+      <span class="tag" id="peopleCardCount">
+       0 people
+      </span>
+     </a>
+     <a class="action-card" href="notes.html">
+      <div class="action-icon">
+       📝
+      </div>
+      <h3>
+       Notes
+      </h3>
+      <p class="muted">
+       Storylines, tactics, plans.
+      </p>
+      <span class="tag">
+       Ideas
+      </span>
+     </a>
+     <a class="action-card" href="links.html">
+      <div class="action-icon">
+       🔗
+      </div>
+      <h3>
+       Links
+      </h3>
+      <p class="muted">
+       Tools, guides, resources.
+      </p>
+      <span class="tag">
+       Resources
+      </span>
+     </a>
+    </div>
+   </section>
+   <section>
+    <div class="panel" style="padding:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+     <div>
+      <h3 style="margin-bottom:6px">
+       Quick Add
+      </h3>
+      <p class="muted" style="margin:0">
+       Add the basics without leaving the home page.
+      </p>
+     </div>
+     <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="openModal('save')">
+       + Save
+      </button>
+      <button class="btn btn-secondary" onclick="openModal('player')">
+       + Player
+      </button>
+      <button class="btn btn-secondary" onclick="openModal('person')">
+       + Person
+      </button>
+      <button class="btn btn-secondary" onclick="openModal('note')">
+       + Note
+      </button>
+      <button class="btn btn-secondary" onclick="openModal('link')">
+       + Link
+      </button>
+     </div>
+    </div>
+   </section>
+   <section>
+    <div class="home-layout">
+     <div>
+      <div class="section-head">
+       <div>
+        <h2>
+         What’s New
+        </h2>
+        <p class="muted">
+         A compact feed from saves, transfers, matches, and squad activity.
+        </p>
+       </div>
+      </div>
+      <div class="live-feed" id="homeLiveFeed">
+      </div>
+     </div>
+     <aside>
+      <div class="section-head">
+       <div>
+        <h2>
+         Today’s Focus
+        </h2>
+        <p class="muted">
+         What to do next.
+        </p>
+       </div>
+      </div>
+      <div class="home-card">
+       <h3 id="focusTitle">
+        Create your first save
+       </h3>
+       <p class="muted" id="focusText">
+        Once you create a save, this page will show your active career, latest transfers, and recent story moments.
+       </p>
+       <div class="resume-list" style="margin-top:16px">
+        <div class="resume-row">
+         <span>
+          Latest Save
+         </span>
+         <strong id="miniLatestSave">
+          None yet
+         </strong>
+        </div>
+        <div class="resume-row">
+         <span>
+          Latest Transfer
+         </span>
+         <strong id="miniLatestTransfer">
+          None yet
+         </strong>
+        </div>
+        <div class="resume-row">
+         <span>
+          Latest Story
+         </span>
+         <strong id="miniLatestStory">
+          None yet
+         </strong>
+        </div>
+       </div>
+      </div>
+     </aside>
+    </div>
+   </section>
+   <section>
+    <div class="section-head">
+     <div>
+      <h2>
+       Dashboard Snapshots
+      </h2>
+      <p class="muted">
+       Small previews, not full save-page sections.
+      </p>
+     </div>
+    </div>
+    <div class="dashboard-grid">
+     <div class="home-card">
+      <h3>
+       Latest Transfers
+      </h3>
+      <div id="latestTransfersGrid" style="margin-top:12px">
+      </div>
+     </div>
+     <div class="home-card">
+      <h3>
+       Key Players
+      </h3>
+      <div id="keyPlayersGrid" style="margin-top:12px">
+      </div>
+     </div>
+     <div class="home-card">
+      <h3>
+       Recent Players
+      </h3>
+      <div id="recentPlayersGrid" style="margin-top:12px">
+      </div>
+     </div>
+    </div>
+   </section>
+   <section>
+    <div class="section-head">
+     <div>
+      <h2>
+       Backup & Restore
+      </h2>
+      <p class="muted">
+       Export your FM Hub data or restore it anytime.
+      </p>
+     </div>
+    </div>
+    <div class="panel" style="padding:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+     <div>
+      <h3 style="margin-bottom:6px">
+       Your Data
+      </h3>
+      <p class="muted" style="margin:0">
+       Saves, squad, people, notes, links, and theme settings.
+      </p>
+      <p class="muted" id="lastBackupText" style="margin-top:6px;font-size:.8rem">
+       Last backup: Never
+      </p>
+     </div>
+     <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="exportFMHubData()" type="button">
+       Export Backup
+      </button>
+      <label class="btn btn-secondary" style="cursor:pointer">
+       Import Backup
+       <input type="file" accept=".json,application/json" onchange="importFMHubData(event)" hidden>
+      </label>
+      <button class="btn btn-secondary" onclick="clearFMHubData()" type="button">
+       Clear Data
+      </button>
+      <button class="btn btn-secondary" onclick="testFirebaseNow()" type="button">
+       Test Firebase
+      </button>
+
+     </div>
+    </div>
+   </section>
+
+  </main>
+  <div class="modal-overlay" id="modalOverlay">
+   <div class="modal-box">
+    <h3 id="modalTitle">
+     Quick Add
+    </h3>
+    <div id="modalContent" style="margin-top:12px">
+    </div>
+    <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap">
+     <button class="btn btn-secondary" onclick="closeModal()">
+      Cancel
+     </button>
+     <button class="btn btn-primary" onclick="submitModal()">
+      Save
+     </button>
+    </div>
+   </div>
+  </div>
+  <script type="module" src="firebase.js"></script>
+  <script>
+   const savesKey='fmhub-saves', squadKey='fmhub-squad', peopleKey='fmhub-people';
+    let currentModal=null;
+    let cloudLoadComplete=false;
+    let syncingFromCloud=false;
+
+    function safeRead(key,fallback){try{const raw=localStorage.getItem(key);return raw?JSON.parse(raw):fallback}catch(e){return fallback}}
+
+    function getFMHubCloudData(){
+      return {
+        saves: safeRead(savesKey, []),
+        squad: safeRead(squadKey, []),
+        people: safeRead(peopleKey, []),
+        notes: safeRead('fmhub-notes', []),
+        links: safeRead('fmhub-links', []),
+        theme: localStorage.getItem('fmhub-theme') || 'red',
+        updatedAt: new Date().toISOString()
+      };
+    }
+
+    async function syncFMHubToCloud(){
+      if(syncingFromCloud) return;
+      if(!window.FMCloud || typeof window.FMCloud.saveToCloud !== 'function') return;
+      try{
+        await window.FMCloud.saveToCloud(getFMHubCloudData());
+        console.log('FM Hub cloud sync complete');
+      }catch(e){
+        console.log('FM Hub cloud sync failed:', e);
+      }
+    }
+
+    async function loadFMHubFromCloud(){
+      if(!window.FMCloud || typeof window.FMCloud.loadFromCloud !== 'function') return;
+      try{
+        const cloud = await window.FMCloud.loadFromCloud();
+        cloudLoadComplete=true;
+        if(!cloud) return;
+
+        syncingFromCloud=true;
+        if(Array.isArray(cloud.saves)) localStorage.setItem(savesKey, JSON.stringify(cloud.saves));
+        if(Array.isArray(cloud.squad)) localStorage.setItem(squadKey, JSON.stringify(cloud.squad));
+        if(Array.isArray(cloud.people)) localStorage.setItem(peopleKey, JSON.stringify(cloud.people));
+        if(Array.isArray(cloud.notes)) localStorage.setItem('fmhub-notes', JSON.stringify(cloud.notes));
+        if(Array.isArray(cloud.links)) localStorage.setItem('fmhub-links', JSON.stringify(cloud.links));
+        if(cloud.theme) localStorage.setItem('fmhub-theme', cloud.theme);
+        syncingFromCloud=false;
+
+        initTheme();
+        updateHomepageStats();
+        updateLastBackupDisplay();
+        console.log('FM Hub cloud data loaded');
+      }catch(e){
+        cloudLoadComplete=true;
+        syncingFromCloud=false;
+        console.log('FM Hub cloud load failed:', e);
+      }
+    }
+
+    function safeSet(key,data){
+      try{
+        localStorage.setItem(key,JSON.stringify(data));
+        syncFMHubToCloud();
+      }catch(e){
+        console.log('FM Hub save failed:', e);
+      }
+    }
+    function escapeHtml(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+    function normaliseSave(save){if(typeof save==='string')return{name:save,status:'Active',club:'-',season:'-',type:'Main Save',goal:'-',logo:'',transfers:[],timeline:[],seasons:[],playerStats:[],matchHighlights:[],currentSituation:{}};return{name:save?.name||save?.title||save?.saveName||'Unnamed Save',status:save?.status||'Active',club:save?.club||'-',season:save?.season||'-',type:save?.type||'Main Save',goal:save?.goal||'-',logo:save?.logo||save?.badge||save?.clubLogo||'',transfers:Array.isArray(save?.transfers)?save.transfers:[],timeline:Array.isArray(save?.timeline)?save.timeline:[],seasons:Array.isArray(save?.seasons)?save.seasons:[],playerStats:Array.isArray(save?.playerStats)?save.playerStats:[],matchHighlights:Array.isArray(save?.matchHighlights)?save.matchHighlights:[],currentSituation:save?.currentSituation&&typeof save.currentSituation==='object'?save.currentSituation:{}}}
+    function initials(name){return String(name||'FM').split(/\s+/).map(p=>p[0]).join('').slice(0,2).toUpperCase()||'FM'}
+    function renderFormBadges(form){const letters=String(form||'').toUpperCase().replace(/[^WDL]/g,'').split('').slice(-5);if(!letters.length)return '-';return `<div class="form-strip">${letters.map(l=>`<span class="form-badge ${l.toLowerCase()}">${l}</span>`).join('')}</div>`}
+    function allTransfers(saves){const out=[];saves.forEach(save=>(save.transfers||[]).forEach(t=>out.push({...t,saveName:save.name})));return out}
+    function allHighlights(saves){const out=[];saves.forEach(save=>{(save.matchHighlights||[]).forEach(h=>out.push({...h,saveName:save.name,kind:'match'}));(save.timeline||[]).forEach(t=>out.push({...t,saveName:save.name,kind:'story'}))});return out}
+    function getAllStats(save){return Array.isArray(save?.playerStats)?save.playerStats:[]}
+    function numberFromValue(v){const m=String(v||'').match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):0}
+    function smallEmpty(text){return `<div class="empty-state"><div><div style="font-size:1.35rem;margin-bottom:8px;color:var(--accent)">＋</div>${escapeHtml(text)}</div></div>`}
+    function feedItem(icon,title,text,tag,href){return `<a class="feed-card" href="${href||'#'}"><div class="feed-icon">${icon}</div><div><strong>${escapeHtml(title)}</strong><span>${escapeHtml(text)}</span>${tag?`<span class="tag">${escapeHtml(tag)}</span>`:''}</div></a>`}
+    function compactItem(title,text,tag){return `<div class="feed-card" style="grid-template-columns:minmax(0,1fr)"><div><strong>${escapeHtml(title)}</strong><span>${escapeHtml(text)}</span>${tag?`<span class="tag">${escapeHtml(tag)}</span>`:''}</div></div>`}
+    function updateHomepageStats(){
+      const saves=safeRead(savesKey,[]).map(normaliseSave), squad=safeRead(squadKey,[]), people=safeRead(peopleKey,[]);
+      const active=saves.find(s=>String(s.status).toLowerCase()==='active')||saves[0]||null;
+      const latestSave=saves[saves.length-1]||null, transfers=allTransfers(saves), highlights=allHighlights(saves);
+      const latestTransfer=transfers[transfers.length-1]||null, latestStory=highlights[highlights.length-1]||null;
+      const seasonCount=saves.reduce((n,s)=>n+(s.seasons||[]).length,0);
+      const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
+      set('statTotalSaves',saves.length);set('statSquadPlayers',Array.isArray(squad)?squad.length:0);set('statPeopleTemplates',Array.isArray(people)?people.length:0);set('statSeasonCount',seasonCount);set('savesCardCount',`${saves.length} save${saves.length===1?'':'s'}`);set('squadCardCount',`${(squad||[]).length} player${(squad||[]).length===1?'':'s'}`);set('peopleCardCount',`${(people||[]).length} people`);set('miniLatestSave',latestSave?latestSave.name:'None yet');set('miniLatestTransfer',latestTransfer?`${latestTransfer.player||'Player'} → ${latestTransfer.to||'-'}`:'None yet');set('miniLatestStory',latestStory?(latestStory.title||latestStory.fixture||'Story event'):'None yet');
+      renderResume(active);renderFocus(active,squad,saves);renderLiveFeed(active,latestSave,latestTransfer,latestStory,squad);renderLatestTransfers(transfers);renderKeyPlayers(active,squad);renderRecentPlayers(squad);
+    }
+    function renderResume(save){
+      const logo=document.getElementById('resumeSaveLogo'); if(!save){['resumeSaveName','resumeSaveGoal','resumeSaveClub','resumeSaveSeason','resumeSaveLeague','resumeSaveStatus'].forEach((id,i)=>document.getElementById(id).textContent=i?' - ':'No active save yet'); document.getElementById('resumeSaveForm').textContent='-'; if(logo)logo.textContent='FM'; return;}
+      document.getElementById('resumeSaveName').textContent=save.name;document.getElementById('resumeSaveGoal').textContent=save.goal||'-';document.getElementById('resumeSaveClub').textContent=save.club||'-';document.getElementById('resumeSaveSeason').textContent=save.season||'-';document.getElementById('resumeSaveLeague').textContent=save.currentSituation?.league||'-';document.getElementById('resumeSaveStatus').textContent=save.status||'-';document.getElementById('resumeSaveForm').innerHTML=renderFormBadges(save.currentSituation?.form); if(logo) logo.innerHTML=save.logo?`<img src="${escapeHtml(save.logo)}" alt="${escapeHtml(save.name)} logo">`:escapeHtml(initials(save.club||save.name));
+    }
+    function renderFocus(active,squad,saves){const title=document.getElementById('focusTitle'), text=document.getElementById('focusText');if(!title||!text)return;if(!saves.length){title.textContent='Create your first save';text.textContent='Start with a save, then link people, seasons, transfers and storylines.'}else if(!squad.length){title.textContent='Add your first squad player';text.textContent='Your save exists. Next, add players so the hub can show squad activity and key players.'}else if(active){title.textContent=`Continue ${active.name}`;text.textContent='Update the current situation, record a transfer, or add the latest season moment.'}else{title.textContent='Choose an active save';text.textContent='Mark one save as active so the homepage knows what career to feature.'}}
+    function renderLiveFeed(active,latestSave,latestTransfer,latestStory,squad){const feed=document.getElementById('homeLiveFeed');if(!feed)return;const items=[];if(active)items.push(feedItem('▶',`Continue ${active.name}`,`${active.club||'-'} • ${active.season||'-'} • ${active.status||'-'}`,'Active save','saves.html'));if(latestTransfer)items.push(feedItem('↔',latestTransfer.player||'Latest transfer',`${latestTransfer.from||'-'} → ${latestTransfer.to||'-'} • ${latestTransfer.fee||'-'}`,latestTransfer.saveName,'saves.html'));if(latestStory)items.push(feedItem('★',latestStory.title||latestStory.fixture||'Latest story',latestStory.notes||latestStory.score||latestStory.saveName||'Story event',latestStory.saveName,'saves.html'));if(squad&&squad.length){const p=squad[squad.length-1];items.push(feedItem('⚽',p.name||'Latest player',`${p.position||'-'} • ${p.club||'-'}`,p.role||'Squad','squad.html'))}feed.innerHTML=items.length?items.join(''):smallEmpty('No activity yet. Add a save, player, transfer, or story moment.');}
+    function renderLatestTransfers(transfers){const grid=document.getElementById('latestTransfersGrid');if(!grid)return;if(!transfers.length){grid.innerHTML=smallEmpty('No transfers yet.');return}grid.innerHTML=transfers.slice(-3).reverse().map(t=>compactItem(t.player||'Unknown player',`${t.from||'-'} → ${t.to||'-'}`,`${t.fee||'-'} • ${t.saveName||''}`)).join('')}
+    function renderKeyPlayers(active,squad){const grid=document.getElementById('keyPlayersGrid');if(!grid)return;let players=[];if(active&&active.playerStats&&active.playerStats.length){const totals=new Map();active.playerStats.forEach(r=>{const n=r.personName||r.playerName||r.name||'Unnamed Player';const cur=totals.get(n)||{name:n,goals:0,assists:0,apps:0,club:r.club||'',position:r.position||''};cur.goals+=numberFromValue(r.goals);cur.assists+=numberFromValue(r.assists);cur.apps+=numberFromValue(r.apps);totals.set(n,cur)});players=Array.from(totals.values()).sort((a,b)=>b.goals-a.goals||b.assists-a.assists||b.apps-a.apps).slice(0,3)}else players=(squad||[]).slice(-3).reverse();if(!players.length){grid.innerHTML=smallEmpty('No key players yet.');return}grid.innerHTML=players.map(p=>compactItem(p.name||'Unnamed Player',`${p.position||'-'} • ${p.club||'-'}`,p.goals!==undefined?`${p.goals} goals • ${p.assists} assists`:p.role||'Player')).join('')}
+    function renderRecentPlayers(players){const grid=document.getElementById('recentPlayersGrid');if(!grid)return;if(!players||!players.length){grid.innerHTML=smallEmpty('No players yet.');return}grid.innerHTML=players.slice(-3).reverse().map(p=>compactItem(p.name||'Unnamed Player',`${p.position||'-'} • ${p.club||'-'}`,p.role||'Squad')).join('')}
+    function openModal(type){currentModal=type;const overlay=document.getElementById('modalOverlay'),title=document.getElementById('modalTitle'),content=document.getElementById('modalContent');overlay.style.display='flex';if(type==='save'){title.textContent='Add Save';content.innerHTML='<input id="modalSaveName" placeholder="Save name" style="margin-bottom:10px"><input id="modalSaveClub" placeholder="Club" style="margin-bottom:10px"><input id="modalSaveSeason" placeholder="Season">'}if(type==='player'){title.textContent='Add Player';content.innerHTML='<input id="modalPlayerName" placeholder="Player name" style="margin-bottom:10px"><input id="modalPlayerPosition" placeholder="Position">'}if(type==='person'){title.textContent='Add Person';content.innerHTML='<input id="modalPersonName" placeholder="Person name" style="margin-bottom:10px"><input id="modalPersonType" placeholder="Player / Manager / Staff">'}if(type==='note'){title.textContent='Add Note';content.innerHTML='<textarea id="modalNoteText" placeholder="Write note..."></textarea>'}if(type==='link'){title.textContent='Add Link';content.innerHTML='<input id="modalLinkTitle" placeholder="Link title" style="margin-bottom:10px"><input id="modalLinkUrl" placeholder="URL">'}}
+    function closeModal(){document.getElementById('modalOverlay').style.display='none';currentModal=null}
+    function submitModal(){if(currentModal==='save'){const saves=safeRead(savesKey,[]);saves.push({name:document.getElementById('modalSaveName').value||'Unnamed Save',club:document.getElementById('modalSaveClub').value||'-',season:document.getElementById('modalSaveSeason').value||'-',status:'Active',type:'Main Save',goal:'-',transfers:[],timeline:[],seasons:[],playerStats:[],matchHighlights:[],currentSituation:{}});safeSet(savesKey,saves)}if(currentModal==='player'){const squad=safeRead(squadKey,[]);squad.push({name:document.getElementById('modalPlayerName').value||'Unnamed Player',position:document.getElementById('modalPlayerPosition').value||'-'});safeSet(squadKey,squad)}if(currentModal==='person'){const people=safeRead(peopleKey,[]);people.push({name:document.getElementById('modalPersonName').value||'Unnamed Person',type:document.getElementById('modalPersonType').value||'Person'});safeSet(peopleKey,people)}if(currentModal==='note'){const notes=safeRead('fmhub-notes',[]);notes.push({text:document.getElementById('modalNoteText').value||''});safeSet('fmhub-notes',notes)}if(currentModal==='link'){const links=safeRead('fmhub-links',[]);links.push({title:document.getElementById('modalLinkTitle').value||'Link',url:document.getElementById('modalLinkUrl').value||''});safeSet('fmhub-links',links)}closeModal();updateHomepageStats()}
+    function applyTheme(theme){const safe=['red','purple','classic','blue','orange','gold','minimal'].includes(theme)?theme:'red';document.body.setAttribute('data-theme',safe);const select=document.getElementById('themeSwitch');if(select)select.value=safe;try{localStorage.setItem('fmhub-theme',safe);syncFMHubToCloud()}catch(e){} updateThemeDropdown(safe)}
+    
+    const themeLabels={red:'Red',purple:'Purple',classic:'Classic Green',blue:'Blue',orange:'Orange',gold:'Gold',minimal:'Minimal'};
+    function updateThemeDropdown(theme){
+      const safe=['red','purple','classic','blue','orange','gold','minimal'].includes(theme)?theme:'red';
+      const label=document.getElementById('themeActiveLabel');
+      const dot=document.getElementById('themeActiveDot');
+      if(label)label.textContent=themeLabels[safe]||'Red';
+      if(dot){dot.className='theme-dot theme-'+safe;}
+      document.querySelectorAll('[data-theme-option]').forEach(btn=>btn.classList.toggle('active',btn.dataset.themeOption===safe));
+    }
+    function toggleThemeMenu(event){
+      if(event)event.stopPropagation();
+      const menu=document.getElementById('themeMenu');
+      const btn=document.querySelector('.theme-select-btn');
+      if(!menu)return;
+      const open=menu.classList.toggle('hidden')===false;
+      if(btn)btn.setAttribute('aria-expanded',String(open));
+    }
+    function closeThemeMenu(){
+      const menu=document.getElementById('themeMenu');
+      const btn=document.querySelector('.theme-select-btn');
+      if(menu)menu.classList.add('hidden');
+      if(btn)btn.setAttribute('aria-expanded','false');
+    }
+    function chooseTheme(theme){applyTheme(theme);closeThemeMenu();}
+    document.addEventListener('click',event=>{if(!event.target.closest('#customThemeSelect'))closeThemeMenu();});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape')closeThemeMenu();});
+
+
+    const backupKeys = [
+      'fmhub-saves',
+      'fmhub-squad',
+      'fmhub-people',
+      'fmhub-notes',
+      'fmhub-links',
+      'fmhub-theme',
+      'fmhub-last-backup'
+    ];
+
+    function readBackupValue(key) {
+      const raw = localStorage.getItem(key);
+      if (raw === null) return null;
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        return raw;
+      }
+    }
+
+    function writeBackupValue(key, value) {
+      if (value === undefined || value === null) {
+        localStorage.removeItem(key);
+        return;
+      }
+
+      if (typeof value === 'string') {
+        localStorage.setItem(key, value);
+        return;
+      }
+
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function exportFMHubData() {
+      const data = {};
+      const backupDate = new Date().toISOString();
+
+      backupKeys.forEach(key => {
+        data[key] = readBackupValue(key);
+      });
+
+      data['fmhub-last-backup'] = backupDate;
+      data.backupCreatedAt = backupDate;
+      data.backupVersion = 'FM Hub Backup v1';
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+
+      link.href = url;
+      link.download = `fmhub-backup-${backupDate.slice(0, 10)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      URL.revokeObjectURL(url);
+      localStorage.setItem('fmhub-last-backup', backupDate);
+      updateLastBackupDisplay();
+    }
+
+    function importFMHubData(event) {
+      const file = event?.target?.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        try {
+          const data = JSON.parse(e.target.result);
+
+          backupKeys.forEach(key => {
+            if (Object.prototype.hasOwnProperty.call(data, key)) {
+              writeBackupValue(key, data[key]);
+            }
+          });
+
+          if (data['fmhub-last-backup']) {
+            localStorage.setItem('fmhub-last-backup', data['fmhub-last-backup']);
+          }
+
+          syncFMHubToCloud();
+          alert('Backup imported successfully!');
+          location.reload();
+        } catch (error) {
+          alert('Invalid backup file.');
+        }
+      };
+
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    function clearFMHubData() {
+      if (!confirm('Are you sure you want to delete ALL FM Hub data? This cannot be undone.')) return;
+
+      backupKeys.forEach(key => localStorage.removeItem(key));
+      syncFMHubToCloud();
+
+      alert('All FM Hub data cleared.');
+      location.reload();
+    }
+
+    function updateLastBackupDisplay() {
+      const el = document.getElementById('lastBackupText');
+      if (!el) return;
+
+      const raw = localStorage.getItem('fmhub-last-backup');
+      if (!raw) {
+        el.textContent = 'Last backup: Never';
+        return;
+      }
+
+      const date = new Date(raw);
+      if (Number.isNaN(date.getTime())) {
+        el.textContent = 'Last backup: Unknown';
+        return;
+      }
+
+      el.textContent = `Last backup: ${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    }
+
+
+    async function testFirebaseNow() {
+      const status = document.getElementById('firebaseStatus');
+
+      try {
+
+        if (!window.FMCloud || typeof window.FMCloud.saveToCloud !== 'function') {
+          status.textContent = 'Firebase: not connected';
+          alert('Firebase is not connected properly yet.');
+          return;
+        }
+
+        const testData = {
+          test: true,
+          message: 'Firebase test worked',
+          time: new Date().toISOString()
+        };
+
+        await window.FMCloud.saveToCloud(testData);
+
+        const loaded = await window.FMCloud.loadFromCloud();
+
+        console.log('Firebase loaded:', loaded);
+
+        status.textContent = 'Firebase: working ✅';
+        alert('Firebase is working!');
+
+      } catch (err) {
+
+        console.error(err);
+
+        status.textContent = 'Firebase: failed ❌';
+        alert('Firebase failed. Check browser console.');
+
+      }
+    }
+
+
+    function initTheme(){let t='red';try{t=localStorage.getItem('fmhub-theme')||'red'}catch(e){}applyTheme(t)}
+    document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target.id==='modalOverlay')closeModal()});
+    initTheme();updateHomepageStats();updateLastBackupDisplay();
+    window.addEventListener('FMCloudReady', loadFMHubFromCloud);
+    setTimeout(loadFMHubFromCloud, 800);
+    window.addEventListener('storage',e=>{if(['fmhub-theme',savesKey,squadKey,peopleKey].includes(e.key)){if(e.key==='fmhub-theme')initTheme();updateHomepageStats()}});
+  </script>
+
+ <script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./service-worker.js");
+  }
+  </script>
+  <footer>
+   <div class="container">
+    FM Hub Dashboard • Home
+   </div>
+  </footer>
+ </body>
+</html>
