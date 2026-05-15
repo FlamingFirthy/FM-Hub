@@ -659,19 +659,39 @@
     function deleteLink(id) { if (!confirm('Delete this link?')) return; setLinks(getLinks().filter(link => link.id !== id)); renderLinks(); }
     function resetDefaultLinks() { if (!confirm('Reset links back to the default starter links? This will replace your current link list.')) return; setLinks(defaultLinks.map(link => ({ ...link, id: cryptoId() }))); renderLinks(); }
 
-    function applyTheme(theme) { const safeTheme = ['red','purple','classic','blue','orange','gold','minimal'].includes(theme) ? theme : 'red'; document.body.setAttribute('data-theme', safeTheme); const select = document.getElementById('themeSwitch'); if (select) select.value = safeTheme; try { localStorage.setItem('fmhub-theme', safeTheme); syncFMHubToCloud(); } catch (e) {} }
-    function initTheme() { let storedTheme = 'red'; try { storedTheme = localStorage.getItem('fmhub-theme') || 'red'; } catch (e) {} applyTheme(storedTheme); }
-    initTheme(); 
-    renderLinks();
+function applyTheme(theme) {
+  const safeTheme = ['red','purple','classic','blue','orange','gold','minimal']
+    .includes(theme) ? theme : 'red';
 
-    window.addEventListener('FMCloudReady', loadFMHubFromCloud);
-    setTimeout(loadFMHubFromCloud, 800);
-    window.addEventListener('beforeunload', syncFMHubToCloud);
+  document.body.setAttribute('data-theme', safeTheme);
 
-    window.addEventListener('storage', event => { 
-      if (event.key === 'fmhub-theme') initTheme(); 
-      if (event.key === linksKey || event.key === 'fmhub-saves' || event.key === 'fmhub-squad') renderLinks(); 
-    });
+  const themeColors = {
+    red:'#ff3b3b',
+    purple:'#8b5cf6',
+    classic:'#04110a',
+    blue:'#3b82f6',
+    orange:'#f97316',
+    gold:'#facc15',
+    minimal:'#111111'
+  };
+
+  const meta = document.getElementById('themeMeta');
+
+  if(meta){
+    meta.setAttribute(
+      'content',
+      themeColors[safeTheme] || '#111111'
+    );
+  }
+
+  const select = document.getElementById('themeSwitch');
+  if(select) select.value = safeTheme;
+
+  try {
+    localStorage.setItem('fmhub-theme', safeTheme);
+    syncFMHubToCloud();
+  } catch(e){}
+}
   </script>
 
  <script>
