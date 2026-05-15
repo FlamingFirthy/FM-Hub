@@ -5,7 +5,7 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#ff3b3b">
+  <meta id="themeMeta" name="theme-color" content="#111111">
   <title>
    FM Hub Dashboard
   </title>
@@ -1985,7 +1985,28 @@
     function openModal(type){currentModal=type;const overlay=document.getElementById('modalOverlay'),title=document.getElementById('modalTitle'),content=document.getElementById('modalContent');overlay.style.display='flex';if(type==='save'){title.textContent='Add Save';content.innerHTML='<input id="modalSaveName" placeholder="Save name" style="margin-bottom:10px"><input id="modalSaveClub" placeholder="Club" style="margin-bottom:10px"><input id="modalSaveSeason" placeholder="Season">'}if(type==='player'){title.textContent='Add Player';content.innerHTML='<input id="modalPlayerName" placeholder="Player name" style="margin-bottom:10px"><input id="modalPlayerPosition" placeholder="Position">'}if(type==='person'){title.textContent='Add Person';content.innerHTML='<input id="modalPersonName" placeholder="Person name" style="margin-bottom:10px"><input id="modalPersonType" placeholder="Player / Manager / Staff">'}if(type==='note'){title.textContent='Add Note';content.innerHTML='<textarea id="modalNoteText" placeholder="Write note..."></textarea>'}if(type==='link'){title.textContent='Add Link';content.innerHTML='<input id="modalLinkTitle" placeholder="Link title" style="margin-bottom:10px"><input id="modalLinkUrl" placeholder="URL">'}}
     function closeModal(){document.getElementById('modalOverlay').style.display='none';currentModal=null}
     function submitModal(){if(currentModal==='save'){const saves=safeRead(savesKey,[]);saves.push({name:document.getElementById('modalSaveName').value||'Unnamed Save',club:document.getElementById('modalSaveClub').value||'-',season:document.getElementById('modalSaveSeason').value||'-',status:'Active',type:'Main Save',goal:'-',transfers:[],timeline:[],seasons:[],playerStats:[],matchHighlights:[],currentSituation:{}});safeSet(savesKey,saves)}if(currentModal==='player'){const squad=safeRead(squadKey,[]);squad.push({name:document.getElementById('modalPlayerName').value||'Unnamed Player',position:document.getElementById('modalPlayerPosition').value||'-'});safeSet(squadKey,squad)}if(currentModal==='person'){const people=safeRead(peopleKey,[]);people.push({name:document.getElementById('modalPersonName').value||'Unnamed Person',type:document.getElementById('modalPersonType').value||'Person'});safeSet(peopleKey,people)}if(currentModal==='note'){const notes=safeRead('fmhub-notes',[]);notes.push({text:document.getElementById('modalNoteText').value||''});safeSet('fmhub-notes',notes)}if(currentModal==='link'){const links=safeRead('fmhub-links',[]);links.push({title:document.getElementById('modalLinkTitle').value||'Link',url:document.getElementById('modalLinkUrl').value||''});safeSet('fmhub-links',links)}closeModal();updateHomepageStats()}
-    function applyTheme(theme){const safe=['red','purple','classic','blue','orange','gold','minimal'].includes(theme)?theme:'red';document.body.setAttribute('data-theme',safe);const select=document.getElementById('themeSwitch');if(select)select.value=safe;try{localStorage.setItem('fmhub-theme',safe);syncFMHubToCloud()}catch(e){} updateThemeDropdown(safe)}
+    function applyTheme(theme){
+      const safe=['red','purple','classic','blue','orange','gold','minimal'].includes(theme)?theme:'red';
+      document.body.setAttribute('data-theme',safe);
+
+      const themeColors={
+        red:'#ff3b3b',
+        purple:'#8b5cf6',
+        classic:'#04110a',
+        blue:'#3b82f6',
+        orange:'#f97316',
+        gold:'#facc15',
+        minimal:'#111111'
+      };
+
+      const meta=document.getElementById('themeMeta');
+      if(meta) meta.setAttribute('content', themeColors[safe] || '#111111');
+
+      const select=document.getElementById('themeSwitch');
+      if(select)select.value=safe;
+      try{localStorage.setItem('fmhub-theme',safe);syncFMHubToCloud()}catch(e){}
+      updateThemeDropdown(safe);
+    }
     
     const themeLabels={red:'Red',purple:'Purple',classic:'Classic Green',blue:'Blue',orange:'Orange',gold:'Gold',minimal:'Minimal'};
     function updateThemeDropdown(theme){
