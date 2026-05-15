@@ -1983,6 +1983,21 @@
 
     async function loadFMHubFromCloud(){
       if(!window.FMCloud || typeof window.FMCloud.loadFromCloud !== 'function') return;
+
+      const recentImport = localStorage.getItem('fmhub-import-just-ran');
+      if (recentImport) {
+        const importedAt = new Date(recentImport).getTime();
+        const now = Date.now();
+
+        if (!Number.isNaN(importedAt) && now - importedAt < 15000) {
+          cloudLoadComplete = true;
+          console.log('Skipped cloud load because a backup was just imported');
+          return;
+        }
+
+        localStorage.removeItem('fmhub-import-just-ran');
+      }
+
       try{
         const cloud = await window.FMCloud.loadFromCloud();
         cloudLoadComplete=true;
@@ -2179,15 +2194,18 @@
       updateLastBackupDisplay();
     }
 
-    function importFMHubData(event) {
+    async function importFMHubData(event) {
       const file = event?.target?.files?.[0];
       if (!file) return;
 
       const reader = new FileReader();
 
-      reader.onload = function(e) {
+      reader.onload = async function(e) {
         try {
           const data = JSON.parse(e.target.result);
+          const importDate = new Date().toISOString();
+
+          syncingFromCloud = true;
 
           backupKeys.forEach(key => {
             if (Object.prototype.hasOwnProperty.call(data, key)) {
@@ -2195,14 +2213,28 @@
             }
           });
 
-          if (data['fmhub-last-backup']) {
-            localStorage.setItem('fmhub-last-backup', data['fmhub-last-backup']);
+          localStorage.setItem('fmhub-last-backup', data['fmhub-last-backup'] || importDate);
+          localStorage.setItem('fmhub-import-just-ran', importDate);
+
+          syncingFromCloud = false;
+
+          initTheme();
+          updateHomepageStats();
+          updateLastBackupDisplay();
+
+          if (window.FMCloud && typeof window.FMCloud.saveToCloud === 'function') {
+            await window.FMCloud.saveToCloud(getFMHubCloudData());
+            console.log('Imported backup uploaded to Firebase');
+          } else {
+            console.log('Imported backup saved locally, but Firebase was not ready');
           }
 
-          syncFMHubToCloud();
           alert('Backup imported successfully!');
           location.reload();
+
         } catch (error) {
+          syncingFromCloud = false;
+          console.log('Import failed:', error);
           alert('Invalid backup file.');
         }
       };
