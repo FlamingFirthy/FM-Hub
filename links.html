@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link rel="manifest" href="manifest.json">
-<meta id="themeMeta" name="theme-color" content="#111111">
+  <meta id="themeMeta" name="theme-color" content="#111111">
   <title>FM Links</title>
   <style>
     :root {
@@ -400,71 +400,7 @@
     .empty-state { background:linear-gradient(180deg, rgba(255,255,255,.030), rgba(255,255,255,.012)); border-color:rgba(255,255,255,.16); border-radius:20px; }
     @media (max-width:980px) { .form-grid, .search-grid { grid-template-columns:1fr; } }
 
-  
-
-/* ============================= */
-/* Better mobile card spacing     */
-/* ============================= */
-@media (max-width: 720px) {
-  .people-grid,
-  .players-grid,
-  .save-grid,
-  .notes-grid,
-  .links-grid,
-  .dashboard-grid,
-  .home-strip,
-  .actions-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 10px !important;
-  }
-
-  .person-card,
-  .player-card,
-  .save-card,
-  .note-card,
-  .link-card,
-  .mini-card,
-  .action-card,
-  .stat-card {
-    padding: 12px !important;
-    min-height: auto !important;
-  }
-
-  h1 {
-    font-size: 1.9rem !important;
-  }
-
-  h2 {
-    font-size: 1.25rem !important;
-  }
-
-  h3 {
-    font-size: 1rem !important;
-  }
-
-  .badge,
-  .tag,
-  .chip,
-  .nation-pill {
-    font-size: 0.72rem !important;
-    padding: 5px 7px !important;
-  }
-}
-
-@media (max-width: 380px) {
-  .people-grid,
-  .players-grid,
-  .save-grid,
-  .notes-grid,
-  .links-grid,
-  .dashboard-grid,
-  .home-strip,
-  .actions-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-</style>
+  </style>
 </head>
 <body>
   <header>
@@ -751,10 +687,6 @@ function applyTheme(theme) {
         select.value = safeTheme;
       }
 
-      if (typeof updateThemeDropdown === 'function') {
-        updateThemeDropdown(safeTheme);
-      }
-
       try {
         localStorage.setItem('fmhub-theme', safeTheme);
 
@@ -763,6 +695,32 @@ function applyTheme(theme) {
         }
       } catch (e) {}
     }
+
+    function initTheme() {
+      let storedTheme = 'red';
+
+      try {
+        storedTheme = localStorage.getItem('fmhub-theme') || 'red';
+      } catch (e) {}
+
+      applyTheme(storedTheme);
+    }
+
+    initTheme();
+    renderLinks();
+
+    window.addEventListener('FMCloudReady', loadFMHubFromCloud);
+    setTimeout(loadFMHubFromCloud, 800);
+
+    window.addEventListener('storage', event => {
+      if (event.key === 'fmhub-theme') {
+        initTheme();
+      }
+
+      if (event.key === linksKey) {
+        renderLinks();
+      }
+    });
   </script>
 
  <script>
