@@ -1,4 +1,4 @@
-const CACHE_NAME = "fmhub-cache-v30";
+const CACHE_NAME = "fmhub-cache-v31";
 
 const urlsToCache = [
   "./",
