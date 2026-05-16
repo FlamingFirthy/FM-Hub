@@ -635,6 +635,193 @@
   }
 }
 
+
+    /* ============================= */
+    /* Notes page polish pass         */
+    /* ============================= */
+    :root {
+      --glass: rgba(255,255,255,0.035);
+      --glass-2: rgba(255,255,255,0.055);
+      --soft-line: rgba(255,255,255,0.07);
+    }
+
+    .hero-card,
+    .panel,
+    .section-card,
+    .composer-card {
+      border-radius: 26px;
+      border-color: var(--soft-line);
+      background:
+        radial-gradient(circle at top right, var(--accent-soft), transparent 34%),
+        linear-gradient(180deg, rgba(255,255,255,0.042), rgba(255,255,255,0.014));
+      box-shadow: 0 16px 36px rgba(0,0,0,0.24);
+    }
+
+    .mini-panel,
+    .note-card,
+    .quick-item,
+    .todo-item,
+    .player-note-item,
+    .player-list-item {
+      background: linear-gradient(180deg, rgba(255,255,255,0.046), rgba(255,255,255,0.016));
+      border-color: rgba(255,255,255,0.07);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.035);
+    }
+
+    .note-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 190px;
+      border-radius: 22px;
+    }
+
+    .note-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent 85%);
+      opacity: 0.9;
+    }
+
+    .note-card.pinned-note::before {
+      height: 4px;
+      background: linear-gradient(90deg, #facc15, var(--accent), transparent 85%);
+    }
+
+    .note-card.pinned-note {
+      border-color: rgba(250,204,21,0.22);
+    }
+
+    .note-meta .tag {
+      margin: 0;
+    }
+
+    .note-title {
+      letter-spacing: -0.015em;
+    }
+
+    .note-preview {
+      padding: 12px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.024);
+      border: 1px solid rgba(255,255,255,0.045);
+    }
+
+    .filters {
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.022);
+      border: 1px solid rgba(255,255,255,0.055);
+    }
+
+    .note-modal-content {
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at top right, var(--accent-soft), transparent 30%),
+        linear-gradient(180deg, rgba(20,14,31,0.98), rgba(10,7,18,0.98));
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.5);
+    }
+
+    .tab-btn {
+      border-radius: 999px;
+      min-height: 0;
+      padding: 10px 14px;
+    }
+
+    .content-box,
+    #noteContent,
+    #todoDetails,
+    #playerNoteText {
+      line-height: 1.65;
+    }
+
+    .player-avatar,
+    .player-note-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.16));
+      border: 1px solid rgba(255,255,255,0.10);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .player-avatar img,
+    .player-note-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .player-list-main,
+    .player-note-main {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 11px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .player-note-head {
+      align-items: center;
+    }
+
+    .empty-state {
+      background:
+        radial-gradient(circle at center top, var(--accent-soft), transparent 42%),
+        linear-gradient(180deg, rgba(255,255,255,0.030), rgba(255,255,255,0.012));
+      border-radius: 20px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 720px) {
+      .filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .filters > div:first-child {
+        grid-column: 1 / -1;
+      }
+
+      .stats-grid[style] {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+
+      .note-card {
+        min-height: 165px !important;
+      }
+
+      .note-preview {
+        -webkit-line-clamp: 3;
+        font-size: 0.9rem;
+      }
+
+      .note-modal {
+        width: 96%;
+      }
+
+      .note-modal-content {
+        padding: 16px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .filters,
+      .stats-grid[style] {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+
 </style>
 </head>
 <body>
@@ -1096,6 +1283,41 @@
       applyTheme(storedTheme);
     }
 
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function initials(name) {
+      if (!name) return 'FM';
+      return String(name)
+        .split(/\s+/)
+        .filter(Boolean)
+        .map(part => part[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase() || 'FM';
+    }
+
+    function getPersonImage(person) {
+      return person?.image || person?.picture || person?.photo || person?.avatar || '';
+    }
+
+    function renderPlayerAvatar(person, className = 'player-avatar') {
+      const image = getPersonImage(person);
+      const name = person?.name || 'Player';
+
+      if (image) {
+        return `<div class="${className}"><img src="${escapeHtml(image)}" alt="${escapeHtml(name)}"></div>`;
+      }
+
+      return `<div class="${className}">${escapeHtml(initials(name))}</div>`;
+    }
+
     function formatDate(ts) {
       if (!ts) return '-';
       const date = new Date(ts);
@@ -1144,21 +1366,21 @@
       }
 
       grid.innerHTML = filtered.map(note => `
-        <div class="note-card" onclick="openNoteEditor('${note.id}')">
+        <div class="note-card ${note.pinned ? 'pinned-note' : ''}" onclick="openNoteEditor('${escapeHtml(note.id)}')">
           <div class="note-top">
             <div>
-              <div class="note-title">${note.title || 'Untitled Note'}</div>
+              <div class="note-title">${escapeHtml(note.title || 'Untitled Note')}</div>
               <div class="note-meta" style="margin-top:10px;">
-                <span class="tag">${note.tag || 'General'}</span>
+                <span class="tag">${escapeHtml(note.tag || 'General')}</span>
                 ${note.pinned ? '<span class="tag">Pinned</span>' : ''}
-                ${note.linkedSave ? `<span class="tag">${note.linkedSave}</span>` : ''}
+                ${note.linkedSave ? `<span class="tag">${escapeHtml(note.linkedSave)}</span>` : ''}
               </div>
             </div>
           </div>
-          <div class="note-preview">${note.content || 'No content yet.'}</div>
+          <div class="note-preview">${escapeHtml(note.content || 'No content yet.')}</div>
           <div class="note-footer">
-            <span>Updated ${formatDate(note.updatedAt)}</span>
-            <span>${(note.content || '').length} chars</span>
+            <span>Updated ${escapeHtml(formatDate(note.updatedAt))}</span>
+            <span>${escapeHtml((note.content || '').length)} chars</span>
           </div>
         </div>
       `).join('');
@@ -1217,15 +1439,15 @@
       wrap.innerHTML = todos.map(todo => `
         <div class="todo-item">
           <div class="todo-main">
-            <input type="checkbox" ${todo.done ? 'checked' : ''} onchange="toggleTodo('${todo.id}')">
+            <input type="checkbox" ${todo.done ? 'checked' : ''} onchange="toggleTodo('${escapeHtml(todo.id)}')">
             <div class="todo-text ${todo.done ? 'done' : ''}">
-              <strong>${todo.title}</strong>
-              <span class="muted">${todo.details || todo.tag}</span>
+              <strong>${escapeHtml(todo.title)}</strong>
+              <span class="muted">${escapeHtml(todo.details || todo.tag)}</span>
             </div>
           </div>
           <div class="todo-actions">
-            <span class="tag">${todo.tag}</span>
-            <button class="delete-btn icon-btn" type="button" onclick="deleteTodo('${todo.id}')">×</button>
+            <span class="tag">${escapeHtml(todo.tag)}</span>
+            <button class="delete-btn icon-btn" type="button" onclick="deleteTodo('${escapeHtml(todo.id)}')">×</button>
           </div>
         </div>
       `).join('');
@@ -1251,10 +1473,13 @@
       wrap.innerHTML = filtered.map((person, index) => {
         const id = getPlayerId(person, index);
         return `
-          <div class="player-list-item ${selectedPlayerId === id ? 'active' : ''}" onclick="selectPlayer('${id}')">
-            <div>
-              <strong>${person.name || 'Unnamed Player'}</strong>
-              <span class="muted">${person.club || '-'} • ${person.position || '-'}</span>
+          <div class="player-list-item ${selectedPlayerId === id ? 'active' : ''}" onclick="selectPlayer('${escapeHtml(id)}')">
+            <div class="player-list-main">
+              ${renderPlayerAvatar(person)}
+              <div style="min-width:0;">
+                <strong>${escapeHtml(person.name || 'Unnamed Player')}</strong>
+                <span class="muted">${escapeHtml(person.club || '-')} • ${escapeHtml(person.position || '-')}</span>
+              </div>
             </div>
             <span class="tag">Player</span>
           </div>
@@ -1322,13 +1547,16 @@
       wrap.innerHTML = notes.map(note => `
         <div class="player-note-item">
           <div class="player-note-head">
-            <div>
-              <strong>${note.playerName}</strong>
-              <span class="muted">${note.club || '-'} • ${formatDate(note.createdAt)}</span>
+            <div class="player-note-main">
+              ${renderPlayerAvatar(player, 'player-note-avatar')}
+              <div style="min-width:0;">
+                <strong>${escapeHtml(note.playerName)}</strong>
+                <span class="muted">${escapeHtml(note.club || '-')} • ${escapeHtml(formatDate(note.createdAt))}</span>
+              </div>
             </div>
-            <button class="delete-btn icon-btn" type="button" onclick="deletePlayerNote('${note.id}')">×</button>
+            <button class="delete-btn icon-btn" type="button" onclick="deletePlayerNote('${escapeHtml(note.id)}')">×</button>
           </div>
-          <div>${note.content}</div>
+          <div>${escapeHtml(note.content)}</div>
         </div>
       `).join('');
 
@@ -1400,7 +1628,7 @@
           };
         }
       } else {
-        notes.push({
+        notes.unshift({
           id: `note_${now}`,
           title,
           tag,
@@ -1414,7 +1642,7 @@
 
       setNotes(notes);
       renderNotes();
-      openNoteEditor(currentNoteId || notes[notes.length - 1].id);
+      openNoteEditor(currentNoteId || notes[0].id);
     }
 
     function deleteNote() {
@@ -1507,6 +1735,7 @@ Problems To Fix:
     renderTodos();
     renderPlayerList();
     renderPlayerNotes();
+    updateMiniStats();
 
     window.addEventListener('FMCloudReady', loadFMHubFromCloud);
     setTimeout(loadFMHubFromCloud, 800);
