@@ -400,7 +400,92 @@
     .empty-state { background:linear-gradient(180deg, rgba(255,255,255,.030), rgba(255,255,255,.012)); border-color:rgba(255,255,255,.16); border-radius:20px; }
     @media (max-width:980px) { .form-grid, .search-grid { grid-template-columns:1fr; } }
 
-  </style>
+  
+    /* ============================= */
+    /* Link images / logo polish      */
+    /* ============================= */
+    .link-card-header {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr) auto;
+      gap: 13px;
+      align-items: start;
+    }
+
+    .link-image,
+    .quick-link-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 17px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.16));
+      border: 1px solid rgba(255,255,255,0.10);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 900;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+      flex-shrink: 0;
+    }
+
+    .link-image img,
+    .quick-link-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .quick-link-tile {
+      display: inline-grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 9px;
+      align-items: center;
+      padding: 10px 13px;
+      border-radius: 15px;
+      min-height: 54px;
+    }
+
+    .quick-link-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      font-size: 0.72rem;
+    }
+
+    .link-card.favourite-link {
+      border-color: rgba(250,204,21,0.24);
+    }
+
+    .link-card.favourite-link::before {
+      background: linear-gradient(180deg, #facc15, var(--accent), transparent 85%);
+    }
+
+    .link-title,
+    .quick-link-tile span {
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 560px) {
+      .link-card-header {
+        grid-template-columns: 50px minmax(0, 1fr);
+      }
+
+      .link-card-header > .tag {
+        grid-column: 1 / -1;
+        justify-self: start;
+      }
+
+      .link-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 15px;
+      }
+    }
+
+
+</style>
 </head>
 <body>
   <header>
@@ -471,6 +556,8 @@
           <div><label for="linkTitleInput">Title</label><input id="linkTitleInput" placeholder="FM Scout"></div>
           <div><label for="linkCategoryInput">Category</label><input id="linkCategoryInput" list="categorySuggestions" placeholder="Scouting"></div>
           <div class="wide"><label for="linkUrlInput">URL</label><input id="linkUrlInput" placeholder="https://www.fmscout.com"></div>
+          <div><label for="linkImageInput">Image / Logo</label><input id="linkImageInput" type="file" accept="image/*"></div>
+          <div><label for="linkImageUrlInput">Image URL</label><input id="linkImageUrlInput" placeholder="Optional image URL"></div>
           <div class="wide"><label for="linkDescriptionInput">Description</label><textarea id="linkDescriptionInput" placeholder="What this link is useful for..."></textarea></div>
           <div><label for="linkQuickInput">Show in Quick Links?</label><select id="linkQuickInput"><option value="yes">Yes</option><option value="no">No</option></select></div>
           <div><label for="linkPriorityInput">Priority</label><select id="linkPriorityInput"><option value="normal">Normal</option><option value="favourite">Favourite</option></select></div>
@@ -604,12 +691,67 @@
 
     function escapeHtml(value) { return String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
     function safeUrl(url) { const clean = String(url || '').trim(); if (!clean) return '#'; return /^https?:\/\//i.test(clean) ? clean : 'https://' + clean; }
+
+    function initials(name) {
+      if (!name) return 'FM';
+      return String(name)
+        .split(/\s+/)
+        .filter(Boolean)
+        .map(part => part[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase() || 'FM';
+    }
+
+    function getLinkImage(link) {
+      return link.image || link.imageUrl || link.logo || link.icon || '';
+    }
+
+    function renderLinkImage(link, className = 'link-image') {
+      const image = getLinkImage(link);
+      const title = link.title || 'Link';
+
+      if (image) {
+        return `<div class="${className}"><img src="${escapeHtml(image)}" alt="${escapeHtml(title)}"></div>`;
+      }
+
+      return `<div class="${className}">${escapeHtml(initials(title))}</div>`;
+    }
+
+    function compressImageToBase64(file, maxWidth = 360, quality = 0.72) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+          const img = new Image();
+
+          img.onload = function() {
+            const scale = Math.min(1, maxWidth / img.width);
+            const canvas = document.createElement('canvas');
+
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+
+          img.onerror = reject;
+          img.src = event.target.result;
+        };
+
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
     function getLinks() { try { const stored = JSON.parse(localStorage.getItem(linksKey) || 'null'); if (Array.isArray(stored)) return stored; } catch(e) {} setLinks(defaultLinks); return defaultLinks; }
     function setLinks(links) { 
       localStorage.setItem(linksKey, JSON.stringify(links)); 
       syncFMHubToCloud();
     }
-    function normaliseLink(link) { return { id: link.id || cryptoId(), title: link.title || 'Untitled Link', url: link.url || '', category: link.category || 'General', description: link.description || '', quick: Boolean(link.quick), priority: link.priority || 'normal' }; }
+    function normaliseLink(link) { return { id: link.id || cryptoId(), title: link.title || 'Untitled Link', url: link.url || '', category: link.category || 'General', description: link.description || '', quick: Boolean(link.quick), priority: link.priority || 'normal', image: link.image || '', imageUrl: link.imageUrl || '', logo: link.logo || '', icon: link.icon || '' }; }
 
     function renderStats(links) {
       const categories = Array.from(new Set(links.map(link => link.category || 'General'))).filter(Boolean);
@@ -633,7 +775,7 @@
       const container = document.getElementById('quickLinksList');
       const quickLinks = links.filter(link => link.quick).slice(0, 8);
       if (!quickLinks.length) { container.innerHTML = '<div class="empty-state" style="margin:0;width:100%;">No quick links yet. Edit a link and set “Show in Quick Links” to Yes.</div>'; return; }
-      container.innerHTML = quickLinks.map(link => `<a class="${link.priority === 'favourite' ? 'primary' : 'secondary'} btn" href="${escapeHtml(safeUrl(link.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.title)}</a>`).join('');
+      container.innerHTML = quickLinks.map(link => `<a class="${link.priority === 'favourite' ? 'primary' : 'secondary'} btn quick-link-tile" href="${escapeHtml(safeUrl(link.url))}" target="_blank" rel="noopener noreferrer">${renderLinkImage(link, 'quick-link-icon')}<span>${escapeHtml(link.title)}</span></a>`).join('');
     }
 
     function renderLinks() {
@@ -645,17 +787,100 @@
       const grid = document.getElementById('linksGrid');
       if (!filtered.length) { grid.innerHTML = '<div class="empty-state">No links match this search yet.</div>'; return; }
       grid.innerHTML = filtered.map(link => `
-        <div class="link-card">
-          <div class="link-top"><div><div class="link-title">${escapeHtml(link.title)}</div><div class="link-url">${escapeHtml(link.url || 'No URL added')}</div></div><span class="tag">${escapeHtml(link.category || 'General')}</span></div>
+        <div class="link-card ${link.priority === 'favourite' ? 'favourite-link' : ''}">
+          <div class="link-card-header">
+            ${renderLinkImage(link)}
+            <div style="min-width:0;">
+              <div class="link-title">${escapeHtml(link.title)}</div>
+              <div class="link-url">${escapeHtml(link.url || 'No URL added')}</div>
+            </div>
+            <span class="tag">${escapeHtml(link.category || 'General')}</span>
+          </div>
           <div class="link-description">${escapeHtml(link.description || 'No description added yet.')}</div>
           <div class="link-footer"><a class="primary btn" href="${escapeHtml(safeUrl(link.url))}" target="_blank" rel="noopener noreferrer">Open</a><div class="card-actions"><button class="secondary small-btn" type="button" onclick="editLink('${escapeHtml(link.id)}')">Edit</button><button class="danger small-btn" type="button" onclick="deleteLink('${escapeHtml(link.id)}')">Delete</button></div></div>
         </div>`).join('');
     }
 
     function toggleEditor(show) { const editor = document.getElementById('editorSection'); editor.classList.toggle('hidden', !show); if (show) editor.scrollIntoView({ behavior:'smooth', block:'start' }); }
-    function resetEditor() { editingLinkId = null; document.getElementById('editorKicker').textContent = 'Add Link'; document.getElementById('editorTitle').textContent = 'New Resource'; document.getElementById('saveLinkBtn').textContent = 'Save Link'; ['linkTitleInput','linkUrlInput','linkCategoryInput','linkDescriptionInput'].forEach(id => document.getElementById(id).value = ''); document.getElementById('linkQuickInput').value = 'yes'; document.getElementById('linkPriorityInput').value = 'normal'; }
-    function saveLinkFromEditor() { const title = document.getElementById('linkTitleInput').value.trim(); if (!title) return; const links = getLinks().map(normaliseLink); const linkData = { id: editingLinkId || cryptoId(), title, url: document.getElementById('linkUrlInput').value.trim(), category: document.getElementById('linkCategoryInput').value.trim() || 'General', description: document.getElementById('linkDescriptionInput').value.trim(), quick: document.getElementById('linkQuickInput').value === 'yes', priority: document.getElementById('linkPriorityInput').value || 'normal' }; const index = links.findIndex(link => link.id === editingLinkId); if (index >= 0) links[index] = linkData; else links.push(linkData); setLinks(links); resetEditor(); toggleEditor(false); renderLinks(); }
-    function editLink(id) { const link = getLinks().map(normaliseLink).find(item => item.id === id); if (!link) return; editingLinkId = link.id; document.getElementById('editorKicker').textContent = 'Edit Link'; document.getElementById('editorTitle').textContent = link.title; document.getElementById('saveLinkBtn').textContent = 'Update Link'; document.getElementById('linkTitleInput').value = link.title; document.getElementById('linkUrlInput').value = link.url; document.getElementById('linkCategoryInput').value = link.category; document.getElementById('linkDescriptionInput').value = link.description; document.getElementById('linkQuickInput').value = link.quick ? 'yes' : 'no'; document.getElementById('linkPriorityInput').value = link.priority || 'normal'; toggleEditor(true); }
+    function resetEditor() {
+      editingLinkId = null;
+      document.getElementById('editorKicker').textContent = 'Add Link';
+      document.getElementById('editorTitle').textContent = 'New Resource';
+      document.getElementById('saveLinkBtn').textContent = 'Save Link';
+      ['linkTitleInput','linkUrlInput','linkCategoryInput','linkDescriptionInput','linkImageUrlInput'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      const imageInput = document.getElementById('linkImageInput');
+      if (imageInput) imageInput.value = '';
+      document.getElementById('linkQuickInput').value = 'yes';
+      document.getElementById('linkPriorityInput').value = 'normal';
+    }
+    async function saveLinkFromEditor() {
+      const title = document.getElementById('linkTitleInput').value.trim();
+      if (!title) return;
+
+      const links = getLinks().map(normaliseLink);
+      const index = links.findIndex(link => link.id === editingLinkId);
+      const existing = index >= 0 ? links[index] : {};
+      const imageFile = document.getElementById('linkImageInput')?.files?.[0] || null;
+      const imageUrl = document.getElementById('linkImageUrlInput')?.value.trim() || '';
+
+      let image = existing.image || '';
+      if (imageFile) {
+        try {
+          image = await compressImageToBase64(imageFile, 360, 0.72);
+        } catch (error) {
+          console.log('Link image upload failed:', error);
+          alert('Could not upload that link image.');
+          return;
+        }
+      }
+
+      if (imageUrl) {
+        image = '';
+      }
+
+      const linkData = {
+        id: editingLinkId || cryptoId(),
+        title,
+        url: document.getElementById('linkUrlInput').value.trim(),
+        category: document.getElementById('linkCategoryInput').value.trim() || 'General',
+        description: document.getElementById('linkDescriptionInput').value.trim(),
+        quick: document.getElementById('linkQuickInput').value === 'yes',
+        priority: document.getElementById('linkPriorityInput').value || 'normal',
+        image,
+        imageUrl
+      };
+
+      if (index >= 0) links[index] = linkData;
+      else links.push(linkData);
+
+      setLinks(links);
+      resetEditor();
+      toggleEditor(false);
+      renderLinks();
+    }
+    function editLink(id) {
+      const link = getLinks().map(normaliseLink).find(item => item.id === id);
+      if (!link) return;
+
+      editingLinkId = link.id;
+      document.getElementById('editorKicker').textContent = 'Edit Link';
+      document.getElementById('editorTitle').textContent = link.title;
+      document.getElementById('saveLinkBtn').textContent = 'Update Link';
+      document.getElementById('linkTitleInput').value = link.title;
+      document.getElementById('linkUrlInput').value = link.url;
+      document.getElementById('linkCategoryInput').value = link.category;
+      document.getElementById('linkDescriptionInput').value = link.description;
+      document.getElementById('linkQuickInput').value = link.quick ? 'yes' : 'no';
+      document.getElementById('linkPriorityInput').value = link.priority || 'normal';
+      const imageUrlInput = document.getElementById('linkImageUrlInput');
+      if (imageUrlInput) imageUrlInput.value = link.imageUrl || '';
+      const imageInput = document.getElementById('linkImageInput');
+      if (imageInput) imageInput.value = '';
+      toggleEditor(true);
+    }
     function deleteLink(id) { if (!confirm('Delete this link?')) return; setLinks(getLinks().filter(link => link.id !== id)); renderLinks(); }
     function resetDefaultLinks() { if (!confirm('Reset links back to the default starter links? This will replace your current link list.')) return; setLinks(defaultLinks.map(link => ({ ...link, id: cryptoId() }))); renderLinks(); }
 
