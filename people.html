@@ -558,6 +558,38 @@
     input::placeholder, textarea::placeholder { color: #8294ae; }
     select option { background: #0b0b0f; color: #ffffff; }
 
+
+    .person-card-top {
+      display: grid;
+      grid-template-columns: 54px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .person-card-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 15px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.18));
+      color: #fff;
+      font-weight: 900;
+      font-size: 1rem;
+      border: 1px solid rgba(255,255,255,0.10);
+      flex-shrink: 0;
+    }
+
+    .person-card-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .person-card {
       cursor: pointer;
       transition: 0.18s ease;
@@ -2025,6 +2057,35 @@
       });
     }
 
+    function compressImageToBase64(file, maxWidth = 320, quality = 0.72) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+          const img = new Image();
+
+          img.onload = function() {
+            const scale = Math.min(1, maxWidth / img.width);
+            const canvas = document.createElement('canvas');
+
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+
+          img.onerror = reject;
+          img.src = event.target.result;
+        };
+
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
     async function saveUploadedImage(file) {
       if (!file) return '';
 
@@ -2036,7 +2097,7 @@
         });
       }
 
-      return await toBase64(file);
+      return await compressImageToBase64(file, 320, 0.72);
     }
 
     function getDefaultClubColors() {
@@ -2557,11 +2618,18 @@
         card.className = 'person-card';
         card.onclick = () => openProfile(realIndex);
         card.innerHTML = `
-          <div class="identity-row">
-            ${renderClubBadge(person.clubBadge)}
-            ${renderNationPill(person.nation)}
+          <div class="person-card-top">
+            <div class="person-card-avatar">
+              ${person.image ? `<img src="${person.image}" alt="${person.name || 'Person'}">` : initials(person.name)}
+            </div>
+            <div>
+              <div class="identity-row" style="margin:0 0 8px;">
+                ${renderClubBadge(person.clubBadge)}
+                ${renderNationPill(person.nation)}
+              </div>
+              <h3>${person.name || 'Unnamed Person'}</h3>
+            </div>
           </div>
-          <h3>${person.name || 'Unnamed Person'}</h3>
           <p class="muted" style="margin:10px 0 0;">${person.club || '-'} • ${person.role || '-'}</p>
           ${person.lastTransfer ? `<div class="badge" style="margin-top:10px;">Last move: ${person.lastTransfer.from || '-'} → ${person.lastTransfer.to || '-'}${person.lastTransfer.fee ? ` • ${person.lastTransfer.fee}` : ''}</div>` : ''}
           ${person.linkedSaves?.length ? `<div class="badge" style="margin-top:10px;">${person.linkedSaves.join(' • ')}</div>` : ''}
