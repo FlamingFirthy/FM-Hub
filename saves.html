@@ -2145,6 +2145,75 @@
   }
 }
 
+
+    /* ============================= */
+    /* Saves page photo polish        */
+    /* ============================= */
+    .linked-person-row {
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .save-person-avatar,
+    .key-player-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.16));
+      border: 1px solid rgba(255,255,255,0.10);
+      color: #fff;
+      font-size: 0.86rem;
+      font-weight: 900;
+      flex-shrink: 0;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .save-person-avatar img,
+    .key-player-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .key-player-main {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 11px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .key-player-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      font-size: 0.78rem;
+    }
+
+    .linked-person-row strong,
+    .key-player-main strong {
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 520px) {
+      .linked-person-row {
+        grid-template-columns: 42px minmax(0, 1fr);
+      }
+
+      .linked-person-row > button {
+        grid-column: 1 / -1;
+        justify-self: start;
+      }
+    }
+
+
 </style>
 </head>
 <body>
@@ -2941,7 +3010,7 @@
           <div class="save-card" onclick="openSaveProfile(${index})">
             <div style="display:grid; grid-template-columns:58px 1fr; gap:13px; align-items:center;">
               <div class="save-logo-preview" style="width:58px;height:58px;border-radius:16px;font-size:0.95rem;box-shadow:none;">
-                ${save.logo ? `<img src="${save.logo}" alt="${escapeHtml(save.name)} logo">` : escapeHtml(getSaveInitials(save))}
+                ${save.logo ? `<img src="${escapeHtml(save.logo)}" alt="${escapeHtml(save.name)} logo">` : escapeHtml(getSaveInitials(save))}
               </div>
               <div>
                 <h3>${escapeHtml(save.name)}</h3>
@@ -3039,23 +3108,55 @@
       if (!preview || !save) return;
       const logo = save.logo || '';
       preview.innerHTML = logo
-        ? `<img src="${logo}" alt="${escapeHtml(save.name || 'Save')} logo">`
+        ? `<img src="${escapeHtml(logo)}" alt="${escapeHtml(save.name || 'Save')} logo">`
         : escapeHtml(getSaveInitials(save));
     }
 
-    function uploadCurrentSaveLogo(event) {
+    function compressImageToBase64(file, maxWidth = 360, quality = 0.72) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+          const img = new Image();
+
+          img.onload = function() {
+            const scale = Math.min(1, maxWidth / img.width);
+            const canvas = document.createElement('canvas');
+
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+
+          img.onerror = reject;
+          img.src = event.target.result;
+        };
+
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function uploadCurrentSaveLogo(event) {
       const save = getCurrentSave();
       const file = event?.target?.files?.[0];
       if (!save || !file) return;
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        save.logo = e.target.result;
+      try {
+        save.logo = await compressImageToBase64(file, 360, 0.72);
         updateCurrentSave(save);
         renderSaveLogo(save);
+        renderOpenedSaveClubHeader(save);
         loadSaves();
-      };
-      reader.readAsDataURL(file);
+      } catch (error) {
+        console.log('Save logo upload failed:', error);
+        alert('Could not upload that logo image.');
+      }
+
       event.target.value = '';
     }
 
@@ -3262,7 +3363,10 @@
 
       container.innerHTML = items.map(item => `
         <div class="career-list-item">
-          <div><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.label)}</span></div>
+          <div class="key-player-main">
+            ${renderSavePersonAvatar(item.name, item.name, 'key-player-avatar')}
+            <div style="min-width:0;"><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.label)}</span></div>
+          </div>
           <div class="career-list-value">${escapeHtml(item.value)}</div>
         </div>
       `).join('');
@@ -3903,8 +4007,9 @@
       }
       container.innerHTML = `<div style="display:grid; gap:10px;">${people.map((person, index) => `
         <div class="person-card clickable-profile-card" onclick="openSavePersonProfile('${escapeHtml(person.id || person.name)}','${escapeHtml(person.name)}')">
-          <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
-            <div>
+          <div class="linked-person-row">
+            ${renderSavePersonAvatar(person.id || person.name, person.name)}
+            <div style="min-width:0;">
               <strong>${escapeHtml(person.name)}</strong>
               <div class="muted" style="margin-top:4px;">${escapeHtml(person.position || person.type || 'Person')}${person.club ? ` • ${escapeHtml(person.club)}` : ''}</div>
               <button class="secondary small-btn open-profile-btn" type="button" onclick="event.stopPropagation(); openSavePersonProfile('${escapeHtml(person.id || person.name)}','${escapeHtml(person.name)}')">Open Person</button>
@@ -4012,6 +4117,22 @@
       const person = getPeople().find(item => normaliseText(item.name) === cleanName || String(getEntityKey(item)) === cleanId) || null;
       const squadPlayer = getSquadPlayers().find(item => normaliseText(item.name) === cleanName || String(getEntityKey(item)) === cleanId) || null;
       return { linkedEntry, person, squadPlayer };
+    }
+
+    function getSavePersonImage(id, name) {
+      const { person, squadPlayer, linkedEntry } = findSavePerson(id, name);
+      return getPersonImageFromSources(person, squadPlayer) || linkedEntry?.image || linkedEntry?.picture || linkedEntry?.photo || linkedEntry?.avatar || '';
+    }
+
+    function renderSavePersonAvatar(id, name, className = 'save-person-avatar') {
+      const image = getSavePersonImage(id, name);
+      const safeName = escapeHtml(name || 'Person');
+
+      if (image) {
+        return `<div class="${className}"><img src="${escapeHtml(image)}" alt="${safeName}"></div>`;
+      }
+
+      return `<div class="${className}">${escapeHtml(initials(name || 'FM'))}</div>`;
     }
 
 
@@ -4212,7 +4333,8 @@
         const clubLine = latestTransfer?.to || person.club || save?.club || '-';
         return `
           <div class="person-card clickable-profile-card" onclick="openSavePersonProfile('${escapeHtml(person.id || person.name)}','${escapeHtml(person.name)}')">
-            <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
+            <div class="linked-person-row">
+              ${renderSavePersonAvatar(person.id || person.name, person.name)}
               <div style="min-width:0;">
                 <strong>${escapeHtml(person.name)}</strong>
                 <div class="muted" style="margin-top:4px;">${escapeHtml(person.position || person.type || 'Person')} • ${escapeHtml(clubLine)}</div>
