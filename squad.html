@@ -596,6 +596,61 @@
       text-align: center;
     }
 
+
+    .slot-player-photo {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      overflow: hidden;
+      margin: 0 auto 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.18));
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 900;
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .slot-player-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .bench-player-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .bench-player-photo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.18));
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 900;
+      border: 1px solid rgba(255,255,255,0.10);
+      flex-shrink: 0;
+    }
+
+    .bench-player-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+
     .slot small {
       color: var(--muted);
       font-size: 0.76rem;
@@ -4720,8 +4775,7 @@
     }
 
     function renderPlayerCardImage(player) {
-      const person = getLinkedPerson(player);
-      const image = getPersonImage(person);
+      const image = getPlayerImage(player);
       if (image) {
         const safeAlt = (player?.name || 'Player').replace(/"/g, '&quot;');
         return `<img src="${image}" alt="${safeAlt}" class="player-card-photo">`;
@@ -5117,6 +5171,22 @@
     function getPersonImage(person) {
       if (!person) return '';
       return person.image || person.picture || person.photo || person.avatar || '';
+    }
+
+    function getPlayerImage(player) {
+      const linkedPerson = getLinkedPerson(player);
+      return getPersonImage(linkedPerson) || player?.image || player?.picture || player?.photo || player?.avatar || '';
+    }
+
+    function renderSmallPlayerPhoto(player, className = 'slot-player-photo') {
+      const image = getPlayerImage(player);
+      const alt = String(player?.name || 'Player').replace(/"/g, '&quot;');
+
+      if (image) {
+        return `<div class="${className}"><img src="${image}" alt="${alt}"></div>`;
+      }
+
+      return `<div class="${className}">${initials(player?.name)}</div>`;
     }
 
     function getSquadNumber(player) {
