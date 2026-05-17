@@ -2214,6 +2214,561 @@
     }
 
 
+
+/* ================================================== */
+/* FINAL MOBILE APP FIX - SAVES PAGE                  */
+/* Keep this at the very bottom of the CSS             */
+/* ================================================== */
+@media (max-width: 768px) {
+  html, body {
+    width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    font-size: 14px !important;
+    line-height: 1.42 !important;
+  }
+
+  .container,
+  main.container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  section {
+    padding: 8px 0 12px !important;
+  }
+
+  .hero {
+    padding: 12px 0 8px !important;
+  }
+
+  header .nav-wrap,
+  .nav-wrap {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    padding: 12px 0 !important;
+    min-height: auto !important;
+  }
+
+  header .logo,
+  .logo {
+    font-size: 1.25rem !important;
+    line-height: 1.1 !important;
+  }
+
+  header nav,
+  nav {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 20px !important;
+    padding: 2px 0 10px !important;
+    border: 0 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  header nav::-webkit-scrollbar,
+  nav::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  header nav a,
+  nav a {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    font-size: 0.92rem !important;
+    padding: 6px 0 !important;
+  }
+
+  header nav a::after,
+  nav a::after {
+    bottom: -3px !important;
+  }
+
+  header .nav-wrap > div:last-child {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(150px, 1fr) !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  .theme-wrapper {
+    width: 100% !important;
+  }
+
+  #themeSwitch {
+    min-width: 0 !important;
+    width: 100% !important;
+    min-height: 42px !important;
+    padding: 9px 34px 9px 12px !important;
+    border-radius: 14px !important;
+    font-size: 0.92rem !important;
+  }
+
+  .hero-grid,
+  .two-column,
+  .career-insight-grid,
+  .lineup-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .hero-card,
+  .panel,
+  .section-card,
+  .save-library-card,
+  .opened-save-card,
+  .detail-card,
+  .form-card,
+  .career-graph-card,
+  .career-list-card,
+  .profile-modal {
+    padding: 14px !important;
+    border-radius: 18px !important;
+    min-height: auto !important;
+  }
+
+  .hero-card::after {
+    width: 120px !important;
+    height: 120px !important;
+    right: -45px !important;
+    bottom: -50px !important;
+  }
+
+  h1 {
+    font-size: 1.8rem !important;
+    max-width: none !important;
+    margin-bottom: 10px !important;
+  }
+
+  h2 {
+    font-size: 1.22rem !important;
+  }
+
+  h3 {
+    font-size: 1rem !important;
+  }
+
+  p,
+  .muted,
+  .hero-copy {
+    font-size: 0.86rem !important;
+  }
+
+  .eyebrow,
+  .section-kicker,
+  .mini-label {
+    font-size: 0.64rem !important;
+    padding: 5px 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .hero-actions {
+    gap: 8px !important;
+    margin-top: 12px !important;
+  }
+
+  .btn,
+  button {
+    padding: 9px 11px !important;
+    min-height: 38px !important;
+    border-radius: 11px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .small-btn {
+    padding: 7px 9px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .lineup-grid,
+  .dashboard-grid,
+  .current-situation-grid,
+  .overview-shortcut-grid,
+  .transfer-dashboard,
+  .award-grid,
+  .highlight-grid,
+  .honours-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .mini-panel,
+  .stat-card,
+  .situation-tile,
+  .overview-shortcut-card,
+  .award-card,
+  .highlight-card,
+  .honour-card {
+    padding: 10px !important;
+    border-radius: 15px !important;
+    min-height: auto !important;
+  }
+
+  .mini-value {
+    margin-top: 5px !important;
+    font-size: 1.05rem !important;
+  }
+
+  .stat-card span,
+  .situation-tile span,
+  .mini-label,
+  .save-meta-row span,
+  .info-row span {
+    font-size: 0.62rem !important;
+  }
+
+  .stat-card strong,
+  .situation-tile strong {
+    font-size: 0.82rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .save-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .save-card {
+    min-height: auto !important;
+    padding: 12px !important;
+    border-radius: 17px !important;
+  }
+
+  .save-card h3 {
+    font-size: 0.98rem !important;
+    margin-top: 0 !important;
+  }
+
+  .save-card .save-logo-preview {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 14px !important;
+  }
+
+  .chip-row {
+    gap: 6px !important;
+    margin-top: 10px !important;
+  }
+
+  .chip,
+  .badge,
+  .transfer-type-chip,
+  .transfer-fee-pill,
+  .highlight-score,
+  .club-header-chip,
+  .status-pill {
+    font-size: 0.68rem !important;
+    padding: 5px 7px !important;
+    line-height: 1.1 !important;
+  }
+
+  .view-mode-toolbar {
+    position: static !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    padding: 10px !important;
+    border-radius: 16px !important;
+  }
+
+  .view-mode-toolbar .clean-view-hint {
+    grid-column: 1 / -1 !important;
+    margin: 0 !important;
+    font-size: 0.74rem !important;
+  }
+
+  .club-profile-header {
+    grid-template-columns: 58px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    padding: 13px !important;
+    border-radius: 18px !important;
+  }
+
+  .club-header-logo {
+    width: 58px !important;
+    height: 58px !important;
+    border-radius: 16px !important;
+    font-size: 1rem !important;
+  }
+
+  .club-header-main h2 {
+    font-size: 1.2rem !important;
+  }
+
+  .club-header-main p {
+    font-size: 0.78rem !important;
+    margin-top: 5px !important;
+  }
+
+  .club-header-meta {
+    grid-column: 1 / -1 !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+  }
+
+  .opened-save-card .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    margin-top: 12px !important;
+  }
+
+  .save-status-banner {
+    padding: 10px !important;
+    border-radius: 15px !important;
+    gap: 8px !important;
+  }
+
+  .linked-person-row,
+  .key-player-main {
+    display: grid !important;
+    grid-template-columns: 38px minmax(0, 1fr) !important;
+    gap: 9px !important;
+    align-items: center !important;
+  }
+
+  .linked-person-row > button {
+    grid-column: 1 / -1 !important;
+    justify-self: start !important;
+  }
+
+  .save-person-avatar,
+  .key-player-avatar {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .person-card,
+  .career-list-item {
+    padding: 10px !important;
+    border-radius: 15px !important;
+  }
+
+  .career-list-item {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 8px !important;
+  }
+
+  .career-list-item strong,
+  .linked-person-row strong,
+  .key-player-main strong {
+    font-size: 0.85rem !important;
+    word-break: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .career-list-item span,
+  .linked-person-row .muted,
+  .key-player-main span {
+    font-size: 0.72rem !important;
+  }
+
+  .career-list-value {
+    font-size: 0.78rem !important;
+    white-space: nowrap !important;
+  }
+
+  .mini-graph {
+    min-height: 140px !important;
+    padding: 12px 10px 10px !important;
+    gap: 8px !important;
+  }
+
+  .graph-bar-wrap {
+    min-width: 48px !important;
+    height: 120px !important;
+  }
+
+  .graph-label,
+  .graph-value {
+    font-size: 0.64rem !important;
+  }
+
+  .transfer-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .transfer-card {
+    padding: 12px !important;
+    border-radius: 17px !important;
+  }
+
+  .transfer-route {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .transfer-arrow {
+    transform: rotate(90deg) !important;
+    justify-self: center !important;
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .transfer-club-box {
+    grid-template-columns: 30px minmax(0, 1fr) !important;
+    padding: 8px !important;
+  }
+
+  .transfer-club-logo {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 9px !important;
+  }
+
+  .transfer-filter-bar {
+    grid-template-columns: 1fr !important;
+    padding: 10px !important;
+    border-radius: 15px !important;
+  }
+
+  .form-grid,
+  .timeline-form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 10px !important;
+    border-radius: 11px !important;
+    font-size: 0.9rem !important;
+  }
+
+  label {
+    font-size: 0.68rem !important;
+    margin-bottom: 5px !important;
+  }
+
+  textarea {
+    min-height: 90px !important;
+  }
+
+  .table-wrap {
+    margin-top: 10px !important;
+    border-radius: 15px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  table {
+    min-width: 720px !important;
+  }
+
+  th,
+  td {
+    padding: 9px 8px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .timeline-item {
+    grid-template-columns: 32px minmax(0, 1fr) !important;
+    padding: 10px !important;
+    border-radius: 15px !important;
+  }
+
+  .timeline-dot {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .timeline-item > button {
+    grid-column: 1 / -1 !important;
+    justify-self: start !important;
+  }
+
+  .club-summary-row {
+    grid-template-columns: 58px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    text-align: left !important;
+    justify-items: stretch !important;
+  }
+
+  .club-summary-logo {
+    width: 58px !important;
+    height: 58px !important;
+    border-radius: 16px !important;
+    font-size: 1rem !important;
+  }
+
+  .profile-overlay {
+    padding: 10px !important;
+    align-items: flex-end !important;
+  }
+
+  .profile-modal {
+    width: 100% !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+  }
+
+  .profile-modal-hero {
+    grid-template-columns: 58px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    padding: 12px !important;
+    border-radius: 17px !important;
+  }
+
+  .profile-avatar {
+    width: 58px !important;
+    height: 58px !important;
+    border-radius: 16px !important;
+    font-size: 1rem !important;
+  }
+
+  .modal-grid,
+  .profile-info-grid,
+  .club-popup-people-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .save-person-section {
+    padding: 12px !important;
+    border-radius: 17px !important;
+  }
+
+  .empty-state {
+    min-height: 90px !important;
+    padding: 14px !important;
+    border-radius: 15px !important;
+    font-size: 0.82rem !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .lineup-grid,
+  .dashboard-grid,
+  .current-situation-grid,
+  .opened-save-card .dashboard-grid,
+  .overview-shortcut-grid,
+  .transfer-dashboard,
+  .award-grid,
+  .highlight-grid,
+  .honours-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .view-mode-toolbar {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 </style>
 </head>
 <body>
