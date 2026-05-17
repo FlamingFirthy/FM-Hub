@@ -485,6 +485,454 @@
     }
 
 
+
+/* ================================================== */
+/* FINAL MOBILE APP FIX - LINKS PAGE                  */
+/* Keep this at the very bottom of the CSS             */
+/* ================================================== */
+@media (max-width: 768px) {
+  html,
+  body {
+    width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    font-size: 14px !important;
+    line-height: 1.42 !important;
+  }
+
+  .container,
+  main.container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  section {
+    padding: 8px 0 12px !important;
+  }
+
+  .hero {
+    padding: 12px 0 8px !important;
+  }
+
+  header .nav-wrap,
+  .nav-wrap {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    padding: 12px 0 !important;
+    min-height: auto !important;
+    align-items: start !important;
+  }
+
+  header .logo,
+  .logo {
+    font-size: 1.25rem !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  header nav,
+  nav {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    justify-content: flex-start !important;
+    gap: 20px !important;
+    padding: 2px 0 10px !important;
+    border: 0 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  header nav::-webkit-scrollbar,
+  nav::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  header nav a,
+  nav a {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    font-size: 0.92rem !important;
+    padding: 6px 0 !important;
+  }
+
+  header nav a::after,
+  nav a::after {
+    bottom: -3px !important;
+  }
+
+  header .nav-wrap > div:last-child {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(150px, 1fr) !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  #themeSwitch {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 42px !important;
+    padding: 9px 34px 9px 12px !important;
+    border-radius: 14px !important;
+    font-size: 0.92rem !important;
+  }
+
+  .theme-wrapper {
+    width: 100% !important;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .hero-card,
+  .panel,
+  .section-card,
+  .form-card {
+    padding: 14px !important;
+    border-radius: 18px !important;
+    min-height: auto !important;
+  }
+
+  .hero-card {
+    min-height: auto !important;
+  }
+
+  .hero-card::after {
+    width: 120px !important;
+    height: 120px !important;
+    right: -45px !important;
+    bottom: -50px !important;
+  }
+
+  h1 {
+    font-size: 1.8rem !important;
+    max-width: none !important;
+    margin-bottom: 10px !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  h2 {
+    font-size: 1.22rem !important;
+  }
+
+  h3 {
+    font-size: 1rem !important;
+  }
+
+  p,
+  .muted,
+  .hero-copy {
+    font-size: 0.86rem !important;
+  }
+
+  .eyebrow,
+  .tag,
+  .section-kicker,
+  .mini-label {
+    font-size: 0.64rem !important;
+    padding: 5px 8px !important;
+  }
+
+  .hero-actions {
+    gap: 8px !important;
+    margin-top: 12px !important;
+  }
+
+  .hero-actions .btn,
+  .hero-actions button {
+    flex: 1 1 calc(50% - 8px) !important;
+  }
+
+  .btn,
+  button {
+    padding: 9px 11px !important;
+    min-height: 38px !important;
+    border-radius: 11px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .small-btn {
+    min-height: 32px !important;
+    padding: 7px 9px !important;
+    font-size: 0.72rem !important;
+    border-radius: 10px !important;
+  }
+
+  .stats-grid,
+  .panel .stats-grid,
+  .stats-grid[style] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .mini-panel {
+    padding: 10px !important;
+    border-radius: 15px !important;
+    min-height: 78px !important;
+  }
+
+  .mini-value {
+    font-size: 1rem !important;
+    margin-top: 5px !important;
+    line-height: 1.2 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .section-head {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+    align-items: start !important;
+  }
+
+  .section-head p {
+    margin-top: 4px !important;
+  }
+
+  .section-head > button,
+  .section-head .btn {
+    width: fit-content !important;
+  }
+
+  .form-grid,
+  .search-grid {
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+  }
+
+  .form-grid .wide {
+    grid-column: auto !important;
+  }
+
+  label {
+    font-size: 0.68rem !important;
+    margin-bottom: 5px !important;
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 10px !important;
+    border-radius: 11px !important;
+    font-size: 0.9rem !important;
+    min-height: 40px !important;
+  }
+
+  textarea {
+    min-height: 90px !important;
+  }
+
+  .form-card .hero-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .form-card .hero-actions button {
+    width: 100% !important;
+  }
+
+  .toolbar {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+    padding: 10px !important;
+    border-radius: 15px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .toolbar > button {
+    width: fit-content !important;
+  }
+
+  .quick-links-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .quick-link-tile {
+    width: 100% !important;
+    min-height: 48px !important;
+    grid-template-columns: 30px minmax(0, 1fr) !important;
+    gap: 8px !important;
+    padding: 8px 9px !important;
+    border-radius: 14px !important;
+    justify-content: start !important;
+  }
+
+  .quick-link-icon {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 10px !important;
+    font-size: 0.64rem !important;
+  }
+
+  .quick-link-tile span {
+    font-size: 0.76rem !important;
+    line-height: 1.15 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .links-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 9px !important;
+  }
+
+  .link-card {
+    min-height: 168px !important;
+    padding: 10px !important;
+    border-radius: 16px !important;
+    gap: 8px !important;
+  }
+
+  .link-card:hover,
+  .section-card:hover,
+  .form-card:hover {
+    transform: none !important;
+  }
+
+  .link-card::before {
+    width: 3px !important;
+  }
+
+  .link-card-header {
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    gap: 9px !important;
+    align-items: center !important;
+  }
+
+  .link-card-header > .tag {
+    grid-column: 1 / -1 !important;
+    justify-self: start !important;
+    font-size: 0.56rem !important;
+    padding: 4px 6px !important;
+  }
+
+  .link-image {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 13px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .link-title {
+    font-size: 0.86rem !important;
+    line-height: 1.15 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .link-url {
+    font-size: 0.66rem !important;
+    line-height: 1.2 !important;
+    margin-top: 3px !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .link-description {
+    font-size: 0.72rem !important;
+    line-height: 1.35 !important;
+    -webkit-line-clamp: 3 !important;
+  }
+
+  .link-footer {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 7px !important;
+    align-items: stretch !important;
+  }
+
+  .link-footer > .btn,
+  .link-footer > a {
+    width: 100% !important;
+    min-height: 34px !important;
+    padding: 7px 8px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .card-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  .card-actions button {
+    width: 100% !important;
+  }
+
+  .empty-state {
+    min-height: 86px !important;
+    padding: 12px !important;
+    border-radius: 15px !important;
+    font-size: 0.82rem !important;
+  }
+
+  footer {
+    padding: 18px 0 24px !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .links-grid,
+  .quick-links-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .link-card {
+    padding: 9px !important;
+    min-height: 158px !important;
+  }
+
+  .link-card-header {
+    grid-template-columns: 38px minmax(0, 1fr) !important;
+    gap: 7px !important;
+  }
+
+  .link-image {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px !important;
+  }
+
+  .link-title {
+    font-size: 0.8rem !important;
+  }
+
+  .link-description {
+    font-size: 0.68rem !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .links-grid,
+  .quick-links-grid,
+  .stats-grid,
+  .panel .stats-grid,
+  .stats-grid[style] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-actions .btn,
+  .hero-actions button {
+    flex: 1 1 100% !important;
+  }
+}
+
 </style>
 </head>
 <body>
