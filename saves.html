@@ -3346,6 +3346,18 @@
       return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
+    function encodeForClick(value) {
+      return encodeURIComponent(String(value ?? ''));
+    }
+
+    function decodeFromClick(value) {
+      try {
+        return decodeURIComponent(value);
+      } catch (e) {
+        return value;
+      }
+    }
+
     function getSaves() {
       try { return JSON.parse(localStorage.getItem(savesKey) || '[]'); } catch (e) { return []; }
     }
@@ -3470,19 +3482,51 @@
 
     function getAllPersonOptions() {
       const map = new Map();
-      getPeople().forEach(person => {
+
+      getPeople().forEach((person, index) => {
         const name = person.name || person.fullName || 'Unnamed Person';
-        const key = `person:${getEntityKey(person) || name}`;
-        map.set(key, { source: 'people', key, id: getEntityKey(person), name, type: person.type || person.jobTitle || 'Person', club: person.club || person.team || '', position: person.position || person.jobTitle || '' });
+        const rawType = String(person.type || person.jobTitle || person.role || 'Person').trim();
+        const lowerType = rawType.toLowerCase();
+        const isManager =
+          lowerType.includes('manager') ||
+          lowerType.includes('coach') ||
+          lowerType.includes('staff') ||
+          lowerType.includes('director');
+
+        const key = `person:${getEntityKey(person) || name || index}`;
+
+        map.set(key, {
+          source: 'people',
+          key,
+          id: getEntityKey(person) || String(index),
+          name,
+          type: isManager ? 'Manager' : (person.type || 'Player'),
+          club: person.club || person.team || '',
+          position: isManager
+            ? (person.role || person.jobTitle || person.position || 'Manager')
+            : (person.position || person.role || person.jobTitle || '')
+        });
       });
+
       getSquadPlayers().forEach((player, index) => {
         const name = player.name || 'Unnamed Player';
         const key = `squad:${getEntityKey(player) || index}:${name}`;
+
         if (![...map.values()].some(item => normaliseText(item.name) === normaliseText(name))) {
-          map.set(key, { source: 'squad', key, id: getEntityKey(player) || String(index), squadIndex: index, name, type: 'Player', club: player.club || '', position: player.position || '' });
+          map.set(key, {
+            source: 'squad',
+            key,
+            id: getEntityKey(player) || String(index),
+            squadIndex: index,
+            name,
+            type: 'Player',
+            club: player.club || '',
+            position: player.position || ''
+          });
         }
       });
-      return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name));
+
+      return Array.from(map.values()).sort((a, b) => String(a.name).localeCompare(String(b.name)));
     }
 
     function getCurrentSave() {
@@ -4522,7 +4566,24 @@
       getPeople().forEach(person => {
         const linkedSaves = Array.isArray(person.linkedSaves) ? person.linkedSaves : [];
         if (linkedSaves.includes(saveName) || person.currentSave === saveName || person.save === saveName) {
-          add({ source: 'people', id: getEntityKey(person), name: person.name || 'Unnamed Person', type: person.type || person.jobTitle || 'Person', position: person.position || person.jobTitle || '', club: person.club || person.team || '' });
+          const rawType = String(person.type || person.jobTitle || person.role || 'Person').trim();
+          const lowerType = rawType.toLowerCase();
+          const isManager =
+            lowerType.includes('manager') ||
+            lowerType.includes('coach') ||
+            lowerType.includes('staff') ||
+            lowerType.includes('director');
+
+          add({
+            source: 'people',
+            id: getEntityKey(person),
+            name: person.name || 'Unnamed Person',
+            type: isManager ? 'Manager' : (person.type || 'Player'),
+            position: isManager
+              ? (person.role || person.jobTitle || person.position || 'Manager')
+              : (person.position || person.role || person.jobTitle || ''),
+            club: person.club || person.team || ''
+          });
         }
       });
 
@@ -4536,7 +4597,22 @@
 
       (save.playerStats || []).forEach(stat => add({ source: stat.source || 'save', id: stat.personId || stat.personName, name: stat.personName || 'Unnamed Person', type: stat.type || 'Player', position: stat.position || '', club: stat.club || '' }));
 
-      return linked.sort((a, b) => a.name.localeCompare(b.name));
+      const situationManagerName = save.currentSituation?.manager || '';
+      if (situationManagerName) {
+        const managerPerson = getPeople().find(person => normaliseText(person.name) === normaliseText(situationManagerName));
+        if (managerPerson) {
+          add({
+            source: 'people',
+            id: getEntityKey(managerPerson),
+            name: managerPerson.name || situationManagerName,
+            type: 'Manager',
+            position: managerPerson.role || managerPerson.jobTitle || managerPerson.position || 'Manager',
+            club: managerPerson.club || managerPerson.team || save.club || ''
+          });
+        }
+      }
+
+      return linked.sort((a, b) => String(a.name).localeCompare(String(b.name)));
     }
 
     function populatePersonSelectors(save) {
@@ -4555,24 +4631,42 @@
     function renderLinkedPeople(save) {
       const container = document.getElementById('linkedPeopleList');
       if (!container) return;
+
       const people = getLinkedPeopleForSave(save);
+
       if (!people.length) {
         container.innerHTML = '<div class="empty-state">No people linked to this save yet.</div>';
         return;
       }
-      container.innerHTML = `<div style="display:grid; gap:10px;">${people.map((person, index) => `
-        <div class="person-card clickable-profile-card" onclick="openSavePersonProfile('${escapeHtml(person.id || person.name)}','${escapeHtml(person.name)}')">
-          <div class="linked-person-row">
-            ${renderSavePersonAvatar(person.id || person.name, person.name)}
-            <div style="min-width:0;">
-              <strong>${escapeHtml(person.name)}</strong>
-              <div class="muted" style="margin-top:4px;">${escapeHtml(person.position || person.type || 'Person')}${person.club ? ` • ${escapeHtml(person.club)}` : ''}</div>
-              <button class="secondary small-btn open-profile-btn" type="button" onclick="event.stopPropagation(); openSavePersonProfile('${escapeHtml(person.id || person.name)}','${escapeHtml(person.name)}')">Open Person</button>
+
+      container.innerHTML = `<div style="display:grid; gap:10px;">${people.map((person, index) => {
+        const safeId = encodeForClick(person.id || person.name);
+        const safeName = encodeForClick(person.name);
+
+        return `
+          <div class="person-card clickable-profile-card" onclick="openSavePersonProfile(decodeFromClick('${safeId}'), decodeFromClick('${safeName}'))">
+            <div class="linked-person-row">
+              ${renderSavePersonAvatar(person.id || person.name, person.name)}
+              <div style="min-width:0;">
+                <strong>${escapeHtml(person.name)}</strong>
+                <div class="muted" style="margin-top:4px;">${escapeHtml(person.position || person.type || 'Person')}${person.club ? ` • ${escapeHtml(person.club)}` : ''}</div>
+                <button
+                  class="secondary small-btn open-profile-btn"
+                  type="button"
+                  onclick="event.stopPropagation(); openSavePersonProfile(decodeFromClick('${safeId}'), decodeFromClick('${safeName}'))"
+                >Open Person</button>
+              </div>
+              ${person.source === 'manual' || person.source === 'people' || person.source === 'squad'
+                ? `<button
+                    class="secondary small-btn edit-only"
+                    type="button"
+                    onclick="event.stopPropagation(); unlinkPersonFromCurrentSave(decodeFromClick('${safeId}'), decodeFromClick('${safeName}'))"
+                  >Unlink</button>`
+                : ''}
             </div>
-            ${person.source === 'manual' || person.source === 'people' || person.source === 'squad' ? `<button class="secondary small-btn edit-only" type="button" onclick="event.stopPropagation(); unlinkPersonFromCurrentSave('${escapeHtml(person.id || person.name)}','${escapeHtml(person.name)}')">Unlink</button>` : ''}
           </div>
-        </div>
-      `).join('')}</div>`;
+        `;
+      }).join('')}</div>`;
     }
 
     function linkPersonToCurrentSave() {
@@ -4581,7 +4675,14 @@
       const item = findOptionByKey(selectedKey);
       if (!save || !item) return;
       save.linkedPeople = Array.isArray(save.linkedPeople) ? save.linkedPeople : [];
-      const entry = { source: item.source, id: item.id, name: item.name, type: item.type, position: item.position, club: item.club };
+      const entry = {
+        source: item.source,
+        id: item.id,
+        name: item.name,
+        type: item.type || 'Person',
+        position: item.position || item.role || item.jobTitle || '',
+        club: item.club || ''
+      };
       if (!save.linkedPeople.some(person => normaliseText(person.name) === normaliseText(entry.name))) save.linkedPeople.push(entry);
 
       const people = getPeople();
