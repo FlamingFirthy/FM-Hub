@@ -4721,8 +4721,11 @@
       const save = getCurrentSave();
       const selectedKey = document.getElementById('personToLinkSelect')?.value || '';
       const item = findOptionByKey(selectedKey);
+
       if (!save || !item) return;
+
       save.linkedPeople = Array.isArray(save.linkedPeople) ? save.linkedPeople : [];
+
       const entry = {
         source: item.source,
         id: item.id,
@@ -4731,13 +4734,40 @@
         position: item.position || item.role || item.jobTitle || '',
         club: item.club || ''
       };
-      if (!save.linkedPeople.some(person => normaliseText(person.name) === normaliseText(entry.name))) save.linkedPeople.push(entry);
+
+      if (!save.linkedPeople.some(person => normaliseText(person.name) === normaliseText(entry.name))) {
+        save.linkedPeople.push(entry);
+      }
 
       const people = getPeople();
-      const personIndex = people.findIndex(person => normaliseText(person.name) === normaliseText(item.name) || String(getEntityKey(person)) === String(item.id));
+      const personIndex = people.findIndex(person =>
+        normaliseText(person.name) === normaliseText(item.name) ||
+        String(getEntityKey(person)) === String(item.id) ||
+        normaliseText(getEntityKey(person)) === normaliseText(item.id)
+      );
+
       if (personIndex >= 0) {
-        people[personIndex].linkedSaves = Array.isArray(people[personIndex].linkedSaves) ? people[personIndex].linkedSaves : [];
-        if (!people[personIndex].linkedSaves.includes(save.name)) people[personIndex].linkedSaves.push(save.name);
+        people[personIndex].linkedSaves = Array.isArray(people[personIndex].linkedSaves)
+          ? people[personIndex].linkedSaves
+          : [];
+
+        if (!people[personIndex].linkedSaves.some(linkedSave => saveNamesMatch(linkedSave, save.name))) {
+          people[personIndex].linkedSaves.push(save.name);
+        }
+
+        // Keep managers recognisable as managers even if they were created with role/jobTitle instead of type.
+        const rawType = String(people[personIndex].type || people[personIndex].jobTitle || people[personIndex].role || '').toLowerCase();
+        if (
+          item.type === 'Manager' ||
+          rawType.includes('manager') ||
+          rawType.includes('coach') ||
+          rawType.includes('staff') ||
+          rawType.includes('director')
+        ) {
+          people[personIndex].type = 'manager';
+          people[personIndex].role = people[personIndex].role || item.position || 'Manager';
+        }
+
         setPeople(people);
       }
 
