@@ -2125,6 +2125,27 @@
     let isEditMode = false;
     let syncingFromCloud = false;
 
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function encodeForClick(value) {
+      return encodeURIComponent(String(value ?? ''));
+    }
+
+    function decodeFromClick(value) {
+      try {
+        return decodeURIComponent(value);
+      } catch (e) {
+        return value;
+      }
+    }
+
     function safeCloudRead(key, fallback) {
       try {
         const raw = localStorage.getItem(key);
@@ -2361,7 +2382,10 @@
         ? selected.map(save => `
             <span class="save-tag">
               <span>${save}</span>
-              <button type="button" onclick="removeSaveSelection('${mode}','${String(save).replace(/'/g, "\'")}')">×</button>
+              <button
+                type="button"
+                onclick="removeSaveSelection('${mode}', decodeFromClick('${encodeForClick(save)}'))"
+              >×</button>
             </span>
           `).join('')
         : '<span class="save-tag-empty">No linked saves yet</span>';
@@ -2373,7 +2397,7 @@
               <button
                 type="button"
                 class="save-option-btn ${active ? 'active' : ''}"
-                onclick="toggleSaveSelection('${mode}','${String(save.name).replace(/'/g, "\'")}')"
+                onclick="toggleSaveSelection('${mode}', decodeFromClick('${encodeForClick(save.name)}'))"
               >
                 ${save.name}
               </button>
@@ -2440,7 +2464,7 @@
 
     function initials(name) {
       if (!name) return 'PE';
-      return name.split(' ').map(part => part[0]).join('').slice(0, 2).toUpperCase();
+      return String(name).split(' ').map(part => part[0]).join('').slice(0, 2).toUpperCase();
     }
 
     function getTypeMeta(type) {
@@ -2572,12 +2596,12 @@
 
     function renderClubBadge(src, large = false) {
       if (!src) return '';
-      return `<img src="${src}" alt="Club badge" class="club-badge${large ? ' large' : ''}">`;
+      return `<img src="${escapeHtml(src)}" alt="Club badge" class="club-badge${large ? ' large' : ''}">`;
     }
 
     function renderNationPill(nation) {
       if (!nation) return '<span class="nation-pill"><span class="nation-flag">🌍</span><span>Unknown</span></span>';
-      return `<span class="nation-pill"><span class="nation-flag">${getFlagEmoji(nation)}</span><span>${nation}</span></span>`;
+      return `<span class="nation-pill"><span class="nation-flag">${getFlagEmoji(nation)}</span><span>${escapeHtml(nation)}</span></span>`;
     }
 
     function parseSecondaryPositions(value) {
@@ -2593,7 +2617,7 @@
       if (!positions.length) return '';
       return `
         <div class="secondary-position-row">
-          ${positions.map(pos => `<span class="secondary-position-chip">${pos}</span>`).join('')}
+          ${positions.map(pos => `<span class="secondary-position-chip">${escapeHtml(pos)}</span>`).join('')}
         </div>
       `;
     }
@@ -3082,15 +3106,28 @@
     function populateComparisonSelect(basePerson) {
       const select = document.getElementById('comparisonSelect');
       if (!select) return;
+
       const candidates = getComparablePeople(basePerson);
+      const allPeople = getPeople();
+
       select.innerHTML = `
         <option value="">Select a ${basePerson.type === 'manager' ? 'manager' : 'player'}</option>
-        ${candidates.map(person => `<option value="${person.name}">${person.name}</option>`).join('')}
+        ${candidates.map(person => {
+          const index = allPeople.indexOf(person);
+          return `<option value="${index}">${escapeHtml(person.name)}</option>`;
+        }).join('')}
       `;
     }
 
-    function findComparisonPersonByName(name, type) {
-      return getPeople().find(person => person.name === name && person.type === type) || null;
+    function findComparisonPersonByName(value, type) {
+      const people = getPeople();
+      const index = Number(value);
+
+      if (Number.isInteger(index) && people[index] && people[index].type === type) {
+        return people[index];
+      }
+
+      return people.find(person => person.name === value && person.type === type) || null;
     }
 
     function getComparisonAttributeRows(personA, personB, count = 8) {
@@ -3325,26 +3362,26 @@
         card.innerHTML = `
           <div class="person-card-top">
             <div class="person-card-avatar">
-              ${person.image ? `<img src="${person.image}" alt="${person.name || 'Person'}">` : initials(person.name)}
+              ${person.image ? `<img src="${escapeHtml(person.image)}" alt="${escapeHtml(person.name || 'Person')}">` : escapeHtml(initials(person.name))}
             </div>
             <div>
               <div class="identity-row" style="margin:0 0 8px;">
                 ${renderClubBadge(person.clubBadge)}
                 ${renderNationPill(person.nation)}
               </div>
-              <h3>${person.name || 'Unnamed Person'}</h3>
+              <h3>${escapeHtml(person.name || 'Unnamed Person')}</h3>
             </div>
           </div>
-          <p class="muted" style="margin:10px 0 0;">${person.club || '-'} • ${person.role || '-'}</p>
-          ${person.lastTransfer ? `<div class="badge" style="margin-top:10px;">Last move: ${person.lastTransfer.from || '-'} → ${person.lastTransfer.to || '-'}${person.lastTransfer.fee ? ` • ${person.lastTransfer.fee}` : ''}</div>` : ''}
-          ${person.linkedSaves?.length ? `<div class="badge" style="margin-top:10px;">${person.linkedSaves.join(' • ')}</div>` : ''}
+          <p class="muted" style="margin:10px 0 0;">${escapeHtml(person.club || '-')} • ${escapeHtml(person.role || '-')}</p>
+          ${person.lastTransfer ? `<div class="badge" style="margin-top:10px;">Last move: ${escapeHtml(person.lastTransfer.from || '-')} → ${escapeHtml(person.lastTransfer.to || '-')}${person.lastTransfer.fee ? ` • ${escapeHtml(person.lastTransfer.fee)}` : ''}</div>` : ''}
+          ${person.linkedSaves?.length ? `<div class="badge" style="margin-top:10px;">${person.linkedSaves.map(escapeHtml).join(' • ')}</div>` : ''}
           <div class="badge">${person.type === 'manager' ? 'Manager' : 'Player'}</div>
           ${person.type === 'player' ? renderDualStars(person) : ''}
           <div class="info-list">
-            <div class="info-row"><span class="muted">Age</span><strong>${renderAgeLabel(person)}</strong></div>
-            <div class="info-row"><span class="muted">Position</span><strong>${person.position || '-'}</strong></div>
+            <div class="info-row"><span class="muted">Age</span><strong>${escapeHtml(renderAgeLabel(person))}</strong></div>
+            <div class="info-row"><span class="muted">Position</span><strong>${escapeHtml(person.position || '-')}</strong></div>
             ${person.type === 'player' && person.secondaryPositions ? `<div><span class="muted">Secondary</span>${renderSecondaryPositionChips(person.secondaryPositions)}</div>` : ''}
-            <div class="info-row"><span class="muted">Nation</span><strong>${person.nation || '-'}</strong></div>
+            <div class="info-row"><span class="muted">Nation</span><strong>${escapeHtml(person.nation || '-')}</strong></div>
           </div>
         `;
         container.appendChild(card);
@@ -3363,12 +3400,12 @@
       document.getElementById('profileOpenLabel').textContent = `${person.name || 'Unnamed Person'} • Profile`;
       const avatar = document.getElementById('pAvatar');
       if (person.image) {
-        avatar.innerHTML = `<img src="${person.image}" alt="${person.name || 'Person'}" style="width:100%;height:100%;object-fit:cover;border-radius:18px;">`;
+        avatar.innerHTML = `<img src="${escapeHtml(person.image)}" alt="${escapeHtml(person.name || 'Person')}" style="width:100%;height:100%;object-fit:cover;border-radius:18px;">`;
       } else {
         avatar.textContent = initials(person.name);
       }
-      document.getElementById('pName').innerHTML = `${person.name || '-'} ${renderClubBadge(person.clubBadge, true)}`;
-      document.getElementById('pInfo').innerHTML = `${person.type || '-'} • ${person.club || '-'} • ${person.role || '-'}<div class="identity-row" style="margin-top:10px;">${renderNationPill(person.nation)}</div>`;
+      document.getElementById('pName').innerHTML = `${escapeHtml(person.name || '-')} ${renderClubBadge(person.clubBadge, true)}`;
+      document.getElementById('pInfo').innerHTML = `${escapeHtml(person.type || '-')} • ${escapeHtml(person.club || '-')} • ${escapeHtml(person.role || '-')}<div class="identity-row" style="margin-top:10px;">${renderNationPill(person.nation)}</div>`;
       document.getElementById('pTypeBadge').textContent = person.type === 'manager' ? 'Manager' : 'Player';
       const pStarRow = document.getElementById('pStarRow');
       if (pStarRow) {
