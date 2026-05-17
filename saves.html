@@ -3476,6 +3476,10 @@
 
     function normaliseText(value) { return String(value || '').trim().toLowerCase(); }
 
+    function saveNamesMatch(a, b) {
+      return normaliseText(a) === normaliseText(b);
+    }
+
     function getEntityKey(entity) {
       return String(entity.id || entity.peopleId || entity.name || '').trim();
     }
@@ -4551,51 +4555,86 @@
     }
 
     function getLinkedPeopleForSave(save) {
-      const saveName = save.name;
+      const saveName = save?.name || '';
       const linked = [];
+
       const add = item => {
         if (!item || !item.name) return;
+
         const key = `${normaliseText(item.source || '')}:${normaliseText(item.id || item.name)}`;
-        if (!linked.some(existing => `${normaliseText(existing.source || '')}:${normaliseText(existing.id || existing.name)}` === key || normaliseText(existing.name) === normaliseText(item.name))) {
+        const sameKey = existing => `${normaliseText(existing.source || '')}:${normaliseText(existing.id || existing.name)}` === key;
+        const sameName = existing => normaliseText(existing.name) === normaliseText(item.name);
+
+        if (!linked.some(existing => sameKey(existing) || sameName(existing))) {
           linked.push(item);
         }
       };
 
       (save.linkedPeople || []).forEach(add);
 
-      getPeople().forEach(person => {
+      getPeople().forEach((person, index) => {
         const linkedSaves = Array.isArray(person.linkedSaves) ? person.linkedSaves : [];
-        if (linkedSaves.includes(saveName) || person.currentSave === saveName || person.save === saveName) {
-          const rawType = String(person.type || person.jobTitle || person.role || 'Person').trim();
-          const lowerType = rawType.toLowerCase();
-          const isManager =
-            lowerType.includes('manager') ||
-            lowerType.includes('coach') ||
-            lowerType.includes('staff') ||
-            lowerType.includes('director');
+        const personSaveValues = [
+          person.currentSave,
+          person.save,
+          person.saveName,
+          person.careerSave
+        ].filter(Boolean);
 
-          add({
-            source: 'people',
-            id: getEntityKey(person),
-            name: person.name || 'Unnamed Person',
-            type: isManager ? 'Manager' : (person.type || 'Player'),
-            position: isManager
-              ? (person.role || person.jobTitle || person.position || 'Manager')
-              : (person.position || person.role || person.jobTitle || ''),
-            club: person.club || person.team || ''
-          });
-        }
+        const isLinkedToThisSave =
+          linkedSaves.some(linkedSave => saveNamesMatch(linkedSave, saveName)) ||
+          personSaveValues.some(value => saveNamesMatch(value, saveName));
+
+        if (!isLinkedToThisSave) return;
+
+        const rawType = String(person.type || person.jobTitle || person.role || 'Person').trim();
+        const lowerType = rawType.toLowerCase();
+        const isManager =
+          lowerType.includes('manager') ||
+          lowerType.includes('coach') ||
+          lowerType.includes('staff') ||
+          lowerType.includes('director');
+
+        add({
+          source: 'people',
+          id: getEntityKey(person) || String(index),
+          name: person.name || 'Unnamed Person',
+          type: isManager ? 'Manager' : (person.type || 'Player'),
+          position: isManager
+            ? (person.role || person.jobTitle || person.position || 'Manager')
+            : (person.position || person.role || person.jobTitle || ''),
+          club: person.club || person.team || ''
+        });
       });
 
       getSquadPlayers().forEach((player, index) => {
         const playerSeasons = Array.isArray(player.seasons) ? player.seasons : [];
         const linkedSaves = Array.isArray(player.linkedSaves) ? player.linkedSaves : [];
-        if (linkedSaves.includes(saveName) || playerSeasons.some(season => season && season.save === saveName)) {
-          add({ source: 'squad', id: getEntityKey(player) || String(index), squadIndex: index, name: player.name || 'Unnamed Player', type: 'Player', position: player.position || '', club: player.club || '' });
+
+        if (
+          linkedSaves.some(linkedSave => saveNamesMatch(linkedSave, saveName)) ||
+          playerSeasons.some(season => season && saveNamesMatch(season.save, saveName))
+        ) {
+          add({
+            source: 'squad',
+            id: getEntityKey(player) || String(index),
+            squadIndex: index,
+            name: player.name || 'Unnamed Player',
+            type: 'Player',
+            position: player.position || '',
+            club: player.club || ''
+          });
         }
       });
 
-      (save.playerStats || []).forEach(stat => add({ source: stat.source || 'save', id: stat.personId || stat.personName, name: stat.personName || 'Unnamed Person', type: stat.type || 'Player', position: stat.position || '', club: stat.club || '' }));
+      (save.playerStats || []).forEach(stat => add({
+        source: stat.source || 'save',
+        id: stat.personId || stat.personName,
+        name: stat.personName || 'Unnamed Person',
+        type: stat.type || 'Player',
+        position: stat.position || '',
+        club: stat.club || ''
+      }));
 
       const situationManagerName = save.currentSituation?.manager || '';
       if (situationManagerName) {
@@ -4639,34 +4678,43 @@
         return;
       }
 
-      container.innerHTML = `<div style="display:grid; gap:10px;">${people.map((person, index) => {
-        const safeId = encodeForClick(person.id || person.name);
-        const safeName = encodeForClick(person.name);
+      window.currentLinkedSavePeople = people;
 
-        return `
-          <div class="person-card clickable-profile-card" onclick="openSavePersonProfile(decodeFromClick('${safeId}'), decodeFromClick('${safeName}'))">
-            <div class="linked-person-row">
-              ${renderSavePersonAvatar(person.id || person.name, person.name)}
-              <div style="min-width:0;">
-                <strong>${escapeHtml(person.name)}</strong>
-                <div class="muted" style="margin-top:4px;">${escapeHtml(person.position || person.type || 'Person')}${person.club ? ` • ${escapeHtml(person.club)}` : ''}</div>
-                <button
-                  class="secondary small-btn open-profile-btn"
-                  type="button"
-                  onclick="event.stopPropagation(); openSavePersonProfile(decodeFromClick('${safeId}'), decodeFromClick('${safeName}'))"
-                >Open Person</button>
-              </div>
-              ${person.source === 'manual' || person.source === 'people' || person.source === 'squad'
-                ? `<button
-                    class="secondary small-btn edit-only"
-                    type="button"
-                    onclick="event.stopPropagation(); unlinkPersonFromCurrentSave(decodeFromClick('${safeId}'), decodeFromClick('${safeName}'))"
-                  >Unlink</button>`
-                : ''}
+      container.innerHTML = `<div style="display:grid; gap:10px;">${people.map((person, index) => `
+        <div class="person-card clickable-profile-card" onclick="openLinkedSavePersonByIndex(${index})">
+          <div class="linked-person-row">
+            ${renderSavePersonAvatar(person.id || person.name, person.name)}
+            <div style="min-width:0;">
+              <strong>${escapeHtml(person.name)}</strong>
+              <div class="muted" style="margin-top:4px;">${escapeHtml(person.position || person.type || 'Person')}${person.club ? ` • ${escapeHtml(person.club)}` : ''}</div>
+              <button
+                class="secondary small-btn open-profile-btn"
+                type="button"
+                onclick="event.stopPropagation(); openLinkedSavePersonByIndex(${index})"
+              >Open Person</button>
             </div>
+            ${person.source === 'manual' || person.source === 'people' || person.source === 'squad'
+              ? `<button
+                  class="secondary small-btn edit-only"
+                  type="button"
+                  onclick="event.stopPropagation(); unlinkLinkedSavePersonByIndex(${index})"
+                >Unlink</button>`
+              : ''}
           </div>
-        `;
-      }).join('')}</div>`;
+        </div>
+      `).join('')}</div>`;
+    }
+
+    function openLinkedSavePersonByIndex(index) {
+      const person = window.currentLinkedSavePeople?.[index];
+      if (!person) return;
+      openSavePersonProfile(person.id || person.name, person.name);
+    }
+
+    function unlinkLinkedSavePersonByIndex(index) {
+      const person = window.currentLinkedSavePeople?.[index];
+      if (!person) return;
+      unlinkPersonFromCurrentSave(person.id || person.name, person.name);
     }
 
     function linkPersonToCurrentSave() {
@@ -4700,6 +4748,9 @@
     }
 
     function unlinkPersonFromCurrentSave(id, name) {
+      id = decodeFromClick(id);
+      name = decodeFromClick(name);
+
       const save = getCurrentSave();
       if (!save) return;
       save.linkedPeople = (save.linkedPeople || []).filter(person => normaliseText(person.name) !== normaliseText(name) && String(person.id || '') !== String(id || ''));
@@ -4765,13 +4816,32 @@
     }
 
     function findSavePerson(id, name) {
-      const cleanName = normaliseText(name);
-      const cleanId = String(id || '');
+      const decodedId = decodeFromClick(id);
+      const decodedName = decodeFromClick(name);
+
+      const cleanName = normaliseText(decodedName);
+      const cleanId = String(decodedId || '');
       const save = getCurrentSave();
       const linked = save ? getLinkedPeopleForSave(save) : [];
-      const linkedEntry = linked.find(item => normaliseText(item.name) === cleanName || String(item.id || '') === cleanId) || null;
-      const person = getPeople().find(item => normaliseText(item.name) === cleanName || String(getEntityKey(item)) === cleanId) || null;
-      const squadPlayer = getSquadPlayers().find(item => normaliseText(item.name) === cleanName || String(getEntityKey(item)) === cleanId) || null;
+
+      const linkedEntry = linked.find(item =>
+        normaliseText(item.name) === cleanName ||
+        String(item.id || '') === cleanId ||
+        normaliseText(item.id || '') === normaliseText(cleanId)
+      ) || null;
+
+      const person = getPeople().find(item =>
+        normaliseText(item.name) === cleanName ||
+        String(getEntityKey(item)) === cleanId ||
+        normaliseText(getEntityKey(item)) === normaliseText(cleanId)
+      ) || null;
+
+      const squadPlayer = getSquadPlayers().find(item =>
+        normaliseText(item.name) === cleanName ||
+        String(getEntityKey(item)) === cleanId ||
+        normaliseText(getEntityKey(item)) === normaliseText(cleanId)
+      ) || null;
+
       return { linkedEntry, person, squadPlayer };
     }
 
@@ -4855,6 +4925,9 @@
     }
 
     function openSavePersonProfile(id, name) {
+      id = decodeFromClick(id);
+      name = decodeFromClick(name);
+
       const save = getCurrentSave();
       if (!save) return;
       const { linkedEntry, person, squadPlayer } = findSavePerson(id, name);
@@ -4988,7 +5061,7 @@
         const latestTransfer = transfers.filter(transfer => normaliseText(transfer.player) === normaliseText(person.name)).slice(-1)[0];
         const clubLine = latestTransfer?.to || person.club || save?.club || '-';
         return `
-          <div class="person-card clickable-profile-card" onclick="openSavePersonProfile('${escapeHtml(person.id || person.name)}','${escapeHtml(person.name)}')">
+          <div class="person-card clickable-profile-card" onclick="openSavePersonProfile(decodeFromClick('${encodeForClick(person.id || person.name)}'), decodeFromClick('${encodeForClick(person.name)}'))">
             <div class="linked-person-row">
               ${renderSavePersonAvatar(person.id || person.name, person.name)}
               <div style="min-width:0;">
@@ -5000,7 +5073,7 @@
                   <span class="chip">${totals.assists} assists</span>
                 </div>
               </div>
-              <button class="secondary small-btn" type="button" onclick="event.stopPropagation(); openSavePersonProfile('${escapeHtml(person.id || person.name)}','${escapeHtml(person.name)}')">Open</button>
+              <button class="secondary small-btn" type="button" onclick="event.stopPropagation(); openSavePersonProfile(decodeFromClick('${encodeForClick(person.id || person.name)}'), decodeFromClick('${encodeForClick(person.name)}'))">Open</button>
             </div>
           </div>
         `;
