@@ -3672,6 +3672,7 @@
       renderSaveLogo(save);
       renderSquadClubSummary(save);
       renderOpenedSaveClubHeader(save);
+      repairCurrentSaveLinkedPeopleFromPeoplePage(save);
       renderCareerInsights(save);
       renderTimeline(save);
       renderSaveSeasonRecords(save.seasons || []);
@@ -4554,6 +4555,47 @@
       loadSaves();
     }
 
+    function repairCurrentSaveLinkedPeopleFromPeoplePage(save) {
+      if (!save) return save;
+
+      save.linkedPeople = Array.isArray(save.linkedPeople) ? save.linkedPeople : [];
+      let changed = false;
+
+      getPeople().forEach((person, index) => {
+        const linkedSaves = Array.isArray(person.linkedSaves) ? person.linkedSaves : [];
+        const isLinked = linkedSaves.some(linkedSave => saveNamesMatch(linkedSave, save.name));
+
+        if (!isLinked) return;
+
+        const alreadyLinked = save.linkedPeople.some(item => normaliseText(item.name) === normaliseText(person.name));
+        if (alreadyLinked) return;
+
+        const rawType = String(person.type || person.jobTitle || person.role || 'Person').trim();
+        const lowerType = rawType.toLowerCase();
+        const isManager =
+          lowerType.includes('manager') ||
+          lowerType.includes('coach') ||
+          lowerType.includes('staff') ||
+          lowerType.includes('director');
+
+        save.linkedPeople.push({
+          source: 'people',
+          id: getEntityKey(person) || String(index),
+          name: person.name || 'Unnamed Person',
+          type: isManager ? 'Manager' : (person.type || 'Player'),
+          position: isManager
+            ? (person.role || person.jobTitle || person.position || 'Manager')
+            : (person.position || person.role || person.jobTitle || ''),
+          club: person.club || person.team || ''
+        });
+
+        changed = true;
+      });
+
+      if (changed) updateCurrentSave(save);
+      return save;
+    }
+
     function getLinkedPeopleForSave(save) {
       const saveName = save?.name || '';
       const linked = [];
@@ -4665,7 +4707,54 @@
       if (statSelect) statSelect.innerHTML = html;
     }
 
-    function findOptionByKey(key) { return getAllPersonOptions().find(item => item.key === key); }
+    function findOptionByKey(key) {
+      const options = getAllPersonOptions();
+      const select = document.getElementById('personToLinkSelect');
+      const selectedText = select?.selectedOptions?.[0]?.textContent || '';
+
+      let item = options.find(option => option.key === key);
+      if (item) return item;
+
+      const cleanSelectedName = selectedText
+        .replace(/\s+—\s+.*$/, '')
+        .replace(/\s+\(.*\)$/, '')
+        .trim();
+
+      if (cleanSelectedName) {
+        item = options.find(option => normaliseText(option.name) === normaliseText(cleanSelectedName));
+        if (item) return item;
+      }
+
+      const person = getPeople().find(person =>
+        String(getEntityKey(person)) === String(key) ||
+        normaliseText(getEntityKey(person)) === normaliseText(key) ||
+        normaliseText(person.name) === normaliseText(cleanSelectedName)
+      );
+
+      if (person) {
+        const rawType = String(person.type || person.jobTitle || person.role || 'Person').trim();
+        const lowerType = rawType.toLowerCase();
+        const isManager =
+          lowerType.includes('manager') ||
+          lowerType.includes('coach') ||
+          lowerType.includes('staff') ||
+          lowerType.includes('director');
+
+        return {
+          source: 'people',
+          key: `person:${getEntityKey(person) || person.name || key}`,
+          id: getEntityKey(person) || person.name || key,
+          name: person.name || cleanSelectedName || 'Unnamed Person',
+          type: isManager ? 'Manager' : (person.type || 'Player'),
+          club: person.club || person.team || '',
+          position: isManager
+            ? (person.role || person.jobTitle || person.position || 'Manager')
+            : (person.position || person.role || person.jobTitle || '')
+        };
+      }
+
+      return null;
+    }
 
     function renderLinkedPeople(save) {
       const container = document.getElementById('linkedPeopleList');
@@ -4719,16 +4808,51 @@
 
     function linkPersonToCurrentSave() {
       const save = getCurrentSave();
-      const selectedKey = document.getElementById('personToLinkSelect')?.value || '';
-      const item = findOptionByKey(selectedKey);
+      const select = document.getElementById('personToLinkSelect');
+      const selectedKey = select?.value || '';
+      let item = findOptionByKey(selectedKey);
 
-      if (!save || !item) return;
+      if (!item && select?.selectedOptions?.[0]) {
+        const optionText = select.selectedOptions[0].textContent || '';
+        const nameOnly = optionText
+          .replace(/\s+—\s+.*$/, '')
+          .replace(/\s+\(.*\)$/, '')
+          .trim();
+
+        const person = getPeople().find(p => normaliseText(p.name) === normaliseText(nameOnly));
+
+        if (person) {
+          const rawType = String(person.type || person.jobTitle || person.role || 'Person').trim();
+          const lowerType = rawType.toLowerCase();
+          const isManager =
+            lowerType.includes('manager') ||
+            lowerType.includes('coach') ||
+            lowerType.includes('staff') ||
+            lowerType.includes('director');
+
+          item = {
+            source: 'people',
+            id: getEntityKey(person) || person.name || nameOnly,
+            name: person.name || nameOnly,
+            type: isManager ? 'Manager' : (person.type || 'Player'),
+            position: isManager
+              ? (person.role || person.jobTitle || person.position || 'Manager')
+              : (person.position || person.role || person.jobTitle || ''),
+            club: person.club || person.team || ''
+          };
+        }
+      }
+
+      if (!save || !item || !item.name) {
+        alert('Could not link that person. Try opening People, make sure the manager has a name, then come back and select them again.');
+        return;
+      }
 
       save.linkedPeople = Array.isArray(save.linkedPeople) ? save.linkedPeople : [];
 
       const entry = {
-        source: item.source,
-        id: item.id,
+        source: item.source || 'people',
+        id: item.id || item.name,
         name: item.name,
         type: item.type || 'Person',
         position: item.position || item.role || item.jobTitle || '',
@@ -4755,17 +4879,17 @@
           people[personIndex].linkedSaves.push(save.name);
         }
 
-        // Keep managers recognisable as managers even if they were created with role/jobTitle instead of type.
         const rawType = String(people[personIndex].type || people[personIndex].jobTitle || people[personIndex].role || '').toLowerCase();
+
         if (
-          item.type === 'Manager' ||
+          entry.type === 'Manager' ||
           rawType.includes('manager') ||
           rawType.includes('coach') ||
           rawType.includes('staff') ||
           rawType.includes('director')
         ) {
           people[personIndex].type = 'manager';
-          people[personIndex].role = people[personIndex].role || item.position || 'Manager';
+          people[personIndex].role = people[personIndex].role || entry.position || 'Manager';
         }
 
         setPeople(people);
