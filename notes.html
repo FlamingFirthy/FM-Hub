@@ -822,6 +822,583 @@
     }
 
 
+
+/* ================================================== */
+/* FINAL MOBILE APP FIX - NOTES PAGE                  */
+/* Keep this at the very bottom of the CSS             */
+/* ================================================== */
+@media (max-width: 768px) {
+  html,
+  body {
+    width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    font-size: 14px !important;
+    line-height: 1.42 !important;
+  }
+
+  .container,
+  main.container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  section {
+    padding: 8px 0 12px !important;
+  }
+
+  .hero {
+    padding: 12px 0 8px !important;
+  }
+
+  /* Header / nav */
+  header .nav-wrap,
+  .nav-wrap {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    padding: 12px 0 !important;
+    min-height: auto !important;
+    align-items: start !important;
+  }
+
+  header .logo,
+  .logo {
+    font-size: 1.25rem !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  header nav,
+  nav {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    justify-content: flex-start !important;
+    gap: 20px !important;
+    padding: 2px 0 10px !important;
+    border: 0 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  header nav::-webkit-scrollbar,
+  nav::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  header nav a,
+  nav a {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    font-size: 0.92rem !important;
+    padding: 6px 0 !important;
+  }
+
+  header nav a::after,
+  nav a::after {
+    bottom: -3px !important;
+  }
+
+  header .nav-wrap > div:last-child {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(150px, 1fr) !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  #themeSwitch {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 42px !important;
+    padding: 9px 34px 9px 12px !important;
+    border-radius: 14px !important;
+    font-size: 0.92rem !important;
+  }
+
+  .theme-wrapper {
+    width: 100% !important;
+  }
+
+  /* Hero + panels */
+  .hero-grid,
+  .notes-columns,
+  .player-notes-layout,
+  .editor-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .hero-card,
+  .panel,
+  .section-card,
+  .composer-card,
+  .note-modal-content {
+    padding: 14px !important;
+    border-radius: 18px !important;
+    min-height: auto !important;
+  }
+
+  .hero-card::after {
+    width: 120px !important;
+    height: 120px !important;
+    right: -45px !important;
+    bottom: -50px !important;
+  }
+
+  h1 {
+    font-size: 1.8rem !important;
+    max-width: none !important;
+    margin-bottom: 10px !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  h2 {
+    font-size: 1.22rem !important;
+  }
+
+  h3 {
+    font-size: 1rem !important;
+  }
+
+  p,
+  .muted,
+  .hero-copy {
+    font-size: 0.86rem !important;
+  }
+
+  .eyebrow,
+  .badge,
+  .tag,
+  .mini-label {
+    font-size: 0.64rem !important;
+    padding: 5px 8px !important;
+  }
+
+  .hero-actions {
+    gap: 8px !important;
+    margin-top: 12px !important;
+  }
+
+  .hero-actions .btn,
+  .hero-actions button {
+    flex: 1 1 calc(50% - 8px) !important;
+  }
+
+  .btn,
+  button {
+    padding: 9px 11px !important;
+    min-height: 38px !important;
+    border-radius: 11px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .icon-btn {
+    min-width: 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0 !important;
+    border-radius: 11px !important;
+  }
+
+  .stats-grid,
+  .panel .stats-grid,
+  .stats-grid[style] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .mini-panel {
+    padding: 10px !important;
+    border-radius: 15px !important;
+    min-height: 78px !important;
+  }
+
+  .mini-value {
+    font-size: 1rem !important;
+    margin-top: 5px !important;
+    line-height: 1.2 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* Section heads */
+  .section-head {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+    align-items: start !important;
+  }
+
+  .section-head p {
+    margin-top: 4px !important;
+  }
+
+  /* Inputs / forms */
+  .form-grid,
+  .filters {
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+  }
+
+  .filters {
+    padding: 10px !important;
+    border-radius: 15px !important;
+    margin-bottom: 12px !important;
+  }
+
+  label,
+  .mini-label {
+    font-size: 0.68rem !important;
+    margin-bottom: 5px !important;
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 10px !important;
+    border-radius: 11px !important;
+    font-size: 0.9rem !important;
+    min-height: 40px !important;
+  }
+
+  textarea {
+    min-height: 90px !important;
+  }
+
+  #noteContent {
+    min-height: 240px !important;
+  }
+
+  /* To-do list */
+  .quick-list,
+  .todo-list,
+  .player-notes-list,
+  .player-list {
+    gap: 8px !important;
+    margin-top: 10px !important;
+  }
+
+  .quick-item,
+  .todo-item,
+  .player-note-item,
+  .player-list-item {
+    padding: 10px !important;
+    border-radius: 15px !important;
+  }
+
+  .todo-item {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .todo-main {
+    gap: 9px !important;
+    min-width: 0 !important;
+  }
+
+  .todo-main input[type="checkbox"] {
+    flex-shrink: 0 !important;
+  }
+
+  .todo-text strong {
+    font-size: 0.86rem !important;
+    line-height: 1.2 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .todo-text span {
+    display: block !important;
+    font-size: 0.74rem !important;
+    line-height: 1.25 !important;
+    margin-top: 3px !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .todo-actions {
+    width: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .todo-actions .tag {
+    display: none !important;
+  }
+
+  /* Player linked notes */
+  .player-list-item {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+  }
+
+  .player-list-main,
+  .player-note-main {
+    grid-template-columns: 38px minmax(0, 1fr) !important;
+    gap: 9px !important;
+  }
+
+  .player-avatar,
+  .player-note-avatar {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .player-list-item strong,
+  .player-note-item strong {
+    font-size: 0.84rem !important;
+    line-height: 1.2 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .player-list-item .muted,
+  .player-note-item .muted {
+    display: block !important;
+    font-size: 0.72rem !important;
+    line-height: 1.2 !important;
+    margin-top: 3px !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .player-list-item .tag {
+    font-size: 0.58rem !important;
+    padding: 4px 6px !important;
+  }
+
+  .player-note-head {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .player-note-item > div:last-child {
+    font-size: 0.82rem !important;
+    line-height: 1.45 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* Main note cards */
+  .notes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 9px !important;
+  }
+
+  .note-card {
+    padding: 10px !important;
+    border-radius: 16px !important;
+    min-height: 150px !important;
+    gap: 8px !important;
+  }
+
+  .note-card:hover,
+  .section-card:hover,
+  .todo-item:hover,
+  .player-note-item:hover,
+  .player-list-item:hover {
+    transform: none !important;
+  }
+
+  .note-top,
+  .note-footer {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+    align-items: start !important;
+  }
+
+  .note-title {
+    font-size: 0.88rem !important;
+    line-height: 1.15 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .note-meta {
+    gap: 4px !important;
+    margin-top: 6px !important;
+  }
+
+  .note-meta .tag,
+  .note-card .tag {
+    font-size: 0.56rem !important;
+    padding: 4px 6px !important;
+    line-height: 1.1 !important;
+  }
+
+  .note-preview {
+    padding: 8px !important;
+    border-radius: 11px !important;
+    font-size: 0.72rem !important;
+    line-height: 1.35 !important;
+    -webkit-line-clamp: 3 !important;
+  }
+
+  .note-footer {
+    font-size: 0.62rem !important;
+    line-height: 1.2 !important;
+    margin-top: auto !important;
+  }
+
+  /* Note editor modal */
+  #noteOverlay {
+    padding: 10px !important;
+    align-items: flex-end !important;
+  }
+
+  .note-modal {
+    width: 100% !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+  }
+
+  .note-modal-content {
+    padding: 14px !important;
+    border-radius: 18px !important;
+  }
+
+  .note-modal-content > .section-head {
+    margin-bottom: 8px !important;
+  }
+
+  .note-modal-content > .hero-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .note-modal-content > .hero-actions button {
+    width: 100% !important;
+    min-height: 34px !important;
+    font-size: 0.72rem !important;
+    padding: 7px 8px !important;
+  }
+
+  .tabs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    padding: 6px !important;
+    gap: 6px !important;
+    scrollbar-width: none !important;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .tab-btn {
+    flex: 0 0 auto !important;
+    min-height: 34px !important;
+    padding: 7px 10px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .sidebar-stack {
+    gap: 10px !important;
+  }
+
+  .sidebar-stack .section-card {
+    padding: 10px !important;
+    border-radius: 15px !important;
+  }
+
+  .meta-list {
+    gap: 8px !important;
+    margin-top: 10px !important;
+  }
+
+  .meta-item {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    gap: 8px !important;
+    padding-bottom: 7px !important;
+  }
+
+  .meta-item span,
+  .meta-item strong {
+    font-size: 0.78rem !important;
+  }
+
+  .toolbar {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 7px !important;
+    margin-top: 10px !important;
+  }
+
+  .toolbar button {
+    width: 100% !important;
+  }
+
+  .content-box {
+    min-height: 220px !important;
+    padding: 12px !important;
+    border-radius: 14px !important;
+    font-size: 0.86rem !important;
+    line-height: 1.55 !important;
+  }
+
+  .empty-state {
+    min-height: 86px !important;
+    padding: 12px !important;
+    border-radius: 15px !important;
+    font-size: 0.82rem !important;
+  }
+
+  footer {
+    padding: 18px 0 24px !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .notes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .note-card {
+    padding: 9px !important;
+    min-height: 140px !important;
+  }
+
+  .note-title {
+    font-size: 0.82rem !important;
+  }
+
+  .note-preview {
+    font-size: 0.68rem !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .notes-grid,
+  .stats-grid,
+  .panel .stats-grid,
+  .stats-grid[style] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-actions .btn,
+  .hero-actions button {
+    flex: 1 1 100% !important;
+  }
+}
+
 </style>
 </head>
 <body>
