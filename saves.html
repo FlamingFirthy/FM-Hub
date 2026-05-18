@@ -3481,60 +3481,56 @@
     }
 
     function getEntityKey(entity) {
-      return String(
-        entity?.id ||
-        entity?.peopleId ||
-        entity?.personId ||
-        entity?.uid ||
-        entity?.createdAt ||
-        entity?.slug ||
-        ''
-      ).trim();
+      return String(entity.id || entity.peopleId || entity.name || '').trim();
     }
 
     function getAllPersonOptions() {
-      const options = [];
+      const map = new Map();
 
       getPeople().forEach((person, index) => {
         const name = person.name || person.fullName || 'Unnamed Person';
         const rawType = String(person.type || person.jobTitle || person.role || 'Person').trim();
         const lowerType = rawType.toLowerCase();
-        const isManager = lowerType.includes('manager') || lowerType.includes('coach') || lowerType.includes('staff') || lowerType.includes('director');
-        const id = getEntityKey(person) || `people-index-${index}`;
+        const isManager =
+          lowerType.includes('manager') ||
+          lowerType.includes('coach') ||
+          lowerType.includes('staff') ||
+          lowerType.includes('director');
 
-        options.push({
+        const key = `person:${getEntityKey(person) || name || index}`;
+
+        map.set(key, {
           source: 'people',
-          key: `people:${id}`,
-          id,
-          peopleIndex: index,
+          key,
+          id: getEntityKey(person) || String(index),
           name,
           type: isManager ? 'Manager' : (person.type || 'Player'),
           club: person.club || person.team || '',
-          position: isManager ? (person.role || person.jobTitle || person.position || 'Manager') : (person.position || person.role || person.jobTitle || '')
+          position: isManager
+            ? (person.role || person.jobTitle || person.position || 'Manager')
+            : (person.position || person.role || person.jobTitle || '')
         });
       });
 
       getSquadPlayers().forEach((player, index) => {
         const name = player.name || 'Unnamed Player';
-        const id = getEntityKey(player) || `squad-index-${index}`;
+        const key = `squad:${getEntityKey(player) || index}:${name}`;
 
-        options.push({
-          source: 'squad',
-          key: `squad:${id}`,
-          id,
-          squadIndex: index,
-          name,
-          type: 'Player',
-          club: player.club || '',
-          position: player.position || ''
-        });
+        if (![...map.values()].some(item => normaliseText(item.name) === normaliseText(name))) {
+          map.set(key, {
+            source: 'squad',
+            key,
+            id: getEntityKey(player) || String(index),
+            squadIndex: index,
+            name,
+            type: 'Player',
+            club: player.club || '',
+            position: player.position || ''
+          });
+        }
       });
 
-      return options.sort((a, b) =>
-        String(a.name).localeCompare(String(b.name)) ||
-        String(a.type).localeCompare(String(b.type)) ||
-        String(a.id).localeCompare(String(b.id))
-      );
+      return Array.from(map.values()).sort((a, b) => String(a.name).localeCompare(String(b.name)));
     }
 
     function getCurrentSave() {
@@ -4568,26 +4564,28 @@
       getPeople().forEach((person, index) => {
         const linkedSaves = Array.isArray(person.linkedSaves) ? person.linkedSaves : [];
         const isLinked = linkedSaves.some(linkedSave => saveNamesMatch(linkedSave, save.name));
+
         if (!isLinked) return;
 
-        const id = getEntityKey(person) || `people-index-${index}`;
-        const alreadyLinked = save.linkedPeople.some(item =>
-          normaliseText(item.source || 'people') === 'people' &&
-          normaliseText(item.id || item.name) === normaliseText(id)
-        );
+        const alreadyLinked = save.linkedPeople.some(item => normaliseText(item.name) === normaliseText(person.name));
         if (alreadyLinked) return;
 
         const rawType = String(person.type || person.jobTitle || person.role || 'Person').trim();
         const lowerType = rawType.toLowerCase();
-        const isManager = lowerType.includes('manager') || lowerType.includes('coach') || lowerType.includes('staff') || lowerType.includes('director');
+        const isManager =
+          lowerType.includes('manager') ||
+          lowerType.includes('coach') ||
+          lowerType.includes('staff') ||
+          lowerType.includes('director');
 
         save.linkedPeople.push({
           source: 'people',
-          id,
-          peopleIndex: index,
+          id: getEntityKey(person) || String(index),
           name: person.name || 'Unnamed Person',
           type: isManager ? 'Manager' : (person.type || 'Player'),
-          position: isManager ? (person.role || person.jobTitle || person.position || 'Manager') : (person.position || person.role || person.jobTitle || ''),
+          position: isManager
+            ? (person.role || person.jobTitle || person.position || 'Manager')
+            : (person.position || person.role || person.jobTitle || ''),
           club: person.club || person.team || ''
         });
 
@@ -4604,10 +4602,12 @@
 
       const add = item => {
         if (!item || !item.name) return;
-        const source = item.source || 'people';
-        const id = item.id || item.name;
-        const key = `${normaliseText(source)}:${normaliseText(id)}`;
-        if (!linked.some(existing => `${normaliseText(existing.source || 'people')}:${normaliseText(existing.id || existing.name)}` === key)) {
+
+        const key = `${normaliseText(item.source || '')}:${normaliseText(item.id || item.name)}`;
+        const sameKey = existing => `${normaliseText(existing.source || '')}:${normaliseText(existing.id || existing.name)}` === key;
+        const sameName = existing => normaliseText(existing.name) === normaliseText(item.name);
+
+        if (!linked.some(existing => sameKey(existing) || sameName(existing))) {
           linked.push(item);
         }
       };
@@ -4616,21 +4616,35 @@
 
       getPeople().forEach((person, index) => {
         const linkedSaves = Array.isArray(person.linkedSaves) ? person.linkedSaves : [];
-        const personSaveValues = [person.currentSave, person.save, person.saveName, person.careerSave].filter(Boolean);
-        const isLinkedToThisSave = linkedSaves.some(linkedSave => saveNamesMatch(linkedSave, saveName)) || personSaveValues.some(value => saveNamesMatch(value, saveName));
+        const personSaveValues = [
+          person.currentSave,
+          person.save,
+          person.saveName,
+          person.careerSave
+        ].filter(Boolean);
+
+        const isLinkedToThisSave =
+          linkedSaves.some(linkedSave => saveNamesMatch(linkedSave, saveName)) ||
+          personSaveValues.some(value => saveNamesMatch(value, saveName));
+
         if (!isLinkedToThisSave) return;
 
         const rawType = String(person.type || person.jobTitle || person.role || 'Person').trim();
         const lowerType = rawType.toLowerCase();
-        const isManager = lowerType.includes('manager') || lowerType.includes('coach') || lowerType.includes('staff') || lowerType.includes('director');
+        const isManager =
+          lowerType.includes('manager') ||
+          lowerType.includes('coach') ||
+          lowerType.includes('staff') ||
+          lowerType.includes('director');
 
         add({
           source: 'people',
-          id: getEntityKey(person) || `people-index-${index}`,
-          peopleIndex: index,
+          id: getEntityKey(person) || String(index),
           name: person.name || 'Unnamed Person',
           type: isManager ? 'Manager' : (person.type || 'Player'),
-          position: isManager ? (person.role || person.jobTitle || person.position || 'Manager') : (person.position || person.role || person.jobTitle || ''),
+          position: isManager
+            ? (person.role || person.jobTitle || person.position || 'Manager')
+            : (person.position || person.role || person.jobTitle || ''),
           club: person.club || person.team || ''
         });
       });
@@ -4638,10 +4652,14 @@
       getSquadPlayers().forEach((player, index) => {
         const playerSeasons = Array.isArray(player.seasons) ? player.seasons : [];
         const linkedSaves = Array.isArray(player.linkedSaves) ? player.linkedSaves : [];
-        if (linkedSaves.some(linkedSave => saveNamesMatch(linkedSave, saveName)) || playerSeasons.some(season => season && saveNamesMatch(season.save, saveName))) {
+
+        if (
+          linkedSaves.some(linkedSave => saveNamesMatch(linkedSave, saveName)) ||
+          playerSeasons.some(season => season && saveNamesMatch(season.save, saveName))
+        ) {
           add({
             source: 'squad',
-            id: getEntityKey(player) || `squad-index-${index}`,
+            id: getEntityKey(player) || String(index),
             squadIndex: index,
             name: player.name || 'Unnamed Player',
             type: 'Player',
@@ -4660,11 +4678,22 @@
         club: stat.club || ''
       }));
 
-      return linked.sort((a, b) =>
-        String(a.name).localeCompare(String(b.name)) ||
-        String(a.type).localeCompare(String(b.type)) ||
-        String(a.id).localeCompare(String(b.id))
-      );
+      const situationManagerName = save.currentSituation?.manager || '';
+      if (situationManagerName) {
+        const managerPerson = getPeople().find(person => normaliseText(person.name) === normaliseText(situationManagerName));
+        if (managerPerson) {
+          add({
+            source: 'people',
+            id: getEntityKey(managerPerson),
+            name: managerPerson.name || situationManagerName,
+            type: 'Manager',
+            position: managerPerson.role || managerPerson.jobTitle || managerPerson.position || 'Manager',
+            club: managerPerson.club || managerPerson.team || save.club || ''
+          });
+        }
+      }
+
+      return linked.sort((a, b) => String(a.name).localeCompare(String(b.name)));
     }
 
     function populatePersonSelectors(save) {
@@ -4680,29 +4709,48 @@
 
     function findOptionByKey(key) {
       const options = getAllPersonOptions();
+      const select = document.getElementById('personToLinkSelect');
+      const selectedText = select?.selectedOptions?.[0]?.textContent || '';
+
       let item = options.find(option => option.key === key);
       if (item) return item;
 
-      const peopleMatch = String(key || '').match(/^people:(.+)$/);
-      if (peopleMatch) {
-        const id = peopleMatch[1];
-        const indexMatch = String(id).match(/^people-index-(\d+)$/);
-        if (indexMatch) {
-          const index = Number(indexMatch[1]);
-          return options.find(option => option.source === 'people' && option.peopleIndex === index) || null;
-        }
-        return options.find(option => option.source === 'people' && String(option.id) === String(id)) || null;
+      const cleanSelectedName = selectedText
+        .replace(/\s+—\s+.*$/, '')
+        .replace(/\s+\(.*\)$/, '')
+        .trim();
+
+      if (cleanSelectedName) {
+        item = options.find(option => normaliseText(option.name) === normaliseText(cleanSelectedName));
+        if (item) return item;
       }
 
-      const squadMatch = String(key || '').match(/^squad:(.+)$/);
-      if (squadMatch) {
-        const id = squadMatch[1];
-        const indexMatch = String(id).match(/^squad-index-(\d+)$/);
-        if (indexMatch) {
-          const index = Number(indexMatch[1]);
-          return options.find(option => option.source === 'squad' && option.squadIndex === index) || null;
-        }
-        return options.find(option => option.source === 'squad' && String(option.id) === String(id)) || null;
+      const person = getPeople().find(person =>
+        String(getEntityKey(person)) === String(key) ||
+        normaliseText(getEntityKey(person)) === normaliseText(key) ||
+        normaliseText(person.name) === normaliseText(cleanSelectedName)
+      );
+
+      if (person) {
+        const rawType = String(person.type || person.jobTitle || person.role || 'Person').trim();
+        const lowerType = rawType.toLowerCase();
+        const isManager =
+          lowerType.includes('manager') ||
+          lowerType.includes('coach') ||
+          lowerType.includes('staff') ||
+          lowerType.includes('director');
+
+        return {
+          source: 'people',
+          key: `person:${getEntityKey(person) || person.name || key}`,
+          id: getEntityKey(person) || person.name || key,
+          name: person.name || cleanSelectedName || 'Unnamed Person',
+          type: isManager ? 'Manager' : (person.type || 'Player'),
+          club: person.club || person.team || '',
+          position: isManager
+            ? (person.role || person.jobTitle || person.position || 'Manager')
+            : (person.position || person.role || person.jobTitle || '')
+        };
       }
 
       return null;
@@ -4760,11 +4808,43 @@
 
     function linkPersonToCurrentSave() {
       const save = getCurrentSave();
-      const selectedKey = document.getElementById('personToLinkSelect')?.value || '';
-      const item = findOptionByKey(selectedKey);
+      const select = document.getElementById('personToLinkSelect');
+      const selectedKey = select?.value || '';
+      let item = findOptionByKey(selectedKey);
+
+      if (!item && select?.selectedOptions?.[0]) {
+        const optionText = select.selectedOptions[0].textContent || '';
+        const nameOnly = optionText
+          .replace(/\s+—\s+.*$/, '')
+          .replace(/\s+\(.*\)$/, '')
+          .trim();
+
+        const person = getPeople().find(p => normaliseText(p.name) === normaliseText(nameOnly));
+
+        if (person) {
+          const rawType = String(person.type || person.jobTitle || person.role || 'Person').trim();
+          const lowerType = rawType.toLowerCase();
+          const isManager =
+            lowerType.includes('manager') ||
+            lowerType.includes('coach') ||
+            lowerType.includes('staff') ||
+            lowerType.includes('director');
+
+          item = {
+            source: 'people',
+            id: getEntityKey(person) || person.name || nameOnly,
+            name: person.name || nameOnly,
+            type: isManager ? 'Manager' : (person.type || 'Player'),
+            position: isManager
+              ? (person.role || person.jobTitle || person.position || 'Manager')
+              : (person.position || person.role || person.jobTitle || ''),
+            club: person.club || person.team || ''
+          };
+        }
+      }
 
       if (!save || !item || !item.name) {
-        alert('Could not link that person. Refresh the app, then try again.');
+        alert('Could not link that person. Try opening People, make sure the manager has a name, then come back and select them again.');
         return;
       }
 
@@ -4773,38 +4853,46 @@
       const entry = {
         source: item.source || 'people',
         id: item.id || item.name,
-        peopleIndex: item.peopleIndex,
-        squadIndex: item.squadIndex,
         name: item.name,
         type: item.type || 'Person',
-        position: item.position || '',
+        position: item.position || item.role || item.jobTitle || '',
         club: item.club || ''
       };
 
-      const alreadyLinked = save.linkedPeople.some(person =>
-        normaliseText(person.source || 'people') === normaliseText(entry.source || 'people') &&
-        normaliseText(person.id || person.name) === normaliseText(entry.id || entry.name)
+      if (!save.linkedPeople.some(person => normaliseText(person.name) === normaliseText(entry.name))) {
+        save.linkedPeople.push(entry);
+      }
+
+      const people = getPeople();
+      const personIndex = people.findIndex(person =>
+        normaliseText(person.name) === normaliseText(item.name) ||
+        String(getEntityKey(person)) === String(item.id) ||
+        normaliseText(getEntityKey(person)) === normaliseText(item.id)
       );
 
-      if (!alreadyLinked) save.linkedPeople.push(entry);
+      if (personIndex >= 0) {
+        people[personIndex].linkedSaves = Array.isArray(people[personIndex].linkedSaves)
+          ? people[personIndex].linkedSaves
+          : [];
 
-      if (item.source === 'people') {
-        const people = getPeople();
-        let personIndex = Number.isInteger(item.peopleIndex) ? item.peopleIndex : -1;
-
-        if (personIndex < 0 || !people[personIndex]) {
-          personIndex = people.findIndex(person => String(getEntityKey(person)) === String(item.id));
+        if (!people[personIndex].linkedSaves.some(linkedSave => saveNamesMatch(linkedSave, save.name))) {
+          people[personIndex].linkedSaves.push(save.name);
         }
 
-        if (personIndex >= 0 && people[personIndex]) {
-          people[personIndex].linkedSaves = Array.isArray(people[personIndex].linkedSaves) ? people[personIndex].linkedSaves : [];
+        const rawType = String(people[personIndex].type || people[personIndex].jobTitle || people[personIndex].role || '').toLowerCase();
 
-          if (!people[personIndex].linkedSaves.some(linkedSave => saveNamesMatch(linkedSave, save.name))) {
-            people[personIndex].linkedSaves.push(save.name);
-          }
-
-          setPeople(people);
+        if (
+          entry.type === 'Manager' ||
+          rawType.includes('manager') ||
+          rawType.includes('coach') ||
+          rawType.includes('staff') ||
+          rawType.includes('director')
+        ) {
+          people[personIndex].type = 'manager';
+          people[personIndex].role = people[personIndex].role || entry.position || 'Manager';
         }
+
+        setPeople(people);
       }
 
       updateCurrentSave(save);
