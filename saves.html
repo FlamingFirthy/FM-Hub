@@ -3401,8 +3401,13 @@
 
     function updatePersonClubFromTransfer(transfer) {
       if (!transfer || !transfer.player) return;
+
       const destination = transfer.to || transfer.toClub || transfer.newClub || transfer.destination || '';
       if (!destination) return;
+
+      const fromClub = transfer.from || transfer.fromClub || '';
+      const fromLogo = getTransferLogoForClub(transfer, 'from');
+      const toLogo = getTransferLogoForClub(transfer, 'to');
 
       const people = getPeople();
       let peopleChanged = false;
@@ -3412,14 +3417,23 @@
         if (normaliseText(person.name) !== normaliseText(transfer.player)) return;
 
         person.club = destination;
+
+        if (toLogo) {
+          person.clubBadge = toLogo;
+          person.clubLogo = toLogo;
+        }
+
         person.lastTransfer = {
           save: getCurrentSave()?.name || '',
           season: transfer.season || '',
           type: transfer.type || '',
-          from: transfer.from || transfer.fromClub || '',
+          from: fromClub,
           to: destination,
-          fee: transfer.fee || ''
+          fee: transfer.fee || '',
+          fromLogo,
+          toLogo
         };
+
         peopleChanged = true;
       });
 
@@ -3427,19 +3441,32 @@
 
       const players = getSquadPlayers();
       let squadChanged = false;
+
       players.forEach(player => {
         if (normaliseText(player.name) !== normaliseText(transfer.player)) return;
+
         player.club = destination;
+
+        if (toLogo) {
+          player.clubBadge = toLogo;
+          player.clubLogo = toLogo;
+          player.teamLogo = toLogo;
+        }
+
         player.lastTransfer = {
           save: getCurrentSave()?.name || '',
           season: transfer.season || '',
           type: transfer.type || '',
-          from: transfer.from || transfer.fromClub || '',
+          from: fromClub,
           to: destination,
-          fee: transfer.fee || ''
+          fee: transfer.fee || '',
+          fromLogo,
+          toLogo
         };
+
         squadChanged = true;
       });
+
       if (squadChanged) setSquadPlayers(players);
     }
 
@@ -4287,6 +4314,45 @@
       return clean.split(/\s+/).map(part => part[0]).join('').slice(0, 2).toUpperCase();
     }
 
+    function getClubBadgeByClubName(clubName) {
+      const cleanClub = normaliseText(clubName);
+      if (!cleanClub) return '';
+
+      const peopleMatch = getPeople().find(person =>
+        normaliseText(person.club || person.team || person.currentClub) === cleanClub &&
+        (person.clubBadge || person.clubLogo || person.logo)
+      );
+
+      if (peopleMatch) {
+        return peopleMatch.clubBadge || peopleMatch.clubLogo || peopleMatch.logo || '';
+      }
+
+      const squadMatch = getSquadPlayers().find(player =>
+        normaliseText(player.club || player.team || player.currentClub) === cleanClub &&
+        (player.clubBadge || player.clubLogo || player.logo || player.teamLogo)
+      );
+
+      if (squadMatch) {
+        return squadMatch.clubBadge || squadMatch.clubLogo || squadMatch.logo || squadMatch.teamLogo || '';
+      }
+
+      return '';
+    }
+
+    function getTransferLogoForClub(transfer, side) {
+      if (!transfer) return '';
+
+      const clubName = side === 'from'
+        ? (transfer.from || transfer.fromClub || transfer.oldClub || '')
+        : (transfer.to || transfer.toClub || transfer.newClub || transfer.destination || '');
+
+      const directLogo = side === 'from'
+        ? (transfer.fromLogo || transfer.fromBadge || transfer.oldClubLogo || transfer.oldClubBadge || '')
+        : (transfer.toLogo || transfer.toBadge || transfer.newClubLogo || transfer.newClubBadge || '');
+
+      return directLogo || getClubBadgeByClubName(clubName);
+    }
+
     function renderClubLogoMarkup(name, logo, colour) {
       const safeColour = escapeHtml(colour || '#64748b');
       const safeName = escapeHtml(name || 'Club');
@@ -4342,6 +4408,8 @@
         const originalIndex = allTransfers.indexOf(transfer);
         const fromColour = transfer.fromColour || '#64748b';
         const toColour = transfer.toColour || '#ff3b3b';
+        const fromLogo = getTransferLogoForClub(transfer, 'from');
+        const toLogo = getTransferLogoForClub(transfer, 'to');
         return `
           <div class="transfer-card" style="--from-colour:${escapeHtml(fromColour)}; --to-colour:${escapeHtml(toColour)};">
             <div class="transfer-card-top">
@@ -4354,12 +4422,12 @@
             </div>
             <div class="transfer-route">
               <div class="transfer-club-box">
-                ${renderClubLogoMarkup(transfer.from || 'From', transfer.fromLogo || '', fromColour)}
+                ${renderClubLogoMarkup(transfer.from || 'From', fromLogo, fromColour)}
                 <div><span>From</span><strong>${escapeHtml(transfer.from || '-')}</strong></div>
               </div>
               <div class="transfer-arrow">→</div>
               <div class="transfer-club-box">
-                ${renderClubLogoMarkup(transfer.to || 'To', transfer.toLogo || '', toColour)}
+                ${renderClubLogoMarkup(transfer.to || 'To', toLogo, toColour)}
                 <div><span>To</span><strong>${escapeHtml(transfer.to || '-')}</strong></div>
               </div>
             </div>
@@ -4442,33 +4510,49 @@
     function addTransferRecord() {
       const save = getCurrentSave();
       if (!save) return;
+
+      const fromClub = document.getElementById('transferFromInput')?.value.trim() || '';
+      const toClub = document.getElementById('transferToInput')?.value.trim() || '';
+
       const transfer = {
         player: getTransferPlayerInputValue(),
         season: document.getElementById('transferSeasonInput')?.value.trim() || '',
         type: document.getElementById('transferTypeInput')?.value || 'In',
-        from: document.getElementById('transferFromInput')?.value.trim() || '',
-        to: document.getElementById('transferToInput')?.value.trim() || '',
+        from: fromClub,
+        to: toClub,
         fee: document.getElementById('transferFeeInput')?.value.trim() || '',
         fromColour: document.getElementById('transferFromColourInput')?.value || '#64748b',
         toColour: document.getElementById('transferToColourInput')?.value || '#ff3b3b',
-        fromLogo: document.getElementById('transferFromLogoInput')?.value.trim() || '',
-        toLogo: document.getElementById('transferToLogoInput')?.value.trim() || '',
+        fromLogo: document.getElementById('transferFromLogoInput')?.value.trim() || getClubBadgeByClubName(fromClub),
+        toLogo: document.getElementById('transferToLogoInput')?.value.trim() || getClubBadgeByClubName(toClub),
         notes: document.getElementById('transferNotesInput')?.value.trim() || ''
       };
+
       if (!transfer.player) return;
+
       save.transfers = Array.isArray(save.transfers) ? save.transfers : [];
       save.transfers.push(transfer);
+
       updatePersonClubFromTransfer(transfer);
       updateCurrentSave(save);
-      ['transferSeasonInput','transferFromInput','transferToInput','transferFeeInput','transferFromLogoInput','transferToLogoInput','transferNotesInput','transferPlayerManualInput'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+
+      ['transferSeasonInput','transferFromInput','transferToInput','transferFeeInput','transferFromLogoInput','transferToLogoInput','transferNotesInput','transferPlayerManualInput'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
       populateTransferPlayerDropdown(save);
       populateAwardPersonDropdown(save);
+
       const typeSelect = document.getElementById('transferTypeInput');
       if (typeSelect) typeSelect.value = 'In';
+
       const fromColour = document.getElementById('transferFromColourInput');
       const toColour = document.getElementById('transferToColourInput');
+
       if (fromColour) fromColour.value = '#64748b';
       if (toColour) toColour.value = '#ff3b3b';
+
       renderTransferRecords(save);
       loadSaves();
     }
