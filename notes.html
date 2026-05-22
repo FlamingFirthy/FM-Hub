@@ -1399,6 +1399,42 @@
   }
 }
 
+
+    /* Admin mode */
+    .admin-only {
+      display: none !important;
+    }
+
+    body.is-admin .admin-only {
+      display: inline-flex !important;
+    }
+
+    body.is-admin div.admin-only,
+    body.is-admin section.admin-only,
+    body.is-admin form.admin-only,
+    body.is-admin .admin-only.admin-block {
+      display: block !important;
+    }
+
+    body.is-admin .admin-only.admin-grid {
+      display: grid !important;
+    }
+
+    body.is-admin .admin-only.admin-flex {
+      display: flex !important;
+    }
+
+    body.is-admin .viewer-only {
+      display: none !important;
+    }
+
+    .admin-login-btn {
+      padding: 8px 11px;
+      border-radius: 11px;
+      font-size: 0.78rem;
+      min-height: 0;
+    }
+
 </style>
 </head>
 <body>
@@ -1427,6 +1463,8 @@
           </select>
           <span>▼</span>
         </div>
+        <button class="secondary admin-login-btn viewer-only" type="button" onclick="adminLogin()">Admin</button>
+        <button class="secondary admin-login-btn admin-only" type="button" onclick="adminLogout()">Logout</button>
       </div>
     </div>
   </header>
@@ -1439,7 +1477,7 @@
           <h1>Keep your FM thoughts organised.</h1>
           <p class="hero-copy muted">Track save ideas, transfer plans, shortlists, storylines and fast reminders without making Notes feel bloated.</p>
           <div class="hero-actions">
-            <button class="primary" type="button" onclick="openNoteEditor()">New Note</button>
+            <button class="admin-only primary" type="button" onclick="openNoteEditor()">New Note</button>
             <a class="secondary btn" href="#todoSection">To-Do List</a>
             <a class="secondary btn" href="#playerNotesSection">Player Notes</a>
           </div>
@@ -1500,8 +1538,8 @@
             <textarea id="todoDetails" placeholder="Optional extra details..."></textarea>
           </div>
           <div class="hero-actions">
-            <button class="primary" type="button" onclick="addTodo()">Add Task</button>
-            <button class="secondary" type="button" onclick="clearTodoForm()">Clear</button>
+            <button class="admin-only primary" type="button" onclick="addTodo()">Add Task</button>
+            <button class="admin-only secondary" type="button" onclick="clearTodoForm()">Clear</button>
           </div>
         </div>
 
@@ -1546,7 +1584,7 @@
               <textarea id="playerNoteText" placeholder="Struggles in big games, worth rotating."></textarea>
             </div>
             <div class="hero-actions">
-              <button class="primary" type="button" onclick="addPlayerNote()">Save Player Note</button>
+              <button class="admin-only primary" type="button" onclick="addPlayerNote()">Save Player Note</button>
             </div>
           </div>
 
@@ -1607,13 +1645,13 @@
         </div>
 
         <div class="hero-actions" style="margin-top:0; margin-bottom:18px;">
-          <button class="secondary" type="button" onclick="closeNoteEditor()">Close</button>
-          <button class="primary" type="button" onclick="saveNote()">Save Note</button>
-          <button class="delete-btn hidden" type="button" id="deleteNoteBtn" onclick="deleteNote()">Delete</button>
+          <button class="admin-only secondary" type="button" onclick="closeNoteEditor()">Close</button>
+          <button class="admin-only primary" type="button" onclick="saveNote()">Save Note</button>
+          <button class="admin-only delete-btn hidden" type="button" id="deleteNoteBtn" onclick="deleteNote()">Delete</button>
         </div>
 
         <div class="tabs">
-          <button class="tab-btn active" type="button" onclick="openNoteTab('edit')" id="tabEdit">Edit</button>
+          <button class="admin-only tab-btn active" type="button" onclick="openNoteTab('edit')" id="tabEdit">Edit</button>
           <button class="tab-btn" type="button" onclick="openNoteTab('preview')" id="tabPreview">Preview</button>
         </div>
 
@@ -1703,6 +1741,42 @@
 
   <script type="module" src="firebase.js"></script>
   <script>
+
+    const ADMIN_PASSWORD = "Barnsley";
+
+    function isAdmin() {
+      return sessionStorage.getItem("fmhub-admin") === "true";
+    }
+
+    function adminLogin() {
+      const password = prompt("Admin password");
+
+      if (password === ADMIN_PASSWORD) {
+        sessionStorage.setItem("fmhub-admin", "true");
+        applyAdminMode();
+      } else if (password !== null) {
+        alert("Wrong password");
+      }
+    }
+
+    function adminLogout() {
+      sessionStorage.removeItem("fmhub-admin");
+      applyAdminMode();
+    }
+
+    function applyAdminMode() {
+      const admin = isAdmin();
+      document.body.classList.toggle("is-admin", admin);
+
+      document.querySelectorAll(".admin-only").forEach(el => {
+        el.style.display = admin ? "" : "none";
+      });
+
+      document.querySelectorAll(".viewer-only").forEach(el => {
+        el.style.display = admin ? "none" : "";
+      });
+    }
+
     const notesKey = 'fmhub-notes';
     const todosKey = 'fmhub-todos';
     const playerNotesKey = 'fmhub-player-notes';
@@ -2024,7 +2098,7 @@
           </div>
           <div class="todo-actions">
             <span class="tag">${escapeHtml(todo.tag)}</span>
-            <button class="delete-btn icon-btn" type="button" onclick="deleteTodo('${escapeHtml(todo.id)}')">×</button>
+            <button class="admin-only delete-btn icon-btn" type="button" onclick="deleteTodo('${escapeHtml(todo.id)}')">×</button>
           </div>
         </div>
       `).join('');
@@ -2131,7 +2205,7 @@
                 <span class="muted">${escapeHtml(note.club || '-')} • ${escapeHtml(formatDate(note.createdAt))}</span>
               </div>
             </div>
-            <button class="delete-btn icon-btn" type="button" onclick="deletePlayerNote('${escapeHtml(note.id)}')">×</button>
+            <button class="admin-only delete-btn icon-btn" type="button" onclick="deletePlayerNote('${escapeHtml(note.id)}')">×</button>
           </div>
           <div>${escapeHtml(note.content)}</div>
         </div>
@@ -2348,7 +2422,9 @@ Problems To Fix:
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./service-worker.js");
   }
-  </script>
+  
+    applyAdminMode();
+</script>
 
   <footer>
     <div class="container">FM Notes • Your save notebook</div>
