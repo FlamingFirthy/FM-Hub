@@ -1580,6 +1580,42 @@
   }
 }
 
+
+    /* Admin mode */
+    .admin-only {
+      display: none !important;
+    }
+
+    body.is-admin .admin-only {
+      display: inline-flex !important;
+    }
+
+    body.is-admin div.admin-only,
+    body.is-admin section.admin-only,
+    body.is-admin form.admin-only,
+    body.is-admin .admin-only.admin-block {
+      display: block !important;
+    }
+
+    body.is-admin .admin-only.admin-grid {
+      display: grid !important;
+    }
+
+    body.is-admin .admin-only.admin-flex {
+      display: flex !important;
+    }
+
+    body.is-admin .viewer-only {
+      display: none !important;
+    }
+
+    .admin-login-btn {
+      padding: 8px 11px;
+      border-radius: 11px;
+      font-size: 0.78rem;
+      min-height: 0;
+    }
+
 </style>
  </head>
  <body>
@@ -1733,6 +1769,8 @@
        </option>
       </select>
      </div>
+        <button class="secondary admin-login-btn viewer-only" type="button" onclick="adminLogin()">Admin</button>
+        <button class="secondary admin-login-btn admin-only" type="button" onclick="adminLogout()">Logout</button>
     </div>
    </div>
   </header>
@@ -1967,7 +2005,7 @@
       </p>
      </div>
      <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-primary" onclick="openModal('save')">
+      <button class="admin-only btn btn-primary" onclick="openModal('save')">
        + Save
       </button>
       <button class="btn btn-secondary" onclick="openModal('player')">
@@ -2108,14 +2146,14 @@
       </p>
      </div>
      <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-primary" onclick="exportFMHubData()" type="button">
+      <button class="admin-only btn btn-primary" onclick="exportFMHubData()" type="button">
        Export Backup
       </button>
       <label class="btn btn-secondary" style="cursor:pointer">
        Import Backup
-       <input type="file" accept=".json,application/json" onchange="importFMHubData(event)" hidden>
+       <input class="admin-only" type="file" accept=".json,application/json" onchange="importFMHubData(event)" hidden>
       </label>
-      <button class="btn btn-secondary" onclick="clearFMHubData()" type="button">
+      <button class="admin-only btn btn-secondary" onclick="clearFMHubData()" type="button">
        Clear Data
       </button>
       <button class="btn btn-secondary" onclick="testFirebaseNow()" type="button">
@@ -2146,6 +2184,42 @@
   </div>
   <script type="module" src="firebase.js"></script>
   <script>
+
+    const ADMIN_PASSWORD = "Barnsley";
+
+    function isAdmin() {
+      return sessionStorage.getItem("fmhub-admin") === "true";
+    }
+
+    function adminLogin() {
+      const password = prompt("Admin password");
+
+      if (password === ADMIN_PASSWORD) {
+        sessionStorage.setItem("fmhub-admin", "true");
+        applyAdminMode();
+      } else if (password !== null) {
+        alert("Wrong password");
+      }
+    }
+
+    function adminLogout() {
+      sessionStorage.removeItem("fmhub-admin");
+      applyAdminMode();
+    }
+
+    function applyAdminMode() {
+      const admin = isAdmin();
+      document.body.classList.toggle("is-admin", admin);
+
+      document.querySelectorAll(".admin-only").forEach(el => {
+        el.style.display = admin ? "" : "none";
+      });
+
+      document.querySelectorAll(".viewer-only").forEach(el => {
+        el.style.display = admin ? "none" : "";
+      });
+    }
+
    const savesKey='fmhub-saves', squadKey='fmhub-squad', peopleKey='fmhub-people';
     let currentModal=null;
     let cloudLoadComplete=false;
@@ -2313,7 +2387,7 @@
       });
     }
 
-    function openModal(type){currentModal=type;const overlay=document.getElementById('modalOverlay'),title=document.getElementById('modalTitle'),content=document.getElementById('modalContent');overlay.style.display='flex';if(type==='save'){title.textContent='Add Save';content.innerHTML='<input id="modalSaveName" placeholder="Save name" style="margin-bottom:10px"><input id="modalSaveClub" placeholder="Club" style="margin-bottom:10px"><input id="modalSaveSeason" placeholder="Season">'}if(type==='player'){title.textContent='Add Player';content.innerHTML='<input id="modalPlayerName" placeholder="Player name" style="margin-bottom:10px"><input id="modalPlayerPosition" placeholder="Position" style="margin-bottom:10px"><input id="modalPlayerImage" type="file" accept="image/*">'}if(type==='person'){title.textContent='Add Person';content.innerHTML='<input id="modalPersonName" placeholder="Person name" style="margin-bottom:10px"><input id="modalPersonType" placeholder="Player / Manager / Staff" style="margin-bottom:10px"><input id="modalPersonImage" type="file" accept="image/*">'}if(type==='note'){title.textContent='Add Note';content.innerHTML='<textarea id="modalNoteText" placeholder="Write note..."></textarea>'}if(type==='link'){title.textContent='Add Link';content.innerHTML='<input id="modalLinkTitle" placeholder="Link title" style="margin-bottom:10px"><input id="modalLinkUrl" placeholder="URL" style="margin-bottom:10px"><input id="modalLinkImage" type="file" accept="image/*">'}}
+    function openModal(type){currentModal=type;const overlay=document.getElementById('modalOverlay'),title=document.getElementById('modalTitle'),content=document.getElementById('modalContent');overlay.style.display='flex';if(type==='save'){title.textContent='Add Save';content.innerHTML='<input id="modalSaveName" placeholder="Save name" style="margin-bottom:10px"><input id="modalSaveClub" placeholder="Club" style="margin-bottom:10px"><input id="modalSaveSeason" placeholder="Season">'}if(type==='player'){title.textContent='Add Player';content.innerHTML='<input id="modalPlayerName" placeholder="Player name" style="margin-bottom:10px"><input id="modalPlayerPosition" placeholder="Position" style="margin-bottom:10px"><input class="admin-only" id="modalPlayerImage" type="file" accept="image/*">'}if(type==='person'){title.textContent='Add Person';content.innerHTML='<input id="modalPersonName" placeholder="Person name" style="margin-bottom:10px"><input id="modalPersonType" placeholder="Player / Manager / Staff" style="margin-bottom:10px"><input class="admin-only" id="modalPersonImage" type="file" accept="image/*">'}if(type==='note'){title.textContent='Add Note';content.innerHTML='<textarea id="modalNoteText" placeholder="Write note..."></textarea>'}if(type==='link'){title.textContent='Add Link';content.innerHTML='<input id="modalLinkTitle" placeholder="Link title" style="margin-bottom:10px"><input id="modalLinkUrl" placeholder="URL" style="margin-bottom:10px"><input class="admin-only" id="modalLinkImage" type="file" accept="image/*">'}}
     function closeModal(){document.getElementById('modalOverlay').style.display='none';currentModal=null}
     async function submitModal(){
       if(currentModal==='save'){
@@ -2614,7 +2688,9 @@
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./service-worker.js");
   }
-  </script>
+  
+    applyAdminMode();
+</script>
   <footer>
    <div class="container">
     FM Hub Dashboard • Home
