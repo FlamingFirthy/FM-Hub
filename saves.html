@@ -3312,7 +3312,7 @@
   <script type="module" src="firebase.js"></script>
   <script>
 
-    const ADMIN_PASSWORD = "Barnsley";
+    const ADMIN_PASSWORD = "change-this-password";
 
     function isAdmin() {
       return sessionStorage.getItem("fmhub-admin") === "true";
@@ -3632,6 +3632,65 @@
       });
 
       return Array.from(map.values()).sort((a, b) => String(a.name).localeCompare(String(b.name)));
+    }
+
+    function isPlayerRecord(person) {
+      const rawType = String(person?.type || 'player').trim().toLowerCase();
+      const rawRole = String(person?.role || person?.jobTitle || '').trim().toLowerCase();
+
+      if (rawType.includes('manager') || rawType.includes('coach') || rawType.includes('staff') || rawType.includes('director')) return false;
+      if (rawRole.includes('manager') || rawRole.includes('coach') || rawRole.includes('staff') || rawRole.includes('director')) return false;
+
+      return true;
+    }
+
+    function getPlayerStatOptions() {
+      const options = [];
+
+      getPeople().forEach((person, index) => {
+        if (!isPlayerRecord(person)) return;
+
+        const name = person.name || person.fullName || 'Unnamed Player';
+        const id = getEntityKey(person) || `people-index-${index}`;
+
+        options.push({
+          source: 'people',
+          key: `stat-people:${id}`,
+          id,
+          peopleIndex: index,
+          name,
+          type: 'Player',
+          club: person.club || person.team || '',
+          position: person.position || person.role || ''
+        });
+      });
+
+      getSquadPlayers().forEach((player, index) => {
+        const name = player.name || 'Unnamed Player';
+        const id = getEntityKey(player) || `squad-index-${index}`;
+
+        options.push({
+          source: 'squad',
+          key: `stat-squad:${id}`,
+          id,
+          squadIndex: index,
+          name,
+          type: 'Player',
+          club: player.club || '',
+          position: player.position || ''
+        });
+      });
+
+      return options.sort((a, b) =>
+        String(a.name).localeCompare(String(b.name)) ||
+        String(a.club).localeCompare(String(b.club)) ||
+        String(a.position).localeCompare(String(b.position)) ||
+        String(a.key).localeCompare(String(b.key))
+      );
+    }
+
+    function findStatOptionByKey(key) {
+      return getPlayerStatOptions().find(option => option.key === key) || null;
     }
 
     function getCurrentSave() {
@@ -4859,10 +4918,20 @@
       const html = options.length
         ? options.map(item => `<option value="${escapeHtml(item.key)}">${escapeHtml(item.name)}${item.position ? ` — ${escapeHtml(item.position)}` : ''}${item.type ? ` (${escapeHtml(item.type)})` : ''}</option>`).join('')
         : '<option value="">No people or squad players found</option>';
+
+      const statOptions = getPlayerStatOptions();
+      const statHtml = statOptions.length
+        ? statOptions.map(item => {
+            const extra = [item.club, item.position].filter(Boolean).join(' • ');
+            return `<option value="${escapeHtml(item.key)}">${escapeHtml(item.name)}${extra ? ` — ${escapeHtml(extra)}` : ''}</option>`;
+          }).join('')
+        : '<option value="">No players found</option>';
+
       const personSelect = document.getElementById('personToLinkSelect');
       const statSelect = document.getElementById('statPersonSelect');
+
       if (personSelect) personSelect.innerHTML = html;
-      if (statSelect) statSelect.innerHTML = html;
+      if (statSelect) statSelect.innerHTML = statHtml;
     }
 
     function findOptionByKey(key) {
@@ -5451,7 +5520,7 @@
 
     function addSavePlayerStat() {
       const save = getCurrentSave();
-      const item = findOptionByKey(document.getElementById('statPersonSelect')?.value || '');
+      const item = findStatOptionByKey(document.getElementById('statPersonSelect')?.value || '');
       if (!save || !item) return;
       const stat = {
         source: item.source,
@@ -5471,7 +5540,10 @@
       save.playerStats = Array.isArray(save.playerStats) ? save.playerStats : [];
       save.playerStats.push(stat);
       save.linkedPeople = Array.isArray(save.linkedPeople) ? save.linkedPeople : [];
-      if (!save.linkedPeople.some(person => normaliseText(person.name) === normaliseText(item.name))) {
+      if (!save.linkedPeople.some(person =>
+        normaliseText(person.source || '') === normaliseText(item.source || '') &&
+        normaliseText(person.id || person.name) === normaliseText(item.id || item.name)
+      )) {
         save.linkedPeople.push({ source: item.source, id: item.id, name: item.name, type: item.type, position: item.position, club: item.club });
       }
       updateCurrentSave(save);
