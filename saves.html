@@ -2769,6 +2769,42 @@
   }
 }
 
+
+    /* Admin mode */
+    .admin-only {
+      display: none !important;
+    }
+
+    body.is-admin .admin-only {
+      display: inline-flex !important;
+    }
+
+    body.is-admin div.admin-only,
+    body.is-admin section.admin-only,
+    body.is-admin form.admin-only,
+    body.is-admin .admin-only.admin-block {
+      display: block !important;
+    }
+
+    body.is-admin .admin-only.admin-grid {
+      display: grid !important;
+    }
+
+    body.is-admin .admin-only.admin-flex {
+      display: flex !important;
+    }
+
+    body.is-admin .viewer-only {
+      display: none !important;
+    }
+
+    .admin-login-btn {
+      padding: 8px 11px;
+      border-radius: 11px;
+      font-size: 0.78rem;
+      min-height: 0;
+    }
+
 </style>
 </head>
 <body>
@@ -2797,6 +2833,8 @@
           </select>
           <span>▼</span>
         </div>
+        <button class="secondary admin-login-btn viewer-only" type="button" onclick="adminLogin()">Admin</button>
+        <button class="secondary admin-login-btn admin-only" type="button" onclick="adminLogout()">Logout</button>
       </div>
     </div>
   </header>
@@ -2809,7 +2847,7 @@
           <h1>Track every save like a career file.</h1>
           <p class="hero-copy muted">Open a save to see who is in it, track each season, and keep separate player stats for the same people across different saves.</p>
           <div class="hero-actions">
-            <button class="primary" type="button" onclick="toggleAddSave(true)">Add Save</button>
+            <button class="admin-only primary" type="button" onclick="toggleAddSave(true)">Add Save</button>
             <a class="secondary btn" href="people.html">Open People</a>
           </div>
         </div>
@@ -2852,17 +2890,17 @@
 
     <section id="saveProfile" class="hidden">
       <div class="hero-actions view-mode-toolbar">
-        <button class="secondary" type="button" onclick="backToSaves()">← Back to Saves</button>
-        <button class="primary" type="button" id="saveEditModeBtn" onclick="toggleSaveEditMode()">Edit Save</button>
-        <button class="delete-btn edit-only" type="button" onclick="deleteCurrentSave()">Delete Save</button>
+        <button class="admin-only secondary" type="button" onclick="backToSaves()">← Back to Saves</button>
+        <button class="admin-only primary" type="button" id="saveEditModeBtn" onclick="toggleSaveEditMode()">Edit Save</button>
+        <button class="admin-only delete-btn edit-only" type="button" onclick="deleteCurrentSave()">Delete Save</button>
         <p class="clean-view-hint">View mode is on by default. Press Edit Save to show add/edit tools.</p>
       </div>
 
       <div class="edit-helper-panel" id="editHelperPanel">
         <div><strong>Editing is section-based now.</strong><br>Open the tab you want, then press <strong>Edit Section</strong> on that card. This keeps the page clean.</div>
         <div class="edit-helper-actions">
-          <button class="secondary small-btn" type="button" onclick="openAllEditors()">Show All Editors</button>
-          <button class="secondary small-btn" type="button" onclick="closeAllEditors()">Close Editors</button>
+          <button class="admin-only secondary small-btn" type="button" onclick="openAllEditors()">Show All Editors</button>
+          <button class="admin-only secondary small-btn" type="button" onclick="closeAllEditors()">Close Editors</button>
         </div>
       </div>
 
@@ -2885,7 +2923,7 @@
           <div class="save-logo-wrap">
             <div class="save-logo-preview" id="saveLogoPreview">FM</div>
             <label class="logo-upload-btn edit-only" for="saveLogoUpload">Upload Logo</label>
-            <input id="saveLogoUpload" type="file" accept="image/*" class="hidden" onchange="uploadCurrentSaveLogo(event)">
+            <input id="saveLogoUpload" type="file" accept="image/*" class="admin-only hidden" onchange="uploadCurrentSaveLogo(event)">
           </div>
           <div>
             <div class="eyebrow">Opened Save</div>
@@ -2917,7 +2955,7 @@
             <div><label for="editSaveThemeInput">Save Theme</label><select id="editSaveThemeInput"><option value="red">Red</option><option value="purple">Purple</option><option value="classic">Classic Green</option><option value="blue">Blue</option><option value="orange">Orange</option><option value="gold">Gold</option><option value="minimal">Minimal</option></select></div>
             <div class="wide"><label for="editSaveGoalInput">Main Goal</label><input id="editSaveGoalInput" placeholder="Win promotion / Build youth academy"></div>
           </div>
-          <div class="hero-actions"><button class="primary" type="button" onclick="saveMainSaveDetails()">Save Main Details</button></div>
+          <div class="hero-actions"><button class="admin-only primary" type="button" onclick="saveMainSaveDetails()">Save Main Details</button></div>
         </div>
         <div class="save-status-banner" id="saveStatusBanner">
           <div>
@@ -2961,7 +2999,7 @@
             <div><label for="situationBoardInput">Board Expectation</label><input id="situationBoardInput" placeholder="Avoid relegation / Playoffs / Title challenge"></div>
             <div><label for="situationTargetInput">Personal Target</label><input id="situationTargetInput" placeholder="Develop youth / Win promotion"></div>
           </div>
-          <div class="hero-actions"><button class="primary" type="button" onclick="saveCurrentSituation()">Save Situation</button></div>
+          <div class="hero-actions"><button class="admin-only primary" type="button" onclick="saveCurrentSituation()">Save Situation</button></div>
         </div>
       </div>
 
@@ -2977,7 +3015,7 @@
           <div class="form-grid edit-only" style="grid-template-columns:1fr;">
             <div><label for="personToLinkSelect">Add Person / Player</label><select id="personToLinkSelect"></select></div>
           </div>
-          <div class="hero-actions edit-only"><button class="primary" type="button" onclick="linkPersonToCurrentSave()">Add to Save</button></div>
+          <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="linkPersonToCurrentSave()">Add to Save</button></div>
           <div id="linkedPeopleList" style="margin-top:16px;"></div>
         </div>
 
@@ -2986,7 +3024,7 @@
           <div>
             <div class="section-kicker">Club</div>
             <h3>Club from Squad Page</h3>
-            <p class="muted">This pulls the club profile, logo, and details from the Squad page for this save.</p><button class="secondary small-btn open-profile-btn" type="button" onclick="event.stopPropagation(); openSaveClubProfile()">Open Club</button>
+            <p class="muted">This pulls the club profile, logo, and details from the Squad page for this save.</p><button class="admin-only secondary small-btn open-profile-btn" type="button" onclick="event.stopPropagation(); openSaveClubProfile()">Open Club</button>
           </div>
         </div>
         <div class="club-summary-row">
@@ -3056,11 +3094,11 @@
             <div><label for="saveRecordStatus">Outcome</label><input id="saveRecordStatus" placeholder="Title win / rebuild year"></div>
             <div class="wide"><label for="saveRecordNotes">Season Notes</label><textarea id="saveRecordNotes" placeholder="Big moments, transfers, milestones..."></textarea></div>
           </div>
-          <div class="hero-actions edit-only"><button class="primary" type="button" onclick="addSaveSeasonRecord()">Add Season</button></div>
+          <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addSaveSeasonRecord()">Add Season</button></div>
 
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Season</th><th>Club</th><th>Finish</th><th>Points</th><th>Trophies</th><th class="edit-only">Action</th></tr></thead>
+              <thead><tr><th>Season</th><th>Club</th><th>Finish</th><th>Points</th><th>Trophies</th><th class="admin-only edit-only">Action</th></tr></thead>
               <tbody id="saveSeasonTableBody"></tbody>
             </table>
           </div>
@@ -3096,7 +3134,7 @@
           <div><label for="awardValueInput">Stat / Value</label><input id="awardValueInput" placeholder="28 goals / 7.42 rating / £5m"></div>
           <div class="wide"><label for="awardNotesInput">Award Notes</label><textarea id="awardNotesInput" placeholder="Why they won it, big moments, storyline..."></textarea></div>
         </div>
-        <div class="hero-actions edit-only"><button class="primary" type="button" onclick="addSeasonAward()">Add Award</button></div>
+        <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addSeasonAward()">Add Award</button></div>
         <div id="seasonAwardsList" class="award-grid"></div>
       </div>
 
@@ -3117,7 +3155,7 @@
           <div><label for="highlightStarInput">Star Player</label><input id="highlightStarInput" placeholder="Hat-trick hero / MOTM"></div>
           <div class="wide"><label for="highlightNotesInput">Match Notes</label><textarea id="highlightNotesInput" placeholder="What happened and why it mattered..."></textarea></div>
         </div>
-        <div class="hero-actions edit-only"><button class="primary" type="button" onclick="addMatchHighlight()">Add Match Highlight</button></div>
+        <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addMatchHighlight()">Add Match Highlight</button></div>
         <div id="matchHighlightsList" class="highlight-grid"></div>
       </div>
 
@@ -3141,12 +3179,12 @@
           <div><label for="statRatingInput">Rating</label><input id="statRatingInput" placeholder="7.24"></div>
           <div class="wide"><label for="statNotesInput">Notes</label><textarea id="statNotesInput" placeholder="Awards, big performances, injuries, transfer story..."></textarea></div>
         </div>
-        <div class="hero-actions edit-only"><button class="primary" type="button" onclick="addSavePlayerStat()">Add Stat Record</button></div>
+        <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addSavePlayerStat()">Add Stat Record</button></div>
 
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Person</th><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th class="edit-only">Action</th></tr>
+              <tr><th>Person</th><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th class="admin-only edit-only">Action</th></tr>
             </thead>
             <tbody id="savePlayerStatsBody"></tbody>
           </table>
@@ -3179,7 +3217,7 @@
           <div><label for="transferToLogoInput">To Club Logo URL</label><input id="transferToLogoInput" placeholder="Optional logo URL"></div>
           <div class="wide"><label for="transferNotesInput">Notes</label><textarea id="transferNotesInput" placeholder="Why they moved, clauses, sell-on, replacement, storyline..."></textarea></div>
         </div>
-        <div class="hero-actions edit-only"><button class="primary" type="button" onclick="addTransferRecord()">Add Transfer</button></div>
+        <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addTransferRecord()">Add Transfer</button></div>
 
         <div class="transfer-dashboard" id="transferDashboard"></div>
 
@@ -3198,7 +3236,7 @@
         <div class="table-wrap transfer-table-fallback">
           <table>
             <thead>
-              <tr><th>Player</th><th>Season</th><th>Type</th><th>From</th><th>To</th><th>Fee</th><th>Notes</th><th class="edit-only">Action</th></tr>
+              <tr><th>Player</th><th>Season</th><th>Type</th><th>From</th><th>To</th><th>Fee</th><th>Notes</th><th class="admin-only edit-only">Action</th></tr>
             </thead>
             <tbody id="transferTableBody"></tbody>
           </table>
@@ -3220,7 +3258,7 @@
           <div><label for="timelineTitleInput">Title</label><input id="timelineTitleInput" placeholder="Won the league / Signed a star player"></div>
           <div class="wide"><label for="timelineNotesInput">Story Notes</label><textarea id="timelineNotesInput" placeholder="What happened and why it mattered..."></textarea></div>
         </div>
-        <div class="hero-actions edit-only"><button class="primary" type="button" onclick="addTimelineEvent()">Add Timeline Event</button></div>
+        <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addTimelineEvent()">Add Timeline Event</button></div>
         <div id="saveTimelineList" class="timeline-list"></div>
       </div>
     </section>
@@ -3232,7 +3270,7 @@
           <h2>Add Save</h2>
           <p class="muted">Create a separate career file.</p>
         </div>
-        <button class="secondary" type="button" onclick="toggleAddSave()" id="toggleAddSaveBtn">Open Add Save</button>
+        <button class="admin-only secondary" type="button" onclick="toggleAddSave()" id="toggleAddSaveBtn">Open Add Save</button>
       </div>
 
       <div class="form-card hidden" id="addSaveFormWrap">
@@ -3245,7 +3283,7 @@
           <div><label for="saveGoal">Main Goal</label><input id="saveGoal" placeholder="Win the league"></div>
           <div><label for="saveTheme">Save Theme</label><select id="saveTheme"><option value="red">Red</option><option value="purple">Purple</option><option value="classic">Classic Green</option><option value="blue">Blue</option><option value="orange">Orange</option><option value="gold">Gold</option><option value="minimal">Minimal</option></select></div>
         </div>
-        <div class="hero-actions"><button class="primary" type="button" onclick="addSave()">Add Save</button><button class="secondary" type="button" onclick="toggleAddSave(false)">Close</button></div>
+        <div class="hero-actions"><button class="admin-only primary" type="button" onclick="addSave()">Add Save</button><button class="admin-only secondary" type="button" onclick="toggleAddSave(false)">Close</button></div>
       </div>
     </section>
 
@@ -3253,7 +3291,7 @@
       <div class="profile-modal" onclick="event.stopPropagation();">
         <div class="profile-modal-head">
           <div><div class="section-kicker">Person Profile</div><h2 id="savePersonProfileTitle">Person</h2><p class="muted" id="savePersonProfileSubtitle">Save-specific profile.</p></div>
-          <button class="secondary" type="button" onclick="closeSaveProfileOverlay()">Close</button>
+          <button class="admin-only secondary" type="button" onclick="closeSaveProfileOverlay()">Close</button>
         </div>
         <div id="savePersonProfileContent"></div>
       </div>
@@ -3263,7 +3301,7 @@
       <div class="profile-modal" onclick="event.stopPropagation();">
         <div class="profile-modal-head">
           <div><div class="section-kicker">Club Profile</div><h2 id="saveClubProfileTitle">Club</h2><p class="muted" id="saveClubProfileSubtitle">Club details from this save.</p></div>
-          <button class="secondary" type="button" onclick="closeSaveClubOverlay()">Close</button>
+          <button class="admin-only secondary" type="button" onclick="closeSaveClubOverlay()">Close</button>
         </div>
         <div id="saveClubProfileContent"></div>
       </div>
@@ -3273,6 +3311,42 @@
 
   <script type="module" src="firebase.js"></script>
   <script>
+
+    const ADMIN_PASSWORD = "Barnsley";
+
+    function isAdmin() {
+      return sessionStorage.getItem("fmhub-admin") === "true";
+    }
+
+    function adminLogin() {
+      const password = prompt("Admin password");
+
+      if (password === ADMIN_PASSWORD) {
+        sessionStorage.setItem("fmhub-admin", "true");
+        applyAdminMode();
+      } else if (password !== null) {
+        alert("Wrong password");
+      }
+    }
+
+    function adminLogout() {
+      sessionStorage.removeItem("fmhub-admin");
+      applyAdminMode();
+    }
+
+    function applyAdminMode() {
+      const admin = isAdmin();
+      document.body.classList.toggle("is-admin", admin);
+
+      document.querySelectorAll(".admin-only").forEach(el => {
+        el.style.display = admin ? "" : "none";
+      });
+
+      document.querySelectorAll(".viewer-only").forEach(el => {
+        el.style.display = admin ? "none" : "";
+      });
+    }
+
     const savesKey = 'fmhub-saves';
     const squadKey = 'fmhub-squad';
     const peopleKey = 'fmhub-people';
@@ -3629,7 +3703,7 @@
       if (!container) return;
 
       if (!saves.length) {
-        container.innerHTML = `<div class="empty-state">No saves yet.<br><br><button class="primary" type="button" onclick="toggleAddSave(true)">Add your first save</button></div>`;
+        container.innerHTML = `<div class="empty-state">No saves yet.<br><br><button class="admin-only primary" type="button" onclick="toggleAddSave(true)">Add your first save</button></div>`;
         return;
       }
 
@@ -4063,7 +4137,7 @@
               <span class="chip">${escapeHtml(event.type || 'Event')}</span>
             </div>
           </div>
-          <button class="delete-btn small-btn edit-only" type="button" onclick="deleteTimelineEvent(${index})">Delete</button>
+          <button class="admin-only delete-btn small-btn edit-only" type="button" onclick="deleteTimelineEvent(${index})">Delete</button>
         </div>
       `).join('');
     }
@@ -4148,7 +4222,7 @@
           <span>${escapeHtml(award.person || '-')} • ${escapeHtml(award.season || 'No season')}</span>
           ${award.value ? `<span>Value: ${escapeHtml(award.value)}</span>` : ''}
           ${award.notes ? `<span>${escapeHtml(award.notes)}</span>` : ''}
-          <div class="hero-actions edit-only" style="margin-top:12px;"><button class="delete-btn small-btn" type="button" onclick="deleteSeasonAward(${index})">Delete</button></div>
+          <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteSeasonAward(${index})">Delete</button></div>
         </div>
       `).join('');
     }
@@ -4198,7 +4272,7 @@
           ${match.score ? `<div class="highlight-score">${escapeHtml(match.score)}</div>` : ''}
           ${match.star ? `<span>Star: ${escapeHtml(match.star)}</span>` : ''}
           ${match.notes ? `<span>${escapeHtml(match.notes)}</span>` : ''}
-          <div class="hero-actions edit-only" style="margin-top:12px;"><button class="delete-btn small-btn" type="button" onclick="deleteMatchHighlight(${index})">Delete</button></div>
+          <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteMatchHighlight(${index})">Delete</button></div>
         </div>
       `).join('');
     }
@@ -4432,7 +4506,7 @@
               </div>
             </div>
             ${transfer.notes ? `<div class="transfer-notes">${escapeHtml(transfer.notes)}</div>` : ''}
-            <div class="hero-actions edit-only" style="margin-top:12px;"><button class="delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></div>
+            <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></div>
           </div>
         `;
       }).join('');
@@ -4501,7 +4575,7 @@
             <td>${escapeHtml(transfer.to || '-')}</td>
             <td><strong>${escapeHtml(transfer.fee || '-')}</strong><div class="muted" style="font-size:0.74rem; margin-top:3px;">${escapeHtml(getFeeTypeLabel(transfer.fee))}</div></td>
             <td>${escapeHtml(transfer.notes || '-')}</td>
-            <td class="edit-only"><button class="delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></td>
+            <td class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></td>
           </tr>
         `;
       }).join('');
@@ -4581,7 +4655,7 @@
           <td>${escapeHtml(record.finish || '-')}</td>
           <td>${escapeHtml(record.points || '-')}</td>
           <td>${escapeHtml(record.trophies || '-')}</td>
-          <td class="edit-only"><button class="delete-btn small-btn" type="button" onclick="event.stopPropagation(); deleteSaveSeasonRecord(${index})">Delete</button></td>
+          <td class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="event.stopPropagation(); deleteSaveSeasonRecord(${index})">Delete</button></td>
         </tr>
       `).join('');
     }
@@ -4861,14 +4935,14 @@
               <strong>${escapeHtml(person.name)}</strong>
               <div class="muted" style="margin-top:4px;">${escapeHtml(person.position || person.type || 'Person')}${person.club ? ` • ${escapeHtml(person.club)}` : ''}</div>
               <button
-                class="secondary small-btn open-profile-btn"
+                class="admin-only secondary small-btn open-profile-btn"
                 type="button"
                 onclick="event.stopPropagation(); openLinkedSavePersonByIndex(${index})"
               >Open Person</button>
             </div>
             ${person.source === 'manual' || person.source === 'people' || person.source === 'squad'
               ? `<button
-                  class="secondary small-btn edit-only"
+                  class="admin-only secondary small-btn edit-only"
                   type="button"
                   onclick="event.stopPropagation(); unlinkLinkedSavePersonByIndex(${index})"
                 >Unlink</button>`
@@ -5043,7 +5117,7 @@
           <td>${escapeHtml(row.goals || '0')}</td>
           <td>${escapeHtml(row.assists || '0')}</td>
           <td>${escapeHtml(row.rating || '-')}</td>
-          <td class="edit-only">${row.origin === 'save' ? `<button class="delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})">Delete</button>` : '<span class="chip">Squad</span>'}</td>
+          <td class="admin-only edit-only">${row.origin === 'save' ? `<button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})">Delete</button>` : '<span class="chip">Squad</span>'}</td>
         </tr>
       `).join('');
     }
@@ -5311,7 +5385,7 @@
                   <span class="chip">${totals.assists} assists</span>
                 </div>
               </div>
-              <button class="secondary small-btn" type="button" onclick="event.stopPropagation(); openSavePersonProfile(decodeFromClick('${encodeForClick(person.id || person.name)}'), decodeFromClick('${encodeForClick(person.name)}'))">Open</button>
+              <button class="admin-only secondary small-btn" type="button" onclick="event.stopPropagation(); openSavePersonProfile(decodeFromClick('${encodeForClick(person.id || person.name)}'), decodeFromClick('${encodeForClick(person.name)}'))">Open</button>
             </div>
           </div>
         `;
@@ -5603,13 +5677,13 @@
       shell.className = 'save-tab-shell';
       shell.innerHTML = `
         <div class="save-tabs" role="tablist">
-          <button class="save-tab-btn active" type="button" onclick="openSaveTab('overview')" data-save-tab-button="overview">Overview</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('people')" data-save-tab-button="people">People</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('club')" data-save-tab-button="club">Club</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('seasons')" data-save-tab-button="seasons">Seasons</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('stats')" data-save-tab-button="stats">Stats</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('transfers')" data-save-tab-button="transfers">Transfers</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('story')" data-save-tab-button="story">Story</button>
+          <button class="admin-only save-tab-btn active" type="button" onclick="openSaveTab('overview')" data-save-tab-button="overview">Overview</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('people')" data-save-tab-button="people">People</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('club')" data-save-tab-button="club">Club</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('seasons')" data-save-tab-button="seasons">Seasons</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('stats')" data-save-tab-button="stats">Stats</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('transfers')" data-save-tab-button="transfers">Transfers</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('story')" data-save-tab-button="story">Story</button>
         </div>
         <div id="saveTabOverview" class="save-tab-panel active" data-save-tab-panel="overview">
           <div id="overviewShortcutGrid" class="overview-shortcut-grid"></div>
@@ -5655,7 +5729,7 @@
 
       const iconMap = { people: '👥', club: '🏟️', seasons: '📅', stats: '📊', transfers: '↔', story: '★' };
       grid.innerHTML = cards.map(card => `
-        <button class="overview-shortcut-card" type="button" onclick="openSaveTab('${card.tab}')">
+        <button class="admin-only overview-shortcut-card" type="button" onclick="openSaveTab('${card.tab}')">
           <div class="shortcut-icon">${iconMap[card.tab] || '•'}</div>
           <span>${escapeHtml(card.label)}</span>
           <strong>${escapeHtml(card.value)}</strong>
@@ -5809,7 +5883,9 @@
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./service-worker.js");
   }
-  </script>
+  
+    applyAdminMode();
+</script>
 
   <footer><div class="container">FM Saves • Career tracker</div></footer>
 </body>
