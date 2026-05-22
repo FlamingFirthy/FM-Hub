@@ -1743,6 +1743,42 @@
   }
 }
 
+
+    /* Admin mode */
+    .admin-only {
+      display: none !important;
+    }
+
+    body.is-admin .admin-only {
+      display: inline-flex !important;
+    }
+
+    body.is-admin div.admin-only,
+    body.is-admin section.admin-only,
+    body.is-admin form.admin-only,
+    body.is-admin .admin-only.admin-block {
+      display: block !important;
+    }
+
+    body.is-admin .admin-only.admin-grid {
+      display: grid !important;
+    }
+
+    body.is-admin .admin-only.admin-flex {
+      display: flex !important;
+    }
+
+    body.is-admin .viewer-only {
+      display: none !important;
+    }
+
+    .admin-login-btn {
+      padding: 8px 11px;
+      border-radius: 11px;
+      font-size: 0.78rem;
+      min-height: 0;
+    }
+
 </style>
 </head>
 <body>
@@ -1771,6 +1807,8 @@
           </select>
           <span>▼</span>
         </div>
+        <button class="secondary admin-login-btn viewer-only" type="button" onclick="adminLogin()">Admin</button>
+        <button class="secondary admin-login-btn admin-only" type="button" onclick="adminLogout()">Logout</button>
       </div>
     </div>
   </header>
@@ -1844,7 +1882,7 @@
           <h2>Add Person</h2>
           <p class="muted">Keep this tucked away until you want to add a new player or manager.</p>
         </div>
-        <button class="secondary" type="button" onclick="toggleAddPerson()" id="toggleAddPersonBtn">Open Add Person</button>
+        <button class="admin-only secondary" type="button" onclick="toggleAddPerson()" id="toggleAddPersonBtn">Open Add Person</button>
       </div>
 
       <div class="form-card hidden" id="addPersonFormWrap">
@@ -1905,11 +1943,11 @@
           </div>
           <div>
             <label for="personImage">Profile Picture</label>
-            <input id="personImage" type="file" accept="image/*">
+            <input class="admin-only" id="personImage" type="file" accept="image/*">
           </div>
           <div>
             <label for="personClubBadge">Club Badge</label>
-            <input id="personClubBadge" type="file" accept="image/*">
+            <input class="admin-only" id="personClubBadge" type="file" accept="image/*">
           </div>
           
         </div>
@@ -1919,8 +1957,8 @@
           <textarea id="personNotes" placeholder="Anything important about this person..."></textarea>
         </div>
         <div class="hero-actions">
-          <button class="primary" type="button" onclick="addPerson()">Add Person</button>
-          <button class="secondary" type="button" onclick="toggleAddPerson(false)">Close</button>
+          <button class="admin-only primary" type="button" onclick="addPerson()">Add Person</button>
+          <button class="admin-only secondary" type="button" onclick="toggleAddPerson(false)">Close</button>
         </div>
       </div>
     </section>
@@ -1940,11 +1978,11 @@
           <div class="section-card" style="padding:18px; margin-bottom:18px; border-color:var(--hover-border); box-shadow:0 0 18px var(--hover-glow), 0 12px 30px rgba(0,0,0,0.32);">
             <div class="hero-actions" style="margin-top:0; margin-bottom:0;">
               <button class="secondary" type="button" onclick="closeProfile()">Close</button>
-              <button class="secondary" type="button" onclick="toggleEditMode()" id="editProfileBtn">Edit</button>
-              <button class="secondary" type="button" onclick="openAttributeEditor()">Edit Attributes</button>
+              <button class="admin-only secondary" type="button" onclick="toggleEditMode()" id="editProfileBtn">Edit</button>
+              <button class="admin-only secondary" type="button" onclick="openAttributeEditor()">Edit Attributes</button>
               <button class="secondary" type="button" onclick="openComparisonTool()">Compare</button>
-              <button class="primary hidden" type="button" onclick="saveProfileEdits()" id="saveProfileBtn">Save Changes</button>
-              <button class="delete-btn" type="button" onclick="deletePerson()">Delete</button>
+              <button class="admin-only primary hidden" type="button" onclick="saveProfileEdits()" id="saveProfileBtn">Save Changes</button>
+              <button class="admin-only delete-btn" type="button" onclick="deletePerson()">Delete</button>
             </div>
           </div>
 
@@ -2044,15 +2082,15 @@
                       </div>
                       <div>
                         <label for="editPersonImage">Change Picture</label>
-                        <input id="editPersonImage" type="file" accept="image/*">
+                        <input class="admin-only" id="editPersonImage" type="file" accept="image/*">
                       </div>
                       <div>
                         <label for="editPersonClubBadge">Change Club Badge</label>
-                        <input id="editPersonClubBadge" type="file" accept="image/*">
+                        <input class="admin-only" id="editPersonClubBadge" type="file" accept="image/*">
                       </div>
                       <div class="hero-actions" style="margin-top:0;">
-                        <button class="secondary mini-action-btn" type="button" onclick="removeProfilePicture()">Remove Picture</button>
-                        <button class="secondary mini-action-btn" type="button" onclick="removeClubBadge()">Remove Badge</button>
+                        <button class="admin-only secondary mini-action-btn" type="button" onclick="removeProfilePicture()">Remove Picture</button>
+                        <button class="admin-only secondary mini-action-btn" type="button" onclick="removeClubBadge()">Remove Badge</button>
                       </div>
                     </div>
                   </div>
@@ -2068,7 +2106,7 @@
                 <label for="pNotes" class="muted" style="margin-top:12px;">Person Notes</label>
                 <textarea id="pNotes" placeholder="Write notes here..."></textarea>
                 <div class="hero-actions" style="margin-top:16px;">
-                  <button class="primary" type="button" onclick="saveNotes()">Save Notes</button>
+                  <button class="admin-only primary" type="button" onclick="saveNotes()">Save Notes</button>
                 </div>
               </div>
             </div>
@@ -2091,8 +2129,8 @@
         </div>
 
         <div class="hero-actions" style="margin-top:0; margin-bottom:18px;">
-          <button class="secondary" type="button" onclick="closeAttributeEditor()">Close</button>
-          <button class="primary" type="button" onclick="saveAttributeEdits()">Save Attributes</button>
+          <button class="admin-only secondary" type="button" onclick="closeAttributeEditor()">Close</button>
+          <button class="admin-only primary" type="button" onclick="saveAttributeEdits()">Save Attributes</button>
         </div>
 
         <div id="attributeEditorGroups" class="attribute-groups"></div>
@@ -2127,6 +2165,42 @@
 
   <script type="module" src="firebase.js"></script>
   <script>
+
+    const ADMIN_PASSWORD = "Barnsley";
+
+    function isAdmin() {
+      return sessionStorage.getItem("fmhub-admin") === "true";
+    }
+
+    function adminLogin() {
+      const password = prompt("Admin password");
+
+      if (password === ADMIN_PASSWORD) {
+        sessionStorage.setItem("fmhub-admin", "true");
+        applyAdminMode();
+      } else if (password !== null) {
+        alert("Wrong password");
+      }
+    }
+
+    function adminLogout() {
+      sessionStorage.removeItem("fmhub-admin");
+      applyAdminMode();
+    }
+
+    function applyAdminMode() {
+      const admin = isAdmin();
+      document.body.classList.toggle("is-admin", admin);
+
+      document.querySelectorAll(".admin-only").forEach(el => {
+        el.style.display = admin ? "" : "none";
+      });
+
+      document.querySelectorAll(".viewer-only").forEach(el => {
+        el.style.display = admin ? "none" : "";
+      });
+    }
+
     const peopleKey = 'fmhub-people';
     const squadKey = 'fmhub-squad';
     let currentPersonIndex = null;
@@ -2429,7 +2503,7 @@
         ? selected.map(save => `
             <span class="save-tag">
               <span>${save}</span>
-              <button
+              <button class="admin-only"
                 type="button"
                 onclick="removeSaveSelection('${mode}', decodeFromClick('${encodeForClick(save)}'))"
               >×</button>
@@ -2443,7 +2517,7 @@
             return `
               <button
                 type="button"
-                class="save-option-btn ${active ? 'active' : ''}"
+                class="admin-only save-option-btn ${active ? 'active' : ''}"
                 onclick="toggleSaveSelection('${mode}', decodeFromClick('${encodeForClick(save.name)}'))"
               >
                 ${save.name}
@@ -3715,7 +3789,9 @@
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./service-worker.js");
   }
-  </script>
+  
+    applyAdminMode();
+</script>
 
   <footer>
     <div class="container">FM People • Your player and manager database</div>
