@@ -3587,6 +3587,7 @@
 
     function getAllPersonOptions() {
       const map = new Map();
+      const peopleNames = new Set();
 
       getPeople().forEach((person, index) => {
         const name = person.name || person.fullName || 'Unnamed Person';
@@ -3609,29 +3610,34 @@
           club: person.club || person.team || '',
           position: isManager
             ? (person.role || person.jobTitle || person.position || 'Manager')
-            : (person.position || person.role || person.jobTitle || '')
+            : (person.position || person.role || '')
         });
+
+        peopleNames.add(normaliseText(name));
       });
 
       getSquadPlayers().forEach((player, index) => {
         const name = player.name || 'Unnamed Player';
+        if (peopleNames.has(normaliseText(name))) return;
+
         const key = `squad:${getEntityKey(player) || index}:${name}`;
 
-        if (![...map.values()].some(item => normaliseText(item.name) === normaliseText(name))) {
-          map.set(key, {
-            source: 'squad',
-            key,
-            id: getEntityKey(player) || String(index),
-            squadIndex: index,
-            name,
-            type: 'Player',
-            club: player.club || '',
-            position: player.position || ''
-          });
-        }
+        map.set(key, {
+          source: 'squad',
+          key,
+          id: getEntityKey(player) || String(index),
+          squadIndex: index,
+          name,
+          type: 'Player',
+          club: player.club || '',
+          position: player.position || ''
+        });
       });
 
-      return Array.from(map.values()).sort((a, b) => String(a.name).localeCompare(String(b.name)));
+      return Array.from(map.values()).sort((a, b) =>
+        String(a.name).localeCompare(String(b.name)) ||
+        String(a.type).localeCompare(String(b.type))
+      );
     }
 
     function isPlayerRecord(person) {
@@ -3646,11 +3652,16 @@
 
     function getPlayerStatOptions() {
       const options = [];
+      const seenNames = new Set();
 
+      // Prefer the People page record because it has the correct person type and linked data.
       getPeople().forEach((person, index) => {
         if (!isPlayerRecord(person)) return;
 
         const name = person.name || person.fullName || 'Unnamed Player';
+        const nameKey = normaliseText(name);
+        if (!nameKey || seenNames.has(nameKey)) return;
+
         const id = getEntityKey(person) || `people-index-${index}`;
 
         options.push({
@@ -3661,12 +3672,18 @@
           name,
           type: 'Player',
           club: person.club || person.team || '',
-          position: person.position || person.role || ''
+          position: person.position || ''
         });
+
+        seenNames.add(nameKey);
       });
 
+      // Only add Squad records if that player is not already in People.
       getSquadPlayers().forEach((player, index) => {
         const name = player.name || 'Unnamed Player';
+        const nameKey = normaliseText(name);
+        if (!nameKey || seenNames.has(nameKey)) return;
+
         const id = getEntityKey(player) || `squad-index-${index}`;
 
         options.push({
@@ -3679,6 +3696,8 @@
           club: player.club || '',
           position: player.position || ''
         });
+
+        seenNames.add(nameKey);
       });
 
       return options.sort((a, b) =>
