@@ -933,6 +933,42 @@
   }
 }
 
+
+    /* Admin mode */
+    .admin-only {
+      display: none !important;
+    }
+
+    body.is-admin .admin-only {
+      display: inline-flex !important;
+    }
+
+    body.is-admin div.admin-only,
+    body.is-admin section.admin-only,
+    body.is-admin form.admin-only,
+    body.is-admin .admin-only.admin-block {
+      display: block !important;
+    }
+
+    body.is-admin .admin-only.admin-grid {
+      display: grid !important;
+    }
+
+    body.is-admin .admin-only.admin-flex {
+      display: flex !important;
+    }
+
+    body.is-admin .viewer-only {
+      display: none !important;
+    }
+
+    .admin-login-btn {
+      padding: 8px 11px;
+      border-radius: 11px;
+      font-size: 0.78rem;
+      min-height: 0;
+    }
+
 </style>
 </head>
 <body>
@@ -961,6 +997,8 @@
           </select>
           <span>▼</span>
         </div>
+        <button class="secondary admin-login-btn viewer-only" type="button" onclick="adminLogin()">Admin</button>
+        <button class="secondary admin-login-btn admin-only" type="button" onclick="adminLogout()">Logout</button>
       </div>
     </div>
   </header>
@@ -973,7 +1011,7 @@
           <h1>Keep your favourite FM links together.</h1>
           <p class="hero-copy muted">A polished resource hub for websites, tools, videos, databases, graphics and guides you use during your saves.</p>
           <div class="hero-actions">
-            <button class="primary" type="button" onclick="toggleEditor(true)">Add Link</button>
+            <button class="admin-only primary" type="button" onclick="toggleEditor(true)">Add Link</button>
             <a class="secondary btn" href="#linksSection">Browse Links</a>
           </div>
         </div>
@@ -997,14 +1035,14 @@
             <h2 id="editorTitle">New Resource</h2>
             <p class="muted">Add websites you use for scouting, graphics, databases, tactics, stories or research.</p>
           </div>
-          <button class="secondary" type="button" onclick="resetEditor(); toggleEditor(false)">Close</button>
+          <button class="admin-only secondary" type="button" onclick="resetEditor(); toggleEditor(false)">Close</button>
         </div>
 
         <div class="form-grid">
           <div><label for="linkTitleInput">Title</label><input id="linkTitleInput" placeholder="FM Scout"></div>
           <div><label for="linkCategoryInput">Category</label><input id="linkCategoryInput" list="categorySuggestions" placeholder="Scouting"></div>
           <div class="wide"><label for="linkUrlInput">URL</label><input id="linkUrlInput" placeholder="https://www.fmscout.com"></div>
-          <div><label for="linkImageInput">Image / Logo</label><input id="linkImageInput" type="file" accept="image/*"></div>
+          <div><label for="linkImageInput">Image / Logo</label><input class="admin-only" id="linkImageInput" type="file" accept="image/*"></div>
           <div><label for="linkImageUrlInput">Image URL</label><input id="linkImageUrlInput" placeholder="Optional image URL"></div>
           <div class="wide"><label for="linkDescriptionInput">Description</label><textarea id="linkDescriptionInput" placeholder="What this link is useful for..."></textarea></div>
           <div><label for="linkQuickInput">Show in Quick Links?</label><select id="linkQuickInput"><option value="yes">Yes</option><option value="no">No</option></select></div>
@@ -1013,8 +1051,8 @@
         <datalist id="categorySuggestions"></datalist>
 
         <div class="hero-actions">
-          <button class="primary" type="button" onclick="saveLinkFromEditor()" id="saveLinkBtn">Save Link</button>
-          <button class="secondary" type="button" onclick="resetEditor()">Clear</button>
+          <button class="admin-only primary" type="button" onclick="saveLinkFromEditor()" id="saveLinkBtn">Save Link</button>
+          <button class="admin-only secondary" type="button" onclick="resetEditor()">Clear</button>
         </div>
       </div>
     </section>
@@ -1039,7 +1077,7 @@
           <h2>Links</h2>
           <p class="muted">Editable resources saved in your browser.</p>
         </div>
-        <button class="primary" type="button" onclick="toggleEditor(true)">+ Add New Link</button>
+        <button class="admin-only primary" type="button" onclick="toggleEditor(true)">+ Add New Link</button>
       </div>
 
       <div class="toolbar">
@@ -1056,6 +1094,42 @@
 
   <script type="module" src="firebase.js"></script>
   <script>
+
+    const ADMIN_PASSWORD = "Barnsley";
+
+    function isAdmin() {
+      return sessionStorage.getItem("fmhub-admin") === "true";
+    }
+
+    function adminLogin() {
+      const password = prompt("Admin password");
+
+      if (password === ADMIN_PASSWORD) {
+        sessionStorage.setItem("fmhub-admin", "true");
+        applyAdminMode();
+      } else if (password !== null) {
+        alert("Wrong password");
+      }
+    }
+
+    function adminLogout() {
+      sessionStorage.removeItem("fmhub-admin");
+      applyAdminMode();
+    }
+
+    function applyAdminMode() {
+      const admin = isAdmin();
+      document.body.classList.toggle("is-admin", admin);
+
+      document.querySelectorAll(".admin-only").forEach(el => {
+        el.style.display = admin ? "" : "none";
+      });
+
+      document.querySelectorAll(".viewer-only").forEach(el => {
+        el.style.display = admin ? "none" : "";
+      });
+    }
+
     const linksKey = 'fmhub-links';
     let editingLinkId = null;
     let syncingFromCloud = false;
@@ -1245,7 +1319,7 @@
             <span class="tag">${escapeHtml(link.category || 'General')}</span>
           </div>
           <div class="link-description">${escapeHtml(link.description || 'No description added yet.')}</div>
-          <div class="link-footer"><a class="primary btn" href="${escapeHtml(safeUrl(link.url))}" target="_blank" rel="noopener noreferrer">Open</a><div class="card-actions"><button class="secondary small-btn" type="button" onclick="editLink('${escapeHtml(link.id)}')">Edit</button><button class="danger small-btn" type="button" onclick="deleteLink('${escapeHtml(link.id)}')">Delete</button></div></div>
+          <div class="link-footer"><a class="primary btn" href="${escapeHtml(safeUrl(link.url))}" target="_blank" rel="noopener noreferrer">Open</a><div class="card-actions"><button class="admin-only secondary small-btn" type="button" onclick="editLink('${escapeHtml(link.id)}')">Edit</button><button class="admin-only danger small-btn" type="button" onclick="deleteLink('${escapeHtml(link.id)}')">Delete</button></div></div>
         </div>`).join('');
     }
 
@@ -1400,7 +1474,9 @@ function applyTheme(theme) {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./service-worker.js");
   }
-  </script>
+  
+    applyAdminMode();
+</script>
   <footer><div class="container">FM Links • Your useful resources</div></footer>
 </body>
 </html>
