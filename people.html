@@ -2008,6 +2008,10 @@
                         <input id="editPersonClub" placeholder="Club">
                       </div>
                       <div>
+                        <label for="editPersonClubBadgeUrl">Club Badge URL</label>
+                        <input id="editPersonClubBadgeUrl" placeholder="https://example.com/badge.png">
+                      </div>
+                      <div>
                         <label>Linked Saves</label>
                         <div class="save-tag-picker">
                           <div id="editPersonSaveTags" class="save-tag-list"></div>
@@ -2292,6 +2296,22 @@
       return '';
     }
 
+    function getTransferFromLogo(transfer) {
+      return transfer?.fromLogo ||
+        transfer?.fromBadge ||
+        transfer?.oldClubLogo ||
+        transfer?.oldClubBadge ||
+        '';
+    }
+
+    function getTransferToLogo(transfer) {
+      return transfer?.toLogo ||
+        transfer?.toBadge ||
+        transfer?.newClubLogo ||
+        transfer?.newClubBadge ||
+        '';
+    }
+
     function syncPeopleClubsFromTransfers() {
       const saves = getFullSaves();
       if (!saves.length) return false;
@@ -2312,13 +2332,24 @@
 
         saves.forEach((save, saveIndex) => {
           if (linkedSaves.length && !linkedSaves.includes(save.name)) return;
+
           const transfers = Array.isArray(save.transfers) ? save.transfers : [];
+
           transfers.forEach((transfer, transferIndex) => {
             const transferName = normaliseTransferName(getTransferPlayerName(transfer));
             if (!transferName || transferName !== personName) return;
+
             const destination = getTransferDestination(transfer);
             if (!destination) return;
-            latestTransfer = { transfer, destination, saveIndex, transferIndex };
+
+            latestTransfer = {
+              transfer,
+              destination,
+              saveIndex,
+              transferIndex,
+              toLogo: getTransferToLogo(transfer),
+              fromLogo: getTransferFromLogo(transfer)
+            };
           });
         });
 
@@ -2329,12 +2360,24 @@
             type: latestTransfer.transfer.type || '',
             from: latestTransfer.transfer.from || latestTransfer.transfer.fromClub || '',
             to: latestTransfer.destination,
-            fee: latestTransfer.transfer.fee || ''
+            fee: latestTransfer.transfer.fee || '',
+            fromLogo: latestTransfer.fromLogo || '',
+            toLogo: latestTransfer.toLogo || ''
           };
 
-          if (person.club !== latestTransfer.destination || JSON.stringify(person.lastTransfer || {}) !== JSON.stringify(nextLastTransfer)) {
+          const needsClubUpdate = person.club !== latestTransfer.destination;
+          const needsLastTransferUpdate = JSON.stringify(person.lastTransfer || {}) !== JSON.stringify(nextLastTransfer);
+          const needsBadgeUpdate = latestTransfer.toLogo && person.clubBadge !== latestTransfer.toLogo;
+
+          if (needsClubUpdate || needsLastTransferUpdate || needsBadgeUpdate) {
             person.club = latestTransfer.destination;
             person.lastTransfer = nextLastTransfer;
+
+            if (latestTransfer.toLogo) {
+              person.clubBadge = latestTransfer.toLogo;
+              person.clubLogo = latestTransfer.toLogo;
+            }
+
             changed = true;
           }
         }
@@ -2738,7 +2781,8 @@
           seasons: Array.isArray(person.seasons) ? person.seasons : [],
           age: getPersonAge(person) || '',
           image: person.image || '',
-          clubBadge: person.clubBadge || '',
+          clubBadge: person.clubBadge || person.clubLogo || '',
+          clubLogo: person.clubBadge || person.clubLogo || '',
           attributes: person.attributes || {}
         }));
       localStorage.setItem(squadKey, JSON.stringify(players));
@@ -3275,7 +3319,7 @@
       btn.textContent = shouldOpen ? 'Hide Add Person' : 'Open Add Person';
     }
 
-    async async function addPerson() {
+    async function addPerson() {
       const fileInput = document.getElementById('personImage');
       const badgeInput = document.getElementById('personClubBadge');
       const badgeUrl = document.getElementById('personClubBadgeUrl')?.value.trim() || '';
@@ -3321,6 +3365,8 @@
       document.getElementById('personName').value = '';
       document.getElementById('personRole').value = '';
       document.getElementById('personClub').value = '';
+      const addBadgeUrlInput = document.getElementById('personClubBadgeUrl');
+      if (addBadgeUrlInput) addBadgeUrlInput.value = '';
       document.getElementById('personPosition').value = '';
       if (document.getElementById('personSecondaryPositions')) document.getElementById('personSecondaryPositions').value = '';
       document.getElementById('personNation').value = '';
@@ -3460,6 +3506,7 @@
       
       const editImageInput = document.getElementById('editPersonImage');
       const editBadgeInput = document.getElementById('editPersonClubBadge');
+      const editBadgeUrl = document.getElementById('editPersonClubBadgeUrl')?.value.trim() || '';
       if (editImageInput) editImageInput.value = '';
       if (editBadgeInput) editBadgeInput.value = '';
       updateEditModeUI();
@@ -3522,7 +3569,7 @@
       updateEditModeUI();
     }
 
-    async async function saveProfileEdits() {
+    async function saveProfileEdits() {
       if (currentPersonIndex === null) return;
       const people = getPeople();
       const person = people[currentPersonIndex];
@@ -3549,8 +3596,12 @@
       if (editImageInput && editImageInput.files && editImageInput.files[0]) {
         person.image = await saveUploadedImage(editImageInput.files[0]);
       }
-      if (editBadgeInput && editBadgeInput.files && editBadgeInput.files[0]) {
+      if (editBadgeUrl) {
+        person.clubBadge = editBadgeUrl;
+        person.clubLogo = editBadgeUrl;
+      } else if (editBadgeInput && editBadgeInput.files && editBadgeInput.files[0]) {
         person.clubBadge = await saveUploadedImage(editBadgeInput.files[0]);
+        person.clubLogo = person.clubBadge;
       }
 
       people[currentPersonIndex] = person;
