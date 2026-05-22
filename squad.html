@@ -8,6 +8,42 @@
 <meta id="themeMeta" name="theme-color" content="#111111">
   <title>FM Squad</title>
   <script>
+
+    const ADMIN_PASSWORD = "change-this-password";
+
+    function isAdmin() {
+      return sessionStorage.getItem("fmhub-admin") === "true";
+    }
+
+    function adminLogin() {
+      const password = prompt("Admin password");
+
+      if (password === ADMIN_PASSWORD) {
+        sessionStorage.setItem("fmhub-admin", "true");
+        applyAdminMode();
+      } else if (password !== null) {
+        alert("Wrong password");
+      }
+    }
+
+    function adminLogout() {
+      sessionStorage.removeItem("fmhub-admin");
+      applyAdminMode();
+    }
+
+    function applyAdminMode() {
+      const admin = isAdmin();
+      document.body.classList.toggle("is-admin", admin);
+
+      document.querySelectorAll(".admin-only").forEach(el => {
+        el.style.display = admin ? "" : "none";
+      });
+
+      document.querySelectorAll(".viewer-only").forEach(el => {
+        el.style.display = admin ? "none" : "";
+      });
+    }
+
     (function () {
       try {
         var theme = localStorage.getItem("fmhub-theme") || "red";
@@ -4687,6 +4723,42 @@
   }
 }
 
+
+    /* Admin mode */
+    .admin-only {
+      display: none !important;
+    }
+
+    body.is-admin .admin-only {
+      display: inline-flex !important;
+    }
+
+    body.is-admin div.admin-only,
+    body.is-admin section.admin-only,
+    body.is-admin form.admin-only,
+    body.is-admin .admin-only.admin-block {
+      display: block !important;
+    }
+
+    body.is-admin .admin-only.admin-grid {
+      display: grid !important;
+    }
+
+    body.is-admin .admin-only.admin-flex {
+      display: flex !important;
+    }
+
+    body.is-admin .viewer-only {
+      display: none !important;
+    }
+
+    .admin-login-btn {
+      padding: 8px 11px;
+      border-radius: 11px;
+      font-size: 0.78rem;
+      min-height: 0;
+    }
+
 </style>
 </head>
 <body>
@@ -4715,6 +4787,8 @@
           </select>
           <span>▼</span>
         </div>
+        <button class="secondary admin-login-btn viewer-only" type="button" onclick="adminLogin()">Admin</button>
+        <button class="secondary admin-login-btn admin-only" type="button" onclick="adminLogout()">Logout</button>
       </div>
     </div>
   </header>
@@ -4814,7 +4888,7 @@
                   <div class="logo-upload-row">
                     <img id="teamLogoUploadPreview" class="logo-upload-preview" src="" alt="Uploaded club logo preview">
                     <label class="file-upload-button" for="teamLogoUploadInput">Upload Logo</label>
-                    <input id="teamLogoUploadInput" type="file" accept="image/*" hidden onchange="uploadTeamLogo(event)">
+                    <input class="admin-only" id="teamLogoUploadInput" type="file" accept="image/*" hidden onchange="uploadTeamLogo(event)">
                     <button class="secondary" type="button" onclick="clearTeamLogo()">Clear Logo</button>
                     <div class="logo-upload-help">Uploaded logos are saved in this browser for the current save.</div>
                   </div>
@@ -5277,7 +5351,7 @@
             <div class="section-card" style="padding:18px; margin-bottom:18px; border-color:var(--hover-border); box-shadow:0 0 18px var(--hover-glow), 0 12px 30px rgba(0,0,0,0.32);">
               <div class="hero-actions" style="margin-top:0; margin-bottom:0;">
                 <button class="secondary" type="button" onclick="closeProfile()">Close</button>
-                <button class="delete-btn" type="button" onclick="deletePlayer()">Delete Player</button>
+                <button class="admin-only delete-btn" type="button" onclick="deletePlayer()">Delete Player</button>
               </div>
             </div>
 
@@ -8385,7 +8459,9 @@
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./service-worker.js");
   }
-  </script>
+  
+    applyAdminMode();
+</script>
   <footer>
     <div class="container">FM Squad • Squad list, lineup, and simple player profiles</div>
   </footer>
