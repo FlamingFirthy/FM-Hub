@@ -3592,7 +3592,6 @@
 
       const editImageInput = document.getElementById('editPersonImage');
       const editBadgeInput = document.getElementById('editPersonClubBadge');
-      const editBadgeUrl = document.getElementById('editPersonClubBadgeUrl')?.value.trim() || '';
       if (editImageInput && editImageInput.files && editImageInput.files[0]) {
         person.image = await saveUploadedImage(editImageInput.files[0]);
       }
