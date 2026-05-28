@@ -3315,23 +3315,27 @@
     const ADMIN_PASSWORD = "Barnsley";
 
     function isAdmin() {
-      return sessionStorage.getItem("fmhub-admin") === "true";
+      return localStorage.getItem("fmhub-admin") === "true" || sessionStorage.getItem("fmhub-admin") === "true";
     }
 
     function adminLogin() {
       const password = prompt("Admin password");
 
       if (password === ADMIN_PASSWORD) {
+        localStorage.setItem("fmhub-admin", "true");
         sessionStorage.setItem("fmhub-admin", "true");
         applyAdminMode();
+        alert("Admin mode on");
       } else if (password !== null) {
         alert("Wrong password");
       }
     }
 
     function adminLogout() {
+      localStorage.removeItem("fmhub-admin");
       sessionStorage.removeItem("fmhub-admin");
       applyAdminMode();
+      alert("Admin mode off");
     }
 
     function applyAdminMode() {
@@ -3344,6 +3348,10 @@
 
       document.querySelectorAll(".viewer-only").forEach(el => {
         el.style.display = admin ? "none" : "";
+      });
+
+      document.querySelectorAll(".admin-login-btn").forEach(btn => {
+        btn.style.visibility = "visible";
       });
     }
 
@@ -3465,7 +3473,15 @@
       };
     }
 
-    function saveNormalisedSaves(saves) { setSaves(saves.map(normaliseSave)); }
+    function saveNormalisedSaves(saves) {
+      const normalised = saves.map(normaliseSave);
+      setSaves(normalised);
+      try {
+        localStorage.setItem(savesKey, JSON.stringify(normalised));
+      } catch (e) {
+        console.log('Could not save normalised saves:', e);
+      }
+    }
 
     function getPeople() {
       try { return JSON.parse(localStorage.getItem(peopleKey) || '[]'); } catch (e) { return []; }
@@ -3740,7 +3756,6 @@
 
       saveNormalisedSaves(saves);
 
-      // Extra safety: force the same data into localStorage immediately.
       try {
         localStorage.setItem(savesKey, JSON.stringify(saves.map(normaliseSave)));
       } catch (e) {
@@ -3893,6 +3908,7 @@
       renderSeasonAwards(save);
       renderMatchHighlights(save);
       organiseOpenedSaveTabs(save);
+      applyAdminMode();
       document.getElementById('saveProfile').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -4751,8 +4767,9 @@
       if (!save || !Array.isArray(save.transfers)) return;
       save.transfers.splice(index, 1);
       updateCurrentSave(save);
-      renderTransferRecords(save);
+      renderTransferRecords(savedAfterTransfer);
       loadSaves();
+      applyAdminMode();
     }
 
     function renderSaveSeasonRecords(records) {
@@ -4816,6 +4833,7 @@
       openSaveProfile(currentSaveIndex);
       setSaveEditMode(true);
       loadSaves();
+      applyAdminMode();
     }
 
     function deleteSaveSeasonRecord(index) {
@@ -5994,6 +6012,7 @@
     initTheme();
     loadSaves();
     decorateEmptyStates();
+    applyAdminMode();
 
     window.addEventListener('FMCloudReady', loadFMHubFromCloud);
     setTimeout(loadFMHubFromCloud, 800);
