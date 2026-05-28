@@ -2805,6 +2805,22 @@
       min-height: 0;
     }
 
+
+    .stats-toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+      align-items:center;
+    }
+
+    .stats-toolbar input,
+    .stats-toolbar select{
+      padding:10px 12px;
+      border-radius:10px;
+    }
+
+
 </style>
 </head>
 <body>
@@ -4703,6 +4719,13 @@
       return select.value.trim();
     }
 
+
+    function getSeasonSortValue(season) {
+      const value = String(season || '').trim();
+      const match = value.match(/(\d{4})/);
+      return match ? parseInt(match[1], 10) : 0;
+    }
+
     function renderTransferRecords(save) {
       const tbody = document.getElementById('transferTableBody');
       if (!tbody) return;
@@ -5275,6 +5298,58 @@
       });
 
       return rows.sort((a, b) => String(a.season || '').localeCompare(String(b.season || '')) || String(a.personName || '').localeCompare(String(b.personName || '')));
+    }
+
+
+    function renderCareerStats(rows) {
+      const tbody = document.querySelector('#careerStatsTable tbody');
+      if (!tbody) return;
+
+      const totals = {};
+
+      rows.forEach(row => {
+        const key = row.person || row.player || 'Unknown';
+
+        if (!totals[key]) {
+          totals[key] = {
+            name: key,
+            apps: 0,
+            goals: 0,
+            assists: 0,
+            cleanSheets: 0,
+            ratings: []
+          };
+        }
+
+        totals[key].apps += Number(row.apps || 0);
+        totals[key].goals += Number(row.goals || 0);
+        totals[key].assists += Number(row.assists || 0);
+        totals[key].cleanSheets += Number(row.cleanSheets || 0);
+
+        const rating = parseFloat(row.rating);
+        if (!isNaN(rating)) totals[key].ratings.push(rating);
+      });
+
+      const html = Object.values(totals)
+        .sort((a, b) => b.apps - a.apps)
+        .map(item => {
+          const avg = item.ratings.length
+            ? (item.ratings.reduce((a, b) => a + b, 0) / item.ratings.length).toFixed(2)
+            : '-';
+
+          return `
+            <tr>
+              <td>${escapeHtml(item.name)}</td>
+              <td>${item.apps}</td>
+              <td>${item.goals}</td>
+              <td>${item.assists}</td>
+              <td>${item.cleanSheets}</td>
+              <td>${avg}</td>
+            </tr>
+          `;
+        }).join('');
+
+      tbody.innerHTML = html || '<tr><td colspan="6">No career stats yet</td></tr>';
     }
 
     function renderSavePlayerStats(save) {
