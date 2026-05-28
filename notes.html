@@ -2388,8 +2388,8 @@ Problems To Fix:
     renderPlayerNotes();
     updateMiniStats();
 
-    window.addEventListener('FMCloudReady', loadFMHubFromCloud);
-    setTimeout(loadFMHubFromCloud, 800);
+    // window.addEventListener('FMCloudReady', loadFMHubFromCloud);
+    // setTimeout(loadFMHubFromCloud, 800);
     window.addEventListener('beforeunload', syncFMHubToCloud);
 
     ['noteTitle', 'noteTag', 'noteContent', 'notePinned', 'noteSave'].forEach(id => {
