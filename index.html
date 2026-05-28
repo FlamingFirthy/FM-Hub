@@ -2679,8 +2679,8 @@
     function initTheme(){let t='red';try{t=localStorage.getItem('fmhub-theme')||'red'}catch(e){}applyTheme(t)}
     document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target.id==='modalOverlay')closeModal()});
     initTheme();updateHomepageStats();updateLastBackupDisplay();
-    window.addEventListener('FMCloudReady', loadFMHubFromCloud);
-    setTimeout(loadFMHubFromCloud, 800);
+    // window.addEventListener('FMCloudReady', loadFMHubFromCloud);
+    // setTimeout(loadFMHubFromCloud, 800);
     window.addEventListener('storage',e=>{if(['fmhub-theme',savesKey,squadKey,peopleKey].includes(e.key)){if(e.key==='fmhub-theme')initTheme();updateHomepageStats()}});
   </script>
 
