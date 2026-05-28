@@ -8422,8 +8422,8 @@
     renderSeasonStatsTable('all');
     checkAutoOpenPlayer();
 
-    window.addEventListener('FMCloudReady', loadFMHubFromCloud);
-    setTimeout(loadFMHubFromCloud, 800);
+    // window.addEventListener('FMCloudReady', loadFMHubFromCloud);
+    // setTimeout(loadFMHubFromCloud, 800);
     window.addEventListener('beforeunload', syncFMHubToCloud);
 
     document.getElementById('profileOverlay')?.addEventListener('click', (event) => {
