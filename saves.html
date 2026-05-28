@@ -3731,6 +3731,23 @@
       return saves[currentSaveIndex] || null;
     }
 
+
+    async function forceSaveSavesToCloud() {
+      try {
+        localStorage.setItem(savesKey, JSON.stringify(getSaves().map(normaliseSave)));
+      } catch (e) {
+        console.log('Could not force local save:', e);
+      }
+
+      if (typeof syncFMHubToCloud === 'function') {
+        try {
+          await syncFMHubToCloud();
+        } catch (e) {
+          console.log('Could not force cloud save:', e);
+        }
+      }
+    }
+
     function updateCurrentSave(save) {
       if (!save) return;
 
@@ -4708,7 +4725,7 @@
       return save;
     }
 
-    function addTransferRecord() {
+    async function addTransferRecord() {
       const save = getCurrentSave();
       if (!save) return;
 
@@ -4735,6 +4752,7 @@
       save.transfers.push(transfer);
 
       updateCurrentSave(save);
+      await forceSaveSavesToCloud();
 
       updatePersonClubFromTransfer(transfer);
       updateCurrentSave(save);
@@ -4761,7 +4779,7 @@
       loadSaves();
     }
 
-    function deleteTransferRecord(index) {
+    async function deleteTransferRecord(index) {
       const save = getCurrentSave();
       if (!save || !Array.isArray(save.transfers)) return;
       save.transfers.splice(index, 1);
@@ -5589,7 +5607,7 @@
       document.getElementById('saveClubProfileOverlay')?.classList.add('hidden');
     }
 
-    function addSavePlayerStat() {
+    async function addSavePlayerStat() {
       const save = getCurrentSave();
       const item = findStatOptionByKey(document.getElementById('statPersonSelect')?.value || '');
       if (!save || !item) return;
@@ -5612,6 +5630,7 @@
       save.playerStats.push(stat);
 
       updateCurrentSave(save);
+      await forceSaveSavesToCloud();
 
       save.linkedPeople = Array.isArray(save.linkedPeople) ? save.linkedPeople : [];
       if (!save.linkedPeople.some(person =>
@@ -5627,11 +5646,12 @@
       loadSaves();
     }
 
-    function deleteSavePlayerStat(index) {
+    async function deleteSavePlayerStat(index) {
       const save = getCurrentSave();
       if (!save || !Array.isArray(save.playerStats)) return;
       save.playerStats.splice(index, 1);
       updateCurrentSave(save);
+      await forceSaveSavesToCloud();
       openSaveProfile(currentSaveIndex);
       setSaveEditMode(true);
       loadSaves();
