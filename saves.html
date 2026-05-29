@@ -2805,40 +2805,6 @@
       min-height: 0;
     }
 
-
-    .stats-toolbar{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:16px;
-      align-items:center;
-    }
-
-    .stats-toolbar input,
-    .stats-toolbar select{
-      padding:10px 12px;
-      border-radius:10px;
-    }
-
-
-
-    .club-colour-dots {
-      display: inline-flex;
-      gap: 4px;
-      margin-left: 7px;
-      vertical-align: middle;
-      align-items: center;
-    }
-
-    .club-colour-dots span {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      display: inline-block;
-      border: 1px solid rgba(255,255,255,0.35);
-      box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
-    }
-
 </style>
 </head>
 <body>
@@ -3132,7 +3098,7 @@
 
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Season</th><th>Club</th><th>Finish</th><th>Points</th><th>Trophies</th><th class="admin-only edit-only">Actions</th></tr></thead>
+              <thead><tr><th>Season</th><th>Club</th><th>Finish</th><th>Points</th><th>Trophies</th><th class="admin-only edit-only">Action</th></tr></thead>
               <tbody id="saveSeasonTableBody"></tbody>
             </table>
           </div>
@@ -3219,7 +3185,7 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Person</th><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Clean Sheets</th><th class="admin-only edit-only">Actions</th></tr>
+              <tr><th>Person</th><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>CS</th><th class="admin-only edit-only">Action</th></tr>
             </thead>
             <tbody id="savePlayerStatsBody"></tbody>
           </table>
@@ -3531,6 +3497,21 @@
       const fromLogo = getTransferLogoForClub(transfer, 'from');
       const toLogo = getTransferLogoForClub(transfer, 'to');
 
+      const toPrimaryColour = transfer.toColour || transfer.toColor || transfer.toPrimaryColour || transfer.toPrimaryColor || '';
+      const toSecondaryColour =
+        transfer.toSecondaryColour ||
+        transfer.toSecondaryColor ||
+        transfer.toColour2 ||
+        transfer.toColor2 ||
+        '';
+
+      const nextClubColors = (toPrimaryColour || toSecondaryColour)
+        ? {
+            primary: toPrimaryColour,
+            secondary: toSecondaryColour
+          }
+        : null;
+
       const people = getPeople();
       let peopleChanged = false;
 
@@ -3545,6 +3526,15 @@
           person.clubLogo = toLogo;
         }
 
+        if (nextClubColors) {
+          person.clubColors = {
+            ...(person.clubColors || {}),
+            ...nextClubColors
+          };
+          person.clubPrimaryColor = nextClubColors.primary || person.clubPrimaryColor || '';
+          person.clubSecondaryColor = nextClubColors.secondary || person.clubSecondaryColor || '';
+        }
+
         person.lastTransfer = {
           save: getCurrentSave()?.name || '',
           season: transfer.season || '',
@@ -3553,7 +3543,9 @@
           to: destination,
           fee: transfer.fee || '',
           fromLogo,
-          toLogo
+          toLogo,
+          toColour: toPrimaryColour,
+          toSecondaryColour
         };
 
         peopleChanged = true;
@@ -3575,6 +3567,15 @@
           player.teamLogo = toLogo;
         }
 
+        if (nextClubColors) {
+          player.clubColors = {
+            ...(player.clubColors || {}),
+            ...nextClubColors
+          };
+          player.clubPrimaryColor = nextClubColors.primary || player.clubPrimaryColor || '';
+          player.clubSecondaryColor = nextClubColors.secondary || player.clubSecondaryColor || '';
+        }
+
         player.lastTransfer = {
           save: getCurrentSave()?.name || '',
           season: transfer.season || '',
@@ -3583,7 +3584,9 @@
           to: destination,
           fee: transfer.fee || '',
           fromLogo,
-          toLogo
+          toLogo,
+          toColour: toPrimaryColour,
+          toSecondaryColour
         };
 
         squadChanged = true;
@@ -4737,48 +4740,6 @@
       return select.value.trim();
     }
 
-
-    function getClubColours(clubName) {
-  const cleanClub = normaliseText(clubName);
-  if (!cleanClub) return { primary: '', secondary: '' };
-
-  try {
-    const people = JSON.parse(localStorage.getItem(peopleKey || 'fmhub-people') || '[]');
-
-    const person = people.find(p =>
-      normaliseText(p.club || p.team || p.currentClub || '') === cleanClub &&
-      (p.clubColors?.primary || p.clubColors?.secondary || p.clubPrimaryColor || p.clubSecondaryColor)
-    );
-
-    if (person) {
-      return {
-        primary: person.clubColors?.primary || person.clubPrimaryColor || '',
-        secondary: person.clubColors?.secondary || person.clubSecondaryColor || ''
-      };
-    }
-  } catch(e) {}
-
-  return { primary: '', secondary: '' };
-}
-
-function renderClubColours(clubName) {
-  const colours = getClubColours(clubName);
-  if (!colours.primary && !colours.secondary) return '';
-
-  return `
-    <span class="club-colour-dots" title="${escapeHtml(clubName || 'Club colours')}">
-      ${colours.primary ? `<span style="background:${escapeHtml(colours.primary)};"></span>` : ''}
-      ${colours.secondary ? `<span style="background:${escapeHtml(colours.secondary)};"></span>` : ''}
-    </span>
-  `;
-}
-
-function getSeasonSortValue(season) {
-      const value = String(season || '').trim();
-      const match = value.match(/(\d{4})/);
-      return match ? parseInt(match[1], 10) : 0;
-    }
-
     function renderTransferRecords(save) {
       const tbody = document.getElementById('transferTableBody');
       if (!tbody) return;
@@ -5353,58 +5314,6 @@ function getSeasonSortValue(season) {
       return rows.sort((a, b) => String(a.season || '').localeCompare(String(b.season || '')) || String(a.personName || '').localeCompare(String(b.personName || '')));
     }
 
-
-    function renderCareerStats(rows) {
-      const tbody = document.querySelector('#careerStatsTable tbody');
-      if (!tbody) return;
-
-      const totals = {};
-
-      rows.forEach(row => {
-        const key = row.person || row.player || 'Unknown';
-
-        if (!totals[key]) {
-          totals[key] = {
-            name: key,
-            apps: 0,
-            goals: 0,
-            assists: 0,
-            cleanSheets: 0,
-            ratings: []
-          };
-        }
-
-        totals[key].apps += Number(row.apps || 0);
-        totals[key].goals += Number(row.goals || 0);
-        totals[key].assists += Number(row.assists || 0);
-        totals[key].cleanSheets += Number(row.cleanSheets || 0);
-
-        const rating = parseFloat(row.rating);
-        if (!isNaN(rating)) totals[key].ratings.push(rating);
-      });
-
-      const html = Object.values(totals)
-        .sort((a, b) => b.apps - a.apps)
-        .map(item => {
-          const avg = item.ratings.length
-            ? (item.ratings.reduce((a, b) => a + b, 0) / item.ratings.length).toFixed(2)
-            : '-';
-
-          return `
-            <tr>
-              <td>${escapeHtml(item.name)}</td>
-              <td>${item.apps}</td>
-              <td>${item.goals}</td>
-              <td>${item.assists}</td>
-              <td>${item.cleanSheets}</td>
-              <td>${avg}</td>
-            </tr>
-          `;
-        }).join('');
-
-      tbody.innerHTML = html || '<tr><td colspan="6">No career stats yet</td></tr>';
-    }
-
     function renderSavePlayerStats(save) {
       const tbody = document.getElementById('savePlayerStatsBody');
       if (!tbody) return;
@@ -5417,7 +5326,7 @@ function getSeasonSortValue(season) {
         <tr title="${escapeHtml(row.notes || '')}">
           <td>${escapeHtml(row.personName || '-')}</td>
           <td>${escapeHtml(row.season || '-')}</td>
-          <td>${escapeHtml(row.club || '-')}${renderClubColours(row.club || '')}</td>
+          <td>${escapeHtml(row.club || '-')}</td>
           <td>${escapeHtml(row.position || '-')}</td>
           <td>${escapeHtml(row.apps || '0')}</td>
           <td>${escapeHtml(row.goals || '0')}</td>
