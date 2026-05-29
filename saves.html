@@ -2805,6 +2805,131 @@
       min-height: 0;
     }
 
+
+    .stats-refurb-toolbar,
+    .transfer-refurb-toolbar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 14px 0 16px;
+      align-items: end;
+    }
+
+    .stats-refurb-toolbar input,
+    .stats-refurb-toolbar select,
+    .transfer-refurb-toolbar select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    .stats-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 10px;
+      margin: 12px 0 16px;
+    }
+
+    .stats-summary-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+    }
+
+    .stats-summary-card span {
+      display: block;
+      color: var(--muted);
+      font-size: .74rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 5px;
+    }
+
+    .stats-summary-card strong { font-size: 1.25rem; }
+
+    .stat-player-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 130px;
+    }
+
+    .stat-player-cell span {
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    .stat-number-pill {
+      display: inline-flex;
+      min-width: 34px;
+      justify-content: center;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid var(--border);
+      font-weight: 800;
+    }
+
+    .career-stats-card {
+      margin-top: 18px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(255,255,255,.03);
+    }
+
+    .career-stats-head {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .transfer-card { position: relative; overflow: hidden; }
+
+    .transfer-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: linear-gradient(180deg, var(--from-colour), var(--to-colour));
+    }
+
+    .transfer-meta-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .transfer-meta-row .chip { font-size: .72rem; }
+
+    .club-colour-dots {
+      display: inline-flex;
+      gap: 4px;
+      margin-left: 7px;
+      vertical-align: middle;
+      align-items: center;
+    }
+
+    .club-colour-dots span {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.35);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
+    }
+
 </style>
 </head>
 <body>
@@ -3168,7 +3293,34 @@
           </div>
         </div>
 
-        <div class="form-grid edit-only">
+                <div class="stats-summary-grid" id="statsSummaryGrid"></div>
+
+        <div class="stats-refurb-toolbar">
+          <div>
+            <label for="statsSearchInput">Search</label>
+            <input id="statsSearchInput" placeholder="Search player..." oninput="renderSavePlayerStats(getCurrentSave())">
+          </div>
+          <div>
+            <label for="statsSeasonFilter">Season</label>
+            <select id="statsSeasonFilter" onchange="renderSavePlayerStats(getCurrentSave())">
+              <option value="all">All seasons</option>
+            </select>
+          </div>
+          <div>
+            <label for="statsSortBy">Sort By</label>
+            <select id="statsSortBy" onchange="renderSavePlayerStats(getCurrentSave())">
+              <option value="season">Season newest</option>
+              <option value="player">Player</option>
+              <option value="apps">Apps</option>
+              <option value="goals">Goals</option>
+              <option value="assists">Assists</option>
+              <option value="rating">Rating</option>
+              <option value="cleanSheets">Clean Sheets</option>
+            </select>
+          </div>
+        </div>
+
+<div class="form-grid edit-only">
           <div><label for="statPersonSelect">Person / Player</label><select id="statPersonSelect" onchange="handleStatPersonSelect()"></select></div>
           <div><label for="statSeasonInput">Season</label><input id="statSeasonInput" placeholder="2026/27"></div>
           <div><label for="statClubInput">Club</label><input id="statClubInput" placeholder="Chelsea"></div>
@@ -3185,10 +3337,28 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Person</th><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>CS</th><th class="admin-only edit-only">Action</th></tr>
+              <tr><th>Player</th><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Clean Sheets</th><th class="admin-only edit-only">Actions</th></tr>
             </thead>
             <tbody id="savePlayerStatsBody"></tbody>
           </table>
+        </div>
+
+        <div class="career-stats-card">
+          <div class="career-stats-head">
+            <div>
+              <div class="section-kicker">Career Totals</div>
+              <strong>All seasons combined</strong>
+            </div>
+            <span class="muted">Updates from the filtered stats above</span>
+          </div>
+          <div class="table-wrap" style="border:0; border-radius:0;">
+            <table>
+              <thead>
+                <tr><th>Player</th><th>Seasons</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Clean Sheets</th><th>Avg Rating</th></tr>
+              </thead>
+              <tbody id="careerStatsBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -3222,17 +3392,38 @@
 
         <div class="transfer-dashboard" id="transferDashboard"></div>
 
-        <div class="transfer-filter-bar">
+                <div class="transfer-refurb-toolbar">
           <div>
-            <label for="transferWindowFilter">Transfer Window</label>
+            <label for="transferWindowFilter">Window</label>
             <select id="transferWindowFilter" onchange="renderTransferRecords(getCurrentSave())">
               <option value="all">All windows</option>
             </select>
           </div>
-          <div class="muted">Filter transfer cards by season/window. Edit mode still controls deleting records.</div>
+          <div>
+            <label for="transferTypeFilter">Type</label>
+            <select id="transferTypeFilter" onchange="renderTransferRecords(getCurrentSave())">
+              <option value="all">All types</option>
+              <option value="In">In</option>
+              <option value="Out">Out</option>
+              <option value="Loan In">Loan In</option>
+              <option value="Loan Out">Loan Out</option>
+              <option value="Released">Released</option>
+              <option value="Retired">Retired</option>
+            </select>
+          </div>
+          <div>
+            <label for="transferSortBy">Sort By</label>
+            <select id="transferSortBy" onchange="renderTransferRecords(getCurrentSave())">
+              <option value="season-desc">Newest season</option>
+              <option value="season-asc">Oldest season</option>
+              <option value="fee-desc">Highest fee</option>
+              <option value="player">Player</option>
+              <option value="type">Type</option>
+            </select>
+          </div>
         </div>
 
-        <div id="transferCardsList" class="transfer-cards-grid"></div>
+<div id="transferCardsList" class="transfer-cards-grid"></div>
 
         <div class="table-wrap transfer-table-fallback">
           <table>
@@ -3497,21 +3688,6 @@
       const fromLogo = getTransferLogoForClub(transfer, 'from');
       const toLogo = getTransferLogoForClub(transfer, 'to');
 
-      const toPrimaryColour = transfer.toColour || transfer.toColor || transfer.toPrimaryColour || transfer.toPrimaryColor || '';
-      const toSecondaryColour =
-        transfer.toSecondaryColour ||
-        transfer.toSecondaryColor ||
-        transfer.toColour2 ||
-        transfer.toColor2 ||
-        '';
-
-      const nextClubColors = (toPrimaryColour || toSecondaryColour)
-        ? {
-            primary: toPrimaryColour,
-            secondary: toSecondaryColour
-          }
-        : null;
-
       const people = getPeople();
       let peopleChanged = false;
 
@@ -3526,15 +3702,6 @@
           person.clubLogo = toLogo;
         }
 
-        if (nextClubColors) {
-          person.clubColors = {
-            ...(person.clubColors || {}),
-            ...nextClubColors
-          };
-          person.clubPrimaryColor = nextClubColors.primary || person.clubPrimaryColor || '';
-          person.clubSecondaryColor = nextClubColors.secondary || person.clubSecondaryColor || '';
-        }
-
         person.lastTransfer = {
           save: getCurrentSave()?.name || '',
           season: transfer.season || '',
@@ -3543,9 +3710,7 @@
           to: destination,
           fee: transfer.fee || '',
           fromLogo,
-          toLogo,
-          toColour: toPrimaryColour,
-          toSecondaryColour
+          toLogo
         };
 
         peopleChanged = true;
@@ -3567,15 +3732,6 @@
           player.teamLogo = toLogo;
         }
 
-        if (nextClubColors) {
-          player.clubColors = {
-            ...(player.clubColors || {}),
-            ...nextClubColors
-          };
-          player.clubPrimaryColor = nextClubColors.primary || player.clubPrimaryColor || '';
-          player.clubSecondaryColor = nextClubColors.secondary || player.clubSecondaryColor || '';
-        }
-
         player.lastTransfer = {
           save: getCurrentSave()?.name || '',
           season: transfer.season || '',
@@ -3584,9 +3740,7 @@
           to: destination,
           fee: transfer.fee || '',
           fromLogo,
-          toLogo,
-          toColour: toPrimaryColour,
-          toSecondaryColour
+          toLogo
         };
 
         squadChanged = true;
@@ -3763,42 +3917,10 @@
       return getPlayerStatOptions().find(option => option.key === key) || null;
     }
 
-    function isGoalkeeperPosition(position) {
-      const value = String(position || '').toUpperCase();
-      return value === 'GK' || value.includes('GK') || value.includes('GOALKEEPER');
-    }
-
-    function handleStatPersonSelect() {
-      const item = findStatOptionByKey(document.getElementById('statPersonSelect')?.value || '');
-      const wrap = document.getElementById('cleanSheetsWrap');
-      const input = document.getElementById('statCleanSheetsInput');
-      const isGK = isGoalkeeperPosition(item?.position);
-
-      if (wrap) wrap.classList.toggle('hidden', !isGK);
-      if (!isGK && input) input.value = '';
-    }
-
     function getCurrentSave() {
       if (currentSaveIndex === null) return null;
       const saves = getSaves().map(normaliseSave);
       return saves[currentSaveIndex] || null;
-    }
-
-
-    async function forceSaveSavesToCloud() {
-      try {
-        localStorage.setItem(savesKey, JSON.stringify(getSaves().map(normaliseSave)));
-      } catch (e) {
-        console.log('Could not force local save:', e);
-      }
-
-      if (typeof syncFMHubToCloud === 'function') {
-        try {
-          await syncFMHubToCloud();
-        } catch (e) {
-          console.log('Could not force cloud save:', e);
-        }
-      }
     }
 
     function updateCurrentSave(save) {
@@ -4626,7 +4748,8 @@
       const select = document.getElementById('transferWindowFilter');
       if (!select) return 'all';
       const current = select.value || 'all';
-      const windows = Array.from(new Set((transfers || []).map(t => t.season).filter(Boolean))).sort();
+      const windows = Array.from(new Set((transfers || []).map(t => t.season).filter(Boolean)))
+        .sort((a, b) => compareSeasons(a, b, 'desc'));
       select.innerHTML = ['<option value="all">All windows</option>']
         .concat(windows.map(windowName => `<option value="${escapeHtml(windowName)}">${escapeHtml(windowName)}</option>`))
         .join('');
@@ -4678,7 +4801,10 @@
               <div class="transfer-card-player">
                 <span class="transfer-type-chip ${escapeHtml(getTransferChipClass(transfer.type))}">${escapeHtml(transfer.type || '-')}</span>
                 <strong style="margin-top:9px;">${escapeHtml(transfer.player || '-')}</strong>
-                <div class="muted" style="margin-top:4px;">${escapeHtml(transfer.season || 'No window')} • ${escapeHtml(getFeeTypeLabel(transfer.fee))}</div>
+                <div class="transfer-meta-row">
+                  <span class="chip">${escapeHtml(transfer.season || 'No window')}</span>
+                  <span class="chip">${escapeHtml(getFeeTypeLabel(transfer.fee))}</span>
+                </div>
               </div>
               <div class="transfer-fee-pill">${escapeHtml(transfer.fee || '-')}</div>
             </div>
@@ -4698,6 +4824,7 @@
           </div>
         `;
       }).join('');
+      applyAdminMode();
     }
 
     function populateTransferPlayerDropdown(save) {
@@ -4740,24 +4867,45 @@
       return select.value.trim();
     }
 
+    function getFilteredSortedTransfers(transfers) {
+      const selectedWindow = syncTransferWindowFilter(transfers);
+      const selectedType = document.getElementById('transferTypeFilter')?.value || 'all';
+      const sortBy = document.getElementById('transferSortBy')?.value || 'season-desc';
+
+      let rows = [...(transfers || [])];
+
+      if (selectedWindow !== 'all') rows = rows.filter(transfer => transfer.season === selectedWindow);
+      if (selectedType !== 'all') rows = rows.filter(transfer => String(transfer.type || '') === selectedType);
+
+      rows.sort((a, b) => {
+        if (sortBy === 'season-asc') return compareSeasons(a.season, b.season, 'asc') || String(a.player || '').localeCompare(String(b.player || ''));
+        if (sortBy === 'fee-desc') return getTransferFeeValue(b.fee) - getTransferFeeValue(a.fee);
+        if (sortBy === 'player') return String(a.player || '').localeCompare(String(b.player || ''));
+        if (sortBy === 'type') return String(a.type || '').localeCompare(String(b.type || ''));
+        return compareSeasons(a.season, b.season, 'desc') || String(a.player || '').localeCompare(String(b.player || ''));
+      });
+
+      return rows;
+    }
+
     function renderTransferRecords(save) {
       const tbody = document.getElementById('transferTableBody');
       if (!tbody) return;
       const transfers = Array.isArray(save?.transfers) ? save.transfers : [];
       renderTransferDashboard(transfers);
-      const selectedWindow = syncTransferWindowFilter(transfers);
-      const filteredTransfers = selectedWindow === 'all' ? transfers : transfers.filter(transfer => transfer.season === selectedWindow);
+      const filteredTransfers = getFilteredSortedTransfers(transfers);
       renderTransferCards(filteredTransfers, transfers);
       if (!filteredTransfers.length) {
         tbody.innerHTML = '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No transfers recorded for this filter.</td></tr>';
+        applyAdminMode();
         return;
       }
       tbody.innerHTML = filteredTransfers.map((transfer) => {
         const originalIndex = transfers.indexOf(transfer);
         return `
           <tr>
-            <td>${escapeHtml(transfer.player || '-')}</td>
-            <td>${escapeHtml(transfer.season || '-')}</td>
+            <td><strong>${escapeHtml(transfer.player || '-')}</strong></td>
+            <td><span class="chip">${escapeHtml(transfer.season || '-')}</span></td>
             <td><span class="transfer-type-chip ${escapeHtml(getTransferChipClass(transfer.type))}">${escapeHtml(transfer.type || '-')}</span></td>
             <td>${escapeHtml(transfer.from || '-')}</td>
             <td>${escapeHtml(transfer.to || '-')}</td>
@@ -4767,8 +4915,8 @@
           </tr>
         `;
       }).join('');
+      applyAdminMode();
     }
-
 
     function debugCurrentSaveStorage() {
       const save = getCurrentSave();
@@ -4778,7 +4926,7 @@
       return save;
     }
 
-    async function addTransferRecord() {
+    function addTransferRecord() {
       const save = getCurrentSave();
       if (!save) return;
 
@@ -4805,7 +4953,6 @@
       save.transfers.push(transfer);
 
       updateCurrentSave(save);
-      await forceSaveSavesToCloud();
 
       updatePersonClubFromTransfer(transfer);
       updateCurrentSave(save);
@@ -4832,7 +4979,7 @@
       loadSaves();
     }
 
-    async function deleteTransferRecord(index) {
+    function deleteTransferRecord(index) {
       const save = getCurrentSave();
       if (!save || !Array.isArray(save.transfers)) return;
       save.transfers.splice(index, 1);
@@ -5073,10 +5220,7 @@
       const statSelect = document.getElementById('statPersonSelect');
 
       if (personSelect) personSelect.innerHTML = html;
-      if (statSelect) {
-        statSelect.innerHTML = statHtml;
-        handleStatPersonSelect();
-      }
+      if (statSelect) statSelect.innerHTML = statHtml;
     }
 
     function findOptionByKey(key) {
@@ -5286,6 +5430,173 @@
       loadSaves();
     }
 
+    function getNumberValue(value) {
+      const num = parseFloat(String(value || '').replace(/[^0-9.-]/g, ''));
+      return Number.isFinite(num) ? num : 0;
+    }
+
+    function getSeasonSortValue(season) {
+      const value = String(season || '').trim();
+      const match = value.match(/(\d{4})/);
+      return match ? parseInt(match[1], 10) : 0;
+    }
+
+    function compareSeasons(a, b, direction = 'desc') {
+      const diff = getSeasonSortValue(a) - getSeasonSortValue(b);
+      return direction === 'asc' ? diff : -diff;
+    }
+
+    function isGoalkeeperPosition(position) {
+      const value = String(position || '').toUpperCase();
+      return value === 'GK' || value.includes('GK') || value.includes('GOALKEEPER');
+    }
+
+    function handleStatPersonSelect() {
+      const item = findStatOptionByKey(document.getElementById('statPersonSelect')?.value || '');
+      const wrap = document.getElementById('cleanSheetsWrap');
+      const input = document.getElementById('statCleanSheetsInput');
+      const isGK = isGoalkeeperPosition(item?.position);
+
+      if (wrap) wrap.classList.toggle('hidden', !isGK);
+      if (!isGK && input) input.value = '';
+    }
+
+    function getClubColours(clubName) {
+      const cleanClub = normaliseText(clubName);
+      if (!cleanClub) return { primary: '', secondary: '' };
+
+      const sources = [getPeople(), getSquadPlayers()];
+      for (const source of sources) {
+        const found = source.find(item =>
+          normaliseText(item.club || item.team || item.currentClub || '') === cleanClub &&
+          (item.clubColors?.primary || item.clubColors?.secondary || item.clubPrimaryColor || item.clubSecondaryColor)
+        );
+
+        if (found) {
+          return {
+            primary: found.clubColors?.primary || found.clubPrimaryColor || '',
+            secondary: found.clubColors?.secondary || found.clubSecondaryColor || ''
+          };
+        }
+      }
+
+      return { primary: '', secondary: '' };
+    }
+
+    function renderClubColours(clubName) {
+      const colours = getClubColours(clubName);
+      if (!colours.primary && !colours.secondary) return '';
+
+      return `
+        <span class="club-colour-dots" title="${escapeHtml(clubName || 'Club colours')}">
+          ${colours.primary ? `<span style="background:${escapeHtml(colours.primary)};"></span>` : ''}
+          ${colours.secondary ? `<span style="background:${escapeHtml(colours.secondary)};"></span>` : ''}
+        </span>
+      `;
+    }
+
+    function updateStatsSeasonFilter(allRows) {
+      const select = document.getElementById('statsSeasonFilter');
+      if (!select) return;
+
+      const current = select.value || 'all';
+      const seasons = Array.from(new Set(allRows.map(row => row.season).filter(Boolean)))
+        .sort((a, b) => compareSeasons(a, b, 'desc'));
+
+      select.innerHTML = '<option value="all">All seasons</option>' +
+        seasons.map(season => `<option value="${escapeHtml(season)}">${escapeHtml(season)}</option>`).join('');
+
+      select.value = ['all', ...seasons].includes(current) ? current : 'all';
+    }
+
+    function getFilteredSortedStatRows(save) {
+      const allRows = getAllStatsForSave(save);
+      updateStatsSeasonFilter(allRows);
+
+      const search = String(document.getElementById('statsSearchInput')?.value || '').trim().toLowerCase();
+      const season = document.getElementById('statsSeasonFilter')?.value || 'all';
+      const sortBy = document.getElementById('statsSortBy')?.value || 'season';
+
+      let rows = [...allRows];
+
+      if (search) rows = rows.filter(row => String(row.personName || '').toLowerCase().includes(search));
+      if (season !== 'all') rows = rows.filter(row => String(row.season || '') === season);
+
+      rows.sort((a, b) => {
+        if (sortBy === 'player') return String(a.personName || '').localeCompare(String(b.personName || ''));
+        if (sortBy === 'season') return compareSeasons(a.season, b.season, 'desc') || String(a.personName || '').localeCompare(String(b.personName || ''));
+        if (sortBy === 'rating') return getNumberValue(b.rating) - getNumberValue(a.rating);
+        return getNumberValue(b[sortBy]) - getNumberValue(a[sortBy]);
+      });
+
+      return rows;
+    }
+
+    function renderStatsSummary(rows) {
+      const grid = document.getElementById('statsSummaryGrid');
+      if (!grid) return;
+
+      const totals = rows.reduce((acc, row) => {
+        acc.apps += getNumberValue(row.apps);
+        acc.goals += getNumberValue(row.goals);
+        acc.assists += getNumberValue(row.assists);
+        acc.cleanSheets += getNumberValue(row.cleanSheets);
+        const rating = getNumberValue(row.rating);
+        if (rating) acc.ratings.push(rating);
+        return acc;
+      }, { apps: 0, goals: 0, assists: 0, cleanSheets: 0, ratings: [] });
+
+      const avg = totals.ratings.length ? (totals.ratings.reduce((a, b) => a + b, 0) / totals.ratings.length).toFixed(2) : '-';
+
+      grid.innerHTML = `
+        <div class="stats-summary-card"><span>Apps</span><strong>${totals.apps}</strong></div>
+        <div class="stats-summary-card"><span>Goals</span><strong>${totals.goals}</strong></div>
+        <div class="stats-summary-card"><span>Assists</span><strong>${totals.assists}</strong></div>
+        <div class="stats-summary-card"><span>Clean Sheets</span><strong>${totals.cleanSheets || '-'}</strong></div>
+        <div class="stats-summary-card"><span>Avg Rating</span><strong>${avg}</strong></div>
+      `;
+    }
+
+    function renderCareerStats(rows) {
+      const tbody = document.getElementById('careerStatsBody');
+      if (!tbody) return;
+
+      const totals = {};
+
+      rows.forEach(row => {
+        const name = row.personName || 'Unknown Player';
+        if (!totals[name]) totals[name] = { name, seasons: new Set(), apps: 0, goals: 0, assists: 0, cleanSheets: 0, ratings: [] };
+
+        totals[name].seasons.add(row.season || '-');
+        totals[name].apps += getNumberValue(row.apps);
+        totals[name].goals += getNumberValue(row.goals);
+        totals[name].assists += getNumberValue(row.assists);
+        totals[name].cleanSheets += getNumberValue(row.cleanSheets);
+
+        const rating = getNumberValue(row.rating);
+        if (rating) totals[name].ratings.push(rating);
+      });
+
+      const careerRows = Object.values(totals).sort((a, b) => b.apps - a.apps || a.name.localeCompare(b.name));
+
+      tbody.innerHTML = careerRows.length
+        ? careerRows.map(row => {
+            const avgRating = row.ratings.length ? (row.ratings.reduce((sum, rating) => sum + rating, 0) / row.ratings.length).toFixed(2) : '-';
+            return `
+              <tr>
+                <td>${escapeHtml(row.name)}</td>
+                <td>${row.seasons.size}</td>
+                <td>${row.apps}</td>
+                <td>${row.goals}</td>
+                <td>${row.assists}</td>
+                <td>${row.cleanSheets || '-'}</td>
+                <td>${avgRating}</td>
+              </tr>
+            `;
+          }).join('')
+        : '<tr><td colspan="7" style="padding:14px; color:var(--muted);">No career totals yet.</td></tr>';
+    }
+
     function getAllStatsForSave(save) {
       const rows = [];
       (save.playerStats || []).forEach((stat, index) => rows.push({ ...stat, origin: 'save', index }));
@@ -5317,27 +5628,40 @@
     function renderSavePlayerStats(save) {
       const tbody = document.getElementById('savePlayerStatsBody');
       if (!tbody) return;
-      const rows = getAllStatsForSave(save);
+
+      const rows = getFilteredSortedStatRows(save);
+      renderStatsSummary(rows);
+
       if (!rows.length) {
-        tbody.innerHTML = '<tr><td colspan="10" style="padding:14px; color:var(--muted);">No stats recorded for this save yet.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" style="padding:14px; color:var(--muted);">No stats recorded for this filter.</td></tr>';
+        renderCareerStats([]);
+        applyAdminMode();
         return;
       }
+
       tbody.innerHTML = rows.map(row => `
         <tr title="${escapeHtml(row.notes || '')}">
-          <td>${escapeHtml(row.personName || '-')}</td>
-          <td>${escapeHtml(row.season || '-')}</td>
-          <td>${escapeHtml(row.club || '-')}</td>
+          <td>
+            <div class="stat-player-cell">
+              <strong>${escapeHtml(row.personName || '-')}</strong>
+              <span>${escapeHtml(row.type || 'Player')}</span>
+            </div>
+          </td>
+          <td><span class="chip">${escapeHtml(row.season || '-')}</span></td>
+          <td>${escapeHtml(row.club || '-')}${renderClubColours(row.club || '')}</td>
           <td>${escapeHtml(row.position || '-')}</td>
-          <td>${escapeHtml(row.apps || '0')}</td>
-          <td>${escapeHtml(row.goals || '0')}</td>
-          <td>${escapeHtml(row.assists || '0')}</td>
-          <td>${escapeHtml(row.rating || '-')}</td>
-          <td>${escapeHtml(row.cleanSheets || '-')}</td>
+          <td><span class="stat-number-pill">${escapeHtml(row.apps || '0')}</span></td>
+          <td><span class="stat-number-pill">${escapeHtml(row.goals || '0')}</span></td>
+          <td><span class="stat-number-pill">${escapeHtml(row.assists || '0')}</span></td>
+          <td><span class="stat-number-pill">${escapeHtml(row.rating || '-')}</span></td>
+          <td><span class="stat-number-pill">${escapeHtml(row.cleanSheets || '-')}</span></td>
           <td class="admin-only edit-only">${row.origin === 'save' ? `<button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})">Delete</button>` : '<span class="chip">Squad</span>'}</td>
         </tr>
       `).join('');
-    }
 
+      renderCareerStats(rows);
+      applyAdminMode();
+    }
 
     function getPersonImageFromSources(person, squadPlayer) {
       return person?.image || person?.picture || person?.photo || person?.avatar || squadPlayer?.image || squadPlayer?.picture || squadPlayer?.photo || squadPlayer?.avatar || '';
@@ -5665,7 +5989,7 @@
       document.getElementById('saveClubProfileOverlay')?.classList.add('hidden');
     }
 
-    async function addSavePlayerStat() {
+    function addSavePlayerStat() {
       const save = getCurrentSave();
       const item = findStatOptionByKey(document.getElementById('statPersonSelect')?.value || '');
       if (!save || !item) return;
@@ -5689,7 +6013,6 @@
       save.playerStats.push(stat);
 
       updateCurrentSave(save);
-      await forceSaveSavesToCloud();
 
       save.linkedPeople = Array.isArray(save.linkedPeople) ? save.linkedPeople : [];
       if (!save.linkedPeople.some(person =>
@@ -5705,12 +6028,11 @@
       loadSaves();
     }
 
-    async function deleteSavePlayerStat(index) {
+    function deleteSavePlayerStat(index) {
       const save = getCurrentSave();
       if (!save || !Array.isArray(save.playerStats)) return;
       save.playerStats.splice(index, 1);
       updateCurrentSave(save);
-      await forceSaveSavesToCloud();
       openSaveProfile(currentSaveIndex);
       setSaveEditMode(true);
       loadSaves();
@@ -6092,8 +6414,8 @@
     loadSaves();
     decorateEmptyStates();
 
-    // window.addEventListener('FMCloudReady', loadFMHubFromCloud);
-    // setTimeout(loadFMHubFromCloud, 800);
+    window.addEventListener('FMCloudReady', loadFMHubFromCloud);
+    setTimeout(loadFMHubFromCloud, 800);
 
     window.addEventListener('storage', event => {
       if (event.key === 'fmhub-theme') initTheme();
