@@ -4645,7 +4645,37 @@
       return `<div class="transfer-club-logo" style="--club-colour:${safeColour};">${escapeHtml(getClubInitials(name))}</div>`;
     }
 
-    function getSeasonSortValue(season) {
+    
+function getClubColours(clubName) {
+  try {
+    const saves = JSON.parse(localStorage.getItem('fmhub-saves') || '[]');
+    const clubs = saves.flatMap(s => s.clubs || []);
+    const club = clubs.find(c =>
+      String(c.name || '').toLowerCase() === String(clubName || '').toLowerCase()
+    );
+
+    return {
+      primary: club?.primaryColor || club?.primaryColour || '',
+      secondary: club?.secondaryColor || club?.secondaryColour || ''
+    };
+  } catch(e) {
+    return { primary:'', secondary:'' };
+  }
+}
+
+function renderClubColours(clubName) {
+  const colours = getClubColours(clubName);
+  if (!colours.primary && !colours.secondary) return '';
+
+  return `
+    <span style="display:inline-flex;gap:4px;margin-left:6px;vertical-align:middle;">
+      ${colours.primary ? `<span style="width:12px;height:12px;border-radius:50%;background:${colours.primary};display:inline-block;"></span>` : ''}
+      ${colours.secondary ? `<span style="width:12px;height:12px;border-radius:50%;background:${colours.secondary};display:inline-block;"></span>` : ''}
+    </span>
+  `;
+}
+
+function getSeasonSortValue(season) {
       const value = String(season || '').trim();
       const match = value.match(/(\d{4})/);
       return match ? parseInt(match[1], 10) : 0;
@@ -5473,7 +5503,7 @@
         <tr title="${escapeHtml(row.notes || '')}">
           <td>${escapeHtml(row.personName || '-')}</td>
           <td>${escapeHtml(row.season || '-')}</td>
-          <td>${escapeHtml(row.club || '-')}</td>
+          <td>${escapeHtml(row.club || '-')}${renderClubColours(row.club || '')}</td>
           <td>${escapeHtml(row.position || '-')}</td>
           <td>${escapeHtml(row.apps || '0')}</td>
           <td>${escapeHtml(row.goals || '0')}</td>
@@ -5703,7 +5733,7 @@
 
         <div class="save-person-section">
           <div class="save-person-section-head"><div><div class="section-kicker">Season Stats</div><h3>Save-Specific Season Records</h3></div></div>
-          <div class="table-wrap" style="margin-top:0;"><table><thead><tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Notes</th></tr></thead><tbody>${stats.length ? stats.map(row => `<tr><td>${escapeHtml(row.season || '-')}</td><td>${escapeHtml(row.club || '-')}</td><td>${escapeHtml(row.position || '-')}</td><td>${escapeHtml(row.apps || '0')}</td><td>${escapeHtml(row.goals || '0')}</td><td>${escapeHtml(row.assists || '0')}</td><td>${escapeHtml(row.rating || '-')}</td><td>${escapeHtml(row.notes || '-')}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No save-specific stats for this person yet.</td></tr>'}</tbody></table></div>
+          <div class="table-wrap" style="margin-top:0;"><table><thead><tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Notes</th></tr></thead><tbody>${stats.length ? stats.map(row => `<tr><td>${escapeHtml(row.season || '-')}</td><td>${escapeHtml(row.club || '-')}${renderClubColours(row.club || '')}</td><td>${escapeHtml(row.position || '-')}</td><td>${escapeHtml(row.apps || '0')}</td><td>${escapeHtml(row.goals || '0')}</td><td>${escapeHtml(row.assists || '0')}</td><td>${escapeHtml(row.rating || '-')}</td><td>${escapeHtml(row.notes || '-')}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No save-specific stats for this person yet.</td></tr>'}</tbody></table></div>
         </div>
 
         <div class="save-person-section">
@@ -6262,4 +6292,4 @@
 
   <footer><div class="container">FM Saves • Career tracker</div></footer>
 </body>
-</html>
+</html>act
