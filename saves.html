@@ -2806,23 +2806,37 @@
     }
 
 
-    .stats-toolbar,
-    .transfer-sort-toolbar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: end;
-      margin: 14px 0 16px;
+    .stats-toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+      align-items:center;
     }
 
-    .stats-toolbar > div,
-    .transfer-sort-toolbar > div {
-      min-width: 160px;
-      flex: 1;
+    .stats-toolbar input,
+    .stats-toolbar select{
+      padding:10px 12px;
+      border-radius:10px;
     }
 
-    .career-stats-card {
-      margin-top: 18px;
+
+
+    .club-colour-dots {
+      display: inline-flex;
+      gap: 4px;
+      margin-left: 7px;
+      vertical-align: middle;
+      align-items: center;
+    }
+
+    .club-colour-dots span {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.35);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
     }
 
 </style>
@@ -3118,7 +3132,7 @@
 
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Season</th><th>Club</th><th>Finish</th><th>Points</th><th>Trophies</th><th class="admin-only edit-only">Action</th></tr></thead>
+              <thead><tr><th>Season</th><th>Club</th><th>Finish</th><th>Points</th><th>Trophies</th><th class="admin-only edit-only">Actions</th></tr></thead>
               <tbody id="saveSeasonTableBody"></tbody>
             </table>
           </div>
@@ -3188,33 +3202,8 @@
           </div>
         </div>
 
-                <div class="stats-toolbar">
-          <div>
-            <label for="statsSearchInput">Search Player</label>
-            <input id="statsSearchInput" placeholder="Search player..." oninput="renderSavePlayerStats(getCurrentSave())">
-          </div>
-          <div>
-            <label for="statsSeasonFilter">Season</label>
-            <select id="statsSeasonFilter" onchange="renderSavePlayerStats(getCurrentSave())">
-              <option value="all">All seasons</option>
-            </select>
-          </div>
-          <div>
-            <label for="statsSortBy">Sort By</label>
-            <select id="statsSortBy" onchange="renderSavePlayerStats(getCurrentSave())">
-              <option value="season">Season</option>
-              <option value="apps">Apps</option>
-              <option value="goals">Goals</option>
-              <option value="assists">Assists</option>
-              <option value="rating">Rating</option>
-              <option value="cleanSheets">Clean Sheets</option>
-              <option value="player">Player</option>
-            </select>
-          </div>
-        </div>
-
-<div class="form-grid edit-only">
-          <div><label for="statPersonSelect">Person / Player</label><select id="statPersonSelect"></select></div>
+        <div class="form-grid edit-only">
+          <div><label for="statPersonSelect">Person / Player</label><select id="statPersonSelect" onchange="handleStatPersonSelect()"></select></div>
           <div><label for="statSeasonInput">Season</label><input id="statSeasonInput" placeholder="2026/27"></div>
           <div><label for="statClubInput">Club</label><input id="statClubInput" placeholder="Chelsea"></div>
           <div><label for="statPositionInput">Position</label><input id="statPositionInput" placeholder="ST / CM / GK"></div>
@@ -3222,6 +3211,7 @@
           <div><label for="statGoalsInput">Goals</label><input id="statGoalsInput" placeholder="18"></div>
           <div><label for="statAssistsInput">Assists</label><input id="statAssistsInput" placeholder="9"></div>
           <div><label for="statRatingInput">Rating</label><input id="statRatingInput" placeholder="7.24"></div>
+          <div id="cleanSheetsWrap" class="hidden"><label for="statCleanSheetsInput">Clean Sheets</label><input id="statCleanSheetsInput" placeholder="14"></div>
           <div class="wide"><label for="statNotesInput">Notes</label><textarea id="statNotesInput" placeholder="Awards, big performances, injuries, transfer story..."></textarea></div>
         </div>
         <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addSavePlayerStat()">Add Stat Record</button></div>
@@ -3229,19 +3219,9 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Person</th><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th class="admin-only edit-only">Action</th></tr>
+              <tr><th>Person</th><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Clean Sheets</th><th class="admin-only edit-only">Actions</th></tr>
             </thead>
             <tbody id="savePlayerStatsBody"></tbody>
-          </table>
-        </div>
-
-        <div class="table-wrap career-stats-card">
-          <div class="section-kicker" style="padding:14px 14px 0;">Career Totals</div>
-          <table>
-            <thead>
-              <tr><th>Player</th><th>Seasons</th><th>Apps</th><th>Goals</th><th>Assists</th><th>CS</th><th>Avg Rating</th></tr>
-            </thead>
-            <tbody id="careerStatsBody"></tbody>
           </table>
         </div>
       </div>
@@ -3276,35 +3256,14 @@
 
         <div class="transfer-dashboard" id="transferDashboard"></div>
 
-                <div class="transfer-filter-bar">
+        <div class="transfer-filter-bar">
           <div>
             <label for="transferWindowFilter">Transfer Window</label>
             <select id="transferWindowFilter" onchange="renderTransferRecords(getCurrentSave())">
               <option value="all">All windows</option>
             </select>
           </div>
-          <div>
-            <label for="transferTypeFilter">Transfer Type</label>
-            <select id="transferTypeFilter" onchange="renderTransferRecords(getCurrentSave())">
-              <option value="all">All types</option>
-              <option value="In">In</option>
-              <option value="Out">Out</option>
-              <option value="Loan In">Loan In</option>
-              <option value="Loan Out">Loan Out</option>
-              <option value="Released">Released</option>
-              <option value="Retired">Retired</option>
-            </select>
-          </div>
-          <div>
-            <label for="transferSortBy">Sort By</label>
-            <select id="transferSortBy" onchange="renderTransferRecords(getCurrentSave())">
-              <option value="season-desc">Season newest</option>
-              <option value="season-asc">Season oldest</option>
-              <option value="fee-desc">Fee highest</option>
-              <option value="player">Player</option>
-              <option value="type">Type</option>
-            </select>
-          </div>
+          <div class="muted">Filter transfer cards by season/window. Edit mode still controls deleting records.</div>
         </div>
 
         <div id="transferCardsList" class="transfer-cards-grid"></div>
@@ -3799,6 +3758,21 @@
 
     function findStatOptionByKey(key) {
       return getPlayerStatOptions().find(option => option.key === key) || null;
+    }
+
+    function isGoalkeeperPosition(position) {
+      const value = String(position || '').toUpperCase();
+      return value === 'GK' || value.includes('GK') || value.includes('GOALKEEPER');
+    }
+
+    function handleStatPersonSelect() {
+      const item = findStatOptionByKey(document.getElementById('statPersonSelect')?.value || '');
+      const wrap = document.getElementById('cleanSheetsWrap');
+      const input = document.getElementById('statCleanSheetsInput');
+      const isGK = isGoalkeeperPosition(item?.position);
+
+      if (wrap) wrap.classList.toggle('hidden', !isGK);
+      if (!isGK && input) input.value = '';
     }
 
     function getCurrentSave() {
@@ -4645,82 +4619,16 @@
       return `<div class="transfer-club-logo" style="--club-colour:${safeColour};">${escapeHtml(getClubInitials(name))}</div>`;
     }
 
-    
-function getClubColours(clubName) {
-  try {
-    const saves = JSON.parse(localStorage.getItem('fmhub-saves') || '[]');
-    const clubs = saves.flatMap(s => s.clubs || []);
-    const club = clubs.find(c =>
-      String(c.name || '').toLowerCase() === String(clubName || '').toLowerCase()
-    );
-
-    return {
-      primary: club?.primaryColor || club?.primaryColour || '',
-      secondary: club?.secondaryColor || club?.secondaryColour || ''
-    };
-  } catch(e) {
-    return { primary:'', secondary:'' };
-  }
-}
-
-function renderClubColours(clubName) {
-  const colours = getClubColours(clubName);
-  if (!colours.primary && !colours.secondary) return '';
-
-  return `
-    <span style="display:inline-flex;gap:4px;margin-left:6px;vertical-align:middle;">
-      ${colours.primary ? `<span style="width:12px;height:12px;border-radius:50%;background:${colours.primary};display:inline-block;"></span>` : ''}
-      ${colours.secondary ? `<span style="width:12px;height:12px;border-radius:50%;background:${colours.secondary};display:inline-block;"></span>` : ''}
-    </span>
-  `;
-}
-
-function getSeasonSortValue(season) {
-      const value = String(season || '').trim();
-      const match = value.match(/(\d{4})/);
-      return match ? parseInt(match[1], 10) : 0;
-    }
-
-    function compareSeasons(a, b, direction = 'desc') {
-      const diff = getSeasonSortValue(a) - getSeasonSortValue(b);
-      return direction === 'asc' ? diff : -diff;
-    }
-
     function syncTransferWindowFilter(transfers) {
       const select = document.getElementById('transferWindowFilter');
       if (!select) return 'all';
-
       const current = select.value || 'all';
-      const windows = Array.from(new Set((transfers || []).map(t => t.season).filter(Boolean)))
-        .sort((a, b) => compareSeasons(a, b, 'desc'));
-
+      const windows = Array.from(new Set((transfers || []).map(t => t.season).filter(Boolean))).sort();
       select.innerHTML = ['<option value="all">All windows</option>']
         .concat(windows.map(windowName => `<option value="${escapeHtml(windowName)}">${escapeHtml(windowName)}</option>`))
         .join('');
-
       select.value = ['all', ...windows].includes(current) ? current : 'all';
       return select.value;
-    }
-
-    function getFilteredSortedTransfers(transfers) {
-      const selectedWindow = syncTransferWindowFilter(transfers);
-      const selectedType = document.getElementById('transferTypeFilter')?.value || 'all';
-      const sortBy = document.getElementById('transferSortBy')?.value || 'season-desc';
-
-      let rows = [...(transfers || [])];
-
-      if (selectedWindow !== 'all') rows = rows.filter(transfer => transfer.season === selectedWindow);
-      if (selectedType !== 'all') rows = rows.filter(transfer => String(transfer.type || '') === selectedType);
-
-      rows.sort((a, b) => {
-        if (sortBy === 'season-asc') return compareSeasons(a.season, b.season, 'asc') || String(a.player || '').localeCompare(String(b.player || ''));
-        if (sortBy === 'fee-desc') return getTransferFeeValue(b.fee) - getTransferFeeValue(a.fee);
-        if (sortBy === 'player') return String(a.player || '').localeCompare(String(b.player || ''));
-        if (sortBy === 'type') return String(a.type || '').localeCompare(String(b.type || ''));
-        return compareSeasons(a.season, b.season, 'desc') || String(a.player || '').localeCompare(String(b.player || ''));
-      });
-
-      return rows;
     }
 
     function renderTransferDashboard(transfers) {
@@ -4829,22 +4737,60 @@ function getSeasonSortValue(season) {
       return select.value.trim();
     }
 
+
+    function getClubColours(clubName) {
+  const cleanClub = normaliseText(clubName);
+  if (!cleanClub) return { primary: '', secondary: '' };
+
+  try {
+    const people = JSON.parse(localStorage.getItem(peopleKey || 'fmhub-people') || '[]');
+
+    const person = people.find(p =>
+      normaliseText(p.club || p.team || p.currentClub || '') === cleanClub &&
+      (p.clubColors?.primary || p.clubColors?.secondary || p.clubPrimaryColor || p.clubSecondaryColor)
+    );
+
+    if (person) {
+      return {
+        primary: person.clubColors?.primary || person.clubPrimaryColor || '',
+        secondary: person.clubColors?.secondary || person.clubSecondaryColor || ''
+      };
+    }
+  } catch(e) {}
+
+  return { primary: '', secondary: '' };
+}
+
+function renderClubColours(clubName) {
+  const colours = getClubColours(clubName);
+  if (!colours.primary && !colours.secondary) return '';
+
+  return `
+    <span class="club-colour-dots" title="${escapeHtml(clubName || 'Club colours')}">
+      ${colours.primary ? `<span style="background:${escapeHtml(colours.primary)};"></span>` : ''}
+      ${colours.secondary ? `<span style="background:${escapeHtml(colours.secondary)};"></span>` : ''}
+    </span>
+  `;
+}
+
+function getSeasonSortValue(season) {
+      const value = String(season || '').trim();
+      const match = value.match(/(\d{4})/);
+      return match ? parseInt(match[1], 10) : 0;
+    }
+
     function renderTransferRecords(save) {
       const tbody = document.getElementById('transferTableBody');
       if (!tbody) return;
-
       const transfers = Array.isArray(save?.transfers) ? save.transfers : [];
       renderTransferDashboard(transfers);
-
-      const filteredTransfers = getFilteredSortedTransfers(transfers);
+      const selectedWindow = syncTransferWindowFilter(transfers);
+      const filteredTransfers = selectedWindow === 'all' ? transfers : transfers.filter(transfer => transfer.season === selectedWindow);
       renderTransferCards(filteredTransfers, transfers);
-
       if (!filteredTransfers.length) {
         tbody.innerHTML = '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No transfers recorded for this filter.</td></tr>';
-        applyAdminMode();
         return;
       }
-
       tbody.innerHTML = filteredTransfers.map((transfer) => {
         const originalIndex = transfers.indexOf(transfer);
         return `
@@ -4860,9 +4806,8 @@ function getSeasonSortValue(season) {
           </tr>
         `;
       }).join('');
-
-      applyAdminMode();
     }
+
 
     function debugCurrentSaveStorage() {
       const save = getCurrentSave();
@@ -5167,7 +5112,10 @@ function getSeasonSortValue(season) {
       const statSelect = document.getElementById('statPersonSelect');
 
       if (personSelect) personSelect.innerHTML = html;
-      if (statSelect) statSelect.innerHTML = statHtml;
+      if (statSelect) {
+        statSelect.innerHTML = statHtml;
+        handleStatPersonSelect();
+      }
     }
 
     function findOptionByKey(key) {
@@ -5395,6 +5343,7 @@ function getSeasonSortValue(season) {
               goals: season.goals || '0',
               assists: season.assists || '0',
               rating: season.rating || '-',
+              cleanSheets: season.cleanSheets || season.clean_sheets || season.cs || '',
               notes: season.notes || ''
             });
           }
@@ -5404,101 +5353,66 @@ function getSeasonSortValue(season) {
       return rows.sort((a, b) => String(a.season || '').localeCompare(String(b.season || '')) || String(a.personName || '').localeCompare(String(b.personName || '')));
     }
 
-    function getNumberValue(value) {
-      const num = parseFloat(String(value || '').replace(/[^0-9.-]/g, ''));
-      return Number.isFinite(num) ? num : 0;
-    }
-
-    function updateStatsSeasonFilter(allRows) {
-      const select = document.getElementById('statsSeasonFilter');
-      if (!select) return;
-
-      const current = select.value || 'all';
-      const seasons = Array.from(new Set(allRows.map(row => row.season).filter(Boolean)))
-        .sort((a, b) => compareSeasons(a, b, 'desc'));
-
-      select.innerHTML = '<option value="all">All seasons</option>' +
-        seasons.map(season => `<option value="${escapeHtml(season)}">${escapeHtml(season)}</option>`).join('');
-
-      select.value = ['all', ...seasons].includes(current) ? current : 'all';
-    }
-
-    function getFilteredSortedStatRows(save) {
-      const allRows = getAllStatsForSave(save);
-      updateStatsSeasonFilter(allRows);
-
-      const search = String(document.getElementById('statsSearchInput')?.value || '').trim().toLowerCase();
-      const season = document.getElementById('statsSeasonFilter')?.value || 'all';
-      const sortBy = document.getElementById('statsSortBy')?.value || 'season';
-
-      let rows = [...allRows];
-
-      if (search) rows = rows.filter(row => String(row.personName || '').toLowerCase().includes(search));
-      if (season !== 'all') rows = rows.filter(row => String(row.season || '') === season);
-
-      rows.sort((a, b) => {
-        if (sortBy === 'player') return String(a.personName || '').localeCompare(String(b.personName || ''));
-        if (sortBy === 'season') return compareSeasons(a.season, b.season, 'desc') || String(a.personName || '').localeCompare(String(b.personName || ''));
-        if (sortBy === 'rating') return getNumberValue(b.rating) - getNumberValue(a.rating);
-        return getNumberValue(b[sortBy]) - getNumberValue(a[sortBy]);
-      });
-
-      return rows;
-    }
 
     function renderCareerStats(rows) {
-      const tbody = document.getElementById('careerStatsBody');
+      const tbody = document.querySelector('#careerStatsTable tbody');
       if (!tbody) return;
 
       const totals = {};
 
       rows.forEach(row => {
-        const name = row.personName || 'Unknown Player';
-        if (!totals[name]) totals[name] = { name, seasons: new Set(), apps: 0, goals: 0, assists: 0, cleanSheets: 0, ratings: [] };
+        const key = row.person || row.player || 'Unknown';
 
-        totals[name].seasons.add(row.season || '-');
-        totals[name].apps += getNumberValue(row.apps);
-        totals[name].goals += getNumberValue(row.goals);
-        totals[name].assists += getNumberValue(row.assists);
-        totals[name].cleanSheets += getNumberValue(row.cleanSheets);
+        if (!totals[key]) {
+          totals[key] = {
+            name: key,
+            apps: 0,
+            goals: 0,
+            assists: 0,
+            cleanSheets: 0,
+            ratings: []
+          };
+        }
 
-        const rating = getNumberValue(row.rating);
-        if (rating) totals[name].ratings.push(rating);
+        totals[key].apps += Number(row.apps || 0);
+        totals[key].goals += Number(row.goals || 0);
+        totals[key].assists += Number(row.assists || 0);
+        totals[key].cleanSheets += Number(row.cleanSheets || 0);
+
+        const rating = parseFloat(row.rating);
+        if (!isNaN(rating)) totals[key].ratings.push(rating);
       });
 
-      const careerRows = Object.values(totals).sort((a, b) => b.apps - a.apps || a.name.localeCompare(b.name));
+      const html = Object.values(totals)
+        .sort((a, b) => b.apps - a.apps)
+        .map(item => {
+          const avg = item.ratings.length
+            ? (item.ratings.reduce((a, b) => a + b, 0) / item.ratings.length).toFixed(2)
+            : '-';
 
-      tbody.innerHTML = careerRows.length
-        ? careerRows.map(row => {
-            const avgRating = row.ratings.length ? (row.ratings.reduce((sum, rating) => sum + rating, 0) / row.ratings.length).toFixed(2) : '-';
-            return `
-              <tr>
-                <td>${escapeHtml(row.name)}</td>
-                <td>${row.seasons.size}</td>
-                <td>${row.apps}</td>
-                <td>${row.goals}</td>
-                <td>${row.assists}</td>
-                <td>${row.cleanSheets || '-'}</td>
-                <td>${avgRating}</td>
-              </tr>
-            `;
-          }).join('')
-        : '<tr><td colspan="7" style="padding:14px; color:var(--muted);">No career totals yet.</td></tr>';
+          return `
+            <tr>
+              <td>${escapeHtml(item.name)}</td>
+              <td>${item.apps}</td>
+              <td>${item.goals}</td>
+              <td>${item.assists}</td>
+              <td>${item.cleanSheets}</td>
+              <td>${avg}</td>
+            </tr>
+          `;
+        }).join('');
+
+      tbody.innerHTML = html || '<tr><td colspan="6">No career stats yet</td></tr>';
     }
 
     function renderSavePlayerStats(save) {
       const tbody = document.getElementById('savePlayerStatsBody');
       if (!tbody) return;
-
-      const rows = getFilteredSortedStatRows(save);
-
+      const rows = getAllStatsForSave(save);
       if (!rows.length) {
-        tbody.innerHTML = '<tr><td colspan="10" style="padding:14px; color:var(--muted);">No stats recorded for this filter.</td></tr>';
-        renderCareerStats([]);
-        applyAdminMode();
+        tbody.innerHTML = '<tr><td colspan="10" style="padding:14px; color:var(--muted);">No stats recorded for this save yet.</td></tr>';
         return;
       }
-
       tbody.innerHTML = rows.map(row => `
         <tr title="${escapeHtml(row.notes || '')}">
           <td>${escapeHtml(row.personName || '-')}</td>
@@ -5513,10 +5427,8 @@ function getSeasonSortValue(season) {
           <td class="admin-only edit-only">${row.origin === 'save' ? `<button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})">Delete</button>` : '<span class="chip">Squad</span>'}</td>
         </tr>
       `).join('');
-
-      renderCareerStats(rows);
-      applyAdminMode();
     }
+
 
     function getPersonImageFromSources(person, squadPlayer) {
       return person?.image || person?.picture || person?.photo || person?.avatar || squadPlayer?.image || squadPlayer?.picture || squadPlayer?.photo || squadPlayer?.avatar || '';
@@ -5733,7 +5645,7 @@ function getSeasonSortValue(season) {
 
         <div class="save-person-section">
           <div class="save-person-section-head"><div><div class="section-kicker">Season Stats</div><h3>Save-Specific Season Records</h3></div></div>
-          <div class="table-wrap" style="margin-top:0;"><table><thead><tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Notes</th></tr></thead><tbody>${stats.length ? stats.map(row => `<tr><td>${escapeHtml(row.season || '-')}</td><td>${escapeHtml(row.club || '-')}${renderClubColours(row.club || '')}</td><td>${escapeHtml(row.position || '-')}</td><td>${escapeHtml(row.apps || '0')}</td><td>${escapeHtml(row.goals || '0')}</td><td>${escapeHtml(row.assists || '0')}</td><td>${escapeHtml(row.rating || '-')}</td><td>${escapeHtml(row.notes || '-')}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No save-specific stats for this person yet.</td></tr>'}</tbody></table></div>
+          <div class="table-wrap" style="margin-top:0;"><table><thead><tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Notes</th></tr></thead><tbody>${stats.length ? stats.map(row => `<tr><td>${escapeHtml(row.season || '-')}</td><td>${escapeHtml(row.club || '-')}</td><td>${escapeHtml(row.position || '-')}</td><td>${escapeHtml(row.apps || '0')}</td><td>${escapeHtml(row.goals || '0')}</td><td>${escapeHtml(row.assists || '0')}</td><td>${escapeHtml(row.rating || '-')}</td><td>${escapeHtml(row.notes || '-')}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No save-specific stats for this person yet.</td></tr>'}</tbody></table></div>
         </div>
 
         <div class="save-person-section">
@@ -5860,6 +5772,7 @@ function getSeasonSortValue(season) {
         goals: document.getElementById('statGoalsInput').value.trim(),
         assists: document.getElementById('statAssistsInput').value.trim(),
         rating: document.getElementById('statRatingInput').value.trim(),
+        cleanSheets: document.getElementById('statCleanSheetsInput')?.value.trim() || '',
         notes: document.getElementById('statNotesInput').value.trim()
       };
       if (!stat.personName || !stat.season) return;
@@ -5877,7 +5790,7 @@ function getSeasonSortValue(season) {
         save.linkedPeople.push({ source: item.source, id: item.id, name: item.name, type: item.type, position: item.position, club: item.club });
       }
       updateCurrentSave(save);
-      ['statSeasonInput','statClubInput','statPositionInput','statAppsInput','statGoalsInput','statAssistsInput','statRatingInput','statNotesInput'].forEach(id => document.getElementById(id).value = '');
+      ['statSeasonInput','statClubInput','statPositionInput','statAppsInput','statGoalsInput','statAssistsInput','statRatingInput','statCleanSheetsInput','statNotesInput'].forEach(id => document.getElementById(id).value = '');
       openSaveProfile(currentSaveIndex);
       setSaveEditMode(true);
       loadSaves();
@@ -6292,4 +6205,4 @@ function getSeasonSortValue(season) {
 
   <footer><div class="container">FM Saves • Career tracker</div></footer>
 </body>
-</html>act
+</html>
