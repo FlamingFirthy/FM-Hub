@@ -2961,6 +2961,22 @@
       box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
     }
 
+
+    .transfer-mini-strip{
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:4px;
+      border-radius:14px 0 0 14px;
+      background:linear-gradient(180deg,var(--c1) 0%,var(--c2) 100%);
+    }
+
+    .transfer-club{
+      position:relative;
+      overflow:hidden;
+    }
+
 </style>
 </head>
 <body>
@@ -4870,7 +4886,7 @@
       container.innerHTML = transfers.map((transfer) => {
         const originalIndex = allTransfers.indexOf(transfer);
         const fromColour = transfer.fromColour || '#64748b';
-        const fromSecondaryColour = transfer.fromSecondaryColour || transfer.fromSecondaryColor || transfer.fromColour2 || fromColour;
+        const fromSecondaryColour = transfer.fromSecondaryColour || transfer.fromSecondaryColor || transfer.fromColour2 || '#ffffff';
         const toColour = transfer.toColour || '#ff3b3b';
         const toSecondaryColour = transfer.toSecondaryColour || transfer.toSecondaryColor || transfer.toColour2 || toColour;
         const fromLogo = getTransferLogoForClub(transfer, 'from');
