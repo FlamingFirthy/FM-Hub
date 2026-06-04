@@ -1027,13 +1027,16 @@
 
     .transfer-card {
       --from-colour: rgba(255,255,255,0.12);
+      --from-secondary-colour: var(--from-colour);
       --to-colour: var(--accent);
+      --to-secondary-colour: var(--to-colour);
       position: relative;
       overflow: hidden;
       padding: 16px;
       border-radius: 20px;
       background:
-        linear-gradient(90deg, var(--from-colour) 0 5px, transparent 5px calc(100% - 5px), var(--to-colour) calc(100% - 5px) 100%),
+        linear-gradient(180deg, var(--from-colour), var(--from-secondary-colour)) left / 5px 100% no-repeat,
+        linear-gradient(180deg, var(--to-colour), var(--to-secondary-colour)) right / 5px 100% no-repeat,
         linear-gradient(180deg, rgba(255,255,255,0.046), rgba(255,255,255,0.018));
       border: 1px solid rgba(255,255,255,0.075);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.035), 0 10px 24px rgba(0,0,0,0.18);
@@ -3324,9 +3327,9 @@
           <div><label for="statPersonSelect">Person / Player</label><select id="statPersonSelect" onchange="handleStatPersonSelect()"></select></div>
           <div><label for="statSeasonInput">Season</label><input id="statSeasonInput" placeholder="2026/27"></div>
           <div><label for="statClubInput">Club</label><input id="statClubInput" placeholder="Chelsea"></div>
-          <div><label for="statPositionInput">Position</label><input id="statPositionInput" placeholder="ST / CM / GK"></div>
           <div><label for="statClubPrimaryColourInput">Club Colour</label><input id="statClubPrimaryColourInput" type="color" value="#ff3b3b"></div>
           <div><label for="statClubSecondaryColourInput">Club Secondary Colour</label><input id="statClubSecondaryColourInput" type="color" value="#ffffff"></div>
+          <div><label for="statPositionInput">Position</label><input id="statPositionInput" placeholder="ST / CM / GK"></div>
           <div><label for="statAppsInput">Apps</label><input id="statAppsInput" placeholder="38"></div>
           <div><label for="statGoalsInput">Goals</label><input id="statGoalsInput" placeholder="18"></div>
           <div><label for="statAssistsInput">Assists</label><input id="statAssistsInput" placeholder="9"></div>
@@ -3385,6 +3388,7 @@
           <div><label for="transferFromInput">From</label><input id="transferFromInput" placeholder="Selling club / previous club"></div>
           <div><label for="transferToInput">To</label><input id="transferToInput" placeholder="Buying club / new club"></div>
           <div><label for="transferFromColourInput">From Club Colour</label><input id="transferFromColourInput" type="color" value="#64748b"></div>
+          <div><label for="transferFromSecondaryColourInput">From Club Secondary Colour</label><input id="transferFromSecondaryColourInput" type="color" value="#ffffff"></div>
           <div><label for="transferToColourInput">To Club Colour</label><input id="transferToColourInput" type="color" value="#ff3b3b"></div>
           <div><label for="transferToSecondaryColourInput">To Club Secondary Colour</label><input id="transferToSecondaryColourInput" type="color" value="#ffffff"></div>
           <div><label for="transferFromLogoInput">From Club Logo URL</label><input id="transferFromLogoInput" placeholder="Optional logo URL"></div>
@@ -3744,6 +3748,7 @@
           fromLogo,
           toLogo,
           toColour: toPrimaryColour,
+          fromSecondaryColour: transfer.fromSecondaryColour || transfer.fromSecondaryColor || transfer.fromColour2 || '',
           toSecondaryColour
         };
 
@@ -3786,6 +3791,7 @@
           fromLogo,
           toLogo,
           toColour: toPrimaryColour,
+          fromSecondaryColour: transfer.fromSecondaryColour || transfer.fromSecondaryColor || transfer.fromColour2 || '',
           toSecondaryColour
         };
 
@@ -4842,7 +4848,7 @@
         const fromLogo = getTransferLogoForClub(transfer, 'from');
         const toLogo = getTransferLogoForClub(transfer, 'to');
         return `
-          <div class="transfer-card" style="--from-colour:${escapeHtml(fromColour)}; --to-colour:${escapeHtml(toColour)};">
+          <div class="transfer-card" style="--from-colour:${escapeHtml(fromColour)}; --from-secondary-colour:${escapeHtml(fromSecondaryColour)}; --to-colour:${escapeHtml(toColour)}; --to-secondary-colour:${escapeHtml(toSecondaryColour)};">
             <div class="transfer-card-top">
               <div class="transfer-card-player">
                 <span class="transfer-type-chip ${escapeHtml(getTransferChipClass(transfer.type))}">${escapeHtml(transfer.type || '-')}</span>
@@ -4987,6 +4993,7 @@
         to: toClub,
         fee: document.getElementById('transferFeeInput')?.value.trim() || '',
         fromColour: document.getElementById('transferFromColourInput')?.value || '#64748b',
+        fromSecondaryColour: document.getElementById('transferFromSecondaryColourInput')?.value || '#ffffff',
         toColour: document.getElementById('transferToColourInput')?.value || '#ff3b3b',
         toSecondaryColour: document.getElementById('transferToSecondaryColourInput')?.value || '#ffffff',
         fromLogo: document.getElementById('transferFromLogoInput')?.value.trim() || getClubBadgeByClubName(fromClub),
@@ -5017,10 +5024,12 @@
       if (typeSelect) typeSelect.value = 'In';
 
       const fromColour = document.getElementById('transferFromColourInput');
+      const fromSecondaryColour = document.getElementById('transferFromSecondaryColourInput');
       const toColour = document.getElementById('transferToColourInput');
       const toSecondaryColour = document.getElementById('transferToSecondaryColourInput');
 
       if (fromColour) fromColour.value = '#64748b';
+      if (fromSecondaryColour) fromSecondaryColour.value = '#ffffff';
       if (toColour) toColour.value = '#ff3b3b';
       if (toSecondaryColour) toSecondaryColour.value = '#ffffff';
 
@@ -5706,31 +5715,38 @@
       ) || {};
     }
 
-    
-function renderStatsClubColours(row) {
-  const primary =
-    row?.clubColors?.primary ||
-    row?.clubPrimaryColour ||
-    row?.clubPrimaryColor ||
-    '';
+    function renderStatsClubColours(row) {
+      const source = getStatsClubColourSource(row);
+      const colours = source.clubColors || {};
 
-  const secondary =
-    row?.clubColors?.secondary ||
-    row?.clubSecondaryColour ||
-    row?.clubSecondaryColor ||
-    '';
+      const primary =
+        colours.primary ||
+        source.clubPrimaryColor ||
+        source.clubPrimaryColour ||
+        source.lastTransfer?.toColour ||
+        source.lastTransfer?.toPrimaryColour ||
+        '';
 
-  if (!primary && !secondary) return '';
+      const secondary =
+        colours.secondary ||
+        source.clubSecondaryColor ||
+        source.clubSecondaryColour ||
+        source.lastTransfer?.toSecondaryColour ||
+        source.lastTransfer?.toSecondaryColor ||
+        source.lastTransfer?.toColour2 ||
+        '';
 
-  return `
-    <span class="club-colour-dots">
-      ${primary ? `<span style="background:${primary}"></span>` : ''}
-      ${secondary ? `<span style="background:${secondary}"></span>` : ''}
-    </span>
-  `;
-}
+      if (!primary && !secondary) return '';
 
-function renderSavePlayerStats(save) {
+      return `
+        <span class="club-colour-dots" title="Club colours">
+          ${primary ? `<span style="background:${escapeHtml(primary)};"></span>` : ''}
+          ${secondary ? `<span style="background:${escapeHtml(secondary)};"></span>` : ''}
+        </span>
+      `;
+    }
+
+    function renderSavePlayerStats(save) {
       const tbody = document.getElementById('savePlayerStatsBody');
       if (!tbody) return;
 
@@ -6549,4 +6565,4 @@ function renderSavePlayerStats(save) {
 
   <footer><div class="container">FM Saves • Career tracker</div></footer>
 </body>
-</html> 
+</html>
