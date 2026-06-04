@@ -3384,6 +3384,7 @@
           <div><label for="transferToInput">To</label><input id="transferToInput" placeholder="Buying club / new club"></div>
           <div><label for="transferFromColourInput">From Club Colour</label><input id="transferFromColourInput" type="color" value="#64748b"></div>
           <div><label for="transferToColourInput">To Club Colour</label><input id="transferToColourInput" type="color" value="#ff3b3b"></div>
+          <div><label for="transferToSecondaryColourInput">To Club Secondary Colour</label><input id="transferToSecondaryColourInput" type="color" value="#ffffff"></div>
           <div><label for="transferFromLogoInput">From Club Logo URL</label><input id="transferFromLogoInput" placeholder="Optional logo URL"></div>
           <div><label for="transferToLogoInput">To Club Logo URL</label><input id="transferToLogoInput" placeholder="Optional logo URL"></div>
           <div class="wide"><label for="transferNotesInput">Notes</label><textarea id="transferNotesInput" placeholder="Why they moved, clauses, sell-on, replacement, storyline..."></textarea></div>
@@ -3688,6 +3689,27 @@
       const fromLogo = getTransferLogoForClub(transfer, 'from');
       const toLogo = getTransferLogoForClub(transfer, 'to');
 
+      const toPrimaryColour =
+        transfer.toColour ||
+        transfer.toColor ||
+        transfer.toPrimaryColour ||
+        transfer.toPrimaryColor ||
+        '';
+
+      const toSecondaryColour =
+        transfer.toSecondaryColour ||
+        transfer.toSecondaryColor ||
+        transfer.toColour2 ||
+        transfer.toColor2 ||
+        '';
+
+      const nextClubColors = (toPrimaryColour || toSecondaryColour)
+        ? {
+            primary: toPrimaryColour,
+            secondary: toSecondaryColour
+          }
+        : null;
+
       const people = getPeople();
       let peopleChanged = false;
 
@@ -3702,6 +3724,18 @@
           person.clubLogo = toLogo;
         }
 
+        if (nextClubColors) {
+          person.clubColors = {
+            ...(person.clubColors || {}),
+            ...nextClubColors
+          };
+
+          person.clubPrimaryColor = nextClubColors.primary || person.clubPrimaryColor || '';
+          person.clubPrimaryColour = nextClubColors.primary || person.clubPrimaryColour || '';
+          person.clubSecondaryColor = nextClubColors.secondary || person.clubSecondaryColor || '';
+          person.clubSecondaryColour = nextClubColors.secondary || person.clubSecondaryColour || '';
+        }
+
         person.lastTransfer = {
           save: getCurrentSave()?.name || '',
           season: transfer.season || '',
@@ -3710,7 +3744,9 @@
           to: destination,
           fee: transfer.fee || '',
           fromLogo,
-          toLogo
+          toLogo,
+          toColour: toPrimaryColour,
+          toSecondaryColour
         };
 
         peopleChanged = true;
@@ -3732,6 +3768,18 @@
           player.teamLogo = toLogo;
         }
 
+        if (nextClubColors) {
+          player.clubColors = {
+            ...(player.clubColors || {}),
+            ...nextClubColors
+          };
+
+          player.clubPrimaryColor = nextClubColors.primary || player.clubPrimaryColor || '';
+          player.clubPrimaryColour = nextClubColors.primary || player.clubPrimaryColour || '';
+          player.clubSecondaryColor = nextClubColors.secondary || player.clubSecondaryColor || '';
+          player.clubSecondaryColour = nextClubColors.secondary || player.clubSecondaryColour || '';
+        }
+
         player.lastTransfer = {
           save: getCurrentSave()?.name || '',
           season: transfer.season || '',
@@ -3740,7 +3788,9 @@
           to: destination,
           fee: transfer.fee || '',
           fromLogo,
-          toLogo
+          toLogo,
+          toColour: toPrimaryColour,
+          toSecondaryColour
         };
 
         squadChanged = true;
@@ -4942,6 +4992,7 @@
         fee: document.getElementById('transferFeeInput')?.value.trim() || '',
         fromColour: document.getElementById('transferFromColourInput')?.value || '#64748b',
         toColour: document.getElementById('transferToColourInput')?.value || '#ff3b3b',
+        toSecondaryColour: document.getElementById('transferToSecondaryColourInput')?.value || '#ffffff',
         fromLogo: document.getElementById('transferFromLogoInput')?.value.trim() || getClubBadgeByClubName(fromClub),
         toLogo: document.getElementById('transferToLogoInput')?.value.trim() || getClubBadgeByClubName(toClub),
         notes: document.getElementById('transferNotesInput')?.value.trim() || ''
@@ -4971,9 +5022,11 @@
 
       const fromColour = document.getElementById('transferFromColourInput');
       const toColour = document.getElementById('transferToColourInput');
+      const toSecondaryColour = document.getElementById('transferToSecondaryColourInput');
 
       if (fromColour) fromColour.value = '#64748b';
       if (toColour) toColour.value = '#ff3b3b';
+      if (toSecondaryColour) toSecondaryColour.value = '#ffffff';
 
       renderTransferRecords(savedAfterTransfer);
       loadSaves();
@@ -5474,8 +5527,8 @@
 
         if (found) {
           return {
-            primary: found.clubColors?.primary || found.clubPrimaryColor || '',
-            secondary: found.clubColors?.secondary || found.clubSecondaryColor || ''
+            primary: found.clubColors?.primary || found.clubPrimaryColor || found.clubPrimaryColour || '',
+            secondary: found.clubColors?.secondary || found.clubSecondaryColor || found.clubSecondaryColour || ''
           };
         }
       }
