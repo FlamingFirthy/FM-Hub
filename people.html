@@ -1779,6 +1779,41 @@
       min-height: 0;
     }
 
+
+    .club-colour-dots {
+      display: inline-flex;
+      gap: 5px;
+      align-items: center;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .club-colour-dots span {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.35);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.14);
+    }
+
+    .club-colour-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 8px;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+      border: 1px solid rgba(255,255,255,0.16);
+      max-width: 180px;
+    }
+
+    .profile-club-colour-strip {
+      height: 10px;
+      max-width: 260px;
+      margin-top: 12px;
+    }
+
 </style>
 </head>
 <body>
@@ -2422,12 +2457,19 @@
               saveIndex,
               transferIndex,
               toLogo: getTransferToLogo(transfer),
-              fromLogo: getTransferFromLogo(transfer)
+              fromLogo: getTransferFromLogo(transfer),
+              toColour: transfer.toColour || transfer.toColor || transfer.toPrimaryColour || transfer.toPrimaryColor || '',
+              toSecondaryColour: transfer.toSecondaryColour || transfer.toSecondaryColor || transfer.toColour2 || transfer.toColor2 || ''
             };
           });
         });
 
         if (latestTransfer) {
+          const nextClubColors = {
+            primary: latestTransfer.toColour || person.clubColors?.primary || person.clubPrimaryColor || person.clubPrimaryColour || '',
+            secondary: latestTransfer.toSecondaryColour || person.clubColors?.secondary || person.clubSecondaryColor || person.clubSecondaryColour || ''
+          };
+
           const nextLastTransfer = {
             save: saves[latestTransfer.saveIndex]?.name || '',
             season: latestTransfer.transfer.season || '',
@@ -2436,16 +2478,25 @@
             to: latestTransfer.destination,
             fee: latestTransfer.transfer.fee || '',
             fromLogo: latestTransfer.fromLogo || '',
-            toLogo: latestTransfer.toLogo || ''
+            toLogo: latestTransfer.toLogo || '',
+            toColour: latestTransfer.toColour || '',
+            toSecondaryColour: latestTransfer.toSecondaryColour || ''
           };
 
           const needsClubUpdate = person.club !== latestTransfer.destination;
           const needsLastTransferUpdate = JSON.stringify(person.lastTransfer || {}) !== JSON.stringify(nextLastTransfer);
           const needsBadgeUpdate = latestTransfer.toLogo && person.clubBadge !== latestTransfer.toLogo;
+          const needsColourUpdate = JSON.stringify(person.clubColors || {}) !== JSON.stringify(nextClubColors);
 
-          if (needsClubUpdate || needsLastTransferUpdate || needsBadgeUpdate) {
+          if (needsClubUpdate || needsLastTransferUpdate || needsBadgeUpdate || needsColourUpdate) {
             person.club = latestTransfer.destination;
             person.lastTransfer = nextLastTransfer;
+
+            person.clubColors = nextClubColors;
+            person.clubPrimaryColor = nextClubColors.primary || '';
+            person.clubPrimaryColour = nextClubColors.primary || '';
+            person.clubSecondaryColor = nextClubColors.secondary || '';
+            person.clubSecondaryColour = nextClubColors.secondary || '';
 
             if (latestTransfer.toLogo) {
               person.clubBadge = latestTransfer.toLogo;
@@ -2718,6 +2769,55 @@
     function renderClubBadge(src, large = false) {
       if (!src) return '';
       return `<img src="${escapeHtml(src)}" alt="Club badge" class="club-badge${large ? ' large' : ''}">`;
+    }
+
+    function getPersonClubColours(person) {
+      const colours = person?.clubColors || {};
+      const primary =
+        colours.primary ||
+        person?.clubPrimaryColor ||
+        person?.clubPrimaryColour ||
+        person?.lastTransfer?.toColour ||
+        person?.lastTransfer?.toPrimaryColour ||
+        '';
+
+      const secondary =
+        colours.secondary ||
+        person?.clubSecondaryColor ||
+        person?.clubSecondaryColour ||
+        person?.lastTransfer?.toSecondaryColour ||
+        person?.lastTransfer?.toSecondaryColor ||
+        person?.lastTransfer?.toColour2 ||
+        '';
+
+      return { primary, secondary };
+    }
+
+    function renderClubColourDots(person) {
+      const colours = getPersonClubColours(person);
+      if (!colours.primary && !colours.secondary) return '';
+
+      return `
+        <span class="club-colour-dots" title="Club colours">
+          ${colours.primary ? `<span style="background:${escapeHtml(colours.primary)};"></span>` : ''}
+          ${colours.secondary ? `<span style="background:${escapeHtml(colours.secondary)};"></span>` : ''}
+        </span>
+      `;
+    }
+
+    function renderClubColourStrip(person, extraClass = '') {
+      const colours = getPersonClubColours(person);
+      if (!colours.primary && !colours.secondary) return '';
+
+      const primary = colours.primary || colours.secondary;
+      const secondary = colours.secondary || colours.primary;
+
+      return `
+        <div class="club-colour-strip ${escapeHtml(extraClass)}" title="Club colours">
+          <span style="background:${escapeHtml(primary)};"></span>
+          <span style="background:${escapeHtml(secondary)};"></span>
+        </div>
+      `;
     }
 
     function renderNationPill(nation) {
@@ -3460,6 +3560,7 @@
     }
 
     function loadPeople() {
+      syncPeopleClubsFromTransfers();
       const people = getPeople();
       const search = (document.getElementById('searchPeople')?.value || '').toLowerCase();
       const typeFilter = document.getElementById('typeFilter')?.value || 'all';
@@ -3497,7 +3598,7 @@
               <h3>${escapeHtml(person.name || 'Unnamed Person')}</h3>
             </div>
           </div>
-          <p class="muted" style="margin:10px 0 0;">${escapeHtml(person.club || '-')} • ${escapeHtml(person.role || '-')}</p>
+          <p class="muted" style="margin:10px 0 0;">${escapeHtml(person.club || '-')} ${renderClubColourDots(person)} • ${escapeHtml(person.role || '-')}</p>\n          ${renderClubColourStrip(person)}
           ${person.lastTransfer ? `<div class="badge" style="margin-top:10px;">Last move: ${escapeHtml(person.lastTransfer.from || '-')} → ${escapeHtml(person.lastTransfer.to || '-')}${person.lastTransfer.fee ? ` • ${escapeHtml(person.lastTransfer.fee)}` : ''}</div>` : ''}
           ${person.linkedSaves?.length ? `<div class="badge" style="margin-top:10px;">${person.linkedSaves.map(escapeHtml).join(' • ')}</div>` : ''}
           <div class="badge">${person.type === 'manager' ? 'Manager' : 'Player'}</div>
@@ -3530,7 +3631,7 @@
         avatar.textContent = initials(person.name);
       }
       document.getElementById('pName').innerHTML = `${escapeHtml(person.name || '-')} ${renderClubBadge(person.clubBadge, true)}`;
-      document.getElementById('pInfo').innerHTML = `${escapeHtml(person.type || '-')} • ${escapeHtml(person.club || '-')} • ${escapeHtml(person.role || '-')}<div class="identity-row" style="margin-top:10px;">${renderNationPill(person.nation)}</div>`;
+      document.getElementById('pInfo').innerHTML = `${escapeHtml(person.type || '-')} • ${escapeHtml(person.club || '-')} ${renderClubColourDots(person)} • ${escapeHtml(person.role || '-')}<div class="identity-row" style="margin-top:10px;">${renderNationPill(person.nation)}</div>${renderClubColourStrip(person, 'profile-club-colour-strip')}`;
       document.getElementById('pTypeBadge').textContent = person.type === 'manager' ? 'Manager' : 'Player';
       const pStarRow = document.getElementById('pStarRow');
       if (pStarRow) {
