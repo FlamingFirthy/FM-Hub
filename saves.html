@@ -3324,6 +3324,8 @@
           <div><label for="statPersonSelect">Person / Player</label><select id="statPersonSelect" onchange="handleStatPersonSelect()"></select></div>
           <div><label for="statSeasonInput">Season</label><input id="statSeasonInput" placeholder="2026/27"></div>
           <div><label for="statClubInput">Club</label><input id="statClubInput" placeholder="Chelsea"></div>
+          <div><label for="statClubPrimaryColourInput">Club Colour</label><input id="statClubPrimaryColourInput" type="color" value="#ff3b3b"></div>
+          <div><label for="statClubSecondaryColourInput">Club Secondary Colour</label><input id="statClubSecondaryColourInput" type="color" value="#ffffff"></div>
           <div><label for="statPositionInput">Position</label><input id="statPositionInput" placeholder="ST / CM / GK"></div>
           <div><label for="statAppsInput">Apps</label><input id="statAppsInput" placeholder="38"></div>
           <div><label for="statGoalsInput">Goals</label><input id="statGoalsInput" placeholder="18"></div>
@@ -5661,7 +5663,12 @@
               apps: season.apps || '0',
               goals: season.goals || '0',
               assists: season.assists || '0',
+              clubColors: season.clubColors || player.clubColors || {
+                primary: player.clubPrimaryColor || player.clubPrimaryColour || '',
+                secondary: player.clubSecondaryColor || player.clubSecondaryColour || ''
+              },
               rating: season.rating || '-',
+
               cleanSheets: season.cleanSheets || season.clean_sheets || season.cs || '',
               notes: season.notes || ''
             });
@@ -6109,6 +6116,10 @@
         apps: document.getElementById('statAppsInput').value.trim(),
         goals: document.getElementById('statGoalsInput').value.trim(),
         assists: document.getElementById('statAssistsInput').value.trim(),
+        clubColors: {
+          primary: document.getElementById('statClubPrimaryColourInput')?.value || '',
+          secondary: document.getElementById('statClubSecondaryColourInput')?.value || ''
+        },
         rating: document.getElementById('statRatingInput').value.trim(),
         cleanSheets: document.getElementById('statCleanSheetsInput')?.value.trim() || '',
         notes: document.getElementById('statNotesInput').value.trim()
@@ -6128,6 +6139,10 @@
       }
       updateCurrentSave(save);
       ['statSeasonInput','statClubInput','statPositionInput','statAppsInput','statGoalsInput','statAssistsInput','statRatingInput','statCleanSheetsInput','statNotesInput'].forEach(id => document.getElementById(id).value = '');
+      const statPrimaryColour = document.getElementById('statClubPrimaryColourInput');
+      const statSecondaryColour = document.getElementById('statClubSecondaryColourInput');
+      if (statPrimaryColour) statPrimaryColour.value = '#ff3b3b';
+      if (statSecondaryColour) statSecondaryColour.value = '#ffffff';
       openSaveProfile(currentSaveIndex);
       setSaveEditMode(true);
       loadSaves();
