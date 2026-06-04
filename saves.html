@@ -3703,12 +3703,10 @@
         transfer.toColor2 ||
         '';
 
-      const nextClubColors = (toPrimaryColour || toSecondaryColour)
-        ? {
-            primary: toPrimaryColour,
-            secondary: toSecondaryColour
-          }
-        : null;
+      const nextClubColors = {
+        primary: toPrimaryColour,
+        secondary: toSecondaryColour
+      };
 
       const people = getPeople();
       let peopleChanged = false;
@@ -3724,17 +3722,15 @@
           person.clubLogo = toLogo;
         }
 
-        if (nextClubColors) {
-          person.clubColors = {
-            ...(person.clubColors || {}),
-            ...nextClubColors
-          };
+        person.clubColors = {
+          ...(person.clubColors || {}),
+          ...nextClubColors
+        };
 
-          person.clubPrimaryColor = nextClubColors.primary || person.clubPrimaryColor || '';
-          person.clubPrimaryColour = nextClubColors.primary || person.clubPrimaryColour || '';
-          person.clubSecondaryColor = nextClubColors.secondary || person.clubSecondaryColor || '';
-          person.clubSecondaryColour = nextClubColors.secondary || person.clubSecondaryColour || '';
-        }
+        person.clubPrimaryColor = nextClubColors.primary || person.clubPrimaryColor || '';
+        person.clubPrimaryColour = nextClubColors.primary || person.clubPrimaryColour || '';
+        person.clubSecondaryColor = nextClubColors.secondary || person.clubSecondaryColor || '';
+        person.clubSecondaryColour = nextClubColors.secondary || person.clubSecondaryColour || '';
 
         person.lastTransfer = {
           save: getCurrentSave()?.name || '',
@@ -3768,17 +3764,15 @@
           player.teamLogo = toLogo;
         }
 
-        if (nextClubColors) {
-          player.clubColors = {
-            ...(player.clubColors || {}),
-            ...nextClubColors
-          };
+        player.clubColors = {
+          ...(player.clubColors || {}),
+          ...nextClubColors
+        };
 
-          player.clubPrimaryColor = nextClubColors.primary || player.clubPrimaryColor || '';
-          player.clubPrimaryColour = nextClubColors.primary || player.clubPrimaryColour || '';
-          player.clubSecondaryColor = nextClubColors.secondary || player.clubSecondaryColor || '';
-          player.clubSecondaryColour = nextClubColors.secondary || player.clubSecondaryColour || '';
-        }
+        player.clubPrimaryColor = nextClubColors.primary || player.clubPrimaryColor || '';
+        player.clubPrimaryColour = nextClubColors.primary || player.clubPrimaryColour || '';
+        player.clubSecondaryColor = nextClubColors.secondary || player.clubSecondaryColor || '';
+        player.clubSecondaryColour = nextClubColors.secondary || player.clubSecondaryColour || '';
 
         player.lastTransfer = {
           save: getCurrentSave()?.name || '',
