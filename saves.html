@@ -5672,6 +5672,64 @@
       return rows.sort((a, b) => String(a.season || '').localeCompare(String(b.season || '')) || String(a.personName || '').localeCompare(String(b.personName || '')));
     }
 
+
+    function getStatsClubColourSource(row) {
+      const playerName = normaliseText(row?.personName || row?.player || '');
+      const clubName = normaliseText(row?.club || '');
+
+      const people = typeof getPeople === 'function' ? getPeople() : [];
+      const squad = typeof getSquadPlayers === 'function' ? getSquadPlayers() : [];
+      const sources = [...people, ...squad];
+
+      return sources.find(item =>
+        playerName && normaliseText(item.name || item.fullName || '') === playerName
+      ) || sources.find(item =>
+        clubName &&
+        normaliseText(item.club || item.team || item.currentClub || '') === clubName &&
+        (
+          item.clubColors?.primary ||
+          item.clubColors?.secondary ||
+          item.clubPrimaryColor ||
+          item.clubPrimaryColour ||
+          item.clubSecondaryColor ||
+          item.clubSecondaryColour ||
+          item.lastTransfer?.toColour ||
+          item.lastTransfer?.toSecondaryColour
+        )
+      ) || {};
+    }
+
+    function renderStatsClubColours(row) {
+      const source = getStatsClubColourSource(row);
+      const colours = source.clubColors || {};
+
+      const primary =
+        colours.primary ||
+        source.clubPrimaryColor ||
+        source.clubPrimaryColour ||
+        source.lastTransfer?.toColour ||
+        source.lastTransfer?.toPrimaryColour ||
+        '';
+
+      const secondary =
+        colours.secondary ||
+        source.clubSecondaryColor ||
+        source.clubSecondaryColour ||
+        source.lastTransfer?.toSecondaryColour ||
+        source.lastTransfer?.toSecondaryColor ||
+        source.lastTransfer?.toColour2 ||
+        '';
+
+      if (!primary && !secondary) return '';
+
+      return `
+        <span class="club-colour-dots" title="Club colours">
+          ${primary ? `<span style="background:${escapeHtml(primary)};"></span>` : ''}
+          ${secondary ? `<span style="background:${escapeHtml(secondary)};"></span>` : ''}
+        </span>
+      `;
+    }
+
     function renderSavePlayerStats(save) {
       const tbody = document.getElementById('savePlayerStatsBody');
       if (!tbody) return;
@@ -5925,7 +5983,7 @@
 
         <div class="save-person-section">
           <div class="save-person-section-head"><div><div class="section-kicker">Season Stats</div><h3>Save-Specific Season Records</h3></div></div>
-          <div class="table-wrap" style="margin-top:0;"><table><thead><tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Notes</th></tr></thead><tbody>${stats.length ? stats.map(row => `<tr><td>${escapeHtml(row.season || '-')}</td><td>${escapeHtml(row.club || '-')}</td><td>${escapeHtml(row.position || '-')}</td><td>${escapeHtml(row.apps || '0')}</td><td>${escapeHtml(row.goals || '0')}</td><td>${escapeHtml(row.assists || '0')}</td><td>${escapeHtml(row.rating || '-')}</td><td>${escapeHtml(row.notes || '-')}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No save-specific stats for this person yet.</td></tr>'}</tbody></table></div>
+          <div class="table-wrap" style="margin-top:0;"><table><thead><tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Notes</th></tr></thead><tbody>${stats.length ? stats.map(row => `<tr><td>${escapeHtml(row.season || '-')}</td><td>${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td><td>${escapeHtml(row.position || '-')}</td><td>${escapeHtml(row.apps || '0')}</td><td>${escapeHtml(row.goals || '0')}</td><td>${escapeHtml(row.assists || '0')}</td><td>${escapeHtml(row.rating || '-')}</td><td>${escapeHtml(row.notes || '-')}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No save-specific stats for this person yet.</td></tr>'}</tbody></table></div>
         </div>
 
         <div class="save-person-section">
