@@ -2930,6 +2930,58 @@
       box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
     }
 
+
+    .stat-entry-form {
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.025);
+      margin-top: 12px;
+    }
+
+    .stat-colour-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid var(--border);
+    }
+
+    .stat-colour-box-title {
+      grid-column: 1 / -1;
+      color: var(--muted);
+      font-size: .74rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: -2px;
+    }
+
+    .stat-colour-box input[type="color"] {
+      min-height: 44px;
+      padding: 4px;
+      cursor: pointer;
+    }
+
+    .club-colour-dots {
+      display: inline-flex;
+      gap: 5px;
+      align-items: center;
+      margin-left: 7px;
+      vertical-align: middle;
+    }
+
+    .club-colour-dots span {
+      width: 13px;
+      height: 13px;
+      border-radius: 999px;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.45);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.18);
+    }
+
 </style>
 </head>
 <body>
@@ -3320,12 +3372,10 @@
           </div>
         </div>
 
-<div class="form-grid edit-only">
+<div class="form-grid edit-only stat-entry-form">
           <div><label for="statPersonSelect">Person / Player</label><select id="statPersonSelect" onchange="handleStatPersonSelect()"></select></div>
           <div><label for="statSeasonInput">Season</label><input id="statSeasonInput" placeholder="2026/27"></div>
           <div><label for="statClubInput">Club</label><input id="statClubInput" placeholder="Chelsea"></div>
-          <div><label for="statClubPrimaryColourInput">Club Colour</label><input id="statClubPrimaryColourInput" type="color" value="#ff3b3b"></div>
-          <div><label for="statClubSecondaryColourInput">Club Secondary Colour</label><input id="statClubSecondaryColourInput" type="color" value="#ffffff"></div>
           <div><label for="statPositionInput">Position</label><input id="statPositionInput" placeholder="ST / CM / GK"></div>
           <div><label for="statAppsInput">Apps</label><input id="statAppsInput" placeholder="38"></div>
           <div><label for="statGoalsInput">Goals</label><input id="statGoalsInput" placeholder="18"></div>
@@ -5663,12 +5713,7 @@
               apps: season.apps || '0',
               goals: season.goals || '0',
               assists: season.assists || '0',
-              clubColors: season.clubColors || player.clubColors || {
-                primary: player.clubPrimaryColor || player.clubPrimaryColour || '',
-                secondary: player.clubSecondaryColor || player.clubSecondaryColour || ''
-              },
               rating: season.rating || '-',
-
               cleanSheets: season.cleanSheets || season.clean_sheets || season.cs || '',
               notes: season.notes || ''
             });
@@ -5707,25 +5752,32 @@
     }
 
     function renderStatsClubColours(row) {
-      const source = getStatsClubColourSource(row);
-      const colours = source.clubColors || {};
+      const rowColours = row?.clubColors || {};
+      let primary = rowColours.primary || rowColours.primaryColour || rowColours.primaryColor || row?.clubPrimaryColour || row?.clubPrimaryColor || '';
+      let secondary = rowColours.secondary || rowColours.secondaryColour || rowColours.secondaryColor || row?.clubSecondaryColour || row?.clubSecondaryColor || '';
 
-      const primary =
-        colours.primary ||
-        source.clubPrimaryColor ||
-        source.clubPrimaryColour ||
-        source.lastTransfer?.toColour ||
-        source.lastTransfer?.toPrimaryColour ||
-        '';
+      // Fallback to people/squad/transfer colours only if this stat record has none.
+      if (!primary && !secondary) {
+        const source = getStatsClubColourSource(row);
+        const colours = source.clubColors || {};
 
-      const secondary =
-        colours.secondary ||
-        source.clubSecondaryColor ||
-        source.clubSecondaryColour ||
-        source.lastTransfer?.toSecondaryColour ||
-        source.lastTransfer?.toSecondaryColor ||
-        source.lastTransfer?.toColour2 ||
-        '';
+        primary =
+          colours.primary ||
+          source.clubPrimaryColor ||
+          source.clubPrimaryColour ||
+          source.lastTransfer?.toColour ||
+          source.lastTransfer?.toPrimaryColour ||
+          '';
+
+        secondary =
+          colours.secondary ||
+          source.clubSecondaryColor ||
+          source.clubSecondaryColour ||
+          source.lastTransfer?.toSecondaryColour ||
+          source.lastTransfer?.toSecondaryColor ||
+          source.lastTransfer?.toColour2 ||
+          '';
+      }
 
       if (!primary && !secondary) return '';
 
@@ -5760,7 +5812,7 @@
             </div>
           </td>
           <td><span class="chip">${escapeHtml(row.season || '-')}</span></td>
-          <td>${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td>
+          <td>${escapeHtml(row.club || '-')}${renderClubColours(row.club || '')}</td>
           <td>${escapeHtml(row.position || '-')}</td>
           <td><span class="stat-number-pill">${escapeHtml(row.apps || '0')}</span></td>
           <td><span class="stat-number-pill">${escapeHtml(row.goals || '0')}</span></td>
@@ -6116,10 +6168,6 @@
         apps: document.getElementById('statAppsInput').value.trim(),
         goals: document.getElementById('statGoalsInput').value.trim(),
         assists: document.getElementById('statAssistsInput').value.trim(),
-        clubColors: {
-          primary: document.getElementById('statClubPrimaryColourInput')?.value || '',
-          secondary: document.getElementById('statClubSecondaryColourInput')?.value || ''
-        },
         rating: document.getElementById('statRatingInput').value.trim(),
         cleanSheets: document.getElementById('statCleanSheetsInput')?.value.trim() || '',
         notes: document.getElementById('statNotesInput').value.trim()
@@ -6139,10 +6187,6 @@
       }
       updateCurrentSave(save);
       ['statSeasonInput','statClubInput','statPositionInput','statAppsInput','statGoalsInput','statAssistsInput','statRatingInput','statCleanSheetsInput','statNotesInput'].forEach(id => document.getElementById(id).value = '');
-      const statPrimaryColour = document.getElementById('statClubPrimaryColourInput');
-      const statSecondaryColour = document.getElementById('statClubSecondaryColourInput');
-      if (statPrimaryColour) statPrimaryColour.value = '#ff3b3b';
-      if (statSecondaryColour) statSecondaryColour.value = '#ffffff';
       openSaveProfile(currentSaveIndex);
       setSaveEditMode(true);
       loadSaves();
