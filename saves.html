@@ -2975,6 +2975,24 @@
       ) !important;
     }
 
+
+/* Force both transfer borders to use vertical gradients */
+.transfer-card::before{
+  background: linear-gradient(
+    180deg,
+    var(--from-colour) 0%,
+    var(--from-secondary-colour) 100%
+  ) !important;
+}
+
+.transfer-card::after{
+  background: linear-gradient(
+    180deg,
+    var(--to-colour) 0%,
+    var(--to-secondary-colour) 100%
+  ) !important;
+}
+
 </style>
 </head>
 <body>
