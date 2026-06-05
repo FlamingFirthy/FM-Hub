@@ -2958,11 +2958,10 @@
       pointer-events: none;
     }
 
-
-    /* Transfer card side gradients override */
+    /* Final transfer side gradient fix */
     .transfer-card::before {
       background: linear-gradient(
-        180deg,
+        90deg,
         var(--from-colour) 0%,
         var(--from-secondary-colour) 100%
       ) !important;
@@ -2970,9 +2969,9 @@
 
     .transfer-card::after {
       background: linear-gradient(
-        180deg,
-        var(--to-colour) 0%,
-        var(--to-secondary-colour) 100%
+        90deg,
+        var(--to-secondary-colour) 0%,
+        var(--to-colour) 100%
       ) !important;
     }
 
