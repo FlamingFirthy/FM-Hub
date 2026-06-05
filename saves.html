@@ -5087,11 +5087,21 @@
       return `<div class="transfer-club-logo" style="--club-colour:${safeColour};">${escapeHtml(getClubInitials(name))}</div>`;
     }
 
-    function syncTransferWindowFilter(transfers) {
+    
+    function normaliseSeasonForFilter(season) {
+      const raw = String(season || '').trim();
+      if (/^(19|20)\d{2}$/.test(raw)) {
+        const year = Number(raw);
+        return `${year}/${String(year + 1).slice(-2)}`;
+      }
+      return raw;
+    }
+
+function syncTransferWindowFilter(transfers) {
       const select = document.getElementById('transferWindowFilter');
       if (!select) return 'all';
       const current = select.value || 'all';
-      const windows = Array.from(new Set((transfers || []).map(t => t.season).filter(Boolean)))
+      const windows = Array.from(new Set((transfers || []).map(t => normaliseSeasonForFilter(t.season)).filter(Boolean)))
         .sort((a, b) => compareSeasons(a, b, 'desc'));
       select.innerHTML = ['<option value="all">All windows</option>']
         .concat(windows.map(windowName => `<option value="${escapeHtml(windowName)}">${escapeHtml(windowName)}</option>`))
@@ -5232,7 +5242,7 @@
 
       let rows = [...(transfers || [])];
 
-      if (selectedWindow !== 'all') rows = rows.filter(transfer => transfer.season === selectedWindow);
+      if (selectedWindow !== 'all') rows = rows.filter(transfer => normaliseSeasonForFilter(transfer.season) === selectedWindow);
       if (selectedType !== 'all') rows = rows.filter(transfer => String(transfer.type || '') === selectedType);
 
       rows.sort((a, b) => {
@@ -5865,7 +5875,7 @@
       if (!select) return;
 
       const current = select.value || 'all';
-      const seasons = Array.from(new Set(allRows.map(row => row.season).filter(Boolean)))
+      const seasons = Array.from(new Set(allRows.map(row => normaliseSeasonForFilter(row.season)).filter(Boolean)))
         .sort((a, b) => compareSeasons(a, b, 'desc'));
 
       select.innerHTML = '<option value="all">All seasons</option>' +
@@ -5885,7 +5895,7 @@
       let rows = [...allRows];
 
       if (search) rows = rows.filter(row => String(row.personName || '').toLowerCase().includes(search));
-      if (season !== 'all') rows = rows.filter(row => String(row.season || '') === season);
+      if (season !== 'all') rows = rows.filter(row => normaliseSeasonForFilter(row.season) === season);
 
       rows.sort((a, b) => {
         if (sortBy === 'player') return String(a.personName || '').localeCompare(String(b.personName || ''));
