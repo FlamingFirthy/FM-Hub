@@ -2958,29 +2958,33 @@
       pointer-events: none;
     }
 
+    
 
 
-    /* Clean transfer card gradient side bars */
-    .transfer-card {
-      background:
-        linear-gradient(180deg, var(--from-colour) 0%, var(--from-secondary-colour) 100%) left / 5px 100% no-repeat,
-        linear-gradient(180deg, var(--to-colour) 0%, var(--to-secondary-colour) 100%) right / 5px 100% no-repeat,
-        linear-gradient(180deg, rgba(255,255,255,0.046), rgba(255,255,255,0.018)) !important;
+    .record-actions-inline {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
 
-    /* Hide Actions column in view mode */
-    #saveProfile:not(.profile-edit-mode) th.edit-only,
-    #saveProfile:not(.profile-edit-mode) td.edit-only {
+    .record-actions-inline {
       display: none !important;
     }
 
-    #saveProfile.profile-edit-mode th.edit-only {
-      display: table-cell !important;
+    #saveProfile.profile-edit-mode .record-actions-inline {
+      display: flex !important;
     }
 
-    #saveProfile.profile-edit-mode td.edit-only {
-      display: table-cell !important;
+
+    /* Delete Save is only visible when the opened save is in edit mode */
+    #saveProfile:not(.profile-edit-mode) #deleteSaveBtn {
+      display: none !important;
+    }
+
+    #saveProfile.profile-edit-mode #deleteSaveBtn {
+      display: inline-flex !important;
     }
 
 </style>
@@ -3070,7 +3074,7 @@
       <div class="hero-actions view-mode-toolbar">
         <button class="admin-only secondary" type="button" onclick="backToSaves()">← Back to Saves</button>
         <button class="admin-only primary" type="button" id="saveEditModeBtn" onclick="toggleSaveEditMode()">Edit Save</button>
-        <button class="admin-only delete-btn edit-only" type="button" onclick="deleteCurrentSave()">Delete Save</button>
+        <button id="deleteSaveBtn" class="admin-only delete-btn edit-only" type="button" onclick="deleteCurrentSave()">Delete Save</button>
         <p class="clean-view-hint">View mode is on by default. Press Edit Save to show add/edit tools.</p>
       </div>
 
