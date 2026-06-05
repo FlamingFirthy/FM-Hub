@@ -3635,7 +3635,7 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Player</th><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Clean Sheets</th><th class="admin-only edit-only">Actions</th></tr>
+              <tr><th>Player</th><th>Season</th><th>Age</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Clean Sheets</th><th class="admin-only edit-only">Actions</th></tr>
             </thead>
             <tbody id="savePlayerStatsBody"></tbody>
           </table>
@@ -3728,7 +3728,7 @@
         <div class="table-wrap transfer-table-fallback">
           <table>
             <thead>
-              <tr><th>Player</th><th>Season</th><th>Type</th><th>From</th><th>To</th><th>Fee</th><th>Notes</th><th class="admin-only edit-only">Action</th></tr>
+              <tr><th>Player</th><th>Season</th><th>Age</th><th>Type</th><th>From</th><th>To</th><th>Fee</th><th>Notes</th><th class="admin-only edit-only">Action</th></tr>
             </thead>
             <tbody id="transferTableBody"></tbody>
           </table>
@@ -5158,6 +5158,7 @@
                 <strong style="margin-top:9px;">${escapeHtml(transfer.player || '-')}</strong>
                 <div class="transfer-meta-row">
                   <span class="chip">${escapeHtml(transfer.season || 'No window')}</span>
+                  <span class="chip">Age ${escapeHtml(getPlayerAgeForSeason(transfer.player, transfer.season))}</span>
                   <span class="chip">${escapeHtml(getFeeTypeLabel(transfer.fee))}</span>
                 </div>
               </div>
@@ -5253,7 +5254,7 @@
       const filteredTransfers = getFilteredSortedTransfers(transfers);
       renderTransferCards(filteredTransfers, transfers);
       if (!filteredTransfers.length) {
-        tbody.innerHTML = '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No transfers recorded for this filter.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" style="padding:14px; color:var(--muted);">No transfers recorded for this filter.</td></tr>';
         applyAdminMode();
         return;
       }
@@ -5263,6 +5264,7 @@
           <tr>
             <td data-label="Player"><strong>${escapeHtml(transfer.player || '-')}</strong></td>
             <td data-label="Season"><span class="chip">${escapeHtml(transfer.season || '-')}</span></td>
+            <td data-label="Age"><span class="stat-number-pill">${escapeHtml(getPlayerAgeForSeason(transfer.player, transfer.season))}</span></td>
             <td data-label="Type"><span class="transfer-type-chip ${escapeHtml(getTransferChipClass(transfer.type))}">${escapeHtml(transfer.type || '-')}</span></td>
             <td data-label="From">${escapeHtml(transfer.from || '-')}</td>
             <td data-label="To">${escapeHtml(transfer.to || '-')}</td>
@@ -6044,6 +6046,89 @@ function renderStatsClubColours(row) {
   `;
 }
 
+
+    function parseFMHubDOB(value) {
+      if (!value) return null;
+      const raw = String(value).trim();
+      if (!raw) return null;
+
+      let date = new Date(raw);
+      if (!Number.isNaN(date.getTime())) return date;
+
+      const match = raw.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/);
+      if (match) {
+        date = new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]));
+        if (!Number.isNaN(date.getTime())) return date;
+      }
+
+      return null;
+    }
+
+    function getAgeSeasonDate(season) {
+      const raw = String(season || '').trim();
+      const match = raw.match(/(19|20)\d{2}/);
+      if (!match) return new Date();
+
+      const year = Number(match[0]);
+
+      // 2026/27 style seasons use July 1st. Single-year seasons use January 1st.
+      return /[\/\-–—]/.test(raw) ? new Date(year, 6, 1) : new Date(year, 0, 1);
+    }
+
+    function calculateAgeForSeason(dob, season) {
+      const birth = parseFMHubDOB(dob);
+      const ref = getAgeSeasonDate(season);
+      if (!birth || Number.isNaN(ref.getTime())) return '-';
+
+      let age = ref.getFullYear() - birth.getFullYear();
+      const monthDiff = ref.getMonth() - birth.getMonth();
+
+      if (monthDiff < 0 || (monthDiff === 0 && ref.getDate() < birth.getDate())) age -= 1;
+
+      return age >= 0 ? String(age) : '-';
+    }
+
+    function getDOBForPlayerName(playerName) {
+      const cleanName = normaliseText(playerName);
+      if (!cleanName) return '';
+
+      const sources = [
+        ...(typeof getPeople === 'function' ? getPeople() : []),
+        ...(typeof getSquadPlayers === 'function' ? getSquadPlayers() : [])
+      ];
+
+      const player = sources.find(item =>
+        normaliseText(item.name || item.fullName || item.playerName || item.personName || '') === cleanName
+      );
+
+      if (!player) return '';
+
+      const attrs = player.attributes || {};
+      const profile = attrs.Profile || attrs.profile || player.profile || {};
+
+      return (
+        player.dateOfBirth ||
+        player.dob ||
+        player.birthDate ||
+        player['Date Of Birth'] ||
+        player['Date of Birth'] ||
+        player.DOB ||
+        profile.dateOfBirth ||
+        profile.dob ||
+        profile.birthDate ||
+        profile['Date Of Birth'] ||
+        profile['Date of Birth'] ||
+        profile.DOB ||
+        ''
+      );
+    }
+
+    function getPlayerAgeForSeason(playerName, season) {
+      const dob = getDOBForPlayerName(playerName);
+      return dob ? calculateAgeForSeason(dob, season) : '-';
+    }
+
+
 function renderSavePlayerStats(save) {
       const tbody = document.getElementById('savePlayerStatsBody');
       if (!tbody) return;
@@ -6052,7 +6137,7 @@ function renderSavePlayerStats(save) {
       renderStatsSummary(rows);
 
       if (!rows.length) {
-        tbody.innerHTML = '<tr><td colspan="10" style="padding:14px; color:var(--muted);">No stats recorded for this filter.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="11" style="padding:14px; color:var(--muted);">No stats recorded for this filter.</td></tr>';
         renderCareerStats([]);
         applyAdminMode();
         return;
@@ -6067,6 +6152,7 @@ function renderSavePlayerStats(save) {
             </div>
           </td>
           <td data-label="Season"><span class="chip">${escapeHtml(row.season || '-')}</span></td>
+          <td data-label="Age"><span class="stat-number-pill">${escapeHtml(getPlayerAgeForSeason(row.personName, row.season))}</span></td>
           <td data-label="Club">${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td>
           <td data-label="Position">${escapeHtml(row.position || '-')}</td>
           <td data-label="Apps"><span class="stat-number-pill">${escapeHtml(row.apps || '0')}</span></td>
