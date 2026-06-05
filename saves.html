@@ -2958,6 +2958,24 @@
       pointer-events: none;
     }
 
+
+    /* Transfer card side gradients override */
+    .transfer-card::before {
+      background: linear-gradient(
+        180deg,
+        var(--from-colour) 0%,
+        var(--from-secondary-colour) 100%
+      ) !important;
+    }
+
+    .transfer-card::after {
+      background: linear-gradient(
+        180deg,
+        var(--to-colour) 0%,
+        var(--to-secondary-colour) 100%
+      ) !important;
+    }
+
 </style>
 </head>
 <body>
@@ -3413,8 +3431,8 @@
           <div><label for="transferFromInput">From</label><input id="transferFromInput" placeholder="Selling club / previous club"></div>
           <div><label for="transferToInput">To</label><input id="transferToInput" placeholder="Buying club / new club"></div>
           <div><label for="transferFromColourInput">From Club Colour</label><input id="transferFromColourInput" type="color" value="#64748b"></div>
-          <div><label for="transferFromSecondaryColourInput">From Club Secondary Colour</label><input id="transferFromSecondaryColourInput" type="color" value="#ffffff"></div>
           <div><label for="transferToColourInput">To Club Colour</label><input id="transferToColourInput" type="color" value="#ff3b3b"></div>
+          <div><label for="transferFromSecondaryColourInput">From Club Secondary Colour</label><input id="transferFromSecondaryColourInput" type="color" value="#ffffff"></div>
           <div><label for="transferToSecondaryColourInput">To Club Secondary Colour</label><input id="transferToSecondaryColourInput" type="color" value="#ffffff"></div>
           <div><label for="transferFromLogoInput">From Club Logo URL</label><input id="transferFromLogoInput" placeholder="Optional logo URL"></div>
           <div><label for="transferToLogoInput">To Club Logo URL</label><input id="transferToLogoInput" placeholder="Optional logo URL"></div>
