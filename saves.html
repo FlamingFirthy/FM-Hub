@@ -2987,6 +2987,13 @@
       display: inline-flex !important;
     }
 
+
+    /* Hide Stats Actions column in view mode only */
+    #saveProfile:not(.profile-edit-mode) th.edit-only,
+    #saveProfile:not(.profile-edit-mode) td.edit-only {
+      display: none !important;
+    }
+
 </style>
 </head>
 <body>
