@@ -1035,8 +1035,8 @@
       padding: 16px;
       border-radius: 20px;
       background:
-        linear-gradient(180deg, var(--from-colour) 0%, var(--from-secondary-colour) 100%) left / 5px 100% no-repeat,
-        linear-gradient(180deg, var(--to-colour) 0%, var(--to-secondary-colour) 100%) right / 5px 100% no-repeat,
+        linear-gradient(180deg, var(--from-colour) 0 50%, var(--from-secondary-colour) 50% 100%) left / 5px 100% no-repeat,
+        linear-gradient(180deg, var(--to-colour) 0 50%, var(--to-secondary-colour) 50% 100%) right / 5px 100% no-repeat,
         linear-gradient(180deg, rgba(255,255,255,0.046), rgba(255,255,255,0.018));
       border: 1px solid rgba(255,255,255,0.075);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.035), 0 10px 24px rgba(0,0,0,0.18);
@@ -2958,7 +2958,22 @@
       pointer-events: none;
     }
 
-    
+    /* Final transfer side gradient fix */
+    .transfer-card::before {
+      background: linear-gradient(
+        90deg,
+        var(--from-colour) 0%,
+        var(--from-secondary-colour) 100%
+      ) !important;
+    }
+
+    .transfer-card::after {
+      background: linear-gradient(
+        90deg,
+        var(--to-secondary-colour) 0%,
+        var(--to-colour) 100%
+      ) !important;
+    }
 
 
     .record-actions-inline {
@@ -2969,12 +2984,34 @@
     }
 
 
-    .record-actions-inline {
+    /* Stats/Transfers actions: hidden in view mode, visible in save edit mode */
+    #saveProfile:not(.profile-edit-mode) th.edit-only,
+    #saveProfile:not(.profile-edit-mode) td.edit-only,
+    #saveProfile:not(.profile-edit-mode) .record-actions-inline {
       display: none !important;
+    }
+
+    #saveProfile.profile-edit-mode th.edit-only,
+    #saveProfile.profile-edit-mode td.edit-only {
+      display: table-cell !important;
     }
 
     #saveProfile.profile-edit-mode .record-actions-inline {
       display: flex !important;
+    }
+
+    /* Cleaner stats view mode */
+    #saveProfile:not(.profile-edit-mode) #savePlayerStatsBody td {
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    #saveProfile:not(.profile-edit-mode) .stats-summary-grid {
+      margin-bottom: 18px;
+    }
+
+    #saveProfile:not(.profile-edit-mode) .stats-refurb-toolbar {
+      margin-bottom: 20px;
     }
 
 </style>
