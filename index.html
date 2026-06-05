@@ -1617,142 +1617,312 @@
     }
 
 
-  .backup-import-drop {
-    width: 100%;
-    min-height: 96px;
-    display: grid !important;
-    place-items: center;
-    text-align: center;
-    gap: 6px;
-    padding: 16px !important;
-    border-radius: 16px !important;
-    border: 1px dashed rgba(255,255,255,0.18) !important;
-    background:
-      radial-gradient(circle at top, rgba(255,255,255,0.075), transparent 55%),
-      rgba(255,255,255,0.035) !important;
-    cursor: pointer;
-    transition: 0.18s ease;
-  }
-
-  .backup-import-drop:hover {
-    transform: translateY(-2px);
-    border-color: var(--accent) !important;
-    box-shadow: 0 0 18px var(--btn-glow);
-  }
-
-  .backup-import-drop span {
-    display: block;
-    font-weight: 900;
-  }
-
-  .backup-import-drop small {
-    display: block;
-    color: var(--muted);
-    font-size: 0.76rem;
-    line-height: 1.35;
-  }
-
-  .backup-sync-buttons {
+  /* ============================= */
+  /* Slick Home Page Refresh       */
+  /* ============================= */
+  .home-shell {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 18px;
   }
 
-
-  /* Backup & Restore clean layout */
-  .backup-clean-panel {
-    padding: 22px;
-    border-radius: 24px;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018));
+  .slick-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
+    gap: 16px;
+    align-items: stretch;
   }
 
-  .backup-clean-top {
+  .slick-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.085);
+    background:
+      radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 18%, transparent), transparent 36%),
+      linear-gradient(180deg, rgba(255,255,255,0.050), rgba(255,255,255,0.018));
+    border-radius: 26px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 18px 44px rgba(0,0,0,.24);
+  }
+
+  .slick-hero-main {
+    min-height: 300px;
+    padding: 28px;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    gap: 14px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
   }
 
-  .backup-clean-title {
+  .slick-hero-main::after {
+    content: "";
+    position: absolute;
+    right: -70px;
+    top: -70px;
+    width: 210px;
+    height: 210px;
+    border-radius: 999px;
+    background: var(--accent);
+    opacity: .11;
+    filter: blur(4px);
+  }
+
+  .slick-kicker {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 11px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.055);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--muted);
+    font-size: .78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  .slick-hero h1 {
+    margin: 16px 0 10px;
+    font-size: clamp(2.1rem, 5vw, 4.2rem);
+    line-height: .95;
+    letter-spacing: -.055em;
+  }
+
+  .slick-hero-copy {
+    max-width: 760px;
+    color: var(--muted);
+    font-size: 1.02rem;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .slick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .slick-resume {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .slick-resume-head {
     display: flex;
     gap: 12px;
     align-items: center;
   }
 
-  .backup-clean-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
+  .slick-stat-grid {
     display: grid;
-    place-items: center;
-    background: var(--accent);
-    color: white;
-    box-shadow: 0 0 18px var(--btn-glow);
-  }
-
-  .backup-clean-status {
-    padding: 8px 11px;
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.09);
-    background: rgba(0,0,0,0.16);
-    color: var(--muted);
-    font-size: 0.82rem;
-  }
-
-  .backup-clean-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 12px;
   }
 
-  .backup-clean-card {
-    padding: 15px;
-    border-radius: 18px;
+  .slick-stat-card {
+    padding: 16px;
+    min-height: 96px;
+    border-radius: 20px;
     border: 1px solid rgba(255,255,255,0.075);
-    background: rgba(0,0,0,0.12);
+    background: linear-gradient(180deg, rgba(255,255,255,0.040), rgba(255,255,255,0.015));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
   }
 
-  .backup-clean-card strong {
-    display: block;
-    margin-bottom: 5px;
+  .slick-stat-card .mini-label {
+    margin-bottom: 8px;
   }
 
-  .backup-clean-card p {
-    margin: 0 0 12px;
-    color: var(--muted);
-    font-size: 0.84rem;
-    line-height: 1.4;
+  .firebase-pill {
+    grid-column: 1 / -1;
+    justify-self: start;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.075);
   }
 
-  .backup-clean-actions {
+  .slick-section {
     display: grid;
-    gap: 8px;
+    gap: 12px;
   }
 
-  .backup-clean-actions button,
-  .backup-clean-actions label {
+  .slick-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .slick-section-head h2 {
+    margin: 0;
+  }
+
+  .slick-section-head p {
+    margin: 6px 0 0;
+  }
+
+  .slick-route-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .slick-route-card {
+    padding: 16px;
+    min-height: 145px;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,0.075);
+    background: rgba(255,255,255,0.025);
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    transition: .18s ease;
+  }
+
+  .slick-route-card:hover,
+  .slick-stat-card:hover,
+  .slick-mini-panel:hover {
+    transform: translateY(-3px);
+    border-color: var(--hover-border);
+    box-shadow: 0 18px 38px rgba(0,0,0,.24), 0 0 16px var(--hover-glow);
+  }
+
+  .slick-route-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 15px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .slick-route-card h3 {
+    margin: 0 0 8px;
+  }
+
+  .slick-route-card p {
+    margin: 0;
+    flex: 1;
+  }
+
+  .slick-quick-add {
+    padding: 16px;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.075);
+    background: rgba(255,255,255,.025);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .slick-content-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
+    gap: 16px;
+    align-items: start;
+  }
+
+  .slick-mini-panel {
+    padding: 16px;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.075);
+    background: rgba(255,255,255,.025);
+    transition: .18s ease;
+  }
+
+  .slick-snapshot-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .slick-backup-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .slick-backup-card {
+    padding: 15px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.075);
+    background: rgba(0,0,0,.12);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .slick-backup-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: .84rem;
+    line-height: 1.45;
+    flex: 1;
+  }
+
+  .slick-backup-card button,
+  .slick-backup-card label {
     width: 100%;
     justify-content: center;
   }
 
-  .backup-file-button {
-    min-height: 46px;
-    border-style: dashed !important;
+  .slick-file-input {
     cursor: pointer;
+    border-style: dashed !important;
   }
 
-  .backup-clean-danger {
-    border-color: rgba(255,70,70,0.20);
-    background: rgba(255,70,70,0.045);
+  .slick-danger {
+    border-color: rgba(255,70,70,.2);
+    background: rgba(255,70,70,.045);
+  }
+
+  @media (max-width: 1050px) {
+    .slick-hero,
+    .slick-content-grid {
+      grid-template-columns: 1fr;
+    }
+    .slick-route-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .slick-backup-grid,
+    .slick-stat-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   @media (max-width: 720px) {
-    .backup-clean-panel { padding: 16px; }
-    .backup-clean-grid { grid-template-columns: 1fr; }
-    .backup-clean-status { width: 100%; text-align: center; }
+    .slick-hero-main,
+    .slick-resume,
+    .slick-card {
+      border-radius: 20px;
+    }
+    .slick-hero-main {
+      min-height: auto;
+      padding: 20px;
+    }
+    .slick-route-grid,
+    .slick-snapshot-grid,
+    .slick-backup-grid,
+    .slick-stat-grid {
+      grid-template-columns: 1fr;
+    }
+    .slick-quick-add {
+      align-items: stretch;
+    }
+    .slick-quick-add .slick-actions {
+      width: 100%;
+    }
+    .slick-quick-add button {
+      flex: 1 1 120px;
+    }
   }
 
 </style>
@@ -1913,388 +2083,170 @@
     </div>
    </div>
   </header>
-  <main class="container page-fade-in">
-   <section class="hero">
-    <div class="home-hero">
-     <div class="hero-card">
-      <div class="eyebrow">
-       Football Manager Home
-      </div>
-      <h1>
-       Your FM universe starts here.
-      </h1>
-      <p class="hero-copy">
-       A proper home screen for jumping back into saves, checking what changed, and moving quickly between your squad, people, notes, and stories.
+  <main class="container page-fade-in home-shell">
+   <section class="slick-hero">
+    <div class="slick-card slick-hero-main">
+     <div>
+      <div class="slick-kicker">⚽ Football Manager Hub</div>
+      <h1>Your FM universe, cleaned up.</h1>
+      <p class="slick-hero-copy">
+       Jump into saves, track your squad, manage people, sync backups, and keep every storyline in one slick dashboard.
       </p>
-      <div class="hero-actions">
-       <a class="btn btn-primary" href="saves.html">
-        Continue Save
-       </a>
-       <a class="btn btn-secondary" href="squad.html">
-        Open Squad
-       </a>
-       <a class="btn btn-secondary" href="people.html">
-        Open People
-       </a>
+      <div class="slick-actions">
+       <a class="btn btn-primary" href="saves.html">Continue Save</a>
+       <a class="btn btn-secondary" href="squad.html">Open Squad</a>
+       <a class="btn btn-secondary" href="people.html">Open People</a>
       </div>
      </div>
-     <aside class="resume-card" id="resumeSaveCard">
-      <div class="resume-top">
-       <div class="save-badge" id="resumeSaveLogo">
-        FM
-       </div>
-       <div>
-        <div class="eyebrow" style="margin-bottom:9px">
-         Resume
-        </div>
-        <h2 id="resumeSaveName">
-         No active save yet
-        </h2>
-        <p class="muted" id="resumeSaveGoal" style="margin:8px 0 0">
-         Create or open a save to make this card come alive.
-        </p>
-       </div>
-      </div>
-      <div class="resume-list">
-       <div class="resume-row">
-        <span>
-         Club
-        </span>
-        <strong id="resumeSaveClub">
-         -
-        </strong>
-       </div>
-       <div class="resume-row">
-        <span>
-         Season
-        </span>
-        <strong id="resumeSaveSeason">
-         -
-        </strong>
-       </div>
-       <div class="resume-row">
-        <span>
-         League
-        </span>
-        <strong id="resumeSaveLeague">
-         -
-        </strong>
-       </div>
-       <div class="resume-row">
-        <span>
-         Status
-        </span>
-        <strong id="resumeSaveStatus">
-         -
-        </strong>
-       </div>
-       <div class="resume-row">
-        <span>
-         Form
-        </span>
-        <strong id="resumeSaveForm">
-         -
-        </strong>
-       </div>
-      </div>
-      <div class="hero-actions" style="margin-top:auto">
-       <a class="btn btn-primary" href="saves.html">
-        Open Saves
-       </a>
-       <a class="btn btn-secondary" href="notes.html">
-        Write Note
-       </a>
-      </div>
-     </aside>
     </div>
-   </section>
-   <section>
-    <div class="home-strip">
-     <div class="mini-card">
-      <div class="mini-label">
-       Total Saves
-      </div>
-      <div class="mini-value" id="statTotalSaves">
-       0
-      </div>
-     </div>
-     <div class="mini-card">
-      <div class="mini-label">
-       Squad Players
-      </div>
-      <div class="mini-value" id="statSquadPlayers">
-       0
-      </div>
-     </div>
-     <div class="mini-card">
-      <div class="mini-label">
-       People
-      </div>
-      <div class="mini-value" id="statPeopleTemplates">
-       0
-      </div>
-     </div>
-     <div class="mini-card">
-      <div class="mini-label">
-       Tracked Seasons
-      </div>
-      <div class="mini-value" id="statSeasonCount">
-       0
+
+    <aside class="slick-card slick-resume" id="resumeSaveCard">
+     <div class="slick-resume-head">
+      <div class="save-badge" id="resumeSaveLogo">FM</div>
+      <div>
+       <div class="slick-kicker">Resume</div>
+       <h2 id="resumeSaveName" style="margin:12px 0 0;">No active save yet</h2>
+       <p class="muted" id="resumeSaveGoal" style="margin:8px 0 0;">Create or open a save to make this card come alive.</p>
       </div>
      </div>
 
-      <p class="muted" id="firebaseStatus" style="margin-top:6px;font-size:.8rem">
-       Firebase: Not tested
-      </p>
+     <div class="resume-list">
+      <div class="resume-row"><span>Club</span><strong id="resumeSaveClub">-</strong></div>
+      <div class="resume-row"><span>Season</span><strong id="resumeSaveSeason">-</strong></div>
+      <div class="resume-row"><span>League</span><strong id="resumeSaveLeague">-</strong></div>
+      <div class="resume-row"><span>Status</span><strong id="resumeSaveStatus">-</strong></div>
+      <div class="resume-row"><span>Form</span><strong id="resumeSaveForm">-</strong></div>
+     </div>
 
-    </div>
+     <div class="slick-actions" style="margin-top:auto">
+      <a class="btn btn-primary" href="saves.html">Open Saves</a>
+      <a class="btn btn-secondary" href="notes.html">Write Note</a>
+     </div>
+    </aside>
    </section>
-   <section>
-    <div class="section-head">
+
+   <section class="slick-stat-grid">
+    <div class="slick-stat-card"><div class="mini-label">Total Saves</div><div class="mini-value" id="statTotalSaves">0</div></div>
+    <div class="slick-stat-card"><div class="mini-label">Squad Players</div><div class="mini-value" id="statSquadPlayers">0</div></div>
+    <div class="slick-stat-card"><div class="mini-label">People</div><div class="mini-value" id="statPeopleTemplates">0</div></div>
+    <div class="slick-stat-card"><div class="mini-label">Tracked Seasons</div><div class="mini-value" id="statSeasonCount">0</div></div>
+    <p class="muted firebase-pill" id="firebaseStatus">Firebase: Not tested</p>
+   </section>
+
+   <section class="slick-section">
+    <div class="slick-section-head">
      <div>
-      <h2>
-       Start Here
-      </h2>
-      <p class="muted">
-       Quick routes into the main parts of your hub.
-      </p>
+      <h2>Start Here</h2>
+      <p class="muted">Fast routes into the main parts of your hub.</p>
      </div>
     </div>
-    <div class="actions-grid">
-     <a class="action-card" href="saves.html">
-      <div class="action-icon">
-       💾
-      </div>
-      <h3>
-       Saves
-      </h3>
-      <p class="muted">
-       Careers, seasons, transfers, awards.
-      </p>
-      <span class="tag" id="savesCardCount">
-       0 saves
-      </span>
-     </a>
-     <a class="action-card" href="squad.html">
-      <div class="action-icon">
-       ⚽
-      </div>
-      <h3>
-       Squad
-      </h3>
-      <p class="muted">
-       Lineups, players, positions, stats.
-      </p>
-      <span class="tag" id="squadCardCount">
-       0 players
-      </span>
-     </a>
-     <a class="action-card" href="people.html">
-      <div class="action-icon">
-       👥
-      </div>
-      <h3>
-       People
-      </h3>
-      <p class="muted">
-       Players, managers, profiles.
-      </p>
-      <span class="tag" id="peopleCardCount">
-       0 people
-      </span>
-     </a>
-     <a class="action-card" href="notes.html">
-      <div class="action-icon">
-       📝
-      </div>
-      <h3>
-       Notes
-      </h3>
-      <p class="muted">
-       Storylines, tactics, plans.
-      </p>
-      <span class="tag">
-       Ideas
-      </span>
-     </a>
-     <a class="action-card" href="links.html">
-      <div class="action-icon">
-       🔗
-      </div>
-      <h3>
-       Links
-      </h3>
-      <p class="muted">
-       Tools, guides, resources.
-      </p>
-      <span class="tag">
-       Resources
-      </span>
-     </a>
+    <div class="slick-route-grid">
+     <a class="slick-route-card" href="saves.html"><div class="slick-route-icon">💾</div><h3>Saves</h3><p class="muted">Careers, seasons, transfers, awards.</p><span class="tag" id="savesCardCount">0 saves</span></a>
+     <a class="slick-route-card" href="squad.html"><div class="slick-route-icon">⚽</div><h3>Squad</h3><p class="muted">Lineups, players, positions, stats.</p><span class="tag" id="squadCardCount">0 players</span></a>
+     <a class="slick-route-card" href="people.html"><div class="slick-route-icon">👥</div><h3>People</h3><p class="muted">Players, managers, profiles.</p><span class="tag" id="peopleCardCount">0 people</span></a>
+     <a class="slick-route-card" href="notes.html"><div class="slick-route-icon">📝</div><h3>Notes</h3><p class="muted">Storylines, tactics, plans.</p><span class="tag">Ideas</span></a>
+     <a class="slick-route-card" href="links.html"><div class="slick-route-icon">🔗</div><h3>Links</h3><p class="muted">Tools, databases, research.</p><span class="tag">Resources</span></a>
     </div>
    </section>
-   <section>
-    <div class="panel" style="padding:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between">
-     <div>
-      <h3 style="margin-bottom:6px">
-       Quick Add
-      </h3>
-      <p class="muted" style="margin:0">
-       Add the basics without leaving the home page.
-      </p>
-     </div>
-     <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="admin-only btn btn-primary" onclick="openModal('save')">
-       + Save
-      </button>
-      <button class="btn btn-secondary" onclick="openModal('player')">
-       + Player
-      </button>
-      <button class="btn btn-secondary" onclick="openModal('person')">
-       + Person
-      </button>
-      <button class="btn btn-secondary" onclick="openModal('note')">
-       + Note
-      </button>
-      <button class="btn btn-secondary" onclick="openModal('link')">
-       + Link
-      </button>
-     </div>
+
+   <section class="slick-quick-add">
+    <div>
+     <h3 style="margin:0 0 6px;">Quick Add</h3>
+     <p class="muted" style="margin:0;">Add the basics without leaving the dashboard.</p>
+    </div>
+    <div class="slick-actions" style="margin:0;">
+     <button class="admin-only btn btn-primary" onclick="openModal('save')">+ Save</button>
+     <button class="btn btn-secondary" onclick="openModal('player')">+ Player</button>
+     <button class="btn btn-secondary" onclick="openModal('person')">+ Person</button>
+     <button class="btn btn-secondary" onclick="openModal('note')">+ Note</button>
+     <button class="btn btn-secondary" onclick="openModal('link')">+ Link</button>
     </div>
    </section>
-   <section>
-    <div class="home-layout">
+
+   <section class="slick-content-grid">
+    <div class="slick-section">
+     <div class="slick-section-head">
+      <div>
+       <h2>What’s New</h2>
+       <p class="muted">A compact feed from saves, transfers, matches, and squad activity.</p>
+      </div>
+     </div>
+     <div class="live-feed" id="homeLiveFeed"></div>
+    </div>
+
+    <aside class="slick-section">
+     <div class="slick-section-head">
+      <div>
+       <h2>Today’s Focus</h2>
+       <p class="muted">What to do next.</p>
+      </div>
+     </div>
+     <div class="slick-mini-panel">
+      <h3 id="focusTitle">Create your first save</h3>
+      <p class="muted" id="focusText">Once you create a save, this page will show your active career, latest transfers, and recent story moments.</p>
+      <div class="resume-list" style="margin-top:16px">
+       <div class="resume-row"><span>Latest Save</span><strong id="miniLatestSave">None yet</strong></div>
+       <div class="resume-row"><span>Latest Transfer</span><strong id="miniLatestTransfer">None yet</strong></div>
+       <div class="resume-row"><span>Latest Story</span><strong id="miniLatestStory">None yet</strong></div>
+      </div>
+     </div>
+    </aside>
+   </section>
+
+   <section class="slick-section">
+    <div class="slick-section-head">
      <div>
-      <div class="section-head">
-       <div>
-        <h2>
-         What’s New
-        </h2>
-        <p class="muted">
-         A compact feed from saves, transfers, matches, and squad activity.<section>
-    <div class="section-head">
+      <h2>Dashboard Snapshots</h2>
+      <p class="muted">Small previews, not full save-page sections.</p>
+     </div>
+    </div>
+    <div class="slick-snapshot-grid">
+     <div class="slick-mini-panel"><h3>Latest Transfers</h3><div id="latestTransfersGrid" style="margin-top:12px"></div></div>
+     <div class="slick-mini-panel"><h3>Key Players</h3><div id="keyPlayersGrid" style="margin-top:12px"></div></div>
+     <div class="slick-mini-panel"><h3>Recent Players</h3><div id="recentPlayersGrid" style="margin-top:12px"></div></div>
+    </div>
+   </section>
+
+   <section class="slick-section">
+    <div class="slick-section-head">
      <div>
       <h2>Backup & Restore</h2>
       <p class="muted">Export, import, or sync your FM Hub data safely.</p>
      </div>
+     <div class="backup-clean-status" id="lastBackupText">Last backup: Never</div>
     </div>
 
-    <div class="backup-clean-panel">
-     <div class="backup-clean-top">
-      <div class="backup-clean-title">
-       <div class="backup-clean-icon">☁️</div>
-       <div>
-        <h3 style="margin:0 0 5px;">Your Data</h3>
-        <p class="muted" style="margin:0;">Saves, squad, people, notes, links, lineups, and theme settings.</p>
-       </div>
-      </div>
-      <div class="backup-clean-status" id="lastBackupText">Last backup: Never</div>
+    <div class="slick-backup-grid">
+     <div class="slick-backup-card">
+      <strong>Export Backup</strong>
+      <p>Download a JSON copy of your current saves, people, squad, notes, links, lineups, and theme.</p>
+      <button class="admin-only btn btn-primary" onclick="exportFMHubData()" type="button">Export JSON</button>
      </div>
 
-     <div class="backup-clean-grid">
-      <div class="backup-clean-card">
-       <strong>Export Backup</strong>
-       <p>Download a JSON backup from this device before updating GitHub or changing devices.</p>
-       <div class="backup-clean-actions">
-        <button class="admin-only btn btn-primary" onclick="exportFMHubData()" type="button">Export JSON Backup</button>
-       </div>
-      </div>
-
-      <div class="backup-clean-card">
-       <strong>Import Backup</strong>
-       <p>Restore a JSON backup onto this device. This replaces the local data in this browser.</p>
-       <div class="backup-clean-actions">
-        <label class="btn btn-secondary backup-file-button">
-         Choose Backup File
-         <input class="admin-only" type="file" accept=".json,application/json" onchange="importFMHubData(event)" hidden>
-        </label>
-       </div>
-      </div>
-
-      <div class="backup-clean-card">
-       <strong>Firebase Sync</strong>
-       <p>Manually upload this device or download the Firebase version when moving between desktop and phone.</p>
-       <div class="backup-clean-actions">
-        <button class="admin-only btn btn-secondary" onclick="uploadFMHubDataToFirebase()" type="button">Upload This Device</button>
-        <button class="admin-only btn btn-secondary" onclick="downloadFMHubDataFromFirebase()" type="button">Download Firebase Data</button>
-       </div>
-      </div>
-
-      <div class="backup-clean-card backup-clean-danger">
-       <strong>Tools</strong>
-       <p>Check Firebase or clear only this browser’s local data if something goes wrong.</p>
-       <div class="backup-clean-actions">
-        <button class="btn btn-secondary" onclick="testFirebaseNow()" type="button">Test Firebase</button>
-        <button class="admin-only btn btn-secondary" onclick="clearFMHubData()" type="button">Clear Local Data</button>
-       </div>
-      </div>
-     </div>
-    </div>
-   </section>     </div>
-     <div class="home-card">
-      <h3>
-       Key Players
-      </h3>
-      <div id="keyPlayersGrid" style="margin-top:12px">
-      </div>
-     </div>
-     <div class="home-card">
-      <h3>
-       Recent Players
-      </h3>
-      <div id="recentPlayersGrid" style="margin-top:12px">
-      </div>
-     </div>
-    </div>
-   </section>
-   <section>
-    <div class="section-head">
-     <div>
-      <h2>
-       Backup & Restore
-      </h2>
-      <p class="muted">
-       Export your FM Hub data or restore it anytime.
-      </p>
-     </div>
-    </div>
-    <div class="panel" style="padding:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between">
-     <div>
-      <h3 style="margin-bottom:6px">
-       Your Data
-      </h3>
-      <p class="muted" style="margin:0">
-       Saves, squad, people, notes, links, and theme settings.
-      </p>
-      <p class="muted" id="lastBackupText" style="margin-top:6px;font-size:.8rem">
-       Last backup: Never
-      </p>
-     </div>
-     <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="admin-only btn btn-primary" onclick="exportFMHubData()" type="button">
-       Export Backup
-      </button>
-      <label class="btn btn-secondary" style="cursor:pointer">
-       Import Backup
+     <div class="slick-backup-card">
+      <strong>Import Backup</strong>
+      <p>Restore a JSON backup onto this device. This replaces the local data in this browser.</p>
+      <label class="btn btn-secondary slick-file-input">
+       Choose Backup File
        <input class="admin-only" type="file" accept=".json,application/json" onchange="importFMHubData(event)" hidden>
       </label>
-      <button class="admin-only btn btn-secondary" onclick="clearFMHubData()" type="button">
-       Clear Data
-      </button>
-      <button class="btn btn-secondary" onclick="testFirebaseNow()" type="button">
-       Test Firebase
-      </button>
-      <button class="admin-only btn btn-secondary" onclick="uploadFMHubDataToFirebase()" type="button">
-       Upload to Firebase
-      </button>
-      <button class="admin-only btn btn-secondary" onclick="downloadFMHubDataFromFirebase()" type="button">
-       Download from Firebase
-      </button>
+     </div>
 
+     <div class="slick-backup-card">
+      <strong>Firebase Sync</strong>
+      <p>Manual sync keeps your newest device from being overwritten by old phone data.</p>
+      <button class="admin-only btn btn-secondary" onclick="uploadFMHubDataToFirebase()" type="button">Upload This Device</button>
+      <button class="admin-only btn btn-secondary" onclick="downloadFMHubDataFromFirebase()" type="button">Download Firebase Data</button>
+     </div>
+
+     <div class="slick-backup-card slick-danger">
+      <strong>Data Tools</strong>
+      <p>Check Firebase connection or clear only this browser’s local data if something goes wrong.</p>
+      <button class="btn btn-secondary" onclick="testFirebaseNow()" type="button">Test Firebase</button>
+      <button class="admin-only btn btn-secondary" onclick="clearFMHubData()" type="button">Clear Local Data</button>
      </div>
     </div>
    </section>
-
   </main>
   <div class="modal-overlay" id="modalOverlay">
    <div class="modal-box">
@@ -2719,9 +2671,14 @@
           updateHomepageStats();
           updateLastBackupDisplay();
 
-          console.log('Imported backup saved locally. Use Upload This Device to send it to Firebase.');
+          if (window.FMCloud && typeof window.FMCloud.saveToCloud === 'function') {
+            await window.FMCloud.saveToCloud(getFMHubCloudData());
+            console.log('Imported backup uploaded to Firebase');
+          } else {
+            console.log('Imported backup saved locally, but Firebase was not ready');
+          }
 
-          alert('Backup imported successfully. Use Upload This Device if you want this backup to become the Firebase version.');
+          alert('Backup imported successfully!');
           location.reload();
 
         } catch (error) {
