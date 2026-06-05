@@ -6801,8 +6801,8 @@ function toggleAddSave(forceOpen) {
     loadSaves();
     decorateEmptyStates();
 
-    window.addEventListener('FMCloudReady', loadFMHubFromCloud);
-    setTimeout(loadFMHubFromCloud, 800);
+    // window.addEventListener('FMCloudReady', loadFMHubFromCloud);
+    // setTimeout(loadFMHubFromCloud, 800);
 
     window.addEventListener('storage', event => {
       if (event.key === 'fmhub-theme') initTheme();
