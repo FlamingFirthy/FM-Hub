@@ -1034,43 +1034,15 @@
       overflow: hidden;
       padding: 16px;
       border-radius: 20px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.046), rgba(255,255,255,0.018));
+      background:
+        linear-gradient(180deg, var(--from-colour) 0 50%, var(--from-secondary-colour) 50% 100%) left / 5px 100% no-repeat,
+        linear-gradient(180deg, var(--to-colour) 0 50%, var(--to-secondary-colour) 50% 100%) right / 5px 100% no-repeat,
+        linear-gradient(180deg, rgba(255,255,255,0.046), rgba(255,255,255,0.018));
       border: 1px solid rgba(255,255,255,0.075);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.035), 0 10px 24px rgba(0,0,0,0.18);
     }
 
-    
-    .transfer-card::before,
-    .transfer-card::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 5px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .transfer-card::before {
-      left: 0;
-      background: linear-gradient(180deg, var(--from-colour) 0%, var(--from-secondary-colour) 100%);
-      border-top-left-radius: 20px;
-      border-bottom-left-radius: 20px;
-    }
-
-    .transfer-card::after {
-      right: 0;
-      background: linear-gradient(180deg, var(--to-colour) 0%, var(--to-secondary-colour) 100%);
-      border-top-right-radius: 20px;
-      border-bottom-right-radius: 20px;
-    }
-
-    .transfer-card > * {
-      position: relative;
-      z-index: 1;
-    }
-
-.transfer-card-top {
+    .transfer-card-top {
       display: flex;
       justify-content: space-between;
       gap: 12px;
@@ -2962,19 +2934,28 @@
     }
 
 
-    .transfer-mini-strip{
-      position:absolute;
-      left:0;
-      top:0;
-      bottom:0;
-      width:4px;
-      border-radius:14px 0 0 14px;
-      background:linear-gradient(180deg,var(--c1) 0%,var(--c2) 100%);
+    .transfer-card::before {
+      background: linear-gradient(180deg, var(--from-colour) 0%, var(--from-secondary-colour) 100%) !important;
     }
 
-    .transfer-club{
-      position:relative;
-      overflow:hidden;
+    .transfer-card::after {
+      background: linear-gradient(180deg, var(--to-colour) 0%, var(--to-secondary-colour) 100%) !important;
+    }
+
+    .transfer-club-box {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .transfer-mini-strip {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      border-radius: 15px 0 0 15px;
+      background: linear-gradient(180deg, var(--c1) 0%, var(--c2) 100%);
+      pointer-events: none;
     }
 
 </style>
@@ -3432,8 +3413,8 @@
           <div><label for="transferFromInput">From</label><input id="transferFromInput" placeholder="Selling club / previous club"></div>
           <div><label for="transferToInput">To</label><input id="transferToInput" placeholder="Buying club / new club"></div>
           <div><label for="transferFromColourInput">From Club Colour</label><input id="transferFromColourInput" type="color" value="#64748b"></div>
-          <div><label for="transferToColourInput">To Club Colour</label><input id="transferToColourInput" type="color" value="#ff3b3b"></div>
           <div><label for="transferFromSecondaryColourInput">From Club Secondary Colour</label><input id="transferFromSecondaryColourInput" type="color" value="#ffffff"></div>
+          <div><label for="transferToColourInput">To Club Colour</label><input id="transferToColourInput" type="color" value="#ff3b3b"></div>
           <div><label for="transferToSecondaryColourInput">To Club Secondary Colour</label><input id="transferToSecondaryColourInput" type="color" value="#ffffff"></div>
           <div><label for="transferFromLogoInput">From Club Logo URL</label><input id="transferFromLogoInput" placeholder="Optional logo URL"></div>
           <div><label for="transferToLogoInput">To Club Logo URL</label><input id="transferToLogoInput" placeholder="Optional logo URL"></div>
@@ -4885,10 +4866,20 @@
       }
       container.innerHTML = transfers.map((transfer) => {
         const originalIndex = allTransfers.indexOf(transfer);
-        const fromColour = transfer.fromColour || '#64748b';
-        const fromSecondaryColour = transfer.fromSecondaryColour || transfer.fromSecondaryColor || transfer.fromColour2 || '#ffffff';
-        const toColour = transfer.toColour || '#ff3b3b';
-        const toSecondaryColour = transfer.toSecondaryColour || transfer.toSecondaryColor || transfer.toColour2 || toColour;
+        const fromColour = transfer.fromColour || transfer.fromColor || '#64748b';
+        const fromSecondaryColour =
+          transfer.fromSecondaryColour ||
+          transfer.fromSecondaryColor ||
+          transfer.fromColour2 ||
+          transfer.fromColor2 ||
+          '#ffffff';
+        const toColour = transfer.toColour || transfer.toColor || '#ff3b3b';
+        const toSecondaryColour =
+          transfer.toSecondaryColour ||
+          transfer.toSecondaryColor ||
+          transfer.toColour2 ||
+          transfer.toColor2 ||
+          '#ffffff';
         const fromLogo = getTransferLogoForClub(transfer, 'from');
         const toLogo = getTransferLogoForClub(transfer, 'to');
         return `
@@ -4906,11 +4897,13 @@
             </div>
             <div class="transfer-route">
               <div class="transfer-club-box">
+                <div class="transfer-mini-strip" style="--c1:${escapeHtml(fromColour)}; --c2:${escapeHtml(fromSecondaryColour)};"></div>
                 ${renderClubLogoMarkup(transfer.from || 'From', fromLogo, fromColour)}
                 <div><span>From</span><strong>${escapeHtml(transfer.from || '-')}</strong></div>
               </div>
               <div class="transfer-arrow">→</div>
               <div class="transfer-club-box">
+                <div class="transfer-mini-strip" style="--c1:${escapeHtml(toColour)}; --c2:${escapeHtml(toSecondaryColour)};"></div>
                 ${renderClubLogoMarkup(transfer.to || 'To', toLogo, toColour)}
                 <div><span>To</span><strong>${escapeHtml(transfer.to || '-')}</strong></div>
               </div>
