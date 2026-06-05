@@ -1659,183 +1659,100 @@
   }
 
 
-  /* ============================= */
-  /* Backup & Restore - polished   */
-  /* ============================= */
-  .backup-panel-modern {
-    position: relative;
-    overflow: hidden;
-    padding: 24px;
-    border-radius: 26px;
-    border: 1px solid rgba(255,255,255,0.10);
-    background:
-      radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 22%, transparent), transparent 34%),
-      radial-gradient(circle at bottom right, rgba(255,255,255,0.075), transparent 30%),
-      linear-gradient(135deg, rgba(255,255,255,0.060), rgba(255,255,255,0.018));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.055), 0 22px 48px rgba(0,0,0,0.24);
-  }
-
-  .backup-panel-modern::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(90deg, var(--accent), transparent, rgba(255,255,255,0.14));
-    opacity: 0.12;
-    height: 3px;
-  }
-
-  .backup-header-modern {
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 18px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-
-  .backup-title-row {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-  }
-
-  .backup-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 18px;
-    display: grid;
-    place-items: center;
-    background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.12));
-    box-shadow: 0 0 22px var(--btn-glow);
-    font-size: 1.35rem;
-    flex: 0 0 auto;
-  }
-
-  .backup-status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(0,0,0,0.18);
-    color: var(--muted);
-    padding: 9px 12px;
-    border-radius: 999px;
-    font-size: 0.82rem;
-    white-space: nowrap;
-  }
-
-  .backup-action-grid {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
-    margin-top: 12px;
-  }
-
-  .backup-action-card {
-    min-height: 190px;
-    border: 1px solid rgba(255,255,255,0.085);
-    border-radius: 20px;
-    padding: 16px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.035);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .backup-action-card strong {
-    display: block;
-    font-size: 1rem;
-  }
-
-  .backup-action-card p {
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.84rem;
-    line-height: 1.45;
-    flex: 1;
-  }
-
-  .backup-action-card .btn,
-  .backup-action-card button,
-  .backup-action-card label {
-    width: 100%;
-    justify-content: center;
-    min-height: 44px;
-  }
-
-  .backup-action-icon {
-    width: 34px;
-    height: 34px;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    background: rgba(255,255,255,0.07);
+  /* Backup & Restore clean layout */
+  .backup-clean-panel {
+    padding: 22px;
+    border-radius: 24px;
     border: 1px solid rgba(255,255,255,0.08);
-    margin-bottom: 2px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018));
   }
 
-  .backup-import-drop {
-    width: 100%;
-    min-height: 104px;
-    display: grid !important;
+  .backup-clean-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .backup-clean-title {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .backup-clean-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: grid;
     place-items: center;
-    text-align: center;
-    gap: 6px;
-    padding: 16px !important;
-    border-radius: 16px !important;
-    border: 1px dashed rgba(255,255,255,0.20) !important;
-    background:
-      radial-gradient(circle at top, color-mix(in srgb, var(--accent) 18%, transparent), transparent 54%),
-      rgba(255,255,255,0.035) !important;
-    cursor: pointer;
-    transition: 0.18s ease;
-    margin-top: auto;
-  }
-
-  .backup-import-drop:hover {
-    transform: translateY(-2px);
-    border-color: var(--accent) !important;
+    background: var(--accent);
+    color: white;
     box-shadow: 0 0 18px var(--btn-glow);
   }
 
-  .backup-import-drop span {
-    display: block;
-    font-weight: 900;
-  }
-
-  .backup-import-drop small {
-    display: block;
+  .backup-clean-status {
+    padding: 8px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.09);
+    background: rgba(0,0,0,0.16);
     color: var(--muted);
-    font-size: 0.76rem;
-    line-height: 1.35;
+    font-size: 0.82rem;
   }
 
-  .backup-sync-buttons {
+  .backup-clean-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .backup-clean-card {
+    padding: 15px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.075);
+    background: rgba(0,0,0,0.12);
+  }
+
+  .backup-clean-card strong {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .backup-clean-card p {
+    margin: 0 0 12px;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.4;
+  }
+
+  .backup-clean-actions {
     display: grid;
     gap: 8px;
-    margin-top: auto;
   }
 
-  .backup-danger-card {
+  .backup-clean-actions button,
+  .backup-clean-actions label {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .backup-file-button {
+    min-height: 46px;
+    border-style: dashed !important;
+    cursor: pointer;
+  }
+
+  .backup-clean-danger {
     border-color: rgba(255,70,70,0.20);
-    background: linear-gradient(180deg, rgba(255,70,70,0.070), rgba(255,255,255,0.018));
-  }
-
-  @media (max-width: 1050px) {
-    .backup-action-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    background: rgba(255,70,70,0.045);
   }
 
   @media (max-width: 720px) {
-    .backup-panel-modern { padding: 16px; border-radius: 22px; }
-    .backup-title-row { align-items: flex-start; }
-    .backup-icon { width: 44px; height: 44px; border-radius: 15px; }
-    .backup-status-pill { width: 100%; justify-content: center; }
-    .backup-action-grid { grid-template-columns: 1fr; }
-    .backup-action-card { min-height: auto; }
+    .backup-clean-panel { padding: 16px; }
+    .backup-clean-grid { grid-template-columns: 1fr; }
+    .backup-clean-status { width: 100%; text-align: center; }
   }
 
 </style>
@@ -2217,58 +2134,31 @@
     </div>
    </section>
    <section>
-    <div class="backup-panel-modern">
-     <div class="backup-header-modern">
-      <div class="backup-title-row">
-       <div class="backup-icon">☁️</div>
-       <div>
-        <h3 style="margin-bottom:6px">Backup & Restore</h3>
-        <p class="muted" style="margin:0">Keep your FM Hub data safe across desktop, phone, and GitHub Pages.</p>
-       </div>
-      </div>
-      <div class="backup-status-pill" id="lastBackupText">
-       Last backup: Never
-      </div>
+    <div class="panel" style="padding:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+     <div>
+      <h3 style="margin-bottom:6px">
+       Quick Add
+      </h3>
+      <p class="muted" style="margin:0">
+       Add the basics without leaving the home page.
+      </p>
      </div>
-
-     <div class="backup-action-grid">
-      <div class="backup-action-card">
-       <div class="backup-action-icon">⬇️</div>
-       <strong>Export Backup</strong>
-       <p>Download a JSON copy of your current saves, people, squad, notes, links, lineups, and theme.</p>
-       <button class="admin-only btn btn-primary" onclick="exportFMHubData()" type="button">Export JSON</button>
-      </div>
-
-      <div class="backup-action-card">
-       <div class="backup-action-icon">⬆️</div>
-       <strong>Import Backup</strong>
-       <p>Restore a JSON backup onto this device. Use this when moving data to a new browser or phone.</p>
-       <label class="backup-import-drop admin-only">
-        <span>Choose Backup File</span>
-        <small>FM Hub JSON backup<br>click to import</small>
-        <input type="file" accept=".json,application/json" onchange="importFMHubData(event)" hidden>
-       </label>
-      </div>
-
-      <div class="backup-action-card">
-       <div class="backup-action-icon">🔥</div>
-       <strong>Firebase Sync</strong>
-       <p>Manual sync keeps your newest device from being overwritten by old phone data.</p>
-       <div class="backup-sync-buttons">
-        <button class="admin-only btn btn-secondary" onclick="uploadFMHubDataToFirebase()" type="button">Upload This Device</button>
-        <button class="admin-only btn btn-secondary" onclick="downloadFMHubDataFromFirebase()" type="button">Download Firebase Data</button>
-       </div>
-      </div>
-
-      <div class="backup-action-card backup-danger-card">
-       <div class="backup-action-icon">🛠️</div>
-       <strong>Data Tools</strong>
-       <p>Check Firebase connection or clear only this browser’s local data if something goes wrong.</p>
-       <div class="backup-sync-buttons">
-        <button class="btn btn-secondary" onclick="testFirebaseNow()" type="button">Test Firebase</button>
-        <button class="admin-only btn btn-secondary" onclick="clearFMHubData()" type="button">Clear Local Data</button>
-       </div>
-      </div>
+     <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="admin-only btn btn-primary" onclick="openModal('save')">
+       + Save
+      </button>
+      <button class="btn btn-secondary" onclick="openModal('player')">
+       + Player
+      </button>
+      <button class="btn btn-secondary" onclick="openModal('person')">
+       + Person
+      </button>
+      <button class="btn btn-secondary" onclick="openModal('note')">
+       + Note
+      </button>
+      <button class="btn btn-secondary" onclick="openModal('link')">
+       + Link
+      </button>
      </div>
     </div>
    </section>
@@ -2281,80 +2171,66 @@
          What’s New
         </h2>
         <p class="muted">
-         A compact feed from saves, transfers, matches, and squad activity.
-        </p>
-       </div>
-      </div>
-      <div class="live-feed" id="homeLiveFeed">
-      </div>
-     </div>
-     <aside>
-      <div class="section-head">
-       <div>
-        <h2>
-         Today’s Focus
-        </h2>
-        <p class="muted">
-         What to do next.
-        </p>
-       </div>
-      </div>
-      <div class="home-card">
-       <h3 id="focusTitle">
-        Create your first save
-       </h3>
-       <p class="muted" id="focusText">
-        Once you create a save, this page will show your active career, latest transfers, and recent story moments.
-       </p>
-       <div class="resume-list" style="margin-top:16px">
-        <div class="resume-row">
-         <span>
-          Latest Save
-         </span>
-         <strong id="miniLatestSave">
-          None yet
-         </strong>
-        </div>
-        <div class="resume-row">
-         <span>
-          Latest Transfer
-         </span>
-         <strong id="miniLatestTransfer">
-          None yet
-         </strong>
-        </div>
-        <div class="resume-row">
-         <span>
-          Latest Story
-         </span>
-         <strong id="miniLatestStory">
-          None yet
-         </strong>
-        </div>
-       </div>
-      </div>
-     </aside>
-    </div>
-   </section>
-   <section>
+         A compact feed from saves, transfers, matches, and squad activity.<section>
     <div class="section-head">
      <div>
-      <h2>
-       Dashboard Snapshots
-      </h2>
-      <p class="muted">
-       Small previews, not full save-page sections.
-      </p>
+      <h2>Backup & Restore</h2>
+      <p class="muted">Export, import, or sync your FM Hub data safely.</p>
      </div>
     </div>
-    <div class="dashboard-grid">
-     <div class="home-card">
-      <h3>
-       Latest Transfers
-      </h3>
-      <div id="latestTransfersGrid" style="margin-top:12px">
+
+    <div class="backup-clean-panel">
+     <div class="backup-clean-top">
+      <div class="backup-clean-title">
+       <div class="backup-clean-icon">☁️</div>
+       <div>
+        <h3 style="margin:0 0 5px;">Your Data</h3>
+        <p class="muted" style="margin:0;">Saves, squad, people, notes, links, lineups, and theme settings.</p>
+       </div>
+      </div>
+      <div class="backup-clean-status" id="lastBackupText">Last backup: Never</div>
+     </div>
+
+     <div class="backup-clean-grid">
+      <div class="backup-clean-card">
+       <strong>Export Backup</strong>
+       <p>Download a JSON backup from this device before updating GitHub or changing devices.</p>
+       <div class="backup-clean-actions">
+        <button class="admin-only btn btn-primary" onclick="exportFMHubData()" type="button">Export JSON Backup</button>
+       </div>
+      </div>
+
+      <div class="backup-clean-card">
+       <strong>Import Backup</strong>
+       <p>Restore a JSON backup onto this device. This replaces the local data in this browser.</p>
+       <div class="backup-clean-actions">
+        <label class="btn btn-secondary backup-file-button">
+         Choose Backup File
+         <input class="admin-only" type="file" accept=".json,application/json" onchange="importFMHubData(event)" hidden>
+        </label>
+       </div>
+      </div>
+
+      <div class="backup-clean-card">
+       <strong>Firebase Sync</strong>
+       <p>Manually upload this device or download the Firebase version when moving between desktop and phone.</p>
+       <div class="backup-clean-actions">
+        <button class="admin-only btn btn-secondary" onclick="uploadFMHubDataToFirebase()" type="button">Upload This Device</button>
+        <button class="admin-only btn btn-secondary" onclick="downloadFMHubDataFromFirebase()" type="button">Download Firebase Data</button>
+       </div>
+      </div>
+
+      <div class="backup-clean-card backup-clean-danger">
+       <strong>Tools</strong>
+       <p>Check Firebase or clear only this browser’s local data if something goes wrong.</p>
+       <div class="backup-clean-actions">
+        <button class="btn btn-secondary" onclick="testFirebaseNow()" type="button">Test Firebase</button>
+        <button class="admin-only btn btn-secondary" onclick="clearFMHubData()" type="button">Clear Local Data</button>
+       </div>
       </div>
      </div>
+    </div>
+   </section>     </div>
      <div class="home-card">
       <h3>
        Key Players
