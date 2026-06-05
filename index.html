@@ -1616,6 +1616,104 @@
       min-height: 0;
     }
 
+
+  .backup-panel-modern {
+    padding: 22px;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.085);
+    background:
+      radial-gradient(circle at top left, rgba(255,255,255,0.075), transparent 34%),
+      linear-gradient(135deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.045), 0 18px 40px rgba(0,0,0,0.20);
+  }
+
+  .backup-header-modern {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  .backup-title-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .backup-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.12));
+    box-shadow: 0 0 22px var(--btn-glow);
+    font-size: 1.25rem;
+  }
+
+  .backup-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(0,0,0,0.16);
+    color: var(--muted);
+    padding: 8px 11px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+  }
+
+  .backup-action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .backup-action-card {
+    border: 1px solid rgba(255,255,255,0.075);
+    border-radius: 18px;
+    padding: 14px;
+    background: rgba(0,0,0,0.12);
+  }
+
+  .backup-action-card strong {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .backup-action-card p {
+    margin: 0 0 12px;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.4;
+  }
+
+  .backup-action-card .btn,
+  .backup-action-card button,
+  .backup-action-card label {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .backup-danger-card {
+    border-color: rgba(255,70,70,0.22);
+    background: rgba(255,70,70,0.055);
+  }
+
+  @media (max-width:720px) {
+    .backup-panel-modern {
+      padding: 16px;
+      border-radius: 20px;
+    }
+
+    .backup-action-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
 </style>
  </head>
  <body>
@@ -2133,39 +2231,53 @@
       </p>
      </div>
     </div>
-    <div class="panel" style="padding:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between">
-     <div>
-      <h3 style="margin-bottom:6px">
-       Your Data
-      </h3>
-      <p class="muted" style="margin:0">
-       Saves, squad, people, notes, links, and theme settings.
-      </p>
-      <p class="muted" id="lastBackupText" style="margin-top:6px;font-size:.8rem">
+    <div class="backup-panel-modern">
+     <div class="backup-header-modern">
+      <div class="backup-title-row">
+       <div class="backup-icon">☁️</div>
+       <div>
+        <h3 style="margin-bottom:6px">Your FM Hub Data</h3>
+        <p class="muted" style="margin:0">Back up saves, squad, people, notes, links, lineups, and theme settings.</p>
+       </div>
+      </div>
+      <div class="backup-status-pill" id="lastBackupText">
        Last backup: Never
-      </p>
+      </div>
      </div>
-     <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="admin-only btn btn-primary" onclick="exportFMHubData()" type="button">
-       Export Backup
-      </button>
-      <label class="btn btn-secondary" style="cursor:pointer">
-       Import Backup
-       <input class="admin-only" type="file" accept=".json,application/json" onchange="importFMHubData(event)" hidden>
-      </label>
-      <button class="admin-only btn btn-secondary" onclick="clearFMHubData()" type="button">
-       Clear Data
-      </button>
-      <button class="btn btn-secondary" onclick="testFirebaseNow()" type="button">
-       Test Firebase
-      </button>
-      <button class="admin-only btn btn-secondary" onclick="uploadFMHubDataToFirebase()" type="button">
-       Upload to Firebase
-      </button>
-      <button class="admin-only btn btn-secondary" onclick="downloadFMHubDataFromFirebase()" type="button">
-       Download from Firebase
-      </button>
 
+     <div class="backup-action-grid">
+      <div class="backup-action-card">
+       <strong>Download Backup</strong>
+       <p>Save a JSON copy of all your current data. Best before updating GitHub or switching device.</p>
+       <button class="admin-only btn btn-primary" onclick="exportFMHubData()" type="button">Export Backup</button>
+      </div>
+
+      <div class="backup-action-card">
+       <strong>Restore Backup</strong>
+       <p>Import a JSON backup onto this device. This replaces the local data in this browser.</p>
+       <label class="btn btn-secondary" style="cursor:pointer">
+        Import Backup
+        <input class="admin-only" type="file" accept=".json,application/json" onchange="importFMHubData(event)" hidden>
+       </label>
+      </div>
+
+      <div class="backup-action-card">
+       <strong>Firebase Sync</strong>
+       <p>Upload this device to Firebase, or download the Firebase version onto this device.</p>
+       <div style="display:grid;gap:8px">
+        <button class="admin-only btn btn-secondary" onclick="uploadFMHubDataToFirebase()" type="button">Upload to Firebase</button>
+        <button class="admin-only btn btn-secondary" onclick="downloadFMHubDataFromFirebase()" type="button">Download from Firebase</button>
+       </div>
+      </div>
+
+      <div class="backup-action-card backup-danger-card">
+       <strong>Tools</strong>
+       <p>Check Firebase connection or clear local data from this browser only.</p>
+       <div style="display:grid;gap:8px">
+        <button class="btn btn-secondary" onclick="testFirebaseNow()" type="button">Test Firebase</button>
+        <button class="admin-only btn btn-secondary" onclick="clearFMHubData()" type="button">Clear Local Data</button>
+       </div>
+      </div>
      </div>
     </div>
    </section>
