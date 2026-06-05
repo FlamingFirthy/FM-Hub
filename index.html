@@ -2159,6 +2159,12 @@
       <button class="btn btn-secondary" onclick="testFirebaseNow()" type="button">
        Test Firebase
       </button>
+      <button class="admin-only btn btn-secondary" onclick="uploadFMHubDataToFirebase()" type="button">
+       Upload to Firebase
+      </button>
+      <button class="admin-only btn btn-secondary" onclick="downloadFMHubDataFromFirebase()" type="button">
+       Download from Firebase
+      </button>
 
      </div>
     </div>
@@ -2675,6 +2681,77 @@
       }
     }
 
+
+
+    async function uploadFMHubDataToFirebase() {
+      if (!window.FMCloud || typeof window.FMCloud.saveToCloud !== 'function') {
+        alert('Firebase is not ready yet. Wait a few seconds and try again.');
+        return;
+      }
+
+      if (!confirm("Upload this device's current FM Hub data to Firebase? This will become the cloud version.")) return;
+
+      try {
+        const data = getFMHubCloudData();
+        data.updatedAt = new Date().toISOString();
+        data.updatedFrom = 'manual-upload';
+
+        await window.FMCloud.saveToCloud(data);
+
+        localStorage.setItem('fmhub-last-backup', data.updatedAt);
+        updateLastBackupDisplay();
+
+        alert('Uploaded current data to Firebase.');
+      } catch (error) {
+        console.error(error);
+        alert('Firebase upload failed. Check the browser console.');
+      }
+    }
+
+    async function downloadFMHubDataFromFirebase() {
+      if (!window.FMCloud || typeof window.FMCloud.loadFromCloud !== 'function') {
+        alert('Firebase is not ready yet. Wait a few seconds and try again.');
+        return;
+      }
+
+      if (!confirm("Download Firebase data onto this device? This will replace this device's current local data.")) return;
+
+      try {
+        const cloud = await window.FMCloud.loadFromCloud();
+
+        if (!cloud) {
+          alert('No Firebase data found yet.');
+          return;
+        }
+
+        syncingFromCloud = true;
+
+        if (Array.isArray(cloud.saves)) localStorage.setItem(savesKey, JSON.stringify(cloud.saves));
+        if (Array.isArray(cloud.squad)) localStorage.setItem(squadKey, JSON.stringify(cloud.squad));
+        if (Array.isArray(cloud.people)) localStorage.setItem(peopleKey, JSON.stringify(cloud.people));
+        if (Array.isArray(cloud.notes)) localStorage.setItem('fmhub-notes', JSON.stringify(cloud.notes));
+        if (Array.isArray(cloud.todos)) localStorage.setItem('fmhub-todos', JSON.stringify(cloud.todos));
+        if (Array.isArray(cloud.playerNotes)) localStorage.setItem('fmhub-player-notes', JSON.stringify(cloud.playerNotes));
+        if (Array.isArray(cloud.links)) localStorage.setItem('fmhub-links', JSON.stringify(cloud.links));
+        if (cloud.lineup) localStorage.setItem('fmhub-lineup', JSON.stringify(cloud.lineup));
+        if (cloud.theme) localStorage.setItem('fmhub-theme', cloud.theme);
+
+        localStorage.setItem('fmhub-last-backup', cloud.updatedAt || new Date().toISOString());
+        localStorage.setItem('fmhub-import-just-ran', new Date().toISOString());
+
+        syncingFromCloud = false;
+
+        initTheme();
+        updateHomepageStats();
+        updateLastBackupDisplay();
+
+        alert('Downloaded Firebase data to this device.');
+      } catch (error) {
+        syncingFromCloud = false;
+        console.error(error);
+        alert('Firebase download failed. Check the browser console.');
+      }
+    }
 
     function initTheme(){let t='red';try{t=localStorage.getItem('fmhub-theme')||'red'}catch(e){}applyTheme(t)}
     document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target.id==='modalOverlay')closeModal()});
