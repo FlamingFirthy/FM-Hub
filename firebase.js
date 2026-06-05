@@ -18,15 +18,53 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const mainSaveRef = doc(db, "fmTracker", "mainSave");
+const refs = {
+  saves: doc(db, "fmTracker", "saves"),
+  squad: doc(db, "fmTracker", "squad"),
+  people: doc(db, "fmTracker", "people"),
+  notes: doc(db, "fmTracker", "notes"),
+  links: doc(db, "fmTracker", "links"),
+  extra: doc(db, "fmTracker", "extra")
+};
 
 async function saveToCloud(data) {
-  await setDoc(mainSaveRef, data);
+  await Promise.all([
+    setDoc(refs.saves, { saves: data.saves || [] }),
+    setDoc(refs.squad, { squad: data.squad || [] }),
+    setDoc(refs.people, { people: data.people || [] }),
+    setDoc(refs.notes, {
+      notes: data.notes || [],
+      todos: data.todos || [],
+      playerNotes: data.playerNotes || []
+    }),
+    setDoc(refs.links, { links: data.links || [] }),
+    setDoc(refs.extra, {
+      lineup: data.lineup || {},
+      theme: data.theme || "red",
+      updatedAt: new Date().toISOString()
+    })
+  ]);
 }
 
 async function loadFromCloud() {
-  const snap = await getDoc(mainSaveRef);
-  return snap.exists() ? snap.data() : null;
+  const [savesSnap, squadSnap, peopleSnap, notesSnap, linksSnap, extraSnap] =
+    await Promise.all([
+      getDoc(refs.saves),
+      getDoc(refs.squad),
+      getDoc(refs.people),
+      getDoc(refs.notes),
+      getDoc(refs.links),
+      getDoc(refs.extra)
+    ]);
+
+  return {
+    ...(savesSnap.exists() ? savesSnap.data() : {}),
+    ...(squadSnap.exists() ? squadSnap.data() : {}),
+    ...(peopleSnap.exists() ? peopleSnap.data() : {}),
+    ...(notesSnap.exists() ? notesSnap.data() : {}),
+    ...(linksSnap.exists() ? linksSnap.data() : {}),
+    ...(extraSnap.exists() ? extraSnap.data() : {})
+  };
 }
 
 window.FMCloud = {
@@ -36,4 +74,4 @@ window.FMCloud = {
 
 window.dispatchEvent(new Event("FMCloudReady"));
 
-console.log("Firebase connected");
+console.log("Firebase connected with split documents");
