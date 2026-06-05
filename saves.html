@@ -1035,8 +1035,8 @@
       padding: 16px;
       border-radius: 20px;
       background:
-        linear-gradient(180deg, var(--from-colour) 0%, var(--from-secondary-colour) 100%) left / 5px 100% no-repeat,
-        linear-gradient(180deg, var(--to-colour) 0%, var(--to-secondary-colour) 100%) right / 5px 100% no-repeat,
+        linear-gradient(180deg, var(--from-colour) 0 50%, var(--from-secondary-colour) 50% 100%) left / 5px 100% no-repeat,
+        linear-gradient(180deg, var(--to-colour) 0 50%, var(--to-secondary-colour) 50% 100%) right / 5px 100% no-repeat,
         linear-gradient(180deg, rgba(255,255,255,0.046), rgba(255,255,255,0.018));
       border: 1px solid rgba(255,255,255,0.075);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.035), 0 10px 24px rgba(0,0,0,0.18);
@@ -2958,40 +2958,272 @@
       pointer-events: none;
     }
 
-    
+    /* Final transfer side gradient fix */
+    .transfer-card::before {
+      background: linear-gradient(
+        90deg,
+        var(--from-colour) 0%,
+        var(--from-secondary-colour) 100%
+      ) !important;
+    }
 
-
-    .record-actions-inline {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      align-items: center;
+    .transfer-card::after {
+      background: linear-gradient(
+        90deg,
+        var(--to-secondary-colour) 0%,
+        var(--to-colour) 100%
+      ) !important;
     }
 
 
-    .record-actions-inline {
-      display: none !important;
-    }
+    /* ============================= */
+    /* Mobile Saves readability pass  */
+    /* ============================= */
+    @media (max-width: 720px) {
+      body {
+        font-size: 14px;
+      }
 
-    #saveProfile.profile-edit-mode .record-actions-inline {
-      display: flex !important;
-    }
+      .container {
+        width: min(96%, 100%);
+      }
 
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(16px);
+      }
 
-    /* Delete Save is only visible when the opened save is in edit mode */
-    #saveProfile:not(.profile-edit-mode) #deleteSaveBtn {
-      display: none !important;
-    }
+      .nav-wrap {
+        gap: 10px;
+      }
 
-    #saveProfile.profile-edit-mode #deleteSaveBtn {
-      display: inline-flex !important;
-    }
+      nav {
+        width: 100%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding-bottom: 4px;
+      }
 
+      nav a {
+        white-space: nowrap;
+        font-size: .88rem;
+        padding: 8px 9px;
+      }
 
-    /* Hide Stats Actions column in view mode only */
-    #saveProfile:not(.profile-edit-mode) th.edit-only,
-    #saveProfile:not(.profile-edit-mode) td.edit-only {
-      display: none !important;
+      .hero-card,
+      .section-card,
+      .dashboard-card,
+      .form-card,
+      .detail-card,
+      .save-library-card {
+        padding: 16px !important;
+        border-radius: 18px !important;
+      }
+
+      .dashboard-grid,
+      .save-grid,
+      .stats-summary-grid,
+      .transfer-dashboard,
+      .transfer-filter-bar,
+      .form-grid,
+      .timeline-form-grid,
+      .two-column {
+        grid-template-columns: 1fr !important;
+      }
+
+      .hero-actions,
+      .section-actions,
+      .view-mode-toolbar {
+        gap: 8px !important;
+      }
+
+      .hero-actions .btn,
+      .hero-actions button,
+      .section-actions .btn,
+      .section-actions button,
+      .view-mode-toolbar button {
+        flex: 1 1 135px;
+        min-height: 42px;
+        padding: 10px 12px;
+        font-size: .86rem;
+      }
+
+      .save-card {
+        min-height: auto !important;
+        padding: 16px !important;
+      }
+
+      .save-card h3 {
+        font-size: 1rem !important;
+      }
+
+      .chip-row,
+      .transfer-meta-row {
+        gap: 6px !important;
+      }
+
+      .chip,
+      .transfer-type-chip,
+      .stat-number-pill {
+        font-size: .72rem !important;
+        padding: 5px 8px !important;
+      }
+
+      .opened-save-card .club-profile-header,
+      .club-profile-header {
+        padding: 16px !important;
+        border-radius: 18px !important;
+      }
+
+      .save-tab-bar {
+        overflow-x: auto;
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        padding-bottom: 4px;
+      }
+
+      .save-tab-bar button,
+      .save-tab-btn {
+        white-space: nowrap;
+        flex: 0 0 auto;
+      }
+
+      .stats-refurb-toolbar,
+      .transfer-filter-bar {
+        padding: 12px !important;
+        border-radius: 16px !important;
+      }
+
+      .stats-refurb-toolbar label,
+      .transfer-filter-bar label {
+        font-size: .72rem;
+      }
+
+      .stats-refurb-toolbar select,
+      .transfer-filter-bar select,
+      .stats-refurb-toolbar input,
+      .transfer-filter-bar input {
+        min-height: 42px;
+      }
+
+      /* Mobile table-to-card layout */
+      .table-wrap {
+        border: 0 !important;
+        background: transparent !important;
+        overflow: visible !important;
+        margin-top: 12px !important;
+      }
+
+      .table-wrap table,
+      .table-wrap thead,
+      .table-wrap tbody,
+      .table-wrap th,
+      .table-wrap td,
+      .table-wrap tr {
+        display: block;
+        width: 100%;
+        min-width: 0 !important;
+      }
+
+      .table-wrap thead {
+        display: none;
+      }
+
+      .table-wrap tbody {
+        display: grid;
+        gap: 10px;
+      }
+
+      .table-wrap tr {
+        border: 1px solid rgba(255,255,255,0.075);
+        border-radius: 16px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.040), rgba(255,255,255,0.014));
+        padding: 12px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.030);
+      }
+
+      .table-wrap td {
+        display: grid;
+        grid-template-columns: 92px minmax(0, 1fr);
+        gap: 10px;
+        align-items: center;
+        border: 0 !important;
+        padding: 7px 0 !important;
+        font-size: .88rem;
+      }
+
+      .table-wrap td::before {
+        content: attr(data-label);
+        color: var(--muted);
+        font-size: .70rem;
+        text-transform: uppercase;
+        letter-spacing: .045em;
+        font-weight: 800;
+      }
+
+      .table-wrap td:first-child {
+        padding-top: 0 !important;
+      }
+
+      .table-wrap td:last-child {
+        padding-bottom: 0 !important;
+      }
+
+      .table-wrap td.edit-only {
+        display: none !important;
+      }
+
+      #saveProfile.profile-edit-mode .table-wrap td.edit-only {
+        display: grid !important;
+      }
+
+      .stat-player-cell strong {
+        font-size: .98rem;
+      }
+
+      .record-actions-inline {
+        justify-content: flex-start;
+      }
+
+      .transfer-cards-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+
+      .transfer-card {
+        padding: 14px !important;
+        border-radius: 18px !important;
+      }
+
+      .transfer-card-top,
+      .transfer-route {
+        grid-template-columns: 1fr !important;
+      }
+
+      .transfer-arrow {
+        transform: rotate(90deg);
+        justify-self: center;
+        margin: -2px 0;
+      }
+
+      .transfer-club-box {
+        min-height: 64px;
+      }
+
+      .career-stats-head {
+        gap: 8px;
+        align-items: flex-start;
+      }
+
+      .timeline-item,
+      .award-card,
+      .match-card,
+      .note-card {
+        border-radius: 16px !important;
+      }
     }
 
 </style>
@@ -3081,7 +3313,7 @@
       <div class="hero-actions view-mode-toolbar">
         <button class="admin-only secondary" type="button" onclick="backToSaves()">← Back to Saves</button>
         <button class="admin-only primary" type="button" id="saveEditModeBtn" onclick="toggleSaveEditMode()">Edit Save</button>
-        <button id="deleteSaveBtn" class="admin-only delete-btn edit-only" type="button" onclick="deleteCurrentSave()">Delete Save</button>
+        <button class="admin-only delete-btn edit-only" type="button" onclick="deleteCurrentSave()">Delete Save</button>
         <p class="clean-view-hint">View mode is on by default. Press Edit Save to show add/edit tools.</p>
       </div>
 
@@ -3398,7 +3630,7 @@
           <div id="cleanSheetsWrap" class="hidden"><label for="statCleanSheetsInput">Clean Sheets</label><input id="statCleanSheetsInput" placeholder="14"></div>
           <div class="wide"><label for="statNotesInput">Notes</label><textarea id="statNotesInput" placeholder="Awards, big performances, injuries, transfer story..."></textarea></div>
         </div>
-        <div class="hero-actions edit-only"><button id="saveStatRecordBtn" class="admin-only primary" type="button" onclick="addSavePlayerStat()">Add Stat Record</button><button id="cancelStatEditBtn" class="admin-only secondary hidden" type="button" onclick="cancelStatEdit()">Cancel Edit</button></div>
+        <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addSavePlayerStat()">Add Stat Record</button></div>
 
         <div class="table-wrap">
           <table>
@@ -3456,7 +3688,7 @@
           <div><label for="transferToLogoInput">To Club Logo URL</label><input id="transferToLogoInput" placeholder="Optional logo URL"></div>
           <div class="wide"><label for="transferNotesInput">Notes</label><textarea id="transferNotesInput" placeholder="Why they moved, clauses, sell-on, replacement, storyline..."></textarea></div>
         </div>
-        <div class="hero-actions edit-only"><button id="saveTransferRecordBtn" class="admin-only primary" type="button" onclick="addTransferRecord()">Add Transfer</button><button id="cancelTransferEditBtn" class="admin-only secondary hidden" type="button" onclick="cancelTransferEdit()">Cancel Edit</button></div>
+        <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addTransferRecord()">Add Transfer</button></div>
 
         <div class="transfer-dashboard" id="transferDashboard"></div>
 
@@ -3611,8 +3843,6 @@
     const squadKey = 'fmhub-squad';
     const peopleKey = 'fmhub-people';
     let currentSaveIndex = null;
-    let editingTransferIndex = null;
-    let editingStatIndex = null;
     let syncingFromCloud = false;
 
     function safeCloudRead(key, fallback) {
@@ -4211,10 +4441,6 @@
       renderSeasonAwards(save);
       renderMatchHighlights(save);
       organiseOpenedSaveTabs(save);
-      editingTransferIndex = null;
-      editingStatIndex = null;
-      setTransferEditButtonState();
-      setStatEditButtonState();
       document.getElementById('saveProfile').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -4899,174 +5125,7 @@
       `;
     }
 
-    
-function setTransferEditButtonState() {
-  const saveBtn = document.getElementById('saveTransferRecordBtn');
-  const cancelBtn = document.getElementById('cancelTransferEditBtn');
-  if (saveBtn) saveBtn.textContent = editingTransferIndex === null ? 'Add Transfer' : 'Save Transfer Changes';
-  if (cancelBtn) cancelBtn.classList.toggle('hidden', editingTransferIndex === null);
-}
-
-function setStatEditButtonState() {
-  const saveBtn = document.getElementById('saveStatRecordBtn');
-  const cancelBtn = document.getElementById('cancelStatEditBtn');
-  if (saveBtn) saveBtn.textContent = editingStatIndex === null ? 'Add Stat Record' : 'Save Stat Changes';
-  if (cancelBtn) cancelBtn.classList.toggle('hidden', editingStatIndex === null);
-}
-
-function clearTransferForm() {
-  ['transferSeasonInput','transferFromInput','transferToInput','transferFeeInput','transferFromLogoInput','transferToLogoInput','transferNotesInput','transferPlayerManualInput'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-
-  const typeSelect = document.getElementById('transferTypeInput');
-  if (typeSelect) typeSelect.value = 'In';
-
-  const select = document.getElementById('transferPlayerInput');
-  const manualInput = document.getElementById('transferPlayerManualInput');
-  if (select && select.options.length) select.selectedIndex = 0;
-  if (manualInput) manualInput.classList.toggle('hidden', select?.value !== '__manual__');
-
-  const fromColour = document.getElementById('transferFromColourInput');
-  const fromSecondaryColour = document.getElementById('transferFromSecondaryColourInput');
-  const toColour = document.getElementById('transferToColourInput');
-  const toSecondaryColour = document.getElementById('transferToSecondaryColourInput');
-
-  if (fromColour) fromColour.value = '#64748b';
-  if (fromSecondaryColour) fromSecondaryColour.value = '#ffffff';
-  if (toColour) toColour.value = '#ff3b3b';
-  if (toSecondaryColour) toSecondaryColour.value = '#ffffff';
-}
-
-function cancelTransferEdit() {
-  editingTransferIndex = null;
-  clearTransferForm();
-  setTransferEditButtonState();
-  applyAdminMode();
-}
-
-function editTransferRecord(index) {
-  const save = getCurrentSave();
-  if (!save || !Array.isArray(save.transfers) || !save.transfers[index]) return;
-
-  const transfer = save.transfers[index];
-  editingTransferIndex = index;
-
-  const select = document.getElementById('transferPlayerInput');
-  const manualInput = document.getElementById('transferPlayerManualInput');
-
-  if (select) {
-    const wantedName = transfer.player || '';
-    const option = Array.from(select.options).find(opt => normaliseText(opt.value) === normaliseText(wantedName));
-    if (option) {
-      select.value = option.value;
-      if (manualInput) {
-        manualInput.value = '';
-        manualInput.classList.add('hidden');
-      }
-    } else {
-      select.value = '__manual__';
-      if (manualInput) {
-        manualInput.value = wantedName;
-        manualInput.classList.remove('hidden');
-      }
-    }
-  }
-
-  const values = {
-    transferSeasonInput: transfer.season || '',
-    transferTypeInput: transfer.type || 'In',
-    transferFromInput: transfer.from || '',
-    transferToInput: transfer.to || '',
-    transferFeeInput: transfer.fee || '',
-    transferFromColourInput: transfer.fromColour || transfer.fromColor || '#64748b',
-    transferFromSecondaryColourInput: transfer.fromSecondaryColour || transfer.fromSecondaryColor || transfer.fromColour2 || '#ffffff',
-    transferToColourInput: transfer.toColour || transfer.toColor || '#ff3b3b',
-    transferToSecondaryColourInput: transfer.toSecondaryColour || transfer.toSecondaryColor || transfer.toColour2 || '#ffffff',
-    transferFromLogoInput: transfer.fromLogo || transfer.fromBadge || '',
-    transferToLogoInput: transfer.toLogo || transfer.toBadge || '',
-    transferNotesInput: transfer.notes || ''
-  };
-
-  Object.entries(values).forEach(([id, value]) => {
-    const el = document.getElementById(id);
-    if (el) el.value = value;
-  });
-
-  setTransferEditButtonState();
-  document.getElementById('transferPlayerInput')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  applyAdminMode();
-}
-
-function clearStatForm() {
-  ['statSeasonInput','statClubInput','statPositionInput','statAppsInput','statGoalsInput','statAssistsInput','statRatingInput','statCleanSheetsInput','statNotesInput'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-
-  const select = document.getElementById('statPersonSelect');
-  if (select && select.options.length) select.selectedIndex = 0;
-
-  const primary = document.getElementById('statClubPrimaryColourInput');
-  const secondary = document.getElementById('statClubSecondaryColourInput');
-  if (primary) primary.value = '#ff3b3b';
-  if (secondary) secondary.value = '#ffffff';
-
-  if (typeof handleStatPersonSelect === 'function') handleStatPersonSelect();
-}
-
-function cancelStatEdit() {
-  editingStatIndex = null;
-  clearStatForm();
-  setStatEditButtonState();
-  applyAdminMode();
-}
-
-function editSavePlayerStat(index) {
-  const save = getCurrentSave();
-  if (!save || !Array.isArray(save.playerStats) || !save.playerStats[index]) return;
-
-  const stat = save.playerStats[index];
-  editingStatIndex = index;
-
-  const select = document.getElementById('statPersonSelect');
-  const options = getPlayerStatOptions();
-  const match = options.find(option =>
-    normaliseText(option.id || '') === normaliseText(stat.personId || '') ||
-    normaliseText(option.name || '') === normaliseText(stat.personName || '')
-  );
-
-  if (select && match) select.value = match.key;
-
-  const values = {
-    statSeasonInput: stat.season || '',
-    statClubInput: stat.club || '',
-    statPositionInput: stat.position || '',
-    statAppsInput: stat.apps || '',
-    statGoalsInput: stat.goals || '',
-    statAssistsInput: stat.assists || '',
-    statRatingInput: stat.rating || '',
-    statCleanSheetsInput: stat.cleanSheets || stat.clean_sheets || stat.cs || '',
-    statNotesInput: stat.notes || '',
-    statClubPrimaryColourInput: stat.clubColors?.primary || stat.clubPrimaryColour || stat.clubPrimaryColor || '#ff3b3b',
-    statClubSecondaryColourInput: stat.clubColors?.secondary || stat.clubSecondaryColour || stat.clubSecondaryColor || '#ffffff'
-  };
-
-  Object.entries(values).forEach(([id, value]) => {
-    const el = document.getElementById(id);
-    if (el) el.value = value;
-  });
-
-  if (typeof handleStatPersonSelect === 'function') handleStatPersonSelect();
-
-  setStatEditButtonState();
-  document.getElementById('statPersonSelect')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  applyAdminMode();
-}
-
-
-function renderTransferCards(transfers, allTransfers) {
+    function renderTransferCards(transfers, allTransfers) {
       const container = document.getElementById('transferCardsList');
       if (!container) return;
       if (!transfers.length) {
@@ -5118,7 +5177,7 @@ function renderTransferCards(transfers, allTransfers) {
               </div>
             </div>
             ${transfer.notes ? `<div class="transfer-notes">${escapeHtml(transfer.notes)}</div>` : ''}
-            <div class="hero-actions edit-only record-actions-inline" style="margin-top:12px;"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button><button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></div>
+            <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></div>
           </div>
         `;
       }).join('');
@@ -5202,14 +5261,14 @@ function renderTransferCards(transfers, allTransfers) {
         const originalIndex = transfers.indexOf(transfer);
         return `
           <tr>
-            <td><strong>${escapeHtml(transfer.player || '-')}</strong></td>
-            <td><span class="chip">${escapeHtml(transfer.season || '-')}</span></td>
-            <td><span class="transfer-type-chip ${escapeHtml(getTransferChipClass(transfer.type))}">${escapeHtml(transfer.type || '-')}</span></td>
-            <td>${escapeHtml(transfer.from || '-')}</td>
-            <td>${escapeHtml(transfer.to || '-')}</td>
-            <td><strong>${escapeHtml(transfer.fee || '-')}</strong><div class="muted" style="font-size:0.74rem; margin-top:3px;">${escapeHtml(getFeeTypeLabel(transfer.fee))}</div></td>
-            <td>${escapeHtml(transfer.notes || '-')}</td>
-            <td class="admin-only edit-only"><div class="record-actions-inline"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button><button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></div></td>
+            <td data-label="Player"><strong>${escapeHtml(transfer.player || '-')}</strong></td>
+            <td data-label="Season"><span class="chip">${escapeHtml(transfer.season || '-')}</span></td>
+            <td data-label="Type"><span class="transfer-type-chip ${escapeHtml(getTransferChipClass(transfer.type))}">${escapeHtml(transfer.type || '-')}</span></td>
+            <td data-label="From">${escapeHtml(transfer.from || '-')}</td>
+            <td data-label="To">${escapeHtml(transfer.to || '-')}</td>
+            <td data-label="Fee"><strong>${escapeHtml(transfer.fee || '-')}</strong><div class="muted" style="font-size:0.74rem; margin-top:3px;">${escapeHtml(getFeeTypeLabel(transfer.fee))}</div></td>
+            <td data-label="Notes">${escapeHtml(transfer.notes || '-')}</td>
+            <td class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></td>
           </tr>
         `;
       }).join('');
@@ -5250,50 +5309,49 @@ function renderTransferCards(transfers, allTransfers) {
       if (!transfer.player) return;
 
       save.transfers = Array.isArray(save.transfers) ? save.transfers : [];
-
-      if (editingTransferIndex !== null && save.transfers[editingTransferIndex]) {
-        save.transfers[editingTransferIndex] = transfer;
-      } else {
-        save.transfers.push(transfer);
-      }
+      save.transfers.push(transfer);
 
       updateCurrentSave(save);
+
       updatePersonClubFromTransfer(transfer);
       updateCurrentSave(save);
-
       const savedAfterTransfer = getCurrentSave() || save;
 
-      editingTransferIndex = null;
-      clearTransferForm();
-      setTransferEditButtonState();
+      ['transferSeasonInput','transferFromInput','transferToInput','transferFeeInput','transferFromLogoInput','transferToLogoInput','transferNotesInput','transferPlayerManualInput'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
 
-      populateTransferPlayerDropdown(savedAfterTransfer);
-      populateAwardPersonDropdown(savedAfterTransfer);
+      populateTransferPlayerDropdown(save);
+      populateAwardPersonDropdown(save);
+
+      const typeSelect = document.getElementById('transferTypeInput');
+      if (typeSelect) typeSelect.value = 'In';
+
+      const fromColour = document.getElementById('transferFromColourInput');
+      const fromSecondaryColour = document.getElementById('transferFromSecondaryColourInput');
+      const toColour = document.getElementById('transferToColourInput');
+      const toSecondaryColour = document.getElementById('transferToSecondaryColourInput');
+
+      if (fromColour) fromColour.value = '#64748b';
+      if (fromSecondaryColour) fromSecondaryColour.value = '#ffffff';
+      if (toColour) toColour.value = '#ff3b3b';
+      if (toSecondaryColour) toSecondaryColour.value = '#ffffff';
+
       renderTransferRecords(savedAfterTransfer);
       loadSaves();
-      applyAdminMode();
     }
 
-function deleteTransferRecord(index) {
+    function deleteTransferRecord(index) {
       const save = getCurrentSave();
       if (!save || !Array.isArray(save.transfers)) return;
       save.transfers.splice(index, 1);
-
-      if (editingTransferIndex === index) {
-        editingTransferIndex = null;
-        clearTransferForm();
-      } else if (editingTransferIndex !== null && editingTransferIndex > index) {
-        editingTransferIndex -= 1;
-      }
-
       updateCurrentSave(save);
       renderTransferRecords(save);
       loadSaves();
-      setTransferEditButtonState();
-      applyAdminMode();
     }
 
-function renderSaveSeasonRecords(records) {
+    function renderSaveSeasonRecords(records) {
       const tbody = document.getElementById('saveSeasonTableBody');
       if (!tbody) return;
       closeSeasonDetail();
@@ -6002,21 +6060,21 @@ function renderSavePlayerStats(save) {
 
       tbody.innerHTML = rows.map(row => `
         <tr title="${escapeHtml(row.notes || '')}">
-          <td>
+          <td data-label="Player">
             <div class="stat-player-cell">
               <strong>${escapeHtml(row.personName || '-')}</strong>
               <span>${escapeHtml(row.type || 'Player')}</span>
             </div>
           </td>
-          <td><span class="chip">${escapeHtml(row.season || '-')}</span></td>
-          <td>${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td>
-          <td>${escapeHtml(row.position || '-')}</td>
-          <td><span class="stat-number-pill">${escapeHtml(row.apps || '0')}</span></td>
-          <td><span class="stat-number-pill">${escapeHtml(row.goals || '0')}</span></td>
-          <td><span class="stat-number-pill">${escapeHtml(row.assists || '0')}</span></td>
-          <td><span class="stat-number-pill">${escapeHtml(row.rating || '-')}</span></td>
-          <td><span class="stat-number-pill">${escapeHtml(row.cleanSheets || '-')}</span></td>
-          <td class="admin-only edit-only">${row.origin === 'save' ? `<div class="record-actions-inline"><button class="admin-only secondary small-btn" type="button" onclick="editSavePlayerStat(${row.index})">Edit</button><button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})">Delete</button></div>` : '<span class="chip">Squad</span>'}</td>
+          <td data-label="Season"><span class="chip">${escapeHtml(row.season || '-')}</span></td>
+          <td data-label="Club">${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td>
+          <td data-label="Position">${escapeHtml(row.position || '-')}</td>
+          <td data-label="Apps"><span class="stat-number-pill">${escapeHtml(row.apps || '0')}</span></td>
+          <td data-label="Goals"><span class="stat-number-pill">${escapeHtml(row.goals || '0')}</span></td>
+          <td data-label="Assists"><span class="stat-number-pill">${escapeHtml(row.assists || '0')}</span></td>
+          <td data-label="Rating"><span class="stat-number-pill">${escapeHtml(row.rating || '-')}</span></td>
+          <td data-label="Clean Sheets"><span class="stat-number-pill">${escapeHtml(row.cleanSheets || '-')}</span></td>
+          <td data-label="Actions" class="admin-only edit-only">${row.origin === 'save' ? `<button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})">Delete</button>` : '<span class="chip">Squad</span>'}</td>
         </tr>
       `).join('');
 
@@ -6239,7 +6297,7 @@ function renderSavePlayerStats(save) {
 
         <div class="save-person-section">
           <div class="save-person-section-head"><div><div class="section-kicker">Season Stats</div><h3>Save-Specific Season Records</h3></div></div>
-          <div class="table-wrap" style="margin-top:0;"><table><thead><tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Notes</th></tr></thead><tbody>${stats.length ? stats.map(row => `<tr><td>${escapeHtml(row.season || '-')}</td><td>${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td><td>${escapeHtml(row.position || '-')}</td><td>${escapeHtml(row.apps || '0')}</td><td>${escapeHtml(row.goals || '0')}</td><td>${escapeHtml(row.assists || '0')}</td><td>${escapeHtml(row.rating || '-')}</td><td>${escapeHtml(row.notes || '-')}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No save-specific stats for this person yet.</td></tr>'}</tbody></table></div>
+          <div class="table-wrap" style="margin-top:0;"><table><thead><tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Notes</th></tr></thead><tbody>${stats.length ? stats.map(row => `<tr><td>${escapeHtml(row.season || '-')}</td><td>${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td><td>${escapeHtml(row.position || '-')}</td><td data-label="Apps">${escapeHtml(row.apps || '0')}</td><td data-label="Goals">${escapeHtml(row.goals || '0')}</td><td data-label="Assists">${escapeHtml(row.assists || '0')}</td><td>${escapeHtml(row.rating || '-')}</td><td>${escapeHtml(row.notes || '-')}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No save-specific stats for this person yet.</td></tr>'}</tbody></table></div>
         </div>
 
         <div class="save-person-section">
@@ -6369,21 +6427,15 @@ function renderSavePlayerStats(save) {
           primary: document.getElementById('statClubPrimaryColourInput')?.value || '',
           secondary: document.getElementById('statClubSecondaryColourInput')?.value || ''
         },
-        clubPrimaryColour: document.getElementById('statClubPrimaryColourInput')?.value || '',
-        clubSecondaryColour: document.getElementById('statClubSecondaryColourInput')?.value || '',
         rating: document.getElementById('statRatingInput').value.trim(),
         cleanSheets: document.getElementById('statCleanSheetsInput')?.value.trim() || '',
         notes: document.getElementById('statNotesInput').value.trim()
       };
       if (!stat.personName || !stat.season) return;
-
       save.playerStats = Array.isArray(save.playerStats) ? save.playerStats : [];
+      save.playerStats.push(stat);
 
-      if (editingStatIndex !== null && save.playerStats[editingStatIndex]) {
-        save.playerStats[editingStatIndex] = stat;
-      } else {
-        save.playerStats.push(stat);
-      }
+      updateCurrentSave(save);
 
       save.linkedPeople = Array.isArray(save.linkedPeople) ? save.linkedPeople : [];
       if (!save.linkedPeople.some(person =>
@@ -6392,40 +6444,28 @@ function renderSavePlayerStats(save) {
       )) {
         save.linkedPeople.push({ source: item.source, id: item.id, name: item.name, type: item.type, position: item.position, club: item.club });
       }
-
       updateCurrentSave(save);
-
-      editingStatIndex = null;
-      clearStatForm();
-      setStatEditButtonState();
-
+      ['statSeasonInput','statClubInput','statPositionInput','statAppsInput','statGoalsInput','statAssistsInput','statRatingInput','statCleanSheetsInput','statNotesInput'].forEach(id => document.getElementById(id).value = '');
+      const statPrimaryColour = document.getElementById('statClubPrimaryColourInput');
+      const statSecondaryColour = document.getElementById('statClubSecondaryColourInput');
+      if (statPrimaryColour) statPrimaryColour.value = '#ff3b3b';
+      if (statSecondaryColour) statSecondaryColour.value = '#ffffff';
       openSaveProfile(currentSaveIndex);
       setSaveEditMode(true);
       loadSaves();
-      applyAdminMode();
     }
 
-function deleteSavePlayerStat(index) {
+    function deleteSavePlayerStat(index) {
       const save = getCurrentSave();
       if (!save || !Array.isArray(save.playerStats)) return;
       save.playerStats.splice(index, 1);
-
-      if (editingStatIndex === index) {
-        editingStatIndex = null;
-        clearStatForm();
-      } else if (editingStatIndex !== null && editingStatIndex > index) {
-        editingStatIndex -= 1;
-      }
-
       updateCurrentSave(save);
       openSaveProfile(currentSaveIndex);
       setSaveEditMode(true);
       loadSaves();
-      setStatEditButtonState();
-      applyAdminMode();
     }
 
-function toggleAddSave(forceOpen) {
+    function toggleAddSave(forceOpen) {
       const wrap = document.getElementById('addSaveFormWrap');
       const btn = document.getElementById('toggleAddSaveBtn');
       if (!wrap || !btn) return;
@@ -6801,8 +6841,8 @@ function toggleAddSave(forceOpen) {
     loadSaves();
     decorateEmptyStates();
 
-    // window.addEventListener('FMCloudReady', loadFMHubFromCloud);
-    // setTimeout(loadFMHubFromCloud, 800);
+    window.addEventListener('FMCloudReady', loadFMHubFromCloud);
+    setTimeout(loadFMHubFromCloud, 800);
 
     window.addEventListener('storage', event => {
       if (event.key === 'fmhub-theme') initTheme();
