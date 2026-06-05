@@ -2968,6 +2968,21 @@
         linear-gradient(180deg, rgba(255,255,255,0.046), rgba(255,255,255,0.018)) !important;
     }
 
+
+    /* Hide Actions column in view mode */
+    #saveProfile:not(.profile-edit-mode) th.edit-only,
+    #saveProfile:not(.profile-edit-mode) td.edit-only {
+      display: none !important;
+    }
+
+    #saveProfile.profile-edit-mode th.edit-only {
+      display: table-cell !important;
+    }
+
+    #saveProfile.profile-edit-mode td.edit-only {
+      display: table-cell !important;
+    }
+
 </style>
 </head>
 <body>
