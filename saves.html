@@ -3799,7 +3799,50 @@
       </div>
     </div>
 
-  </main>
+  
+      <section class="save-tab-panel" id="internationalTab" style="display:none;">
+        <div class="section-card">
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">International</div>
+              <h3>International Stats</h3>
+              <p class="muted">Track caps, goals and international records separately from club stats.</p>
+            </div>
+          </div>
+
+          <div class="form-grid edit-only">
+            <div><label>Player</label><input id="intlPlayerInput" placeholder="Player"></div>
+            <div><label>Nation</label><input id="intlNationInput" placeholder="England"></div>
+            <div><label>Season</label><input id="intlSeasonInput" placeholder="2026/27"></div>
+            <div><label>Caps</label><input id="intlCapsInput" type="number" placeholder="10"></div>
+            <div><label>Goals</label><input id="intlGoalsInput" type="number" placeholder="2"></div>
+            <div><label>Assists</label><input id="intlAssistsInput" type="number" placeholder="1"></div>
+            <div><label>Clean Sheets</label><input id="intlCleanSheetsInput" type="number" placeholder="0"></div>
+            <div><label>Competition</label><input id="intlCompetitionInput" placeholder="World Cup"></div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Player</th>
+                  <th>Nation</th>
+                  <th>Season</th>
+                  <th>Caps</th>
+                  <th>Goals</th>
+                  <th>Assists</th>
+                  <th>Clean Sheets</th>
+                  <th>Competition</th>
+                </tr>
+              </thead>
+              <tbody id="internationalTableBody">
+                <tr><td colspan="8" style="padding:14px;color:var(--muted);">No international records yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+</main>
 
   <script type="module" src="firebase.js"></script>
   <script>
