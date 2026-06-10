@@ -1027,16 +1027,13 @@
 
     .transfer-card {
       --from-colour: rgba(255,255,255,0.12);
-      --from-secondary-colour: var(--from-colour);
       --to-colour: var(--accent);
-      --to-secondary-colour: var(--to-colour);
       position: relative;
       overflow: hidden;
       padding: 16px;
       border-radius: 20px;
       background:
-        linear-gradient(180deg, var(--from-colour) 0 50%, var(--from-secondary-colour) 50% 100%) left / 5px 100% no-repeat,
-        linear-gradient(180deg, var(--to-colour) 0 50%, var(--to-secondary-colour) 50% 100%) right / 5px 100% no-repeat,
+        linear-gradient(90deg, var(--from-colour) 0 5px, transparent 5px calc(100% - 5px), var(--to-colour) calc(100% - 5px) 100%),
         linear-gradient(180deg, rgba(255,255,255,0.046), rgba(255,255,255,0.018));
       border: 1px solid rgba(255,255,255,0.075);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.035), 0 10px 24px rgba(0,0,0,0.18);
@@ -2934,296 +2931,29 @@
     }
 
 
-    .transfer-card::before {
-      background: linear-gradient(180deg, var(--from-colour) 0%, var(--from-secondary-colour) 100%) !important;
+    .international-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 14px 0;
     }
-
-    .transfer-card::after {
-      background: linear-gradient(180deg, var(--to-colour) 0%, var(--to-secondary-colour) 100%) !important;
+    .international-summary-card {
+      padding: 13px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.075);
+      background: rgba(255,255,255,0.028);
     }
-
-    .transfer-club-box {
-      position: relative;
-      overflow: hidden;
+    .international-summary-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 900;
+      margin-bottom: 6px;
     }
-
-    .transfer-mini-strip {
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 5px;
-      border-radius: 15px 0 0 15px;
-      background: linear-gradient(180deg, var(--c1) 0%, var(--c2) 100%);
-      pointer-events: none;
-    }
-
-    /* Final transfer side gradient fix */
-    .transfer-card::before {
-      background: linear-gradient(
-        90deg,
-        var(--from-colour) 0%,
-        var(--from-secondary-colour) 100%
-      ) !important;
-    }
-
-    .transfer-card::after {
-      background: linear-gradient(
-        90deg,
-        var(--to-secondary-colour) 0%,
-        var(--to-colour) 100%
-      ) !important;
-    }
-
-
-    /* ============================= */
-    /* Mobile Saves readability pass  */
-    /* ============================= */
-    @media (max-width: 720px) {
-      body {
-        font-size: 14px;
-      }
-
-      .container {
-        width: min(96%, 100%);
-      }
-
-      header {
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        backdrop-filter: blur(16px);
-      }
-
-      .nav-wrap {
-        gap: 10px;
-      }
-
-      nav {
-        width: 100%;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        padding-bottom: 4px;
-      }
-
-      nav a {
-        white-space: nowrap;
-        font-size: .88rem;
-        padding: 8px 9px;
-      }
-
-      .hero-card,
-      .section-card,
-      .dashboard-card,
-      .form-card,
-      .detail-card,
-      .save-library-card {
-        padding: 16px !important;
-        border-radius: 18px !important;
-      }
-
-      .dashboard-grid,
-      .save-grid,
-      .stats-summary-grid,
-      .transfer-dashboard,
-      .transfer-filter-bar,
-      .form-grid,
-      .timeline-form-grid,
-      .two-column {
-        grid-template-columns: 1fr !important;
-      }
-
-      .hero-actions,
-      .section-actions,
-      .view-mode-toolbar {
-        gap: 8px !important;
-      }
-
-      .hero-actions .btn,
-      .hero-actions button,
-      .section-actions .btn,
-      .section-actions button,
-      .view-mode-toolbar button {
-        flex: 1 1 135px;
-        min-height: 42px;
-        padding: 10px 12px;
-        font-size: .86rem;
-      }
-
-      .save-card {
-        min-height: auto !important;
-        padding: 16px !important;
-      }
-
-      .save-card h3 {
-        font-size: 1rem !important;
-      }
-
-      .chip-row,
-      .transfer-meta-row {
-        gap: 6px !important;
-      }
-
-      .chip,
-      .transfer-type-chip,
-      .stat-number-pill {
-        font-size: .72rem !important;
-        padding: 5px 8px !important;
-      }
-
-      .opened-save-card .club-profile-header,
-      .club-profile-header {
-        padding: 16px !important;
-        border-radius: 18px !important;
-      }
-
-      .save-tab-bar {
-        overflow-x: auto;
-        flex-wrap: nowrap !important;
-        justify-content: flex-start !important;
-        padding-bottom: 4px;
-      }
-
-      .save-tab-bar button,
-      .save-tab-btn {
-        white-space: nowrap;
-        flex: 0 0 auto;
-      }
-
-      .stats-refurb-toolbar,
-      .transfer-filter-bar {
-        padding: 12px !important;
-        border-radius: 16px !important;
-      }
-
-      .stats-refurb-toolbar label,
-      .transfer-filter-bar label {
-        font-size: .72rem;
-      }
-
-      .stats-refurb-toolbar select,
-      .transfer-filter-bar select,
-      .stats-refurb-toolbar input,
-      .transfer-filter-bar input {
-        min-height: 42px;
-      }
-
-      /* Mobile table-to-card layout */
-      .table-wrap {
-        border: 0 !important;
-        background: transparent !important;
-        overflow: visible !important;
-        margin-top: 12px !important;
-      }
-
-      .table-wrap table,
-      .table-wrap thead,
-      .table-wrap tbody,
-      .table-wrap th,
-      .table-wrap td,
-      .table-wrap tr {
-        display: block;
-        width: 100%;
-        min-width: 0 !important;
-      }
-
-      .table-wrap thead {
-        display: none;
-      }
-
-      .table-wrap tbody {
-        display: grid;
-        gap: 10px;
-      }
-
-      .table-wrap tr {
-        border: 1px solid rgba(255,255,255,0.075);
-        border-radius: 16px;
-        background: linear-gradient(180deg, rgba(255,255,255,0.040), rgba(255,255,255,0.014));
-        padding: 12px;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.030);
-      }
-
-      .table-wrap td {
-        display: grid;
-        grid-template-columns: 92px minmax(0, 1fr);
-        gap: 10px;
-        align-items: center;
-        border: 0 !important;
-        padding: 7px 0 !important;
-        font-size: .88rem;
-      }
-
-      .table-wrap td::before {
-        content: attr(data-label);
-        color: var(--muted);
-        font-size: .70rem;
-        text-transform: uppercase;
-        letter-spacing: .045em;
-        font-weight: 800;
-      }
-
-      .table-wrap td:first-child {
-        padding-top: 0 !important;
-      }
-
-      .table-wrap td:last-child {
-        padding-bottom: 0 !important;
-      }
-
-      .table-wrap td.edit-only {
-        display: none !important;
-      }
-
-      #saveProfile.profile-edit-mode .table-wrap td.edit-only {
-        display: grid !important;
-      }
-
-      .stat-player-cell strong {
-        font-size: .98rem;
-      }
-
-      .record-actions-inline {
-        justify-content: flex-start;
-      }
-
-      .transfer-cards-grid {
-        grid-template-columns: 1fr !important;
-        gap: 12px !important;
-      }
-
-      .transfer-card {
-        padding: 14px !important;
-        border-radius: 18px !important;
-      }
-
-      .transfer-card-top,
-      .transfer-route {
-        grid-template-columns: 1fr !important;
-      }
-
-      .transfer-arrow {
-        transform: rotate(90deg);
-        justify-self: center;
-        margin: -2px 0;
-      }
-
-      .transfer-club-box {
-        min-height: 64px;
-      }
-
-      .career-stats-head {
-        gap: 8px;
-        align-items: flex-start;
-      }
-
-      .timeline-item,
-      .award-card,
-      .match-card,
-      .note-card {
-        border-radius: 16px !important;
-      }
+    .international-summary-card strong {
+      font-size: 1.15rem;
     }
 
 </style>
@@ -3621,8 +3351,6 @@
           <div><label for="statSeasonInput">Season</label><input id="statSeasonInput" placeholder="2026/27"></div>
           <div><label for="statClubInput">Club</label><input id="statClubInput" placeholder="Chelsea"></div>
           <div><label for="statPositionInput">Position</label><input id="statPositionInput" placeholder="ST / CM / GK"></div>
-          <div><label for="statClubPrimaryColourInput">Club Colour</label><input id="statClubPrimaryColourInput" type="color" value="#ff3b3b"></div>
-          <div><label for="statClubSecondaryColourInput">Club Secondary Colour</label><input id="statClubSecondaryColourInput" type="color" value="#ffffff"></div>
           <div><label for="statAppsInput">Apps</label><input id="statAppsInput" placeholder="38"></div>
           <div><label for="statGoalsInput">Goals</label><input id="statGoalsInput" placeholder="18"></div>
           <div><label for="statAssistsInput">Assists</label><input id="statAssistsInput" placeholder="9"></div>
@@ -3635,7 +3363,7 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Player</th><th>Season</th><th>Age</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Clean Sheets</th><th class="admin-only edit-only">Actions</th></tr>
+              <tr><th>Player</th><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Clean Sheets</th><th class="admin-only edit-only">Actions</th></tr>
             </thead>
             <tbody id="savePlayerStatsBody"></tbody>
           </table>
@@ -3682,7 +3410,6 @@
           <div><label for="transferToInput">To</label><input id="transferToInput" placeholder="Buying club / new club"></div>
           <div><label for="transferFromColourInput">From Club Colour</label><input id="transferFromColourInput" type="color" value="#64748b"></div>
           <div><label for="transferToColourInput">To Club Colour</label><input id="transferToColourInput" type="color" value="#ff3b3b"></div>
-          <div><label for="transferFromSecondaryColourInput">From Club Secondary Colour</label><input id="transferFromSecondaryColourInput" type="color" value="#ffffff"></div>
           <div><label for="transferToSecondaryColourInput">To Club Secondary Colour</label><input id="transferToSecondaryColourInput" type="color" value="#ffffff"></div>
           <div><label for="transferFromLogoInput">From Club Logo URL</label><input id="transferFromLogoInput" placeholder="Optional logo URL"></div>
           <div><label for="transferToLogoInput">To Club Logo URL</label><input id="transferToLogoInput" placeholder="Optional logo URL"></div>
@@ -3728,7 +3455,7 @@
         <div class="table-wrap transfer-table-fallback">
           <table>
             <thead>
-              <tr><th>Player</th><th>Season</th><th>Age</th><th>Type</th><th>From</th><th>To</th><th>Fee</th><th>Notes</th><th class="admin-only edit-only">Action</th></tr>
+              <tr><th>Player</th><th>Season</th><th>Type</th><th>From</th><th>To</th><th>Fee</th><th>Notes</th><th class="admin-only edit-only">Action</th></tr>
             </thead>
             <tbody id="transferTableBody"></tbody>
           </table>
@@ -3799,50 +3526,7 @@
       </div>
     </div>
 
-  
-      <section class="save-tab-panel" id="internationalTab" style="display:none;">
-        <div class="section-card">
-          <div class="section-head">
-            <div>
-              <div class="eyebrow">International</div>
-              <h3>International Stats</h3>
-              <p class="muted">Track caps, goals and international records separately from club stats.</p>
-            </div>
-          </div>
-
-          <div class="form-grid edit-only">
-            <div><label>Player</label><input id="intlPlayerInput" placeholder="Player"></div>
-            <div><label>Nation</label><input id="intlNationInput" placeholder="England"></div>
-            <div><label>Season</label><input id="intlSeasonInput" placeholder="2026/27"></div>
-            <div><label>Caps</label><input id="intlCapsInput" type="number" placeholder="10"></div>
-            <div><label>Goals</label><input id="intlGoalsInput" type="number" placeholder="2"></div>
-            <div><label>Assists</label><input id="intlAssistsInput" type="number" placeholder="1"></div>
-            <div><label>Clean Sheets</label><input id="intlCleanSheetsInput" type="number" placeholder="0"></div>
-            <div><label>Competition</label><input id="intlCompetitionInput" placeholder="World Cup"></div>
-          </div>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Player</th>
-                  <th>Nation</th>
-                  <th>Season</th>
-                  <th>Caps</th>
-                  <th>Goals</th>
-                  <th>Assists</th>
-                  <th>Clean Sheets</th>
-                  <th>Competition</th>
-                </tr>
-              </thead>
-              <tbody id="internationalTableBody">
-                <tr><td colspan="8" style="padding:14px;color:var(--muted);">No international records yet.</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-</main>
+  </main>
 
   <script type="module" src="firebase.js"></script>
   <script>
@@ -3978,7 +3662,7 @@
 
     function normaliseSave(save) {
       if (typeof save === 'string') {
-        return { name: save, type: 'Main Save', club: '-', season: '-', status: 'Active', goal: '-', theme: 'red', logo: '', currentSituation: {}, transfers: [], timeline: [], seasons: [], linkedPeople: [], playerStats: [], seasonAwards: [], matchHighlights: [] };
+        return { name: save, type: 'Main Save', club: '-', season: '-', status: 'Active', goal: '-', theme: 'red', logo: '', currentSituation: {}, transfers: [], timeline: [], seasons: [], linkedPeople: [], playerStats: [], internationalStats: [], seasonAwards: [], matchHighlights: [] };
       }
       return {
         name: save.name || save.title || save.saveName || 'Unnamed Save',
@@ -3995,6 +3679,7 @@
         seasons: Array.isArray(save.seasons) ? save.seasons : [],
         linkedPeople: Array.isArray(save.linkedPeople) ? save.linkedPeople : [],
         playerStats: Array.isArray(save.playerStats) ? save.playerStats : [],
+        internationalStats: Array.isArray(save.internationalStats) ? save.internationalStats : [],
         seasonAwards: Array.isArray(save.seasonAwards) ? save.seasonAwards : [],
         matchHighlights: Array.isArray(save.matchHighlights) ? save.matchHighlights : []
       };
@@ -4479,6 +4164,7 @@
       renderLinkedPeople(save);
       renderSavePlayerStats(save);
       renderTransferRecords(save);
+      renderInternationalStats(save);
       renderCurrentSituation(save);
       renderSaveStatusBanner(save);
       renderSeasonAwards(save);
@@ -5130,21 +4816,11 @@
       return `<div class="transfer-club-logo" style="--club-colour:${safeColour};">${escapeHtml(getClubInitials(name))}</div>`;
     }
 
-    
-    function normaliseSeasonForFilter(season) {
-      const raw = String(season || '').trim();
-      if (/^(19|20)\d{2}$/.test(raw)) {
-        const year = Number(raw);
-        return `${year}/${String(year + 1).slice(-2)}`;
-      }
-      return raw;
-    }
-
-function syncTransferWindowFilter(transfers) {
+    function syncTransferWindowFilter(transfers) {
       const select = document.getElementById('transferWindowFilter');
       if (!select) return 'all';
       const current = select.value || 'all';
-      const windows = Array.from(new Set((transfers || []).map(t => normaliseSeasonForFilter(t.season)).filter(Boolean)))
+      const windows = Array.from(new Set((transfers || []).map(t => t.season).filter(Boolean)))
         .sort((a, b) => compareSeasons(a, b, 'desc'));
       select.innerHTML = ['<option value="all">All windows</option>']
         .concat(windows.map(windowName => `<option value="${escapeHtml(windowName)}">${escapeHtml(windowName)}</option>`))
@@ -5187,31 +4863,18 @@ function syncTransferWindowFilter(transfers) {
       }
       container.innerHTML = transfers.map((transfer) => {
         const originalIndex = allTransfers.indexOf(transfer);
-        const fromColour = transfer.fromColour || transfer.fromColor || '#64748b';
-        const fromSecondaryColour =
-          transfer.fromSecondaryColour ||
-          transfer.fromSecondaryColor ||
-          transfer.fromColour2 ||
-          transfer.fromColor2 ||
-          '#ffffff';
-        const toColour = transfer.toColour || transfer.toColor || '#ff3b3b';
-        const toSecondaryColour =
-          transfer.toSecondaryColour ||
-          transfer.toSecondaryColor ||
-          transfer.toColour2 ||
-          transfer.toColor2 ||
-          '#ffffff';
+        const fromColour = transfer.fromColour || '#64748b';
+        const toColour = transfer.toColour || '#ff3b3b';
         const fromLogo = getTransferLogoForClub(transfer, 'from');
         const toLogo = getTransferLogoForClub(transfer, 'to');
         return `
-          <div class="transfer-card" style="--from-colour:${escapeHtml(fromColour)}; --from-secondary-colour:${escapeHtml(fromSecondaryColour)}; --to-colour:${escapeHtml(toColour)}; --to-secondary-colour:${escapeHtml(toSecondaryColour)};">
+          <div class="transfer-card" style="--from-colour:${escapeHtml(fromColour)}; --to-colour:${escapeHtml(toColour)};">
             <div class="transfer-card-top">
               <div class="transfer-card-player">
                 <span class="transfer-type-chip ${escapeHtml(getTransferChipClass(transfer.type))}">${escapeHtml(transfer.type || '-')}</span>
                 <strong style="margin-top:9px;">${escapeHtml(transfer.player || '-')}</strong>
                 <div class="transfer-meta-row">
                   <span class="chip">${escapeHtml(transfer.season || 'No window')}</span>
-                  <span class="chip">Age ${escapeHtml(getPlayerAgeForSeason(transfer.player, transfer.season))}</span>
                   <span class="chip">${escapeHtml(getFeeTypeLabel(transfer.fee))}</span>
                 </div>
               </div>
@@ -5219,13 +4882,11 @@ function syncTransferWindowFilter(transfers) {
             </div>
             <div class="transfer-route">
               <div class="transfer-club-box">
-                <div class="transfer-mini-strip" style="--c1:${escapeHtml(fromColour)}; --c2:${escapeHtml(fromSecondaryColour)};"></div>
                 ${renderClubLogoMarkup(transfer.from || 'From', fromLogo, fromColour)}
                 <div><span>From</span><strong>${escapeHtml(transfer.from || '-')}</strong></div>
               </div>
               <div class="transfer-arrow">→</div>
               <div class="transfer-club-box">
-                <div class="transfer-mini-strip" style="--c1:${escapeHtml(toColour)}; --c2:${escapeHtml(toSecondaryColour)};"></div>
                 ${renderClubLogoMarkup(transfer.to || 'To', toLogo, toColour)}
                 <div><span>To</span><strong>${escapeHtml(transfer.to || '-')}</strong></div>
               </div>
@@ -5285,7 +4946,7 @@ function syncTransferWindowFilter(transfers) {
 
       let rows = [...(transfers || [])];
 
-      if (selectedWindow !== 'all') rows = rows.filter(transfer => normaliseSeasonForFilter(transfer.season) === selectedWindow);
+      if (selectedWindow !== 'all') rows = rows.filter(transfer => transfer.season === selectedWindow);
       if (selectedType !== 'all') rows = rows.filter(transfer => String(transfer.type || '') === selectedType);
 
       rows.sort((a, b) => {
@@ -5299,6 +4960,156 @@ function syncTransferWindowFilter(transfers) {
       return rows;
     }
 
+
+    function getInternationalStats(save) {
+      return Array.isArray(save?.internationalStats) ? save.internationalStats : [];
+    }
+
+    function getInternationalPlayerOptions(save) {
+      const linked = save ? getLinkedPeopleForSave(save) : [];
+      const names = Array.from(new Set(linked.map(p => p.name || p.playerName || '').filter(Boolean))).sort((a, b) => a.localeCompare(b));
+      return names;
+    }
+
+    function renderInternationalStats(save) {
+      const shell = ensureSaveTabs();
+      const panel = document.querySelector('[data-save-tab-panel="international"]');
+      if (!panel || !save) return;
+
+      let card = document.getElementById('internationalStatsCard');
+      if (!card) {
+        card = document.createElement('div');
+        card.id = 'internationalStatsCard';
+        card.className = 'detail-card';
+      }
+
+      const records = getInternationalStats(save);
+      const totals = records.reduce((acc, row) => {
+        acc.caps += getNumberValue(row.caps);
+        acc.goals += getNumberValue(row.goals);
+        acc.assists += getNumberValue(row.assists);
+        acc.cleanSheets += getNumberValue(row.cleanSheets);
+        acc.players.add(normaliseText(row.player));
+        return acc;
+      }, { caps: 0, goals: 0, assists: 0, cleanSheets: 0, players: new Set() });
+
+      const playerOptions = getInternationalPlayerOptions(save);
+      const body = records.length ? records.map((row, index) => `
+        <tr>
+          <td data-label="Player"><strong>${escapeHtml(row.player || '-')}</strong></td>
+          <td data-label="Nation">${escapeHtml(row.nation || '-')}</td>
+          <td data-label="Level"><span class="chip">${escapeHtml(row.level || 'Senior')}</span></td>
+          <td data-label="Season"><span class="chip">${escapeHtml(row.season || '-')}</span></td>
+          <td data-label="Caps"><span class="stat-number-pill">${escapeHtml(row.caps || '0')}</span></td>
+          <td data-label="Goals"><span class="stat-number-pill">${escapeHtml(row.goals || '0')}</span></td>
+          <td data-label="Assists"><span class="stat-number-pill">${escapeHtml(row.assists || '0')}</span></td>
+          <td data-label="Clean Sheets"><span class="stat-number-pill">${escapeHtml(row.cleanSheets || '-')}</span></td>
+          <td data-label="Competition">${escapeHtml(row.competition || '-')}</td>
+          <td data-label="Actions" class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteInternationalStat(${index})">Delete</button></td>
+        </tr>
+      `).join('') : '<tr><td colspan="10" style="padding:14px; color:var(--muted);">No international records yet.</td></tr>';
+
+      card.innerHTML = `
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">International</div>
+            <h3>International Stats</h3>
+            <p class="muted">Track senior, U21 and youth international records separately from club stats.</p>
+          </div>
+        </div>
+
+        <div class="international-summary-grid">
+          <div class="international-summary-card"><span>Players</span><strong>${totals.players.size}</strong></div>
+          <div class="international-summary-card"><span>Total Caps</span><strong>${totals.caps}</strong></div>
+          <div class="international-summary-card"><span>Total Goals</span><strong>${totals.goals}</strong></div>
+          <div class="international-summary-card"><span>Clean Sheets</span><strong>${totals.cleanSheets}</strong></div>
+        </div>
+
+        <div class="form-grid edit-only">
+          <div>
+            <label for="intlPlayerInput">Player</label>
+            <select id="intlPlayerInput">
+              <option value="">Choose player...</option>
+              ${playerOptions.map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join('')}
+            </select>
+          </div>
+          <div><label for="intlNationInput">Nation</label><input id="intlNationInput" placeholder="England"></div>
+          <div>
+            <label for="intlLevelInput">Level</label>
+            <select id="intlLevelInput">
+              <option value="Senior">Senior</option>
+              <option value="U21">U21</option>
+              <option value="U20">U20</option>
+              <option value="U19">U19</option>
+              <option value="U18">U18</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div><label for="intlSeasonInput">Season</label><input id="intlSeasonInput" placeholder="2026/27"></div>
+          <div><label for="intlCapsInput">Caps</label><input id="intlCapsInput" type="number" min="0" placeholder="10"></div>
+          <div><label for="intlGoalsInput">Goals</label><input id="intlGoalsInput" type="number" min="0" placeholder="2"></div>
+          <div><label for="intlAssistsInput">Assists</label><input id="intlAssistsInput" type="number" min="0" placeholder="1"></div>
+          <div><label for="intlCleanSheetsInput">Clean Sheets</label><input id="intlCleanSheetsInput" type="number" min="0" placeholder="0"></div>
+          <div class="wide"><label for="intlCompetitionInput">Competition / Notes</label><input id="intlCompetitionInput" placeholder="World Cup, U21 Euros, qualifiers..."></div>
+        </div>
+
+        <div class="hero-actions edit-only" style="margin-top:12px;">
+          <button class="admin-only primary" type="button" onclick="addInternationalStat()">Add International Record</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Player</th><th>Nation</th><th>Level</th><th>Season</th><th>Caps</th><th>Goals</th><th>Assists</th><th>Clean Sheets</th><th>Competition</th><th class="admin-only edit-only">Actions</th></tr>
+            </thead>
+            <tbody>${body}</tbody>
+          </table>
+        </div>
+      `;
+
+      if (card.parentElement !== panel) panel.appendChild(card);
+      applyAdminMode();
+    }
+
+    function addInternationalStat() {
+      const save = getCurrentSave();
+      if (!save) return;
+
+      const record = {
+        player: document.getElementById('intlPlayerInput')?.value.trim() || '',
+        nation: document.getElementById('intlNationInput')?.value.trim() || '',
+        level: document.getElementById('intlLevelInput')?.value || 'Senior',
+        season: document.getElementById('intlSeasonInput')?.value.trim() || '',
+        caps: document.getElementById('intlCapsInput')?.value.trim() || '',
+        goals: document.getElementById('intlGoalsInput')?.value.trim() || '',
+        assists: document.getElementById('intlAssistsInput')?.value.trim() || '',
+        cleanSheets: document.getElementById('intlCleanSheetsInput')?.value.trim() || '',
+        competition: document.getElementById('intlCompetitionInput')?.value.trim() || ''
+      };
+
+      if (!record.player || !record.nation || !record.season) return;
+
+      save.internationalStats = Array.isArray(save.internationalStats) ? save.internationalStats : [];
+      save.internationalStats.push(record);
+      updateCurrentSave(save);
+      renderInternationalStats(save);
+      buildOverviewShortcuts(save);
+      loadSaves();
+      applyAdminMode();
+    }
+
+    function deleteInternationalStat(index) {
+      const save = getCurrentSave();
+      if (!save || !Array.isArray(save.internationalStats)) return;
+      save.internationalStats.splice(index, 1);
+      updateCurrentSave(save);
+      renderInternationalStats(save);
+      buildOverviewShortcuts(save);
+      loadSaves();
+      applyAdminMode();
+    }
+
+
     function renderTransferRecords(save) {
       const tbody = document.getElementById('transferTableBody');
       if (!tbody) return;
@@ -5307,7 +5118,7 @@ function syncTransferWindowFilter(transfers) {
       const filteredTransfers = getFilteredSortedTransfers(transfers);
       renderTransferCards(filteredTransfers, transfers);
       if (!filteredTransfers.length) {
-        tbody.innerHTML = '<tr><td colspan="9" style="padding:14px; color:var(--muted);">No transfers recorded for this filter.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No transfers recorded for this filter.</td></tr>';
         applyAdminMode();
         return;
       }
@@ -5315,14 +5126,13 @@ function syncTransferWindowFilter(transfers) {
         const originalIndex = transfers.indexOf(transfer);
         return `
           <tr>
-            <td data-label="Player"><strong>${escapeHtml(transfer.player || '-')}</strong></td>
-            <td data-label="Season"><span class="chip">${escapeHtml(transfer.season || '-')}</span></td>
-            <td data-label="Age"><span class="stat-number-pill">${escapeHtml(getPlayerAgeForSeason(transfer.player, transfer.season))}</span></td>
-            <td data-label="Type"><span class="transfer-type-chip ${escapeHtml(getTransferChipClass(transfer.type))}">${escapeHtml(transfer.type || '-')}</span></td>
-            <td data-label="From">${escapeHtml(transfer.from || '-')}</td>
-            <td data-label="To">${escapeHtml(transfer.to || '-')}</td>
-            <td data-label="Fee"><strong>${escapeHtml(transfer.fee || '-')}</strong><div class="muted" style="font-size:0.74rem; margin-top:3px;">${escapeHtml(getFeeTypeLabel(transfer.fee))}</div></td>
-            <td data-label="Notes">${escapeHtml(transfer.notes || '-')}</td>
+            <td><strong>${escapeHtml(transfer.player || '-')}</strong></td>
+            <td><span class="chip">${escapeHtml(transfer.season || '-')}</span></td>
+            <td><span class="transfer-type-chip ${escapeHtml(getTransferChipClass(transfer.type))}">${escapeHtml(transfer.type || '-')}</span></td>
+            <td>${escapeHtml(transfer.from || '-')}</td>
+            <td>${escapeHtml(transfer.to || '-')}</td>
+            <td><strong>${escapeHtml(transfer.fee || '-')}</strong><div class="muted" style="font-size:0.74rem; margin-top:3px;">${escapeHtml(getFeeTypeLabel(transfer.fee))}</div></td>
+            <td>${escapeHtml(transfer.notes || '-')}</td>
             <td class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></td>
           </tr>
         `;
@@ -5353,7 +5163,6 @@ function syncTransferWindowFilter(transfers) {
         to: toClub,
         fee: document.getElementById('transferFeeInput')?.value.trim() || '',
         fromColour: document.getElementById('transferFromColourInput')?.value || '#64748b',
-        fromSecondaryColour: document.getElementById('transferFromSecondaryColourInput')?.value || '#ffffff',
         toColour: document.getElementById('transferToColourInput')?.value || '#ff3b3b',
         toSecondaryColour: document.getElementById('transferToSecondaryColourInput')?.value || '#ffffff',
         fromLogo: document.getElementById('transferFromLogoInput')?.value.trim() || getClubBadgeByClubName(fromClub),
@@ -5384,12 +5193,10 @@ function syncTransferWindowFilter(transfers) {
       if (typeSelect) typeSelect.value = 'In';
 
       const fromColour = document.getElementById('transferFromColourInput');
-      const fromSecondaryColour = document.getElementById('transferFromSecondaryColourInput');
       const toColour = document.getElementById('transferToColourInput');
       const toSecondaryColour = document.getElementById('transferToSecondaryColourInput');
 
       if (fromColour) fromColour.value = '#64748b';
-      if (fromSecondaryColour) fromSecondaryColour.value = '#ffffff';
       if (toColour) toColour.value = '#ff3b3b';
       if (toSecondaryColour) toSecondaryColour.value = '#ffffff';
 
@@ -5918,7 +5725,7 @@ function syncTransferWindowFilter(transfers) {
       if (!select) return;
 
       const current = select.value || 'all';
-      const seasons = Array.from(new Set(allRows.map(row => normaliseSeasonForFilter(row.season)).filter(Boolean)))
+      const seasons = Array.from(new Set(allRows.map(row => row.season).filter(Boolean)))
         .sort((a, b) => compareSeasons(a, b, 'desc'));
 
       select.innerHTML = '<option value="all">All seasons</option>' +
@@ -5938,7 +5745,7 @@ function syncTransferWindowFilter(transfers) {
       let rows = [...allRows];
 
       if (search) rows = rows.filter(row => String(row.personName || '').toLowerCase().includes(search));
-      if (season !== 'all') rows = rows.filter(row => normaliseSeasonForFilter(row.season) === season);
+      if (season !== 'all') rows = rows.filter(row => String(row.season || '') === season);
 
       rows.sort((a, b) => {
         if (sortBy === 'player') return String(a.personName || '').localeCompare(String(b.personName || ''));
@@ -6032,12 +5839,7 @@ function syncTransferWindowFilter(transfers) {
               apps: season.apps || '0',
               goals: season.goals || '0',
               assists: season.assists || '0',
-              clubColors: season.clubColors || player.clubColors || {
-                primary: player.clubPrimaryColor || player.clubPrimaryColour || '',
-                secondary: player.clubSecondaryColor || player.clubSecondaryColour || ''
-              },
               rating: season.rating || '-',
-
               cleanSheets: season.cleanSheets || season.clean_sheets || season.cs || '',
               notes: season.notes || ''
             });
@@ -6048,141 +5850,7 @@ function syncTransferWindowFilter(transfers) {
       return rows.sort((a, b) => String(a.season || '').localeCompare(String(b.season || '')) || String(a.personName || '').localeCompare(String(b.personName || '')));
     }
 
-
-    function getStatsClubColourSource(row) {
-      const playerName = normaliseText(row?.personName || row?.player || '');
-      const clubName = normaliseText(row?.club || '');
-
-      const people = typeof getPeople === 'function' ? getPeople() : [];
-      const squad = typeof getSquadPlayers === 'function' ? getSquadPlayers() : [];
-      const sources = [...people, ...squad];
-
-      return sources.find(item =>
-        playerName && normaliseText(item.name || item.fullName || '') === playerName
-      ) || sources.find(item =>
-        clubName &&
-        normaliseText(item.club || item.team || item.currentClub || '') === clubName &&
-        (
-          item.clubColors?.primary ||
-          item.clubColors?.secondary ||
-          item.clubPrimaryColor ||
-          item.clubPrimaryColour ||
-          item.clubSecondaryColor ||
-          item.clubSecondaryColour ||
-          item.lastTransfer?.toColour ||
-          item.lastTransfer?.toSecondaryColour
-        )
-      ) || {};
-    }
-
-    
-function renderStatsClubColours(row) {
-  const primary =
-    row?.clubColors?.primary ||
-    row?.clubPrimaryColour ||
-    row?.clubPrimaryColor ||
-    '';
-
-  const secondary =
-    row?.clubColors?.secondary ||
-    row?.clubSecondaryColour ||
-    row?.clubSecondaryColor ||
-    '';
-
-  if (!primary && !secondary) return '';
-
-  return `
-    <span class="club-colour-dots">
-      ${primary ? `<span style="background:${primary}"></span>` : ''}
-      ${secondary ? `<span style="background:${secondary}"></span>` : ''}
-    </span>
-  `;
-}
-
-
-    function parseFMHubDOB(value) {
-      if (!value) return null;
-      const raw = String(value).trim();
-      if (!raw) return null;
-
-      let date = new Date(raw);
-      if (!Number.isNaN(date.getTime())) return date;
-
-      const match = raw.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/);
-      if (match) {
-        date = new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]));
-        if (!Number.isNaN(date.getTime())) return date;
-      }
-
-      return null;
-    }
-
-    function getAgeSeasonDate(season) {
-      const raw = String(season || '').trim();
-      const match = raw.match(/(19|20)\d{2}/);
-      if (!match) return new Date();
-
-      const year = Number(match[0]);
-
-      // 2026/27 style seasons use July 1st. Single-year seasons use January 1st.
-      return /[\/\-–—]/.test(raw) ? new Date(year, 6, 1) : new Date(year, 0, 1);
-    }
-
-    function calculateAgeForSeason(dob, season) {
-      const birth = parseFMHubDOB(dob);
-      const ref = getAgeSeasonDate(season);
-      if (!birth || Number.isNaN(ref.getTime())) return '-';
-
-      let age = ref.getFullYear() - birth.getFullYear();
-      const monthDiff = ref.getMonth() - birth.getMonth();
-
-      if (monthDiff < 0 || (monthDiff === 0 && ref.getDate() < birth.getDate())) age -= 1;
-
-      return age >= 0 ? String(age) : '-';
-    }
-
-    function getDOBForPlayerName(playerName) {
-      const cleanName = normaliseText(playerName);
-      if (!cleanName) return '';
-
-      const sources = [
-        ...(typeof getPeople === 'function' ? getPeople() : []),
-        ...(typeof getSquadPlayers === 'function' ? getSquadPlayers() : [])
-      ];
-
-      const player = sources.find(item =>
-        normaliseText(item.name || item.fullName || item.playerName || item.personName || '') === cleanName
-      );
-
-      if (!player) return '';
-
-      const attrs = player.attributes || {};
-      const profile = attrs.Profile || attrs.profile || player.profile || {};
-
-      return (
-        player.dateOfBirth ||
-        player.dob ||
-        player.birthDate ||
-        player['Date Of Birth'] ||
-        player['Date of Birth'] ||
-        player.DOB ||
-        profile.dateOfBirth ||
-        profile.dob ||
-        profile.birthDate ||
-        profile['Date Of Birth'] ||
-        profile['Date of Birth'] ||
-        profile.DOB ||
-        ''
-      );
-    }
-
-    function getPlayerAgeForSeason(playerName, season) {
-      const dob = getDOBForPlayerName(playerName);
-      return dob ? calculateAgeForSeason(dob, season) : '-';
-    }
-
-
-function renderSavePlayerStats(save) {
+    function renderSavePlayerStats(save) {
       const tbody = document.getElementById('savePlayerStatsBody');
       if (!tbody) return;
 
@@ -6190,7 +5858,7 @@ function renderSavePlayerStats(save) {
       renderStatsSummary(rows);
 
       if (!rows.length) {
-        tbody.innerHTML = '<tr><td colspan="11" style="padding:14px; color:var(--muted);">No stats recorded for this filter.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" style="padding:14px; color:var(--muted);">No stats recorded for this filter.</td></tr>';
         renderCareerStats([]);
         applyAdminMode();
         return;
@@ -6198,22 +5866,21 @@ function renderSavePlayerStats(save) {
 
       tbody.innerHTML = rows.map(row => `
         <tr title="${escapeHtml(row.notes || '')}">
-          <td data-label="Player">
+          <td>
             <div class="stat-player-cell">
               <strong>${escapeHtml(row.personName || '-')}</strong>
               <span>${escapeHtml(row.type || 'Player')}</span>
             </div>
           </td>
-          <td data-label="Season"><span class="chip">${escapeHtml(row.season || '-')}</span></td>
-          <td data-label="Age"><span class="stat-number-pill">${escapeHtml(getPlayerAgeForSeason(row.personName, row.season))}</span></td>
-          <td data-label="Club">${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td>
-          <td data-label="Position">${escapeHtml(row.position || '-')}</td>
-          <td data-label="Apps"><span class="stat-number-pill">${escapeHtml(row.apps || '0')}</span></td>
-          <td data-label="Goals"><span class="stat-number-pill">${escapeHtml(row.goals || '0')}</span></td>
-          <td data-label="Assists"><span class="stat-number-pill">${escapeHtml(row.assists || '0')}</span></td>
-          <td data-label="Rating"><span class="stat-number-pill">${escapeHtml(row.rating || '-')}</span></td>
-          <td data-label="Clean Sheets"><span class="stat-number-pill">${escapeHtml(row.cleanSheets || '-')}</span></td>
-          <td data-label="Actions" class="admin-only edit-only">${row.origin === 'save' ? `<button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})">Delete</button>` : '<span class="chip">Squad</span>'}</td>
+          <td><span class="chip">${escapeHtml(row.season || '-')}</span></td>
+          <td>${escapeHtml(row.club || '-')}${renderClubColours(row.club || '')}</td>
+          <td>${escapeHtml(row.position || '-')}</td>
+          <td><span class="stat-number-pill">${escapeHtml(row.apps || '0')}</span></td>
+          <td><span class="stat-number-pill">${escapeHtml(row.goals || '0')}</span></td>
+          <td><span class="stat-number-pill">${escapeHtml(row.assists || '0')}</span></td>
+          <td><span class="stat-number-pill">${escapeHtml(row.rating || '-')}</span></td>
+          <td><span class="stat-number-pill">${escapeHtml(row.cleanSheets || '-')}</span></td>
+          <td class="admin-only edit-only">${row.origin === 'save' ? `<button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})">Delete</button>` : '<span class="chip">Squad</span>'}</td>
         </tr>
       `).join('');
 
@@ -6436,7 +6103,7 @@ function renderSavePlayerStats(save) {
 
         <div class="save-person-section">
           <div class="save-person-section-head"><div><div class="section-kicker">Season Stats</div><h3>Save-Specific Season Records</h3></div></div>
-          <div class="table-wrap" style="margin-top:0;"><table><thead><tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Notes</th></tr></thead><tbody>${stats.length ? stats.map(row => `<tr><td>${escapeHtml(row.season || '-')}</td><td>${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td><td>${escapeHtml(row.position || '-')}</td><td data-label="Apps">${escapeHtml(row.apps || '0')}</td><td data-label="Goals">${escapeHtml(row.goals || '0')}</td><td data-label="Assists">${escapeHtml(row.assists || '0')}</td><td>${escapeHtml(row.rating || '-')}</td><td>${escapeHtml(row.notes || '-')}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No save-specific stats for this person yet.</td></tr>'}</tbody></table></div>
+          <div class="table-wrap" style="margin-top:0;"><table><thead><tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Notes</th></tr></thead><tbody>${stats.length ? stats.map(row => `<tr><td>${escapeHtml(row.season || '-')}</td><td>${escapeHtml(row.club || '-')}</td><td>${escapeHtml(row.position || '-')}</td><td>${escapeHtml(row.apps || '0')}</td><td>${escapeHtml(row.goals || '0')}</td><td>${escapeHtml(row.assists || '0')}</td><td>${escapeHtml(row.rating || '-')}</td><td>${escapeHtml(row.notes || '-')}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No save-specific stats for this person yet.</td></tr>'}</tbody></table></div>
         </div>
 
         <div class="save-person-section">
@@ -6500,6 +6167,7 @@ function renderSavePlayerStats(save) {
       const trophies = seasons.flatMap(season => splitTrophies(season.trophies).map(trophy => ({ trophy, season: season.season || '-' })));
       const stats = getAllStatsForSave(save);
       const transferCount = Array.isArray(save.transfers) ? save.transfers.length : 0;
+      const internationalCount = Array.isArray(save.internationalStats) ? save.internationalStats.length : 0;
 
       document.getElementById('saveClubProfileTitle').textContent = clubName;
       document.getElementById('saveClubProfileSubtitle').textContent = `${club.league || save.type || 'Club'} • ${save.name}`;
@@ -6562,10 +6230,6 @@ function renderSavePlayerStats(save) {
         apps: document.getElementById('statAppsInput').value.trim(),
         goals: document.getElementById('statGoalsInput').value.trim(),
         assists: document.getElementById('statAssistsInput').value.trim(),
-        clubColors: {
-          primary: document.getElementById('statClubPrimaryColourInput')?.value || '',
-          secondary: document.getElementById('statClubSecondaryColourInput')?.value || ''
-        },
         rating: document.getElementById('statRatingInput').value.trim(),
         cleanSheets: document.getElementById('statCleanSheetsInput')?.value.trim() || '',
         notes: document.getElementById('statNotesInput').value.trim()
@@ -6585,10 +6249,6 @@ function renderSavePlayerStats(save) {
       }
       updateCurrentSave(save);
       ['statSeasonInput','statClubInput','statPositionInput','statAppsInput','statGoalsInput','statAssistsInput','statRatingInput','statCleanSheetsInput','statNotesInput'].forEach(id => document.getElementById(id).value = '');
-      const statPrimaryColour = document.getElementById('statClubPrimaryColourInput');
-      const statSecondaryColour = document.getElementById('statClubSecondaryColourInput');
-      if (statPrimaryColour) statPrimaryColour.value = '#ff3b3b';
-      if (statSecondaryColour) statSecondaryColour.value = '#ffffff';
       openSaveProfile(currentSaveIndex);
       setSaveEditMode(true);
       loadSaves();
@@ -6795,6 +6455,7 @@ function renderSavePlayerStats(save) {
           <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('club')" data-save-tab-button="club">Club</button>
           <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('seasons')" data-save-tab-button="seasons">Seasons</button>
           <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('stats')" data-save-tab-button="stats">Stats</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('international')" data-save-tab-button="international">International</button>
           <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('transfers')" data-save-tab-button="transfers">Transfers</button>
           <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('story')" data-save-tab-button="story">Story</button>
         </div>
@@ -6805,6 +6466,7 @@ function renderSavePlayerStats(save) {
         <div id="saveTabClub" class="save-tab-panel" data-save-tab-panel="club"></div>
         <div id="saveTabSeasons" class="save-tab-panel" data-save-tab-panel="seasons"></div>
         <div id="saveTabStats" class="save-tab-panel" data-save-tab-panel="stats"></div>
+        <div id="saveTabInternational" class="save-tab-panel" data-save-tab-panel="international"></div>
         <div id="saveTabTransfers" class="save-tab-panel" data-save-tab-panel="transfers"></div>
         <div id="saveTabStory" class="save-tab-panel" data-save-tab-panel="story"></div>
       `;
@@ -6836,11 +6498,12 @@ function renderSavePlayerStats(save) {
         { tab: 'club', label: 'Club', icon: 'Club', value: clubName, note: 'View the club identity pulled from the Squad page.' },
         { tab: 'seasons', label: 'Seasons', icon: 'Seasons', value: `${seasonCount} seasons`, note: `${awardCount} awards • ${matchCount} big matches` },
         { tab: 'stats', label: 'Stats', icon: 'Stats', value: `${statCount} records`, note: 'Save-only apps, goals, assists, ratings, and notes.' },
+        { tab: 'international', label: 'International', icon: 'International', value: `${internationalCount} records`, note: 'Senior, U21, youth caps, goals, and clean sheets.' },
         { tab: 'transfers', label: 'Transfers', icon: 'Transfers', value: `${transferCount} moves`, note: 'Transfer cards, fees, windows, and club movement.' },
         { tab: 'story', label: 'Story', icon: 'Story', value: `${storyCount} events`, note: 'Timeline moments, rivalries, drama, and milestones.' }
       ];
 
-      const iconMap = { people: '👥', club: '🏟️', seasons: '📅', stats: '📊', transfers: '↔', story: '★' };
+      const iconMap = { people: '👥', club: '🏟️', seasons: '📅', stats: '📊', international: '🌍', transfers: '↔', story: '★' };
       grid.innerHTML = cards.map(card => `
         <button class="admin-only overview-shortcut-card" type="button" onclick="openSaveTab('${card.tab}')">
           <div class="shortcut-icon">${iconMap[card.tab] || '•'}</div>
@@ -6866,6 +6529,8 @@ function renderSavePlayerStats(save) {
       moveCardToTab(findSaveCardByKicker('Match Highlights'), 'seasons');
 
       moveCardToTab(findSaveCardByKicker('Save-Specific Stats'), 'stats');
+      renderInternationalStats(save);
+      moveCardToTab(document.getElementById('internationalStatsCard'), 'international');
       moveCardToTab(document.querySelector('#saveProfile .transfers-card'), 'transfers');
       moveCardToTab(findSaveCardByKicker('Save Story'), 'story');
 
@@ -6874,7 +6539,7 @@ function renderSavePlayerStats(save) {
     }
 
     function openSaveTab(tabName, shouldScroll = true) {
-      const safeTab = ['overview','people','club','seasons','stats','transfers','story'].includes(tabName) ? tabName : 'overview';
+      const safeTab = ['overview','people','club','seasons','stats','international','transfers','story'].includes(tabName) ? tabName : 'overview';
       currentSaveTab = safeTab;
       document.querySelectorAll('[data-save-tab-panel]').forEach(panel => panel.classList.toggle('active', panel.dataset.saveTabPanel === safeTab));
       document.querySelectorAll('[data-save-tab-button]').forEach(btn => btn.classList.toggle('active', btn.dataset.saveTabButton === safeTab));
@@ -7002,4 +6667,4 @@ function renderSavePlayerStats(save) {
 
   <footer><div class="container">FM Saves • Career tracker</div></footer>
 </body>
-</html> 
+</html>
