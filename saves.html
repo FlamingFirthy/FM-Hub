@@ -3526,23 +3526,38 @@ vertical-align:middle;
             <div class="wide"><label for="saveRecordNotes">Season Notes</label><textarea id="saveRecordNotes" placeholder="Big moments, transfers, milestones..."></textarea></div>
           </div>
           <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addSaveSeasonRecord()">Add Season</button></div>
+            <div class="stats-refurb-toolbar">
+              <div>
+                <label for="intlFilterPlayer">Search</label>
+                <input id="intlFilterPlayer" placeholder="Search player..." oninput="renderInternationalTable()">
+              </div>
+              <div>
+                <label for="intlFilterNation">Nation</label>
+                <select id="intlFilterNation" onchange="renderInternationalTable()">
+                  <option value="">All nations</option>
+                </select>
+              </div>
+              <div>
+                <label for="intlFilterSeason">Season</label>
+                <select id="intlFilterSeason" onchange="renderInternationalTable()">
+                  <option value="">All seasons</option>
+                </select>
+              </div>
+              <div>
+                <label for="intlFilterLevel">Level</label>
+                <select id="intlFilterLevel" onchange="renderInternationalTable()">
+                  <option value="">All levels</option>
+                  <option value="Senior">Senior</option>
+                  <option value="U21">U21</option>
+                  <option value="U20">U20</option>
+                  <option value="U19">U19</option>
+                  <option value="U18">U18</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
 
-          
-    <div class="stats-refurb-toolbar">
-      <input id="intlFilterPlayer" placeholder="Filter player..." oninput="renderInternationalTable()">
-      <input id="intlFilterNation" placeholder="Filter nation..." oninput="renderInternationalTable()">
-      <select id="intlFilterLevel" onchange="renderInternationalTable()">
-        <option value="">All Levels</option>
-        <option value="Senior">Senior</option>
-        <option value="U21">U21</option>
-        <option value="U20">U20</option>
-        <option value="U19">U19</option>
-        <option value="U18">U18</option>
-        <option value="Other">Other</option>
-      </select>
-    </div>
-
-    <div class="table-wrap">
+            <div class="table-wrap">
             <table>
               <thead><tr><th>Season</th><th>Club</th><th>Finish</th><th>Points</th><th>Trophies</th><th class="admin-only edit-only">Action</th></tr></thead>
               <tbody id="saveSeasonTableBody"></tbody>
@@ -3843,8 +3858,32 @@ function editInternationalStat(index){
   document.getElementById("intlCleanSheetsInput").value = r.cleanSheets || "";
   document.getElementById("intlCompetitionInput").value = r.competition || "";
 
-  deleteInternationalStat(index);
+  window.editingInternationalIndex = index;
+
+  const btn = document.getElementById("intlAddRecordBtn");
+  if(btn) btn.textContent = "Save International Edit";
+
+  const cancel = document.getElementById("intlCancelEditBtn");
+  if(cancel) cancel.classList.remove("hidden");
+
+  document.getElementById("intlPlayerInput")?.scrollIntoView({ behavior: "smooth", block: "center" });
 }
+
+function cancelInternationalEdit(){
+  window.editingInternationalIndex = null;
+
+  const btn = document.getElementById("intlAddRecordBtn");
+  if(btn) btn.textContent = "Add International Record";
+
+  const cancel = document.getElementById("intlCancelEditBtn");
+  if(cancel) cancel.classList.add("hidden");
+
+  ["intlSeasonInput","intlCapsInput","intlGoalsInput","intlAssistsInput","intlCleanSheetsInput","intlCompetitionInput"].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = "";
+  });
+}
+
 
 </script>
   <script>
@@ -3994,7 +4033,17 @@ function addInternationalStat(){
   if(!record.player || !record.nation || !record.season) return;
 
   save.internationalStats = Array.isArray(save.internationalStats) ? save.internationalStats : [];
-  save.internationalStats.push(record);
+  if (window.editingInternationalIndex !== null && window.editingInternationalIndex !== undefined && save.internationalStats[window.editingInternationalIndex]) {
+    save.internationalStats[window.editingInternationalIndex] = record;
+  } else {
+    save.internationalStats.push(record);
+  }
+
+  window.editingInternationalIndex = null;
+  const intlBtn = document.getElementById("intlAddRecordBtn");
+  if(intlBtn) intlBtn.textContent = "Add International Record";
+  const cancelBtn = document.getElementById("intlCancelEditBtn");
+  if(cancelBtn) cancelBtn.classList.add("hidden");
 
   saves[currentSaveIndex] = normaliseSave(save);
   saveNormalisedSaves(saves);
@@ -4019,6 +4068,7 @@ function deleteInternationalStat(index){
   if(!save || !Array.isArray(save.internationalStats)) return;
 
   save.internationalStats.splice(index,1);
+  if (window.editingInternationalIndex === index) window.editingInternationalIndex = null;
   saves[currentSaveIndex] = normaliseSave(save);
   saveNormalisedSaves(saves);
 
@@ -4028,25 +4078,56 @@ function deleteInternationalStat(index){
   applyAdminMode();
 }
 
+
+function updateInternationalFilters(records){
+  const nationSelect = document.getElementById("intlFilterNation");
+  const seasonSelect = document.getElementById("intlFilterSeason");
+
+  if(nationSelect){
+    const currentNation = nationSelect.value || "";
+    const nations = [...new Set((records || []).map(r => r.nation).filter(Boolean))]
+      .sort((a,b)=>String(a).localeCompare(String(b)));
+
+    nationSelect.innerHTML = '<option value="">All nations</option>' +
+      nations.map(nation => `<option value="${escapeHtml(nation)}">${escapeHtml(nation)}</option>`).join("");
+
+    nationSelect.value = ["", ...nations].includes(currentNation) ? currentNation : "";
+  }
+
+  if(seasonSelect){
+    const currentSeason = seasonSelect.value || "";
+    const seasons = [...new Set((records || []).map(r => typeof normaliseSeasonForFilter === "function" ? normaliseSeasonForFilter(r.season) : r.season).filter(Boolean))]
+      .sort((a,b)=> typeof compareSeasons === "function" ? compareSeasons(a,b,"desc") : String(b).localeCompare(String(a)));
+
+    seasonSelect.innerHTML = '<option value="">All seasons</option>' +
+      seasons.map(season => `<option value="${escapeHtml(season)}">${escapeHtml(season)}</option>`).join("");
+
+    seasonSelect.value = ["", ...seasons].includes(currentSeason) ? currentSeason : "";
+  }
+}
+
 function renderInternationalTable(){
   const body = document.getElementById("internationalTableBody");
   const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
   if(!body || !save) return;
 
   
-  let rows = Array.isArray(save.internationalStats) ? save.internationalStats : [];
+  let allRows = Array.isArray(save.internationalStats) ? save.internationalStats : [];
+  updateInternationalFilters(allRows);
 
   const fp = (document.getElementById("intlFilterPlayer")?.value || "").toLowerCase();
-  const fn = (document.getElementById("intlFilterNation")?.value || "").toLowerCase();
+  const fn = document.getElementById("intlFilterNation")?.value || "";
+  const fs = document.getElementById("intlFilterSeason")?.value || "";
   const fl = document.getElementById("intlFilterLevel")?.value || "";
 
-  rows = rows.filter(r =>
-    (!fp || (r.player||"").toLowerCase().includes(fp)) &&
-    (!fn || (r.nation||"").toLowerCase().includes(fn)) &&
-    (!fl || (r.level||"") === fl)
+  let rows = allRows.filter(r =>
+    (!fp || (r.player || "").toLowerCase().includes(fp)) &&
+    (!fn || (r.nation || "") === fn) &&
+    (!fs || (typeof normaliseSeasonForFilter === "function" ? normaliseSeasonForFilter(r.season) : r.season) === fs) &&
+    (!fl || (r.level || "") === fl)
   );
 
-
+  rows = rows.map(row => ({ ...row, __originalIndex: allRows.indexOf(row) }));
   if(!rows.length){
     body.innerHTML = '<tr><td colspan="10" style="padding:14px;color:var(--muted);">No international records yet.</td></tr>';
     populateInternationalPlayerDropdown();
@@ -4064,7 +4145,7 @@ function renderInternationalTable(){
       <td data-label="Assists"><span class="stat-number-pill">${escapeHtml(r.assists || 0)}</span></td>
       <td data-label="Clean Sheets"><span class="stat-number-pill">${escapeHtml(r.cleanSheets || 0)}</span></td>
       <td data-label="Competition">${escapeHtml(r.competition || "-")}</td>
-      <td data-label="Actions" class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="editInternationalStat(${i})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteInternationalStat(${i})">Delete</button></td>
+      <td data-label="Actions" class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="editInternationalStat(${r.__originalIndex ?? i})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteInternationalStat(${r.__originalIndex ?? i})">Delete</button></td>
     </tr>
   `).join("");
 
@@ -7099,7 +7180,8 @@ function renderSavePlayerStats(save) {
             </div>
 
             <div class="hero-actions edit-only" style="margin-top:12px;">
-              <button class="admin-only primary" type="button" onclick="addInternationalStat()">Add International Record</button>
+              <button id="intlAddRecordBtn" class="admin-only primary" type="button" onclick="addInternationalStat()">Add International Record</button>
+              <button id="intlCancelEditBtn" class="admin-only secondary hidden" type="button" onclick="cancelInternationalEdit()">Cancel Edit</button>
             </div>
 
             <div class="table-wrap">
