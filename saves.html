@@ -3816,19 +3816,65 @@ vertical-align:middle;
             <div>
               <div class="eyebrow">International</div>
               <h3>International Stats</h3>
-              <p class="muted">Track caps, goals and international records separately from club stats.</p>
+              <p class="muted">Track senior and youth international records separately from club stats.</p>
             </div>
           </div>
 
           <div class="form-grid edit-only">
-            <div><label>Player</label><input id="intlPlayerInput" placeholder="Player"></div>
-            <div><label>Nation</label><input id="intlNationInput" placeholder="England"></div>
-            <div><label>Season</label><input id="intlSeasonInput" placeholder="2026/27"></div>
-            <div><label>Caps</label><input id="intlCapsInput" type="number" placeholder="10"></div>
-            <div><label>Goals</label><input id="intlGoalsInput" type="number" placeholder="2"></div>
-            <div><label>Assists</label><input id="intlAssistsInput" type="number" placeholder="1"></div>
-            <div><label>Clean Sheets</label><input id="intlCleanSheetsInput" type="number" placeholder="0"></div>
-            <div><label>Competition</label><input id="intlCompetitionInput" placeholder="World Cup"></div>
+            <div>
+              <label for="intlPlayerInput">Player</label>
+              <select id="intlPlayerInput" onchange="handleInternationalPlayerChange()">
+                <option value="">Select player...</option>
+              </select>
+            </div>
+            <div>
+              <label for="intlNationInput">Nation</label>
+              <select id="intlNationInput">
+                <option value="">Select nation...</option>
+                <option value="England">England</option>
+                <option value="Scotland">Scotland</option>
+                <option value="Wales">Wales</option>
+                <option value="Ireland">Ireland</option>
+                <option value="Northern Ireland">Northern Ireland</option>
+                <option value="France">France</option>
+                <option value="Germany">Germany</option>
+                <option value="Spain">Spain</option>
+                <option value="Italy">Italy</option>
+                <option value="Portugal">Portugal</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="Belgium">Belgium</option>
+                <option value="Brazil">Brazil</option>
+                <option value="Argentina">Argentina</option>
+                <option value="Uruguay">Uruguay</option>
+                <option value="USA">USA</option>
+                <option value="Mexico">Mexico</option>
+                <option value="Japan">Japan</option>
+                <option value="South Korea">South Korea</option>
+                <option value="Australia">Australia</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="intlLevelInput">Level</label>
+              <select id="intlLevelInput">
+                <option value="Senior">Senior</option>
+                <option value="U21">U21</option>
+                <option value="U20">U20</option>
+                <option value="U19">U19</option>
+                <option value="U18">U18</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div><label for="intlSeasonInput">Season</label><input id="intlSeasonInput" placeholder="2026/27"></div>
+            <div><label for="intlCapsInput">Caps</label><input id="intlCapsInput" type="number" min="0" placeholder="10"></div>
+            <div><label for="intlGoalsInput">Goals</label><input id="intlGoalsInput" type="number" min="0" placeholder="2"></div>
+            <div><label for="intlAssistsInput">Assists</label><input id="intlAssistsInput" type="number" min="0" placeholder="1"></div>
+            <div><label for="intlCleanSheetsInput">Clean Sheets</label><input id="intlCleanSheetsInput" type="number" min="0" placeholder="0"></div>
+            <div class="wide"><label for="intlCompetitionInput">Competition / Notes</label><input id="intlCompetitionInput" placeholder="World Cup, U21 Euros, qualifiers..."></div>
+          </div>
+
+          <div class="hero-actions edit-only" style="margin-top:12px;">
+            <button class="admin-only primary" type="button" onclick="addInternationalStat()">Add International Record</button>
           </div>
 
           <div class="table-wrap">
@@ -3837,49 +3883,180 @@ vertical-align:middle;
                 <tr>
                   <th>Player</th>
                   <th>Nation</th>
+                  <th>Level</th>
                   <th>Season</th>
                   <th>Caps</th>
                   <th>Goals</th>
                   <th>Assists</th>
                   <th>Clean Sheets</th>
                   <th>Competition</th>
+                  <th class="admin-only edit-only">Actions</th>
                 </tr>
               </thead>
               <tbody id="internationalTableBody">
-                <tr><td colspan="8" style="padding:14px;color:var(--muted);">No international records yet.</td></tr>
+                <tr><td colspan="10" style="padding:14px;color:var(--muted);">No international records yet.</td></tr>
               </tbody>
             </table>
           </div>
         </div>
-      </section>
+</section>
 </main>
 
-  <script type="module" src="firebase.js">
+  <script type="module" src="firebase.js"></script>
+  <script>
+
+
+
+function getNationPrimaryColour(nation){
+  const colours = {
+    "England":"#ffffff",
+    "Scotland":"#0057b8",
+    "Wales":"#d21034",
+    "Ireland":"#009a44",
+    "Northern Ireland":"#009639",
+    "France":"#0033a0",
+    "Germany":"#000000",
+    "Spain":"#aa151b",
+    "Italy":"#008C45",
+    "Portugal":"#006600",
+    "Netherlands":"#ff6600",
+    "Belgium":"#fae042",
+    "Brazil":"#ffcc00",
+    "Argentina":"#75aadb",
+    "Uruguay":"#75aadb",
+    "USA":"#3c3b6e",
+    "Mexico":"#006341",
+    "Japan":"#bc002d",
+    "South Korea":"#c60c30",
+    "Australia":"#ffcd00",
+    "Other":"#888888"
+  };
+  return colours[nation] || "#888888";
+}
+
+function renderNationWithDot(nation){
+  const safeNation = typeof escapeHtml === "function" ? escapeHtml(nation || "-") : String(nation || "-");
+  const colour = getNationPrimaryColour(nation || "");
+  return `<span class="intl-nation-dot" style="background:${colour}"></span>${safeNation}`;
+}
+
+function getInternationalProfileValue(person, keys){
+  if(!person) return "";
+  const attrs = person.attributes || {};
+  const profile = attrs.Profile || attrs.profile || person.profile || {};
+  for(const key of keys){
+    if(person[key] !== undefined && person[key] !== null && String(person[key]).trim()) return person[key];
+    if(attrs[key] !== undefined && attrs[key] !== null && String(attrs[key]).trim()) return attrs[key];
+    if(profile[key] !== undefined && profile[key] !== null && String(profile[key]).trim()) return profile[key];
+  }
+  return "";
+}
+
+function findInternationalPlayerByName(playerName){
+  const clean = typeof normaliseText === "function" ? normaliseText(playerName) : String(playerName || "").toLowerCase().trim();
+  const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
+  const linked = typeof getLinkedPeopleForSave === "function" && save ? getLinkedPeopleForSave(save) : [];
+  const people = typeof getPeople === "function" ? getPeople() : [];
+  const squad = typeof getSquadPlayers === "function" ? getSquadPlayers() : [];
+  const sources = [...linked, ...people, ...squad];
+
+  return sources.find(item => {
+    const name = item.name || item.playerName || item.fullName || item.personName || "";
+    const itemClean = typeof normaliseText === "function" ? normaliseText(name) : String(name).toLowerCase().trim();
+    return itemClean === clean;
+  }) || null;
+}
+
+function getNationFromPlayerProfile(playerName){
+  const player = findInternationalPlayerByName(playerName);
+  if(!player) return "";
+
+  return getInternationalProfileValue(player, [
+    "Nation",
+    "Nationality",
+    "nationality",
+    "nation",
+    "Country",
+    "country",
+    "International Nation",
+    "internationalNation"
+  ]);
+}
+
+function setInternationalNationDropdownValue(nation){
+  const select = document.getElementById("intlNationInput");
+  if(!select || !nation) return;
+
+  const existing = Array.from(select.options).find(option =>
+    String(option.value).toLowerCase() === String(nation).toLowerCase()
+  );
+
+  if(existing){
+    select.value = existing.value;
+  } else {
+    const option = document.createElement("option");
+    option.value = nation;
+    option.textContent = nation;
+    select.appendChild(option);
+    select.value = nation;
+  }
+}
+
+function handleInternationalPlayerChange(){
+  const playerName = document.getElementById("intlPlayerInput")?.value || "";
+  const nation = getNationFromPlayerProfile(playerName);
+  if(nation) setInternationalNationDropdownValue(nation);
+}
+
+function populateInternationalPlayerDropdown(){
+  const select = document.getElementById("intlPlayerInput");
+  if(!select) return;
+
+  const current = select.value || "";
+  const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
+  if(!save) return;
+
+  const linked = typeof getLinkedPeopleForSave === "function" ? getLinkedPeopleForSave(save) : [];
+  const names = [...new Set(linked.map(p => p.name || p.playerName || "").filter(Boolean))]
+    .sort((a,b)=>a.localeCompare(b));
+
+  select.innerHTML =
+    '<option value="">Select player...</option>' +
+    names.map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join("");
+
+  if(names.includes(current)) select.value = current;
+}
+
 function addInternationalStat(){
-  const save = getCurrentSave?.();
+  const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
   if(!save) return;
 
   save.internationalStats = Array.isArray(save.internationalStats) ? save.internationalStats : [];
 
-  save.internationalStats.push({
-    player: document.getElementById('intlPlayerInput')?.value || '',
-    nation: document.getElementById('intlNationInput')?.value || '',
-    level: document.getElementById('intlLevelInput')?.value || 'Senior',
-    season: document.getElementById('intlSeasonInput')?.value || '',
-    caps: document.getElementById('intlCapsInput')?.value || 0,
-    goals: document.getElementById('intlGoalsInput')?.value || 0,
-    assists: document.getElementById('intlAssistsInput')?.value || 0,
-    cleanSheets: document.getElementById('intlCleanSheetsInput')?.value || 0
-  });
+  const record = {
+    player: document.getElementById("intlPlayerInput")?.value || "",
+    nation: document.getElementById("intlNationInput")?.value || "",
+    level: document.getElementById("intlLevelInput")?.value || "Senior",
+    season: document.getElementById("intlSeasonInput")?.value || "",
+    caps: document.getElementById("intlCapsInput")?.value || 0,
+    goals: document.getElementById("intlGoalsInput")?.value || 0,
+    assists: document.getElementById("intlAssistsInput")?.value || 0,
+    cleanSheets: document.getElementById("intlCleanSheetsInput")?.value || 0,
+    competition: document.getElementById("intlCompetitionInput")?.value || ""
+  };
 
+  if(!record.player || !record.nation || !record.season) return;
+
+  save.internationalStats.push(record);
   updateCurrentSave(save);
   renderInternationalTable();
   populateInternationalPlayerDropdown();
 }
 
 function deleteInternationalStat(index){
-  const save = getCurrentSave?.();
+  const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
   if(!save || !Array.isArray(save.internationalStats)) return;
+
   save.internationalStats.splice(index,1);
   updateCurrentSave(save);
   renderInternationalTable();
@@ -3887,65 +4064,36 @@ function deleteInternationalStat(index){
 }
 
 function renderInternationalTable(){
-  const body = document.getElementById('internationalTableBody');
-  const save = getCurrentSave?.();
+  const body = document.getElementById("internationalTableBody");
+  const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
   if(!body || !save) return;
 
   const rows = Array.isArray(save.internationalStats) ? save.internationalStats : [];
 
   if(!rows.length){
-    body.innerHTML = '<tr><td colspan="9">No international records yet.</td></tr>';
+    body.innerHTML = '<tr><td colspan="10" style="padding:14px;color:var(--muted);">No international records yet.</td></tr>';
+    populateInternationalPlayerDropdown();
     return;
   }
 
   body.innerHTML = rows.map((r,i)=>`
     <tr>
-      <td>${r.player||''}</td>
-      <td>${r.nation||''}</td>
-      <td>${r.level||''}</td>
-      <td>${r.season||''}</td>
-      <td>${r.caps||0}</td>
-      <td>${r.goals||0}</td>
-      <td>${r.assists||0}</td>
-      <td>${r.cleanSheets||0}</td>
-      <td><button type="button" onclick="deleteInternationalStat(${i})">Delete</button></td>
+      <td data-label="Player"><strong>${escapeHtml(r.player || "")}</strong></td>
+      <td data-label="Nation">${renderNationWithDot(r.nation || "")}</td>
+      <td data-label="Level"><span class="chip">${escapeHtml(r.level || "Senior")}</span></td>
+      <td data-label="Season"><span class="chip">${escapeHtml(r.season || "")}</span></td>
+      <td data-label="Caps"><span class="stat-number-pill">${escapeHtml(r.caps || 0)}</span></td>
+      <td data-label="Goals"><span class="stat-number-pill">${escapeHtml(r.goals || 0)}</span></td>
+      <td data-label="Assists"><span class="stat-number-pill">${escapeHtml(r.assists || 0)}</span></td>
+      <td data-label="Clean Sheets"><span class="stat-number-pill">${escapeHtml(r.cleanSheets || 0)}</span></td>
+      <td data-label="Competition">${escapeHtml(r.competition || "-")}</td>
+      <td data-label="Actions" class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteInternationalStat(${i})">Delete</button></td>
     </tr>
-  `).join('');
+  `).join("");
+
+  populateInternationalPlayerDropdown();
+  if(typeof applyAdminMode === "function") applyAdminMode();
 }
-
-
-function populateInternationalPlayerDropdown(){
-  const select = document.getElementById('intlPlayerInput');
-  if(!select) return;
-
-  const save = getCurrentSave?.();
-  if(!save) return;
-
-  const linked = typeof getLinkedPeopleForSave === 'function'
-    ? getLinkedPeopleForSave(save)
-    : [];
-
-  const names = [...new Set(
-    linked.map(p => p.name || p.playerName || '').filter(Boolean)
-  )].sort((a,b)=>a.localeCompare(b));
-
-  select.innerHTML =
-    '<option value="">Select player...</option>' +
-    names.map(name => `<option value="${name}">${name}</option>`).join('');
-}
-
-
-function getNationPrimaryColour(nation){
- const colours={
-  England:'#ffffff',Scotland:'#0057b8',Ireland:'#009a44',Wales:'#d21034',
-  France:'#0033a0',Germany:'#000000',Spain:'#aa151b',Italy:'#008C45',
-  Brazil:'#ffcc00',Argentina:'#75aadb'
- };
- return colours[nation]||'#888888';
-}
-
-</script>
-  <script>
 
     const ADMIN_PASSWORD = "Barnsley";
 
@@ -4585,6 +4733,8 @@ function getNationPrimaryColour(nation){
       renderSeasonAwards(save);
       renderMatchHighlights(save);
       organiseOpenedSaveTabs(save);
+      renderInternationalTable();
+      populateInternationalPlayerDropdown();
       document.getElementById('saveProfile').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
