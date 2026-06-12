@@ -4123,6 +4123,22 @@ function deleteInternationalStat(index){
   applyAdminMode();
 }
 
+
+function updateInternationalFilterDropdowns(rows){
+  const players=[...new Set(rows.map(r=>r.player).filter(Boolean))].sort();
+  const nations=[...new Set(rows.map(r=>r.nation).filter(Boolean))].sort();
+  const seasons=[...new Set(rows.map(r=>r.season).filter(Boolean))].sort().reverse();
+
+  [["intlFilterPlayer",players],["intlFilterNation",nations],["intlFilterSeason",seasons]].forEach(([id,list])=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    const current=el.value;
+    const first=el.options[0]?.textContent||"All";
+    el.innerHTML=`<option value="">${first}</option>`+list.map(v=>`<option value="${v}">${v}</option>`).join("");
+    el.value=list.includes(current)?current:"";
+  });
+}
+
 function renderInternationalTable(){
   const body = document.getElementById("internationalTableBody");
   const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
