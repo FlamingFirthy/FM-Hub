@@ -3582,7 +3582,8 @@ vertical-align:middle;
           <div><label for="highlightCompetitionInput">Competition</label><input id="highlightCompetitionInput" placeholder="FA Cup / League / UCL"></div>
           <div><label for="highlightFixtureInput">Fixture</label><input id="highlightFixtureInput" placeholder="Barnsley vs Leeds"></div>
           <div><label for="highlightScoreInput">Score</label><input id="highlightScoreInput" placeholder="3-2"></div>
-          <div><label for="highlightTypeInput">Match Type</label><select id="highlightTypeInput"><option value="Famous Win">Famous Win</option><option value="Cup Final">Cup Final</option><option value="Derby">Derby</option><option value="Comeback">Comeback</option><option value="Upset">Upset</option><option value="Bad Loss">Bad Loss</option><option value="Promotion Decider">Promotion Decider</option><option value="Other">Other</option></select></div>
+          <div><label for="highlightTypeInput">Match Type</label><select id="highlightTypeInput"><option value="Famous Win">Famous Win</option><option value="Cup Final">Cup Final</option><option value="Derby">Derby</option><option value="Comeback">Comeback</option><option value="Upset">Upset</option><option value="Bad Loss">Bad Loss</option><option value="Promotion Decider">Promotion Decider</option><option value="New Zealand">New Zealand</option>
+                <option value="Other">Other</option></select></div>
           <div><label for="highlightStarInput">Star Player</label><input id="highlightStarInput" placeholder="Hat-trick hero / MOTM"></div>
           <div class="wide"><label for="highlightNotesInput">Match Notes</label><textarea id="highlightNotesInput" placeholder="What happened and why it mattered..."></textarea></div>
         </div>
@@ -3918,7 +3919,7 @@ function getNationPrimaryColour(nation){
     "Germany":"#000000",
     "Spain":"#aa151b",
     "Italy":"#008C45",
-    "Portugal":"#006600",
+    "Portugal":"#006600","Netherlands":"#ff6600","New Zealand":"#000000","Australia":"#ffcd00",
     "Netherlands":"#ff6600",
     "Belgium":"#fae042",
     "Brazil":"#ffcc00",
@@ -4049,6 +4050,8 @@ function addInternationalStat(){
 
   save.internationalStats.push(record);
   updateCurrentSave(save);
+  if(typeof saveData==='function') saveData();
+  if(typeof loadSaves==='function') loadSaves();
   renderInternationalTable();
   populateInternationalPlayerDropdown();
 }
@@ -4059,6 +4062,8 @@ function deleteInternationalStat(index){
 
   save.internationalStats.splice(index,1);
   updateCurrentSave(save);
+  if(typeof saveData==='function') saveData();
+  if(typeof loadSaves==='function') loadSaves();
   renderInternationalTable();
   populateInternationalPlayerDropdown();
 }
