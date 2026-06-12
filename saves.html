@@ -3527,7 +3527,22 @@ vertical-align:middle;
           </div>
           <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addSaveSeasonRecord()">Add Season</button></div>
 
-          <div class="table-wrap">
+          
+    <div class="stats-refurb-toolbar">
+      <input id="intlFilterPlayer" placeholder="Filter player..." oninput="renderInternationalTable()">
+      <input id="intlFilterNation" placeholder="Filter nation..." oninput="renderInternationalTable()">
+      <select id="intlFilterLevel" onchange="renderInternationalTable()">
+        <option value="">All Levels</option>
+        <option value="Senior">Senior</option>
+        <option value="U21">U21</option>
+        <option value="U20">U20</option>
+        <option value="U19">U19</option>
+        <option value="U18">U18</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
             <table>
               <thead><tr><th>Season</th><th>Club</th><th>Finish</th><th>Points</th><th>Trophies</th><th class="admin-only edit-only">Action</th></tr></thead>
               <tbody id="saveSeasonTableBody"></tbody>
@@ -3810,7 +3825,28 @@ vertical-align:middle;
     </div>
 </main>
 
-  <script type="module" src="firebase.js"></script>
+  <script type="module" src="firebase.js">
+function editInternationalStat(index){
+  if (currentSaveIndex === null || currentSaveIndex === undefined) return;
+  const save = getSaves().map(normaliseSave)[currentSaveIndex];
+  if(!save || !save.internationalStats || !save.internationalStats[index]) return;
+
+  const r = save.internationalStats[index];
+
+  document.getElementById("intlPlayerInput").value = r.player || "";
+  document.getElementById("intlNationInput").value = r.nation || "";
+  document.getElementById("intlLevelInput").value = r.level || "Senior";
+  document.getElementById("intlSeasonInput").value = r.season || "";
+  document.getElementById("intlCapsInput").value = r.caps || "";
+  document.getElementById("intlGoalsInput").value = r.goals || "";
+  document.getElementById("intlAssistsInput").value = r.assists || "";
+  document.getElementById("intlCleanSheetsInput").value = r.cleanSheets || "";
+  document.getElementById("intlCompetitionInput").value = r.competition || "";
+
+  deleteInternationalStat(index);
+}
+
+</script>
   <script>
 
 
@@ -3997,7 +4033,19 @@ function renderInternationalTable(){
   const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
   if(!body || !save) return;
 
-  const rows = Array.isArray(save.internationalStats) ? save.internationalStats : [];
+  
+  let rows = Array.isArray(save.internationalStats) ? save.internationalStats : [];
+
+  const fp = (document.getElementById("intlFilterPlayer")?.value || "").toLowerCase();
+  const fn = (document.getElementById("intlFilterNation")?.value || "").toLowerCase();
+  const fl = document.getElementById("intlFilterLevel")?.value || "";
+
+  rows = rows.filter(r =>
+    (!fp || (r.player||"").toLowerCase().includes(fp)) &&
+    (!fn || (r.nation||"").toLowerCase().includes(fn)) &&
+    (!fl || (r.level||"") === fl)
+  );
+
 
   if(!rows.length){
     body.innerHTML = '<tr><td colspan="10" style="padding:14px;color:var(--muted);">No international records yet.</td></tr>';
@@ -4016,7 +4064,7 @@ function renderInternationalTable(){
       <td data-label="Assists"><span class="stat-number-pill">${escapeHtml(r.assists || 0)}</span></td>
       <td data-label="Clean Sheets"><span class="stat-number-pill">${escapeHtml(r.cleanSheets || 0)}</span></td>
       <td data-label="Competition">${escapeHtml(r.competition || "-")}</td>
-      <td data-label="Actions" class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteInternationalStat(${i})">Delete</button></td>
+      <td data-label="Actions" class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="editInternationalStat(${i})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteInternationalStat(${i})">Delete</button></td>
     </tr>
   `).join("");
 
