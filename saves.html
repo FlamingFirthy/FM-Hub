@@ -3582,8 +3582,7 @@ vertical-align:middle;
           <div><label for="highlightCompetitionInput">Competition</label><input id="highlightCompetitionInput" placeholder="FA Cup / League / UCL"></div>
           <div><label for="highlightFixtureInput">Fixture</label><input id="highlightFixtureInput" placeholder="Barnsley vs Leeds"></div>
           <div><label for="highlightScoreInput">Score</label><input id="highlightScoreInput" placeholder="3-2"></div>
-          <div><label for="highlightTypeInput">Match Type</label><select id="highlightTypeInput"><option value="Famous Win">Famous Win</option><option value="Cup Final">Cup Final</option><option value="Derby">Derby</option><option value="Comeback">Comeback</option><option value="Upset">Upset</option><option value="Bad Loss">Bad Loss</option><option value="Promotion Decider">Promotion Decider</option><option value="New Zealand">New Zealand</option>
-                <option value="Other">Other</option></select></div>
+          <div><label for="highlightTypeInput">Match Type</label><select id="highlightTypeInput"><option value="Famous Win">Famous Win</option><option value="Cup Final">Cup Final</option><option value="Derby">Derby</option><option value="Comeback">Comeback</option><option value="Upset">Upset</option><option value="Bad Loss">Bad Loss</option><option value="Promotion Decider">Promotion Decider</option><option value="Other">Other</option></select></div>
           <div><label for="highlightStarInput">Star Player</label><input id="highlightStarInput" placeholder="Hat-trick hero / MOTM"></div>
           <div class="wide"><label for="highlightNotesInput">Match Notes</label><textarea id="highlightNotesInput" placeholder="What happened and why it mattered..."></textarea></div>
         </div>
@@ -3809,98 +3808,6 @@ vertical-align:middle;
         <div id="saveClubProfileContent"></div>
       </div>
     </div>
-
-  
-      <section class="save-tab-panel" id="internationalTab" style="display:none;">
-        <div class="section-card">
-          <div class="section-head">
-            <div>
-              <div class="eyebrow">International</div>
-              <h3>International Stats</h3>
-              <p class="muted">Track senior and youth international records separately from club stats.</p>
-            </div>
-          </div>
-
-          <div class="form-grid edit-only">
-            <div>
-              <label for="intlPlayerInput">Player</label>
-              <select id="intlPlayerInput" onchange="handleInternationalPlayerChange()">
-                <option value="">Select player...</option>
-              </select>
-            </div>
-            <div>
-              <label for="intlNationInput">Nation</label>
-              <select id="intlNationInput">
-                <option value="">Select nation...</option>
-                <option value="England">England</option>
-                <option value="Scotland">Scotland</option>
-                <option value="Wales">Wales</option>
-                <option value="Ireland">Ireland</option>
-                <option value="Northern Ireland">Northern Ireland</option>
-                <option value="France">France</option>
-                <option value="Germany">Germany</option>
-                <option value="Spain">Spain</option>
-                <option value="Italy">Italy</option>
-                <option value="Portugal">Portugal</option>
-                <option value="Netherlands">Netherlands</option>
-                <option value="Belgium">Belgium</option>
-                <option value="Brazil">Brazil</option>
-                <option value="Argentina">Argentina</option>
-                <option value="Uruguay">Uruguay</option>
-                <option value="USA">USA</option>
-                <option value="Mexico">Mexico</option>
-                <option value="Japan">Japan</option>
-                <option value="South Korea">South Korea</option>
-                <option value="Australia">Australia</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-            <div>
-              <label for="intlLevelInput">Level</label>
-              <select id="intlLevelInput">
-                <option value="Senior">Senior</option>
-                <option value="U21">U21</option>
-                <option value="U20">U20</option>
-                <option value="U19">U19</option>
-                <option value="U18">U18</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-            <div><label for="intlSeasonInput">Season</label><input id="intlSeasonInput" placeholder="2026/27"></div>
-            <div><label for="intlCapsInput">Caps</label><input id="intlCapsInput" type="number" min="0" placeholder="10"></div>
-            <div><label for="intlGoalsInput">Goals</label><input id="intlGoalsInput" type="number" min="0" placeholder="2"></div>
-            <div><label for="intlAssistsInput">Assists</label><input id="intlAssistsInput" type="number" min="0" placeholder="1"></div>
-            <div><label for="intlCleanSheetsInput">Clean Sheets</label><input id="intlCleanSheetsInput" type="number" min="0" placeholder="0"></div>
-            <div class="wide"><label for="intlCompetitionInput">Competition / Notes</label><input id="intlCompetitionInput" placeholder="World Cup, U21 Euros, qualifiers..."></div>
-          </div>
-
-          <div class="hero-actions edit-only" style="margin-top:12px;">
-            <button class="admin-only primary" type="button" onclick="addInternationalStat()">Add International Record</button>
-          </div>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Player</th>
-                  <th>Nation</th>
-                  <th>Level</th>
-                  <th>Season</th>
-                  <th>Caps</th>
-                  <th>Goals</th>
-                  <th>Assists</th>
-                  <th>Clean Sheets</th>
-                  <th>Competition</th>
-                  <th class="admin-only edit-only">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="internationalTableBody">
-                <tr><td colspan="10" style="padding:14px;color:var(--muted);">No international records yet.</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-</section>
 </main>
 
   <script type="module" src="firebase.js"></script>
@@ -3919,7 +3826,7 @@ function getNationPrimaryColour(nation){
     "Germany":"#000000",
     "Spain":"#aa151b",
     "Italy":"#008C45",
-    "Portugal":"#006600","Netherlands":"#ff6600","New Zealand":"#000000","Australia":"#ffcd00",
+    "Portugal":"#006600",
     "Netherlands":"#ff6600",
     "Belgium":"#fae042",
     "Brazil":"#ffcc00",
@@ -3930,6 +3837,7 @@ function getNationPrimaryColour(nation){
     "Japan":"#bc002d",
     "South Korea":"#c60c30",
     "Australia":"#ffcd00",
+    "New Zealand":"#000000",
     "Other":"#888888"
   };
   return colours[nation] || "#888888";
@@ -4029,10 +3937,11 @@ function populateInternationalPlayerDropdown(){
 }
 
 function addInternationalStat(){
-  const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
-  if(!save) return;
+  if (currentSaveIndex === null || currentSaveIndex === undefined) return;
 
-  save.internationalStats = Array.isArray(save.internationalStats) ? save.internationalStats : [];
+  const saves = getSaves().map(normaliseSave);
+  const save = saves[currentSaveIndex];
+  if(!save) return;
 
   const record = {
     player: document.getElementById("intlPlayerInput")?.value || "",
@@ -4048,24 +3957,39 @@ function addInternationalStat(){
 
   if(!record.player || !record.nation || !record.season) return;
 
+  save.internationalStats = Array.isArray(save.internationalStats) ? save.internationalStats : [];
   save.internationalStats.push(record);
-  updateCurrentSave(save);
-  if(typeof saveData==='function') saveData();
-  if(typeof loadSaves==='function') loadSaves();
+
+  saves[currentSaveIndex] = normaliseSave(save);
+  saveNormalisedSaves(saves);
+
+  document.getElementById("intlCapsInput").value = "";
+  document.getElementById("intlGoalsInput").value = "";
+  document.getElementById("intlAssistsInput").value = "";
+  document.getElementById("intlCleanSheetsInput").value = "";
+  document.getElementById("intlCompetitionInput").value = "";
+
   renderInternationalTable();
   populateInternationalPlayerDropdown();
+  buildOverviewShortcuts(getCurrentSave());
+  applyAdminMode();
 }
 
 function deleteInternationalStat(index){
-  const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
+  if (currentSaveIndex === null || currentSaveIndex === undefined) return;
+
+  const saves = getSaves().map(normaliseSave);
+  const save = saves[currentSaveIndex];
   if(!save || !Array.isArray(save.internationalStats)) return;
 
   save.internationalStats.splice(index,1);
-  updateCurrentSave(save);
-  if(typeof saveData==='function') saveData();
-  if(typeof loadSaves==='function') loadSaves();
+  saves[currentSaveIndex] = normaliseSave(save);
+  saveNormalisedSaves(saves);
+
   renderInternationalTable();
   populateInternationalPlayerDropdown();
+  buildOverviewShortcuts(getCurrentSave());
+  applyAdminMode();
 }
 
 function renderInternationalTable(){
@@ -4231,7 +4155,7 @@ function renderInternationalTable(){
 
     function normaliseSave(save) {
       if (typeof save === 'string') {
-        return { name: save, type: 'Main Save', club: '-', season: '-', status: 'Active', goal: '-', theme: 'red', logo: '', currentSituation: {}, transfers: [], timeline: [], seasons: [], linkedPeople: [], playerStats: [], seasonAwards: [], matchHighlights: [] };
+        return { name: save, type: 'Main Save', club: '-', season: '-', status: 'Active', goal: '-', theme: 'red', logo: '', currentSituation: {}, transfers: [], timeline: [], seasons: [], linkedPeople: [], playerStats: [], internationalStats: [], seasonAwards: [], matchHighlights: [] };
       }
       return {
         name: save.name || save.title || save.saveName || 'Unnamed Save',
@@ -7062,73 +6986,91 @@ function renderSavePlayerStats(save) {
         <div id="saveTabClub" class="save-tab-panel" data-save-tab-panel="club"></div>
         <div id="saveTabSeasons" class="save-tab-panel" data-save-tab-panel="seasons"></div>
         <div id="saveTabStats" class="save-tab-panel" data-save-tab-panel="stats"></div>
-        
-<div id="saveTabInternational" class="save-tab-panel" data-save-tab-panel="international">
-  <div class="detail-card">
-    <div class="section-head">
-      <div>
-        <div class="section-kicker">International</div>
-        <h3>International Stats</h3>
-        <p class="muted">Track senior and youth international records separately from club stats.</p>
-      </div>
-    </div>
+        <div id="saveTabInternational" class="save-tab-panel" data-save-tab-panel="international">
+          <div class="detail-card">
+            <div class="section-head">
+              <div>
+                <div class="section-kicker">International</div>
+                <h3>International Stats</h3>
+                <p class="muted">Track senior and youth international records separately from club stats.</p>
+              </div>
+            </div>
 
-    <div class="form-grid edit-only">
-      <div><label>Player</label>
-<select id="intlPlayerInput">
-  <option value="">Select player...</option>
-</select></div>
-      <div><label>Nation</label>
-<select id="intlNationInput">
-<option value="">Select nation...</option>
-<option data-colour="#ffffff" value="England">England</option>
-<option data-colour="#0057b8" value="Scotland">Scotland</option>
-<option data-colour="#009a44" value="Ireland">Ireland</option>
-<option data-colour="#d21034" value="Wales">Wales</option>
-<option data-colour="#0033a0" value="France">France</option>
-<option data-colour="#000000" value="Germany">Germany</option>
-<option data-colour="#aa151b" value="Spain">Spain</option>
-<option data-colour="#008C45" value="Italy">Italy</option>
-<option data-colour="#ffcc00" value="Brazil">Brazil</option>
-<option data-colour="#75aadb" value="Argentina">Argentina</option>
-</select></div>
-      <div><label>Level</label>
-        <select>
-          <option>Senior</option>
-          <option>U21</option>
-          <option>U20</option>
-          <option>U19</option>
-          <option>U18</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div><label>Season</label><input placeholder="2026/27"></div>
-      <div><label>Caps</label><input type="number"></div>
-      <div><label>Goals</label><input type="number"></div>
-      <div><label>Assists</label><input type="number"></div>
-      <div><label>Clean Sheets</label><input type="number"></div>
-    </div>
+            <div class="form-grid edit-only">
+              <div>
+                <label for="intlPlayerInput">Player</label>
+                <select id="intlPlayerInput" onchange="handleInternationalPlayerChange()">
+                  <option value="">Select player...</option>
+                </select>
+              </div>
+              <div>
+                <label for="intlNationInput">Nation</label>
+                <select id="intlNationInput">
+                  <option value="">Select nation...</option>
+                  <option value="England">England</option>
+                  <option value="Scotland">Scotland</option>
+                  <option value="Wales">Wales</option>
+                  <option value="Ireland">Ireland</option>
+                  <option value="Northern Ireland">Northern Ireland</option>
+                  <option value="France">France</option>
+                  <option value="Germany">Germany</option>
+                  <option value="Spain">Spain</option>
+                  <option value="Italy">Italy</option>
+                  <option value="Portugal">Portugal</option>
+                  <option value="Netherlands">Netherlands</option>
+                  <option value="Belgium">Belgium</option>
+                  <option value="Brazil">Brazil</option>
+                  <option value="Argentina">Argentina</option>
+                  <option value="Uruguay">Uruguay</option>
+                  <option value="USA">USA</option>
+                  <option value="Mexico">Mexico</option>
+                  <option value="Japan">Japan</option>
+                  <option value="South Korea">South Korea</option>
+                  <option value="Australia">Australia</option>
+                  <option value="New Zealand">New Zealand</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label for="intlLevelInput">Level</label>
+                <select id="intlLevelInput">
+                  <option value="Senior">Senior</option>
+                  <option value="U21">U21</option>
+                  <option value="U20">U20</option>
+                  <option value="U19">U19</option>
+                  <option value="U18">U18</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div><label for="intlSeasonInput">Season</label><input id="intlSeasonInput" placeholder="2026/27"></div>
+              <div><label for="intlCapsInput">Caps</label><input id="intlCapsInput" type="number" min="0" placeholder="10"></div>
+              <div><label for="intlGoalsInput">Goals</label><input id="intlGoalsInput" type="number" min="0" placeholder="2"></div>
+              <div><label for="intlAssistsInput">Assists</label><input id="intlAssistsInput" type="number" min="0" placeholder="1"></div>
+              <div><label for="intlCleanSheetsInput">Clean Sheets</label><input id="intlCleanSheetsInput" type="number" min="0" placeholder="0"></div>
+              <div class="wide"><label for="intlCompetitionInput">Competition / Notes</label><input id="intlCompetitionInput" placeholder="World Cup, U21 Euros, qualifiers..."></div>
+            </div>
 
-    <div class="hero-actions edit-only">
-      <button type="button" onclick="addInternationalStat()">Add International Record</button>
-    </div>
+            <div class="hero-actions edit-only" style="margin-top:12px;">
+              <button class="admin-only primary" type="button" onclick="addInternationalStat()">Add International Record</button>
+            </div>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Player</th><th>Nation</th><th>Level</th><th>Season</th>
-            <th>Caps</th><th>Goals</th><th>Assists</th><th>Clean Sheets</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td colspan="8" style="padding:14px;color:var(--muted);">No international records yet.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-<div id="saveTabTransfers"
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Player</th><th>Nation</th><th>Level</th><th>Season</th>
+                    <th>Caps</th><th>Goals</th><th>Assists</th><th>Clean Sheets</th>
+                    <th>Competition</th><th class="admin-only edit-only">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="internationalTableBody">
+                  <tr><td colspan="10" style="padding:14px;color:var(--muted);">No international records yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div id="saveTabTransfers"
  class="save-tab-panel" data-save-tab-panel="transfers"></div>
         <div id="saveTabStory" class="save-tab-panel" data-save-tab-panel="story"></div>
       `;
