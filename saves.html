@@ -3844,7 +3844,64 @@
       </section>
 </main>
 
-  <script type="module" src="firebase.js"></script>
+  <script type="module" src="firebase.js">
+function addInternationalStat(){
+  const save = getCurrentSave?.();
+  if(!save) return;
+
+  save.internationalStats = Array.isArray(save.internationalStats) ? save.internationalStats : [];
+
+  save.internationalStats.push({
+    player: document.getElementById('intlPlayerInput')?.value || '',
+    nation: document.getElementById('intlNationInput')?.value || '',
+    level: document.getElementById('intlLevelInput')?.value || 'Senior',
+    season: document.getElementById('intlSeasonInput')?.value || '',
+    caps: document.getElementById('intlCapsInput')?.value || 0,
+    goals: document.getElementById('intlGoalsInput')?.value || 0,
+    assists: document.getElementById('intlAssistsInput')?.value || 0,
+    cleanSheets: document.getElementById('intlCleanSheetsInput')?.value || 0
+  });
+
+  updateCurrentSave(save);
+  renderInternationalTable();
+}
+
+function deleteInternationalStat(index){
+  const save = getCurrentSave?.();
+  if(!save || !Array.isArray(save.internationalStats)) return;
+  save.internationalStats.splice(index,1);
+  updateCurrentSave(save);
+  renderInternationalTable();
+}
+
+function renderInternationalTable(){
+  const body = document.getElementById('internationalTableBody');
+  const save = getCurrentSave?.();
+  if(!body || !save) return;
+
+  const rows = Array.isArray(save.internationalStats) ? save.internationalStats : [];
+
+  if(!rows.length){
+    body.innerHTML = '<tr><td colspan="9">No international records yet.</td></tr>';
+    return;
+  }
+
+  body.innerHTML = rows.map((r,i)=>`
+    <tr>
+      <td>${r.player||''}</td>
+      <td>${r.nation||''}</td>
+      <td>${r.level||''}</td>
+      <td>${r.season||''}</td>
+      <td>${r.caps||0}</td>
+      <td>${r.goals||0}</td>
+      <td>${r.assists||0}</td>
+      <td>${r.cleanSheets||0}</td>
+      <td><button type="button" onclick="deleteInternationalStat(${i})">Delete</button></td>
+    </tr>
+  `).join('');
+}
+
+</script>
   <script>
 
     const ADMIN_PASSWORD = "Barnsley";
@@ -3995,6 +4052,7 @@
         seasons: Array.isArray(save.seasons) ? save.seasons : [],
         linkedPeople: Array.isArray(save.linkedPeople) ? save.linkedPeople : [],
         playerStats: Array.isArray(save.playerStats) ? save.playerStats : [],
+        internationalStats: Array.isArray(save.internationalStats) ? save.internationalStats : [],
         seasonAwards: Array.isArray(save.seasonAwards) ? save.seasonAwards : [],
         matchHighlights: Array.isArray(save.matchHighlights) ? save.matchHighlights : []
       };
@@ -6436,7 +6494,7 @@ function renderSavePlayerStats(save) {
 
         <div class="save-person-section">
           <div class="save-person-section-head"><div><div class="section-kicker">Season Stats</div><h3>Save-Specific Season Records</h3></div></div>
-          <div class="table-wrap" style="margin-top:0;"><table><thead><tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Notes</th></tr></thead><tbody>${stats.length ? stats.map(row => `<tr><td>${escapeHtml(row.season || '-')}</td><td>${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td><td>${escapeHtml(row.position || '-')}</td><td data-label="Apps">${escapeHtml(row.apps || '0')}</td><td data-label="Goals">${escapeHtml(row.goals || '0')}</td><td data-label="Assists">${escapeHtml(row.assists || '0')}</td><td>${escapeHtml(row.rating || '-')}</td><td>${escapeHtml(row.notes || '-')}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No save-specific stats for this person yet.</td></tr>'}</tbody></table></div>
+          <div class="table-wrap" style="margin-top:0;"><table><thead><tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Notes</th></tr></thead><tbody id="internationalTableBody">${stats.length ? stats.map(row => `<tr><td>${escapeHtml(row.season || '-')}</td><td>${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td><td>${escapeHtml(row.position || '-')}</td><td data-label="Apps">${escapeHtml(row.apps || '0')}</td><td data-label="Goals">${escapeHtml(row.goals || '0')}</td><td data-label="Assists">${escapeHtml(row.assists || '0')}</td><td>${escapeHtml(row.rating || '-')}</td><td>${escapeHtml(row.notes || '-')}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:14px; color:var(--muted);">No save-specific stats for this person yet.</td></tr>'}</tbody></table></div>
         </div>
 
         <div class="save-person-section">
@@ -6835,6 +6893,10 @@ function renderSavePlayerStats(save) {
       <div><label>Goals</label><input type="number"></div>
       <div><label>Assists</label><input type="number"></div>
       <div><label>Clean Sheets</label><input type="number"></div>
+    </div>
+
+    <div class="hero-actions edit-only">
+      <button type="button" onclick="addInternationalStat()">Add International Record</button>
     </div>
 
     <div class="table-wrap">
