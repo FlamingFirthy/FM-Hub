@@ -3226,6 +3226,16 @@
       }
     }
 
+
+.intl-nation-dot{
+display:inline-block;
+width:10px;
+height:10px;
+border-radius:50%;
+margin-right:6px;
+vertical-align:middle;
+}
+
 </style>
 </head>
 <body>
@@ -3922,6 +3932,16 @@ function populateInternationalPlayerDropdown(){
   select.innerHTML =
     '<option value="">Select player...</option>' +
     names.map(name => `<option value="${name}">${name}</option>`).join('');
+}
+
+
+function getNationPrimaryColour(nation){
+ const colours={
+  England:'#ffffff',Scotland:'#0057b8',Ireland:'#009a44',Wales:'#d21034',
+  France:'#0033a0',Germany:'#000000',Spain:'#aa151b',Italy:'#008C45',
+  Brazil:'#ffcc00',Argentina:'#75aadb'
+ };
+ return colours[nation]||'#888888';
 }
 
 </script>
@@ -6903,7 +6923,20 @@ function renderSavePlayerStats(save) {
 <select id="intlPlayerInput">
   <option value="">Select player...</option>
 </select></div>
-      <div><label>Nation</label><input placeholder="England"></div>
+      <div><label>Nation</label>
+<select id="intlNationInput">
+<option value="">Select nation...</option>
+<option data-colour="#ffffff" value="England">England</option>
+<option data-colour="#0057b8" value="Scotland">Scotland</option>
+<option data-colour="#009a44" value="Ireland">Ireland</option>
+<option data-colour="#d21034" value="Wales">Wales</option>
+<option data-colour="#0033a0" value="France">France</option>
+<option data-colour="#000000" value="Germany">Germany</option>
+<option data-colour="#aa151b" value="Spain">Spain</option>
+<option data-colour="#008C45" value="Italy">Italy</option>
+<option data-colour="#ffcc00" value="Brazil">Brazil</option>
+<option data-colour="#75aadb" value="Argentina">Argentina</option>
+</select></div>
       <div><label>Level</label>
         <select>
           <option>Senior</option>
