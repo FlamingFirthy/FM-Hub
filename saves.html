@@ -6806,18 +6806,54 @@ function renderSavePlayerStats(save) {
         <div id="saveTabClub" class="save-tab-panel" data-save-tab-panel="club"></div>
         <div id="saveTabSeasons" class="save-tab-panel" data-save-tab-panel="seasons"></div>
         <div id="saveTabStats" class="save-tab-panel" data-save-tab-panel="stats"></div>
-        <div id="saveTabInternational" class="save-tab-panel" data-save-tab-panel="international">
-          <div class="detail-card">
-            <div class="section-head">
-              <div>
-                <div class="section-kicker">International</div>
-                <h3>International Stats</h3>
-                <p class="muted">International records will go here.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="saveTabTransfers" class="save-tab-panel" data-save-tab-panel="transfers"></div>
+        
+<div id="saveTabInternational" class="save-tab-panel" data-save-tab-panel="international">
+  <div class="detail-card">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">International</div>
+        <h3>International Stats</h3>
+        <p class="muted">Track senior and youth international records separately from club stats.</p>
+      </div>
+    </div>
+
+    <div class="form-grid edit-only">
+      <div><label>Player</label><input placeholder="Player name"></div>
+      <div><label>Nation</label><input placeholder="England"></div>
+      <div><label>Level</label>
+        <select>
+          <option>Senior</option>
+          <option>U21</option>
+          <option>U20</option>
+          <option>U19</option>
+          <option>U18</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div><label>Season</label><input placeholder="2026/27"></div>
+      <div><label>Caps</label><input type="number"></div>
+      <div><label>Goals</label><input type="number"></div>
+      <div><label>Assists</label><input type="number"></div>
+      <div><label>Clean Sheets</label><input type="number"></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Player</th><th>Nation</th><th>Level</th><th>Season</th>
+            <th>Caps</th><th>Goals</th><th>Assists</th><th>Clean Sheets</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="8" style="padding:14px;color:var(--muted);">No international records yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div id="saveTabTransfers"
+ class="save-tab-panel" data-save-tab-panel="transfers"></div>
         <div id="saveTabStory" class="save-tab-panel" data-save-tab-panel="story"></div>
       `;
       if (openedCard) openedCard.insertAdjacentElement('afterend', shell);
