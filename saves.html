@@ -3864,6 +3864,7 @@ function addInternationalStat(){
 
   updateCurrentSave(save);
   renderInternationalTable();
+  populateInternationalPlayerDropdown();
 }
 
 function deleteInternationalStat(index){
@@ -3872,6 +3873,7 @@ function deleteInternationalStat(index){
   save.internationalStats.splice(index,1);
   updateCurrentSave(save);
   renderInternationalTable();
+  populateInternationalPlayerDropdown();
 }
 
 function renderInternationalTable(){
@@ -3899,6 +3901,27 @@ function renderInternationalTable(){
       <td><button type="button" onclick="deleteInternationalStat(${i})">Delete</button></td>
     </tr>
   `).join('');
+}
+
+
+function populateInternationalPlayerDropdown(){
+  const select = document.getElementById('intlPlayerInput');
+  if(!select) return;
+
+  const save = getCurrentSave?.();
+  if(!save) return;
+
+  const linked = typeof getLinkedPeopleForSave === 'function'
+    ? getLinkedPeopleForSave(save)
+    : [];
+
+  const names = [...new Set(
+    linked.map(p => p.name || p.playerName || '').filter(Boolean)
+  )].sort((a,b)=>a.localeCompare(b));
+
+  select.innerHTML =
+    '<option value="">Select player...</option>' +
+    names.map(name => `<option value="${name}">${name}</option>`).join('');
 }
 
 </script>
@@ -6876,7 +6899,10 @@ function renderSavePlayerStats(save) {
     </div>
 
     <div class="form-grid edit-only">
-      <div><label>Player</label><input placeholder="Player name"></div>
+      <div><label>Player</label>
+<select id="intlPlayerInput">
+  <option value="">Select player...</option>
+</select></div>
       <div><label>Nation</label><input placeholder="England"></div>
       <div><label>Level</label>
         <select>
