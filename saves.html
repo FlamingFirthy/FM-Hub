@@ -3542,7 +3542,35 @@ vertical-align:middle;
       </select>
     </div>
 
-    <div class="table-wrap">
+    
+            <div class="stats-refurb-toolbar">
+              <div>
+                <label>Player</label>
+                <input id="intlFilterPlayer" placeholder="Search player..." oninput="renderInternationalTable()">
+              </div>
+              <div>
+                <label>Nation</label>
+                <input id="intlFilterNation" placeholder="Filter nation..." oninput="renderInternationalTable()">
+              </div>
+              <div>
+                <label>Season</label>
+                <input id="intlFilterSeason" placeholder="2026/27" oninput="renderInternationalTable()">
+              </div>
+              <div>
+                <label>Level</label>
+                <select id="intlFilterLevel" onchange="renderInternationalTable()">
+                  <option value="">All Levels</option>
+                  <option value="Senior">Senior</option>
+                  <option value="U21">U21</option>
+                  <option value="U20">U20</option>
+                  <option value="U19">U19</option>
+                  <option value="U18">U18</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+<div class="table-wrap">
             <table>
               <thead><tr><th>Season</th><th>Club</th><th>Finish</th><th>Points</th><th>Trophies</th><th class="admin-only edit-only">Action</th></tr></thead>
               <tbody id="saveSeasonTableBody"></tbody>
