@@ -3528,47 +3528,12 @@ vertical-align:middle;
           <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addSaveSeasonRecord()">Add Season</button></div>
 
           
-    <div class="stats-refurb-toolbar">
-      <input id="intlFilterPlayer" placeholder="Filter player..." oninput="renderInternationalTable()">
-      <input id="intlFilterNation" placeholder="Filter nation..." oninput="renderInternationalTable()">
-      <select id="intlFilterLevel" onchange="renderInternationalTable()">
-        <option value="">All Levels</option>
-        <option value="Senior">Senior</option>
-        <option value="U21">U21</option>
-        <option value="U20">U20</option>
-        <option value="U19">U19</option>
-        <option value="U18">U18</option>
-        <option value="Other">Other</option>
-      </select>
-    </div>
+    
+
 
     
-            <div class="stats-refurb-toolbar">
-              <div>
-                <label>Player</label>
-                <input id="intlFilterPlayer" placeholder="Search player..." oninput="renderInternationalTable()">
-              </div>
-              <div>
-                <label>Nation</label>
-                <input id="intlFilterNation" placeholder="Filter nation..." oninput="renderInternationalTable()">
-              </div>
-              <div>
-                <label>Season</label>
-                <input id="intlFilterSeason" placeholder="2026/27" oninput="renderInternationalTable()">
-              </div>
-              <div>
-                <label>Level</label>
-                <select id="intlFilterLevel" onchange="renderInternationalTable()">
-                  <option value="">All Levels</option>
-                  <option value="Senior">Senior</option>
-                  <option value="U21">U21</option>
-                  <option value="U20">U20</option>
-                  <option value="U19">U19</option>
-                  <option value="U18">U18</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-            </div>
+            
+
 
 <div class="table-wrap">
             <table>
@@ -3644,30 +3609,8 @@ vertical-align:middle;
 
                 <div class="stats-summary-grid" id="statsSummaryGrid"></div>
 
-        <div class="stats-refurb-toolbar">
-          <div>
-            <label for="statsSearchInput">Search</label>
-            <input id="statsSearchInput" placeholder="Search player..." oninput="renderSavePlayerStats(getCurrentSave())">
-          </div>
-          <div>
-            <label for="statsSeasonFilter">Season</label>
-            <select id="statsSeasonFilter" onchange="renderSavePlayerStats(getCurrentSave())">
-              <option value="all">All seasons</option>
-            </select>
-          </div>
-          <div>
-            <label for="statsSortBy">Sort By</label>
-            <select id="statsSortBy" onchange="renderSavePlayerStats(getCurrentSave())">
-              <option value="season">Season newest</option>
-              <option value="player">Player</option>
-              <option value="apps">Apps</option>
-              <option value="goals">Goals</option>
-              <option value="assists">Assists</option>
-              <option value="rating">Rating</option>
-              <option value="cleanSheets">Clean Sheets</option>
-            </select>
-          </div>
-        </div>
+        
+
 
 <div class="form-grid edit-only">
           <div><label for="statPersonSelect">Person / Player</label><select id="statPersonSelect" onchange="handleStatPersonSelect()"></select></div>
@@ -4124,19 +4067,24 @@ function deleteInternationalStat(index){
 }
 
 
-function updateInternationalFilterDropdowns(rows){
-  const players=[...new Set(rows.map(r=>r.player).filter(Boolean))].sort();
-  const nations=[...new Set(rows.map(r=>r.nation).filter(Boolean))].sort();
-  const seasons=[...new Set(rows.map(r=>r.season).filter(Boolean))].sort().reverse();
+function updateInternationalFilterDropdowns(records){
+  const keepValue = (select, values, label) => {
+    if(!select) return;
+    const current = select.value || "";
+    select.innerHTML = `<option value="">${label}</option>` +
+      values.map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
+    select.value = values.includes(current) ? current : "";
+  };
 
-  [["intlFilterPlayer",players],["intlFilterNation",nations],["intlFilterSeason",seasons]].forEach(([id,list])=>{
-    const el=document.getElementById(id);
-    if(!el) return;
-    const current=el.value;
-    const first=el.options[0]?.textContent||"All";
-    el.innerHTML=`<option value="">${first}</option>`+list.map(v=>`<option value="${v}">${v}</option>`).join("");
-    el.value=list.includes(current)?current:"";
-  });
+  const rows = Array.isArray(records) ? records : [];
+  const players = [...new Set(rows.map(r => r.player).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b)));
+  const nations = [...new Set(rows.map(r => r.nation).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b)));
+  const seasons = [...new Set(rows.map(r => typeof normaliseSeasonForFilter === "function" ? normaliseSeasonForFilter(r.season) : r.season).filter(Boolean))]
+    .sort((a,b)=> typeof compareSeasons === "function" ? compareSeasons(a,b,"desc") : String(b).localeCompare(String(a)));
+
+  keepValue(document.getElementById("intlFilterPlayer"), players, "All players");
+  keepValue(document.getElementById("intlFilterNation"), nations, "All nations");
+  keepValue(document.getElementById("intlFilterSeason"), seasons, "All seasons");
 }
 
 function renderInternationalTable(){
@@ -4145,17 +4093,24 @@ function renderInternationalTable(){
   if(!body || !save) return;
 
   
-  let rows = Array.isArray(save.internationalStats) ? save.internationalStats : [];
+  let allRows = Array.isArray(save.internationalStats) ? save.internationalStats : [];
+  updateInternationalFilterDropdowns(allRows);
 
-  const fp = (document.getElementById("intlFilterPlayer")?.value || "").toLowerCase();
-  const fn = (document.getElementById("intlFilterNation")?.value || "").toLowerCase();
+  const fp = document.getElementById("intlFilterPlayer")?.value || "";
+  const fn = document.getElementById("intlFilterNation")?.value || "";
+  const fs = document.getElementById("intlFilterSeason")?.value || "";
   const fl = document.getElementById("intlFilterLevel")?.value || "";
 
-  rows = rows.filter(r =>
-    (!fp || (r.player||"").toLowerCase().includes(fp)) &&
-    (!fn || (r.nation||"").toLowerCase().includes(fn)) &&
-    (!fl || (r.level||"") === fl)
-  );
+  let rows = allRows
+    .map((row, originalIndex) => ({ ...row, __originalIndex: originalIndex }))
+    .filter(r =>
+      (!fp || (r.player || "") === fp) &&
+      (!fn || (r.nation || "") === fn) &&
+      (!fs || (typeof normaliseSeasonForFilter === "function" ? normaliseSeasonForFilter(r.season) : r.season) === fs) &&
+      (!fl || (r.level || "") === fl)
+    );
+
+  
 
 
   if(!rows.length){
@@ -7214,7 +7169,41 @@ function renderSavePlayerStats(save) {
               <button id="intlCancelEditBtn" class="admin-only secondary hidden" type="button" onclick="cancelInternationalEdit()">Cancel Edit</button>
             </div>
 
-            <div class="table-wrap">
+            
+            <div class="stats-refurb-toolbar international-filter-toolbar">
+              <div>
+                <label for="intlFilterPlayer">Player</label>
+                <select id="intlFilterPlayer" onchange="renderInternationalTable()">
+                  <option value="">All players</option>
+                </select>
+              </div>
+              <div>
+                <label for="intlFilterNation">Nation</label>
+                <select id="intlFilterNation" onchange="renderInternationalTable()">
+                  <option value="">All nations</option>
+                </select>
+              </div>
+              <div>
+                <label for="intlFilterSeason">Season</label>
+                <select id="intlFilterSeason" onchange="renderInternationalTable()">
+                  <option value="">All seasons</option>
+                </select>
+              </div>
+              <div>
+                <label for="intlFilterLevel">Level</label>
+                <select id="intlFilterLevel" onchange="renderInternationalTable()">
+                  <option value="">All levels</option>
+                  <option value="Senior">Senior</option>
+                  <option value="U21">U21</option>
+                  <option value="U20">U20</option>
+                  <option value="U19">U19</option>
+                  <option value="U18">U18</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+<div class="table-wrap">
               <table>
                 <thead>
                   <tr>
