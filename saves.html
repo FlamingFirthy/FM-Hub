@@ -5609,13 +5609,20 @@ function syncTransferWindowFilter(transfers) {
 
     function getFilteredSortedTransfers(transfers) {
       const selectedWindow = syncTransferWindowFilter(transfers);
+      updateTransferExtraFilters(transfers);
       const selectedType = document.getElementById('transferTypeFilter')?.value || 'all';
+      const selectedClub=document.getElementById('transferClubFilter')?.value||'all';
+      const selectedDivision=document.getElementById('transferDivisionFilter')?.value||'all';
+      const selectedTier=document.getElementById('transferTierFilter')?.value||'all';
       const sortBy = document.getElementById('transferSortBy')?.value || 'season-desc';
 
       let rows = [...(transfers || [])];
 
       if (selectedWindow !== 'all') rows = rows.filter(transfer => normaliseSeasonForFilter(transfer.season) === selectedWindow);
       if (selectedType !== 'all') rows = rows.filter(transfer => String(transfer.type || '') === selectedType);
+      if(selectedClub!=='all') rows=rows.filter(t=>String(t.from||'')===selectedClub||String(t.to||'')===selectedClub);
+      if(selectedDivision!=='all') rows=rows.filter(t=>String(t.fromDivision||'')===selectedDivision||String(t.toDivision||'')===selectedDivision);
+      if(selectedTier!=='all') rows=rows.filter(t=>String(t.fromTier||'')===selectedTier||String(t.toTier||'')===selectedTier);
 
       rows.sort((a, b) => {
         if (sortBy === 'season-asc') return compareSeasons(a.season, b.season, 'asc') || String(a.player || '').localeCompare(String(b.player || ''));
@@ -6273,18 +6280,46 @@ function syncTransferWindowFilter(transfers) {
       select.value = ['all', ...seasons].includes(current) ? current : 'all';
     }
 
-    function getFilteredSortedStatRows(save) {
+    
+function updateSelectOptions(selectId, values, allLabel) {
+  const select=document.getElementById(selectId);
+  if(!select) return;
+  const current=select.value||"all";
+  const list=[...new Set((values||[]).filter(v=>v!==undefined&&v!==null&&String(v).trim()!=="").map(String))]
+    .sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  select.innerHTML=`<option value="all">${allLabel}</option>`+list.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");
+  select.value=["all",...list].includes(current)?current:"all";
+}
+function updateStatsExtraFilters(rows){
+ updateSelectOptions("statsClubFilter",rows.map(r=>r.club),"All clubs");
+ updateSelectOptions("statsDivisionFilter",rows.map(r=>r.division),"All divisions");
+ updateSelectOptions("statsTierFilter",rows.map(r=>r.tier),"All tiers");
+}
+function updateTransferExtraFilters(rows){
+ updateSelectOptions("transferClubFilter",rows.flatMap(r=>[r.from,r.to]),"All clubs");
+ updateSelectOptions("transferDivisionFilter",rows.flatMap(r=>[r.fromDivision,r.toDivision]),"All divisions");
+ updateSelectOptions("transferTierFilter",rows.flatMap(r=>[r.fromTier,r.toTier]),"All tiers");
+}
+
+function getFilteredSortedStatRows(save) {
       const allRows = getAllStatsForSave(save);
       updateStatsSeasonFilter(allRows);
+      updateStatsExtraFilters(allRows);
 
       const search = String(document.getElementById('statsSearchInput')?.value || '').trim().toLowerCase();
       const season = document.getElementById('statsSeasonFilter')?.value || 'all';
+      const club=document.getElementById('statsClubFilter')?.value||'all';
+      const division=document.getElementById('statsDivisionFilter')?.value||'all';
+      const tier=document.getElementById('statsTierFilter')?.value||'all';
       const sortBy = document.getElementById('statsSortBy')?.value || 'season';
 
       let rows = [...allRows];
 
       if (search) rows = rows.filter(row => String(row.personName || '').toLowerCase().includes(search));
       if (season !== 'all') rows = rows.filter(row => normaliseSeasonForFilter(row.season) === season);
+      if (club!=='all') rows=rows.filter(r=>String(r.club||'')===club);
+      if (division!=='all') rows=rows.filter(r=>String(r.division||'')===division);
+      if (tier!=='all') rows=rows.filter(r=>String(r.tier||'')===tier);
 
       rows.sort((a, b) => {
         if (sortBy === 'player') return String(a.personName || '').localeCompare(String(b.personName || ''));
