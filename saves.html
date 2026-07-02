@@ -2895,7 +2895,8 @@
       top: 0;
       bottom: 0;
       width: 5px;
-      background: linear-gradient(180deg, var(--from-colour), var(--to-colour));
+      background: linear-gradient(180deg, var(--from-colour) 0%, var(--from-secondary-colour) 100%);
+      pointer-events: none;
     }
 
     .transfer-meta-row {
@@ -2925,12 +2926,17 @@
     }
 
 
-    .transfer-card::before {
-      background: linear-gradient(180deg, var(--from-colour) 0%, var(--from-secondary-colour) 100%) !important;
-    }
+    
 
     .transfer-card::after {
-      background: linear-gradient(180deg, var(--to-colour) 0%, var(--to-secondary-colour) 100%) !important;
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: linear-gradient(180deg, var(--to-colour) 0%, var(--to-secondary-colour) 100%);
+      pointer-events: none;
     }
 
     .transfer-club-box {
@@ -2948,26 +2954,7 @@
       background: linear-gradient(180deg, var(--c1) 0%, var(--c2) 100%);
       pointer-events: none;
     }
-
-    /* Final transfer side gradient fix */
-    .transfer-card::before {
-      background: linear-gradient(
-        90deg,
-        var(--from-colour) 0%,
-        var(--from-secondary-colour) 100%
-      ) !important;
-    }
-
-    .transfer-card::after {
-      background: linear-gradient(
-        90deg,
-        var(--to-secondary-colour) 0%,
-        var(--to-colour) 100%
-      ) !important;
-    }
-
-
-    /* ============================= */
+/* ============================= */
     /* Mobile Saves readability pass  */
     /* ============================= */
     @media (max-width: 720px) {
