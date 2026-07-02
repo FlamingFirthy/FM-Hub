@@ -3628,7 +3628,7 @@ vertical-align:middle;
           <div id="cleanSheetsWrap" class="hidden"><label for="statCleanSheetsInput">Clean Sheets</label><input id="statCleanSheetsInput" placeholder="14"></div>
           <div class="wide"><label for="statNotesInput">Notes</label><textarea id="statNotesInput" placeholder="Awards, big performances, injuries, transfer story..."></textarea></div>
         </div>
-        <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addSavePlayerStat()">Add Stat Record</button></div>
+        <div class="hero-actions edit-only"><button id="statAddRecordBtn" class="admin-only primary" type="button" onclick="addSavePlayerStat()">Add Stat Record</button><button id="statCancelEditBtn" class="admin-only secondary hidden" type="button" onclick="cancelSavePlayerStatEdit()">Cancel Edit</button></div>
 
         <div class="table-wrap">
           <table>
@@ -3690,7 +3690,7 @@ vertical-align:middle;
           <div><label for="transferToLogoInput">To Club Logo URL</label><input id="transferToLogoInput" placeholder="Optional logo URL"></div>
           <div class="wide"><label for="transferNotesInput">Notes</label><textarea id="transferNotesInput" placeholder="Why they moved, clauses, sell-on, replacement, storyline..."></textarea></div>
         </div>
-        <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addTransferRecord()">Add Transfer</button></div>
+        <div class="hero-actions edit-only"><button id="transferAddRecordBtn" class="admin-only primary" type="button" onclick="addTransferRecord()">Add Transfer</button><button id="transferCancelEditBtn" class="admin-only secondary hidden" type="button" onclick="cancelTransferEdit()">Cancel Edit</button></div>
 
         <div class="transfer-dashboard" id="transferDashboard"></div>
 
@@ -5531,7 +5531,7 @@ function syncTransferWindowFilter(transfers) {
               </div>
             </div>
             ${transfer.notes ? `<div class="transfer-notes">${escapeHtml(transfer.notes)}</div>` : ''}
-            <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></div>
+            <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></div>
           </div>
         `;
       }).join('');
@@ -5625,7 +5625,7 @@ function syncTransferWindowFilter(transfers) {
             <td data-label="To Division">${escapeHtml(transfer.toDivision || '-')}${transfer.toTier ? ` (${escapeHtml(transfer.toTier)})` : ''}</td>
             <td data-label="Fee"><strong>${escapeHtml(transfer.fee || '-')}</strong><div class="muted" style="font-size:0.74rem; margin-top:3px;">${escapeHtml(getFeeTypeLabel(transfer.fee))}</div></td>
             <td data-label="Notes">${escapeHtml(transfer.notes || '-')}</td>
-            <td class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></td>
+            <td data-label="Actions" class="admin-only edit-only"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></td>
           </tr>
         `;
       }).join('');
@@ -5670,7 +5670,18 @@ function syncTransferWindowFilter(transfers) {
       if (!transfer.player) return;
 
       save.transfers = Array.isArray(save.transfers) ? save.transfers : [];
-      save.transfers.push(transfer);
+
+      if (Number.isInteger(window.editingTransferIndex) && save.transfers[window.editingTransferIndex]) {
+        save.transfers[window.editingTransferIndex] = transfer;
+      } else {
+        save.transfers.push(transfer);
+      }
+
+      window.editingTransferIndex = null;
+      const transferAddBtn = document.getElementById('transferAddRecordBtn');
+      const transferCancelBtn = document.getElementById('transferCancelEditBtn');
+      if (transferAddBtn) transferAddBtn.textContent = 'Add Transfer';
+      if (transferCancelBtn) transferCancelBtn.classList.add('hidden');
 
       updateCurrentSave(save);
 
@@ -5678,7 +5689,7 @@ function syncTransferWindowFilter(transfers) {
       updateCurrentSave(save);
       const savedAfterTransfer = getCurrentSave() || save;
 
-      ['transferSeasonInput','transferFromInput','transferToInput','transferFeeInput','transferFromLogoInput','transferToLogoInput','transferNotesInput','transferPlayerManualInput'].forEach(id => {
+      ['transferSeasonInput','transferFromInput','transferToInput','transferFromDivisionInput','transferFromTierInput','transferToDivisionInput','transferToTierInput','transferFeeInput','transferFromLogoInput','transferToLogoInput','transferNotesInput','transferPlayerManualInput'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
       });
@@ -6520,7 +6531,7 @@ function renderSavePlayerStats(save) {
           <td data-label="Assists"><span class="stat-number-pill">${escapeHtml(row.assists || '0')}</span></td>
           <td data-label="Rating"><span class="stat-number-pill">${escapeHtml(row.rating || '-')}</span></td>
           <td data-label="Clean Sheets"><span class="stat-number-pill">${escapeHtml(row.cleanSheets || '-')}</span></td>
-          <td data-label="Actions" class="admin-only edit-only">${row.origin === 'save' ? `<button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})">Delete</button>` : '<span class="chip">Squad</span>'}</td>
+          <td data-label="Actions" class="admin-only edit-only">${row.origin === 'save' ? `<button class="admin-only secondary small-btn" type="button" onclick="editSavePlayerStat(${row.index})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})">Delete</button>` : '<span class="chip">Squad</span>'}</td>
         </tr>
       `).join('');
 
@@ -6881,7 +6892,18 @@ function renderSavePlayerStats(save) {
       };
       if (!stat.personName || !stat.season) return;
       save.playerStats = Array.isArray(save.playerStats) ? save.playerStats : [];
-      save.playerStats.push(stat);
+
+      if (Number.isInteger(window.editingSavePlayerStatIndex) && save.playerStats[window.editingSavePlayerStatIndex]) {
+        save.playerStats[window.editingSavePlayerStatIndex] = stat;
+      } else {
+        save.playerStats.push(stat);
+      }
+
+      window.editingSavePlayerStatIndex = null;
+      const statAddBtn = document.getElementById('statAddRecordBtn');
+      const statCancelBtn = document.getElementById('statCancelEditBtn');
+      if (statAddBtn) statAddBtn.textContent = 'Add Stat Record';
+      if (statCancelBtn) statCancelBtn.classList.add('hidden');
 
       updateCurrentSave(save);
 
@@ -6893,7 +6915,7 @@ function renderSavePlayerStats(save) {
         save.linkedPeople.push({ source: item.source, id: item.id, name: item.name, type: item.type, position: item.position, club: item.club });
       }
       updateCurrentSave(save);
-      ['statSeasonInput','statClubInput','statPositionInput','statAppsInput','statGoalsInput','statAssistsInput','statRatingInput','statCleanSheetsInput','statNotesInput'].forEach(id => document.getElementById(id).value = '');
+      ['statSeasonInput','statClubInput','statDivisionInput','statTierInput','statPositionInput','statAppsInput','statGoalsInput','statAssistsInput','statRatingInput','statCleanSheetsInput','statNotesInput'].forEach(id => document.getElementById(id).value = '');
       const statPrimaryColour = document.getElementById('statClubPrimaryColourInput');
       const statSecondaryColour = document.getElementById('statClubSecondaryColourInput');
       if (statPrimaryColour) statPrimaryColour.value = '#ff3b3b';
@@ -6902,6 +6924,140 @@ function renderSavePlayerStats(save) {
       setSaveEditMode(true);
       loadSaves();
     }
+
+
+    function editSavePlayerStat(index) {
+      const save = getCurrentSave();
+      if (!save || !Array.isArray(save.playerStats) || !save.playerStats[index]) return;
+      const stat = save.playerStats[index];
+
+      const select = document.getElementById('statPersonSelect');
+      if (select) {
+        const matchingOption = Array.from(select.options).find(option => {
+          const item = findStatOptionByKey(option.value);
+          return item && (
+            normaliseText(item.name) === normaliseText(stat.personName) ||
+            String(item.id || '') === String(stat.personId || '')
+          );
+        });
+        if (matchingOption) select.value = matchingOption.value;
+      }
+
+      const setValue = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.value = value || '';
+      };
+
+      setValue('statSeasonInput', stat.season);
+      setValue('statClubInput', stat.club);
+      setValue('statDivisionInput', stat.division);
+      setValue('statTierInput', stat.tier);
+      setValue('statPositionInput', stat.position);
+      setValue('statAppsInput', stat.apps);
+      setValue('statGoalsInput', stat.goals);
+      setValue('statAssistsInput', stat.assists);
+      setValue('statRatingInput', stat.rating);
+      setValue('statCleanSheetsInput', stat.cleanSheets);
+      setValue('statNotesInput', stat.notes);
+
+      if (document.getElementById('statClubPrimaryColourInput')) {
+        document.getElementById('statClubPrimaryColourInput').value = stat.clubColors?.primary || '#ff3b3b';
+      }
+      if (document.getElementById('statClubSecondaryColourInput')) {
+        document.getElementById('statClubSecondaryColourInput').value = stat.clubColors?.secondary || '#ffffff';
+      }
+
+      window.editingSavePlayerStatIndex = index;
+      const btn = document.getElementById('statAddRecordBtn');
+      const cancel = document.getElementById('statCancelEditBtn');
+      if (btn) btn.textContent = 'Save Stat Edit';
+      if (cancel) cancel.classList.remove('hidden');
+      document.getElementById('statPersonSelect')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function cancelSavePlayerStatEdit() {
+      window.editingSavePlayerStatIndex = null;
+      const btn = document.getElementById('statAddRecordBtn');
+      const cancel = document.getElementById('statCancelEditBtn');
+      if (btn) btn.textContent = 'Add Stat Record';
+      if (cancel) cancel.classList.add('hidden');
+
+      ['statSeasonInput','statClubInput','statDivisionInput','statTierInput','statPositionInput','statAppsInput','statGoalsInput','statAssistsInput','statRatingInput','statCleanSheetsInput','statNotesInput'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+    }
+
+    function editTransferRecord(index) {
+      const save = getCurrentSave();
+      if (!save || !Array.isArray(save.transfers) || !save.transfers[index]) return;
+      const transfer = save.transfers[index];
+
+      populateTransferPlayerDropdown(save);
+
+      const select = document.getElementById('transferPlayerInput');
+      const manual = document.getElementById('transferPlayerManualInput');
+      if (select) {
+        const exists = Array.from(select.options).some(option => option.value === transfer.player);
+        if (exists) {
+          select.value = transfer.player || '';
+          if (manual) {
+            manual.classList.add('hidden');
+            manual.value = '';
+          }
+        } else {
+          select.value = '__manual__';
+          if (manual) {
+            manual.classList.remove('hidden');
+            manual.value = transfer.player || '';
+          }
+        }
+      }
+
+      const setValue = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.value = value || '';
+      };
+
+      setValue('transferSeasonInput', transfer.season);
+      setValue('transferTypeInput', transfer.type || 'In');
+      setValue('transferFeeInput', transfer.fee);
+      setValue('transferFromInput', transfer.from);
+      setValue('transferToInput', transfer.to);
+      setValue('transferFromDivisionInput', transfer.fromDivision);
+      setValue('transferFromTierInput', transfer.fromTier);
+      setValue('transferToDivisionInput', transfer.toDivision);
+      setValue('transferToTierInput', transfer.toTier);
+      setValue('transferFromLogoInput', transfer.fromLogo);
+      setValue('transferToLogoInput', transfer.toLogo);
+      setValue('transferNotesInput', transfer.notes);
+
+      if (document.getElementById('transferFromColourInput')) document.getElementById('transferFromColourInput').value = transfer.fromColour || '#64748b';
+      if (document.getElementById('transferFromSecondaryColourInput')) document.getElementById('transferFromSecondaryColourInput').value = transfer.fromSecondaryColour || '#ffffff';
+      if (document.getElementById('transferToColourInput')) document.getElementById('transferToColourInput').value = transfer.toColour || '#ff3b3b';
+      if (document.getElementById('transferToSecondaryColourInput')) document.getElementById('transferToSecondaryColourInput').value = transfer.toSecondaryColour || '#ffffff';
+
+      window.editingTransferIndex = index;
+      const btn = document.getElementById('transferAddRecordBtn');
+      const cancel = document.getElementById('transferCancelEditBtn');
+      if (btn) btn.textContent = 'Save Transfer Edit';
+      if (cancel) cancel.classList.remove('hidden');
+      document.getElementById('transferSeasonInput')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function cancelTransferEdit() {
+      window.editingTransferIndex = null;
+      const btn = document.getElementById('transferAddRecordBtn');
+      const cancel = document.getElementById('transferCancelEditBtn');
+      if (btn) btn.textContent = 'Add Transfer';
+      if (cancel) cancel.classList.add('hidden');
+
+      ['transferSeasonInput','transferFromInput','transferToInput','transferFromDivisionInput','transferFromTierInput','transferToDivisionInput','transferToTierInput','transferFeeInput','transferFromLogoInput','transferToLogoInput','transferNotesInput','transferPlayerManualInput'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+    }
+
 
     function deleteSavePlayerStat(index) {
       const save = getCurrentSave();
