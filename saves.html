@@ -3413,6 +3413,36 @@ vertical-align:middle;
   font-size:1.3rem!important;
 }
 
+
+/* Larger overall transfer cards */
+.transfer-cards-grid{
+  grid-template-columns:repeat(auto-fit,minmax(500px,1fr))!important;
+  gap:24px!important;
+}
+.transfer-card{
+  padding:24px 26px!important;
+  min-height:430px!important;
+}
+.transfer-card-top{
+  margin-bottom:22px!important;
+}
+.transfer-card-player strong{
+  font-size:1.25rem!important;
+}
+.transfer-route{
+  margin-top:24px!important;
+  margin-bottom:20px!important;
+}
+.transfer-notes{
+  font-size:1rem!important;
+  margin-top:22px!important;
+}
+@media (max-width:900px){
+  .transfer-cards-grid{
+    grid-template-columns:1fr!important;
+  }
+}
+
 </style>
 </head>
 <body>
