@@ -3236,6 +3236,13 @@ margin-right:6px;
 vertical-align:middle;
 }
 
+
+    #statTierInput {
+      max-width: 110px;
+      font-weight: 900;
+      text-align: center;
+    }
+
 </style>
 </head>
 <body>
@@ -3616,8 +3623,14 @@ vertical-align:middle;
           <div><label for="statPersonSelect">Person / Player</label><select id="statPersonSelect" onchange="handleStatPersonSelect()"></select></div>
           <div><label for="statSeasonInput">Season</label><input id="statSeasonInput" placeholder="2026/27"></div>
           <div><label for="statClubInput">Club</label><input id="statClubInput" placeholder="Chelsea"></div>
-          <div><label for="statDivisionInput">Division</label><input id="statDivisionInput" placeholder="Premier League / Championship"></div>
-<div><label for="statTierInput">Tier</label><input id="statTierInput" type="number" min="1" placeholder="1"></div>
+          <div>
+            <label for="statDivisionInput">Division</label>
+            <input id="statDivisionInput" placeholder="Championship">
+          </div>
+          <div>
+            <label for="statTierInput">Tier Number</label>
+            <input id="statTierInput" type="number" min="1" placeholder="2">
+          </div>
           <div><label for="statPositionInput">Position</label><input id="statPositionInput" placeholder="ST / CM / GK"></div>
           <div><label for="statClubPrimaryColourInput">Club Colour</label><input id="statClubPrimaryColourInput" type="color" value="#ff3b3b"></div>
           <div><label for="statClubSecondaryColourInput">Club Secondary Colour</label><input id="statClubSecondaryColourInput" type="color" value="#ffffff"></div>
@@ -3633,7 +3646,7 @@ vertical-align:middle;
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Player</th><th>Season</th><th>Age</th><th>Club</th><th>Division</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Clean Sheets</th><th class="admin-only edit-only">Actions</th></tr>
+              <tr><th>Player</th><th>Season</th><th>Age</th><th>Club</th><th>Division (Tier)</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Clean Sheets</th><th class="admin-only edit-only">Actions</th></tr>
             </thead>
             <tbody id="savePlayerStatsBody"></tbody>
           </table>
