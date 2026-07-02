@@ -3617,6 +3617,7 @@ vertical-align:middle;
           <div><label for="statSeasonInput">Season</label><input id="statSeasonInput" placeholder="2026/27"></div>
           <div><label for="statClubInput">Club</label><input id="statClubInput" placeholder="Chelsea"></div>
           <div><label for="statDivisionInput">Division</label><input id="statDivisionInput" placeholder="Premier League / Championship"></div>
+<div><label for="statTierInput">Tier</label><input id="statTierInput" type="number" min="1" placeholder="1"></div>
           <div><label for="statPositionInput">Position</label><input id="statPositionInput" placeholder="ST / CM / GK"></div>
           <div><label for="statClubPrimaryColourInput">Club Colour</label><input id="statClubPrimaryColourInput" type="color" value="#ff3b3b"></div>
           <div><label for="statClubSecondaryColourInput">Club Secondary Colour</label><input id="statClubSecondaryColourInput" type="color" value="#ffffff"></div>
@@ -3678,7 +3679,9 @@ vertical-align:middle;
           <div><label for="transferFromInput">From</label><input id="transferFromInput" placeholder="Selling club / previous club"></div>
           <div><label for="transferToInput">To</label><input id="transferToInput" placeholder="Buying club / new club"></div>
           <div><label for="transferFromDivisionInput">From Division</label><input id="transferFromDivisionInput" placeholder="Championship"></div>
+          <div><label for="transferFromTierInput">From Tier</label><input id="transferFromTierInput" type="number" min="1" placeholder="2"></div>
           <div><label for="transferToDivisionInput">To Division</label><input id="transferToDivisionInput" placeholder="Premier League"></div>
+          <div><label for="transferToTierInput">To Tier</label><input id="transferToTierInput" type="number" min="1" placeholder="1"></div>
           <div><label for="transferFromColourInput">From Club Colour</label><input id="transferFromColourInput" type="color" value="#64748b"></div>
           <div><label for="transferToColourInput">To Club Colour</label><input id="transferToColourInput" type="color" value="#ff3b3b"></div>
           <div><label for="transferFromSecondaryColourInput">From Club Secondary Colour</label><input id="transferFromSecondaryColourInput" type="color" value="#ffffff"></div>
@@ -5617,9 +5620,9 @@ function syncTransferWindowFilter(transfers) {
             <td data-label="Age"><span class="stat-number-pill">${escapeHtml(getPlayerAgeForSeason(transfer.player, transfer.season))}</span></td>
             <td data-label="Type"><span class="transfer-type-chip ${escapeHtml(getTransferChipClass(transfer.type))}">${escapeHtml(transfer.type || '-')}</span></td>
             <td data-label="From">${escapeHtml(transfer.from || '-')}</td>
-            <td data-label="From Division">${escapeHtml(transfer.fromDivision || '-')}</td>
+            <td data-label="From Division">${escapeHtml(transfer.fromDivision || '-')}${transfer.fromTier ? ` (${escapeHtml(transfer.fromTier)})` : ''}</td>
             <td data-label="To">${escapeHtml(transfer.to || '-')}</td>
-            <td data-label="To Division">${escapeHtml(transfer.toDivision || '-')}</td>
+            <td data-label="To Division">${escapeHtml(transfer.toDivision || '-')}${transfer.toTier ? ` (${escapeHtml(transfer.toTier)})` : ''}</td>
             <td data-label="Fee"><strong>${escapeHtml(transfer.fee || '-')}</strong><div class="muted" style="font-size:0.74rem; margin-top:3px;">${escapeHtml(getFeeTypeLabel(transfer.fee))}</div></td>
             <td data-label="Notes">${escapeHtml(transfer.notes || '-')}</td>
             <td class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></td>
@@ -5651,7 +5654,9 @@ function syncTransferWindowFilter(transfers) {
         from: fromClub,
         to: toClub,
         fromDivision: document.getElementById('transferFromDivisionInput')?.value.trim() || '',
+        fromTier: document.getElementById('transferFromTierInput')?.value.trim() || '',
         toDivision: document.getElementById('transferToDivisionInput')?.value.trim() || '',
+        toTier: document.getElementById('transferToTierInput')?.value.trim() || '',
         fee: document.getElementById('transferFeeInput')?.value.trim() || '',
         fromColour: document.getElementById('transferFromColourInput')?.value || '#64748b',
         fromSecondaryColour: document.getElementById('transferFromSecondaryColourInput')?.value || '#ffffff',
@@ -6508,7 +6513,7 @@ function renderSavePlayerStats(save) {
           <td data-label="Season"><span class="chip">${escapeHtml(row.season || '-')}</span></td>
           <td data-label="Age"><span class="stat-number-pill">${escapeHtml(getPlayerAgeForSeason(row.personName, row.season))}</span></td>
           <td data-label="Club">${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td>
-          <td data-label="Division">${escapeHtml(row.division || '-')}</td>
+          <td data-label="Division">${escapeHtml(row.division || '-')}${row.tier ? ` (${escapeHtml(row.tier)})` : ''}</td>
           <td data-label="Position">${escapeHtml(row.position || '-')}</td>
           <td data-label="Apps"><span class="stat-number-pill">${escapeHtml(row.apps || '0')}</span></td>
           <td data-label="Goals"><span class="stat-number-pill">${escapeHtml(row.goals || '0')}</span></td>
@@ -6861,6 +6866,7 @@ function renderSavePlayerStats(save) {
         season: document.getElementById('statSeasonInput').value.trim(),
         club: document.getElementById('statClubInput').value.trim() || item.club || save.club || '',
         division: document.getElementById('statDivisionInput')?.value.trim() || '',
+        tier: document.getElementById('statTierInput')?.value.trim() || '',
         position: document.getElementById('statPositionInput').value.trim() || item.position || '',
         apps: document.getElementById('statAppsInput').value.trim(),
         goals: document.getElementById('statGoalsInput').value.trim(),
