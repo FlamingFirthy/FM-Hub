@@ -2820,7 +2820,8 @@
 
     .stats-refurb-toolbar input,
     .stats-refurb-toolbar select,
-    .transfer-refurb-toolbar select {
+    .transfer-refurb-toolbar select,
+    .transfer-refurb-toolbar input {
       width: 100%;
       padding: 10px 12px;
       border-radius: 12px;
@@ -3619,6 +3620,16 @@ vertical-align:middle;
         
 
 
+
+        <div class="stats-refurb-toolbar">
+          <div><label for="statsSearchInput">Search Player</label><input id="statsSearchInput" placeholder="Search player..." oninput="renderSavePlayerStats(getCurrentSave())"></div>
+          <div><label for="statsSeasonFilter">Season</label><select id="statsSeasonFilter" onchange="renderSavePlayerStats(getCurrentSave())"><option value="all">All seasons</option></select></div>
+          <div><label for="statsClubFilter">Club</label><select id="statsClubFilter" onchange="renderSavePlayerStats(getCurrentSave())"><option value="all">All clubs</option></select></div>
+          <div><label for="statsDivisionFilter">Division</label><select id="statsDivisionFilter" onchange="renderSavePlayerStats(getCurrentSave())"><option value="all">All divisions</option></select></div>
+          <div><label for="statsTierFilter">Tier</label><select id="statsTierFilter" onchange="renderSavePlayerStats(getCurrentSave())"><option value="all">All tiers</option></select></div>
+          <div><label for="statsSortBy">Sort By</label><select id="statsSortBy" onchange="renderSavePlayerStats(getCurrentSave())">
+          <option value="season">Newest season</option><option value="season-asc">Oldest season</option><option value="player">Player A-Z</option><option value="apps">Most apps</option><option value="goals">Most goals</option><option value="assists">Most assists</option><option value="rating">Highest rating</option><option value="cleanSheets">Most clean sheets</option><option value="club">Club</option><option value="division">Division</option><option value="tier">Tier</option></select></div>
+        </div>
 <div class="form-grid edit-only">
           <div><label for="statPersonSelect">Person / Player</label><select id="statPersonSelect" onchange="handleStatPersonSelect()"></select></div>
           <div><label for="statSeasonInput">Season</label><input id="statSeasonInput" placeholder="2026/27"></div>
@@ -3708,6 +3719,11 @@ vertical-align:middle;
         <div class="transfer-dashboard" id="transferDashboard"></div>
 
                 <div class="transfer-refurb-toolbar">
+          <div><label for="transferSearchInput">Search Player</label><input id="transferSearchInput" placeholder="Search player..." oninput="renderTransferRecords(getCurrentSave())"></div>
+          <div><label for="transferClubFilter">Club</label><select id="transferClubFilter" onchange="renderTransferRecords(getCurrentSave())"><option value="all">All clubs</option></select></div>
+          <div><label for="transferDivisionFilter">Division</label><select id="transferDivisionFilter" onchange="renderTransferRecords(getCurrentSave())"><option value="all">All divisions</option></select></div>
+          <div><label for="transferTierFilter">Tier</label><select id="transferTierFilter" onchange="renderTransferRecords(getCurrentSave())"><option value="all">All tiers</option></select></div>
+
           <div>
             <label for="transferWindowFilter">Window</label>
             <select id="transferWindowFilter" onchange="renderTransferRecords(getCurrentSave())">
@@ -3733,7 +3749,7 @@ vertical-align:middle;
               <option value="season-asc">Oldest season</option>
               <option value="fee-desc">Highest fee</option>
               <option value="player">Player</option>
-              <option value="type">Type</option>
+              <option value="type">Type</option><option value="club">Club</option><option value="division">Division</option><option value="tier">Tier</option>
             </select>
           </div>
         </div>
