@@ -3288,6 +3288,54 @@ vertical-align:middle;
   padding-top: 14px !important;
 }
 
+
+/* Transfer card side bars: keep them inside each card so cards do not overlap visually */
+.transfer-cards-grid {
+  gap: 22px !important;
+}
+
+.transfer-card {
+  position: relative !important;
+  overflow: hidden !important;
+  padding-left: 28px !important;
+  padding-right: 28px !important;
+  box-sizing: border-box !important;
+  isolation: isolate !important;
+}
+
+.transfer-card::before,
+.transfer-card::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 14px !important;
+  bottom: 14px !important;
+  width: 5px !important;
+  border-radius: 999px !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+.transfer-card::before {
+  left: 10px !important;
+  right: auto !important;
+  background: linear-gradient(180deg, var(--from-colour) 0%, var(--from-secondary-colour) 100%) !important;
+}
+
+.transfer-card::after {
+  right: 10px !important;
+  left: auto !important;
+  background: linear-gradient(180deg, var(--to-colour) 0%, var(--to-secondary-colour) 100%) !important;
+}
+
+.transfer-card > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.transfer-route {
+  gap: 18px !important;
+}
+
 </style>
 </head>
 <body>
