@@ -3652,6 +3652,99 @@ vertical-align:middle;
   }
 }
 
+
+/* Compact 3-column transfer cards */
+.transfer-cards-grid{
+  grid-template-columns:repeat(auto-fit,minmax(430px,1fr))!important;
+  gap:20px!important;
+}
+
+.transfer-card{
+  min-height:360px!important;
+  padding:22px 24px!important;
+}
+
+.transfer-card-top{
+  margin-bottom:18px!important;
+  gap:12px!important;
+}
+
+.transfer-card-player>.transfer-type-chip{
+  margin-bottom:10px!important;
+}
+
+.transfer-card-player strong{
+  font-size:1.1rem!important;
+  margin-bottom:10px!important;
+}
+
+.transfer-meta-row{
+  gap:8px!important;
+}
+
+.transfer-meta-row .chip{
+  font-size:.82rem!important;
+  padding:6px 10px!important;
+}
+
+.transfer-fee-pill{
+  padding:7px 12px!important;
+}
+
+.transfer-route{
+  grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr)!important;
+  gap:16px!important;
+  margin:18px 0!important;
+}
+
+.transfer-club-box{
+  min-height:98px!important;
+  padding:16px!important;
+  grid-template-columns:52px minmax(0,1fr)!important;
+  gap:14px!important;
+  border-radius:18px!important;
+}
+
+.transfer-club-logo{
+  width:52px!important;
+  height:52px!important;
+}
+
+.transfer-club-box span{
+  font-size:.72rem!important;
+  margin-bottom:4px!important;
+}
+
+.transfer-club-box strong{
+  font-size:1rem!important;
+  line-height:1.2!important;
+}
+
+.transfer-arrow{
+  width:42px!important;
+  height:42px!important;
+  font-size:1.05rem!important;
+}
+
+.transfer-notes{
+  margin-top:18px!important;
+  padding-top:14px!important;
+  font-size:.94rem!important;
+  line-height:1.4!important;
+}
+
+@media (max-width:1450px){
+  .transfer-cards-grid{
+    grid-template-columns:repeat(auto-fit,minmax(380px,1fr))!important;
+  }
+}
+
+@media (max-width:900px){
+  .transfer-cards-grid{
+    grid-template-columns:1fr!important;
+  }
+}
+
 </style>
 </head>
 <body>
