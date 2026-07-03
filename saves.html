@@ -3536,6 +3536,122 @@ vertical-align:middle;
   bottom: 22px !important;
 }
 
+
+/* Transfer card clean layout pass */
+.transfer-cards-grid {
+  grid-template-columns: repeat(auto-fit, minmax(620px, 1fr)) !important;
+  gap: 26px !important;
+}
+
+.transfer-card {
+  min-height: 455px !important;
+  padding: 30px 34px !important;
+}
+
+.transfer-card-top {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: start !important;
+  gap: 18px !important;
+  margin-bottom: 30px !important;
+}
+
+.transfer-card-player {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 0 !important;
+  min-width: 0 !important;
+}
+
+.transfer-card-player > .transfer-type-chip {
+  margin: 0 0 16px 0 !important;
+}
+
+.transfer-card-player strong {
+  margin: 0 0 14px 0 !important;
+  font-size: 1.34rem !important;
+  line-height: 1.18 !important;
+}
+
+.transfer-meta-row {
+  margin: 0 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+}
+
+.transfer-fee-pill {
+  justify-self: end !important;
+  align-self: start !important;
+  margin: 0 !important;
+  padding: 9px 14px !important;
+  min-width: 62px !important;
+}
+
+.transfer-route {
+  grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr) !important;
+  gap: 28px !important;
+  margin-top: 26px !important;
+  margin-bottom: 24px !important;
+  align-items: stretch !important;
+}
+
+.transfer-club-box {
+  min-height: 130px !important;
+  padding: 22px 24px !important;
+  grid-template-columns: 66px minmax(0, 1fr) !important;
+  gap: 22px !important;
+  border-radius: 22px !important;
+}
+
+.transfer-club-logo {
+  width: 66px !important;
+  height: 66px !important;
+  border-radius: 18px !important;
+}
+
+.transfer-club-box strong {
+  font-size: 1.18rem !important;
+  line-height: 1.25 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  display: block !important;
+}
+
+.transfer-club-box span {
+  font-size: 0.8rem !important;
+  margin-bottom: 7px !important;
+}
+
+.transfer-arrow {
+  width: 54px !important;
+  height: 54px !important;
+  align-self: center !important;
+}
+
+.transfer-notes {
+  margin-top: 26px !important;
+  padding-top: 20px !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+}
+
+@media (max-width: 760px) {
+  .transfer-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .transfer-card-top {
+    grid-template-columns: 1fr !important;
+  }
+
+  .transfer-fee-pill {
+    justify-self: start !important;
+  }
+}
+
 </style>
 </head>
 <body>
