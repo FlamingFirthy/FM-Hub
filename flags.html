@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FM Hub Flags & Emojis</title>
+  <style>
+    :root {
+      --bg: #090a0f;
+      --panel: rgba(255,255,255,0.045);
+      --panel-2: rgba(255,255,255,0.075);
+      --border: rgba(255,255,255,0.09);
+      --text: #f6f7fb;
+      --muted: #9ca3af;
+      --accent: #ff3347;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(255,51,71,.18), transparent 28%),
+        linear-gradient(180deg, #090a0f, #11131b);
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 22px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.025));
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: -0.04em;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .tools {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    input, button {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.055);
+      color: var(--text);
+      padding: 13px 14px;
+      font-size: 1rem;
+    }
+
+    button {
+      cursor: pointer;
+      background: var(--accent);
+      border-color: transparent;
+      font-weight: 900;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .flag-card {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 13px;
+      border-radius: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+    }
+
+    .emoji {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.075);
+      font-size: 1.55rem;
+    }
+
+    .flag-card strong {
+      display: block;
+      font-size: 0.96rem;
+      overflow-wrap: anywhere;
+    }
+
+    .flag-card span {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .code-box {
+      margin-top: 18px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.25);
+      overflow: hidden;
+    }
+
+    .code-head {
+      padding: 12px 14px;
+      background: var(--panel-2);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    pre {
+      margin: 0;
+      padding: 14px;
+      overflow: auto;
+      color: #d7e0ff;
+      font-size: 0.84rem;
+      line-height: 1.5;
+      max-height: 440px;
+    }
+
+    @media (max-width: 680px) {
+      body { padding: 14px; }
+      .tools { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>FM Hub Flags & Emojis</h1>
+      <p>This page stores one reusable nation-to-emoji system. Use <strong>getNationEmoji("England")</strong> or <strong>renderNationLabel("England")</strong> anywhere in FM Hub.</p>
+    </section>
+
+    <div class="tools">
+      <input id="searchInput" placeholder="Search nation... e.g. England, Brazil, New Zealand" oninput="renderFlags()">
+      <button onclick="copyCode()">Copy JS</button>
+    </div>
+
+    <div id="flagGrid" class="grid"></div>
+
+    <div class="code-box">
+      <div class="code-head">
+        <strong>Reusable JavaScript</strong>
+        <span style="color:var(--muted); font-size:.82rem;">Paste this into your pages or a shared JS file</span>
+      </div>
+      <pre id="codeBlock"></pre>
+    </div>
+  </div>
+
+  <script>
+    const NATION_FLAGS = {
+      "Afghanistan": "🇦🇫",
+      "Albania": "🇦🇱",
+      "Algeria": "🇩🇿",
+      "American Samoa": "🇦🇸",
+      "Andorra": "🇦🇩",
+      "Angola": "🇦🇴",
+      "Anguilla": "🇦🇮",
+      "Antigua and Barbuda": "🇦🇬",
+      "Argentina": "🇦🇷",
+      "Armenia": "🇦🇲",
+      "Aruba": "🇦🇼",
+      "Australia": "🇦🇺",
+      "Austria": "🇦🇹",
+      "Azerbaijan": "🇦🇿",
+      "Bahamas": "🇧🇸",
+      "Bahrain": "🇧🇭",
+      "Bangladesh": "🇧🇩",
+      "Barbados": "🇧🇧",
+      "Belarus": "🇧🇾",
+      "Belgium": "🇧🇪",
+      "Belize": "🇧🇿",
+      "Benin": "🇧🇯",
+      "Bermuda": "🇧🇲",
+      "Bhutan": "🇧🇹",
+      "Bolivia": "🇧🇴",
+      "Bosnia and Herzegovina": "🇧🇦",
+      "Bosnia And Herzagovina": "🇧🇦",
+      "Botswana": "🇧🇼",
+      "Brazil": "🇧🇷",
+      "British Virgin Islands": "🇻🇬",
+      "Brunei": "🇧🇳",
+      "Bulgaria": "🇧🇬",
+      "Burkina Faso": "🇧🇫",
+      "Burundi": "🇧🇮",
+      "Cambodia": "🇰🇭",
+      "Cameroon": "🇨🇲",
+      "Canada": "🇨🇦",
+      "Cape Verde": "🇨🇻",
+      "Cabo Verde": "🇨🇻",
+      "Cayman Islands": "🇰🇾",
+      "Central African Republic": "🇨🇫",
+      "Chad": "🇹🇩",
+      "Chile": "🇨🇱",
+      "China": "🇨🇳",
+      "Chinese Taipei": "🇹🇼",
+      "Colombia": "🇨🇴",
+      "Comoros": "🇰🇲",
+      "Congo": "🇨🇬",
+      "DR Congo": "🇨🇩",
+      "Democratic Republic of Congo": "🇨🇩",
+      "Cook Islands": "🇨🇰",
+      "Costa Rica": "🇨🇷",
+      "Croatia": "🇭🇷",
+      "Cuba": "🇨🇺",
+      "Curaçao": "🇨🇼",
+      "Curacao": "🇨🇼",
+      "Cyprus": "🇨🇾",
+      "Czechia": "🇨🇿",
+      "Czech Republic": "🇨🇿",
+      "Denmark": "🇩🇰",
+      "Djibouti": "🇩🇯",
+      "Dominica": "🇩🇲",
+      "Dominican Republic": "🇩🇴",
+      "Ecuador": "🇪🇨",
+      "Egypt": "🇪🇬",
+      "El Salvador": "🇸🇻",
+      "England": "🏴",
+      "Equatorial Guinea": "🇬🇶",
+      "Eritrea": "🇪🇷",
+      "Estonia": "🇪🇪",
+      "Eswatini": "🇸🇿",
+      "Ethiopia": "🇪🇹",
+      "Faroe Islands": "🇫🇴",
+      "Fiji": "🇫🇯",
+      "Finland": "🇫🇮",
+      "France": "🇫🇷",
+      "Gabon": "🇬🇦",
+      "Gambia": "🇬🇲",
+      "Georgia": "🇬🇪",
+      "Germany": "🇩🇪",
+      "Ghana": "🇬🇭",
+      "Gibraltar": "🇬🇮",
+      "Greece": "🇬🇷",
+      "Grenada": "🇬🇩",
+      "Guam": "🇬🇺",
+      "Guatemala": "🇬🇹",
+      "Guinea": "🇬🇳",
+      "Guinea-Bissau": "🇬🇼",
+      "Guyana": "🇬🇾",
+      "Haiti": "🇭🇹",
+      "Honduras": "🇭🇳",
+      "Hong Kong": "🇭🇰",
+      "Hungary": "🇭🇺",
+      "Iceland": "🇮🇸",
+      "India": "🇮🇳",
+      "Indonesia": "🇮🇩",
+      "Iran": "🇮🇷",
+      "Iraq": "🇮🇶",
+      "Ireland": "🇮🇪",
+      "Israel": "🇮🇱",
+      "Italy": "🇮🇹",
+      "Ivory Coast": "🇨🇮",
+      "Cote d'Ivoire": "🇨🇮",
+      "Côte d'Ivoire": "🇨🇮",
+      "Jamaica": "🇯🇲",
+      "Japan": "🇯🇵",
+      "Jordan": "🇯🇴",
+      "Kazakhstan": "🇰🇿",
+      "Kenya": "🇰🇪",
+      "Kosovo": "🇽🇰",
+      "Kuwait": "🇰🇼",
+      "Kyrgyzstan": "🇰🇬",
+      "Laos": "🇱🇦",
+      "Latvia": "🇱🇻",
+      "Lebanon": "🇱🇧",
+      "Lesotho": "🇱🇸",
+      "Liberia": "🇱🇷",
+      "Libya": "🇱🇾",
+      "Liechtenstein": "🇱🇮",
+      "Lithuania": "🇱🇹",
+      "Luxembourg": "🇱🇺",
+      "Macau": "🇲🇴",
+      "Madagascar": "🇲🇬",
+      "Malawi": "🇲🇼",
+      "Malaysia": "🇲🇾",
+      "Maldives": "🇲🇻",
+      "Mali": "🇲🇱",
+      "Malta": "🇲🇹",
+      "Mauritania": "🇲🇷",
+      "Mauritius": "🇲🇺",
+      "Mexico": "🇲🇽",
+      "Moldova": "🇲🇩",
+      "Mongolia": "🇲🇳",
+      "Montenegro": "🇲🇪",
+      "Montserrat": "🇲🇸",
+      "Morocco": "🇲🇦",
+      "Mozambique": "🇲🇿",
+      "Myanmar": "🇲🇲",
+      "Namibia": "🇳🇦",
+      "Nepal": "🇳🇵",
+      "Netherlands": "🇳🇱",
+      "New Caledonia": "🇳🇨",
+      "New Zealand": "🇳🇿",
+      "Nicaragua": "🇳🇮",
+      "Niger": "🇳🇪",
+      "Nigeria": "🇳🇬",
+      "North Korea": "🇰🇵",
+      "North Macedonia": "🇲🇰",
+      "Northern Ireland": "🏴",
+      "Norway": "🇳🇴",
+      "Oman": "🇴🇲",
+      "Pakistan": "🇵🇰",
+      "Palestine": "🇵🇸",
+      "Panama": "🇵🇦",
+      "Papua New Guinea": "🇵🇬",
+      "Paraguay": "🇵🇾",
+      "Peru": "🇵🇪",
+      "Philippines": "🇵🇭",
+      "Poland": "🇵🇱",
+      "Portugal": "🇵🇹",
+      "Puerto Rico": "🇵🇷",
+      "Qatar": "🇶🇦",
+      "Romania": "🇷🇴",
+      "Russia": "🇷🇺",
+      "Rwanda": "🇷🇼",
+      "Saint Kitts and Nevis": "🇰🇳",
+      "Saint Lucia": "🇱🇨",
+      "Saint Vincent and the Grenadines": "🇻🇨",
+      "Samoa": "🇼🇸",
+      "San Marino": "🇸🇲",
+      "Saudi Arabia": "🇸🇦",
+      "Scotland": "🏴",
+      "Senegal": "🇸🇳",
+      "Serbia": "🇷🇸",
+      "Seychelles": "🇸🇨",
+      "Sierra Leone": "🇸🇱",
+      "Singapore": "🇸🇬",
+      "Slovakia": "🇸🇰",
+      "Slovenia": "🇸🇮",
+      "Solomon Islands": "🇸🇧",
+      "Somalia": "🇸🇴",
+      "South Africa": "🇿🇦",
+      "South Korea": "🇰🇷",
+      "South Sudan": "🇸🇸",
+      "Spain": "🇪🇸",
+      "Sri Lanka": "🇱🇰",
+      "Sudan": "🇸🇩",
+      "Suriname": "🇸🇷",
+      "Sweden": "🇸🇪",
+      "Switzerland": "🇨🇭",
+      "Syria": "🇸🇾",
+      "Tahiti": "🇵🇫",
+      "Taiwan": "🇹🇼",
+      "Tajikistan": "🇹🇯",
+      "Tanzania": "🇹🇿",
+      "Thailand": "🇹🇭",
+      "Togo": "🇹🇬",
+      "Tonga": "🇹🇴",
+      "Trinidad and Tobago": "🇹🇹",
+      "Tunisia": "🇹🇳",
+      "Turkey": "🇹🇷",
+      "Türkiye": "🇹🇷",
+      "Turkmenistan": "🇹🇲",
+      "Uganda": "🇺🇬",
+      "Ukraine": "🇺🇦",
+      "United Arab Emirates": "🇦🇪",
+      "UAE": "🇦🇪",
+      "United States": "🇺🇸",
+      "USA": "🇺🇸",
+      "Uruguay": "🇺🇾",
+      "Uzbekistan": "🇺🇿",
+      "Vanuatu": "🇻🇺",
+      "Venezuela": "🇻🇪",
+      "Vietnam": "🇻🇳",
+      "Wales": "🏴",
+      "Yemen": "🇾🇪",
+      "Zambia": "🇿🇲",
+      "Zimbabwe": "🇿🇼"
+    };
+
+    function normaliseNationName(nation) {
+      return String(nation || "")
+        .trim()
+        .replace(/\s+/g, " ")
+        .toLowerCase();
+    }
+
+    function getNationEmoji(nation) {
+      const clean = normaliseNationName(nation);
+      const match = Object.keys(NATION_FLAGS).find(key => normaliseNationName(key) === clean);
+      return match ? NATION_FLAGS[match] : "🌍";
+    }
+
+    function renderNationLabel(nation) {
+      const name = String(nation || "").trim();
+      return name ? `${getNationEmoji(name)} ${name}` : "-";
+    }
+
+    function getNationList() {
+      return Object.keys(NATION_FLAGS).sort((a, b) => a.localeCompare(b));
+    }
+
+    function renderFlags() {
+      const grid = document.getElementById("flagGrid");
+      const q = document.getElementById("searchInput").value.toLowerCase().trim();
+
+      grid.innerHTML = getNationList()
+        .filter(nation => !q || nation.toLowerCase().includes(q))
+        .map(nation => `
+          <div class="flag-card">
+            <div class="emoji">${NATION_FLAGS[nation]}</div>
+            <div>
+              <strong>${nation}</strong>
+              <span>${renderNationLabel(nation)}</span>
+            </div>
+          </div>
+        `).join("");
+    }
+
+    function copyCode() {
+      const code = document.getElementById("codeBlock").textContent;
+      navigator.clipboard.writeText(code);
+      alert("Copied flag code");
+    }
+
+    function buildCodeBlock() {
+      const code = `
+const NATION_FLAGS = ${JSON.stringify(NATION_FLAGS, null, 2)};
+
+function normaliseNationName(nation) {
+  return String(nation || "")
+    .trim()
+    .replace(/\\\\s+/g, " ")
+    .toLowerCase();
+}
+
+function getNationEmoji(nation) {
+  const clean = normaliseNationName(nation);
+  const match = Object.keys(NATION_FLAGS).find(key => normaliseNationName(key) === clean);
+  return match ? NATION_FLAGS[match] : "🌍";
+}
+
+function renderNationLabel(nation) {
+  const name = String(nation || "").trim();
+  return name ? \`\${getNationEmoji(name)} \${name}\` : "-";
+}
+
+function getNationList() {
+  return Object.keys(NATION_FLAGS).sort((a, b) => a.localeCompare(b));
+}
+`.trim();
+
+      document.getElementById("codeBlock").textContent = code;
+    }
+
+    buildCodeBlock();
+    renderFlags();
+  </script>
+</body>
+</html>
