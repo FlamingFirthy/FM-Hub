@@ -3514,6 +3514,41 @@ vertical-align:middle;
   margin-top:14px !important;
 }
 
+
+/* Prevent transfer side bars from touching neighbouring cards */
+.transfer-cards-grid{
+  gap:26px !important;
+  padding:4px 8px !important;
+}
+
+.transfer-card{
+  position:relative !important;
+  overflow:hidden !important;
+  padding-left:24px !important;
+  padding-right:24px !important;
+}
+
+.transfer-card::before{
+  left:10px !important;
+}
+
+.transfer-card::after{
+  right:10px !important;
+}
+
+.transfer-card::before,
+.transfer-card::after{
+  width:4px !important;
+  top:10px !important;
+  bottom:10px !important;
+  border-radius:999px !important;
+}
+
+.transfer-route{
+  margin-left:2px !important;
+  margin-right:2px !important;
+}
+
 </style>
 </head>
 <body>
