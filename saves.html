@@ -3629,6 +3629,66 @@ body:not(.editing) .edit-only {
   align-self: center !important;
 }
 
+
+/* Transfer team boxes: cleaner fit for long names */
+.transfer-route {
+  grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr) !important;
+  gap: 10px !important;
+}
+
+.transfer-club-box {
+  min-height: 78px !important;
+  padding: 11px 12px !important;
+  grid-template-columns: 40px minmax(0, 1fr) !important;
+  gap: 10px !important;
+  align-items: center !important;
+}
+
+.transfer-club-logo {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 12px !important;
+}
+
+.transfer-club-box > div:last-child {
+  min-width: 0 !important;
+}
+
+.transfer-club-box span {
+  font-size: 0.66rem !important;
+  line-height: 1.1 !important;
+  margin-bottom: 4px !important;
+}
+
+.transfer-club-box strong {
+  font-size: 0.9rem !important;
+  line-height: 1.15 !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  hyphens: none !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.transfer-club-box .muted {
+  display: block !important;
+  margin-top: 3px !important;
+  font-size: 0.66rem !important;
+  line-height: 1.1 !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+.transfer-arrow {
+  width: 30px !important;
+  height: 30px !important;
+  font-size: 0.8rem !important;
+}
+
 </style>
 </head>
 <body>
