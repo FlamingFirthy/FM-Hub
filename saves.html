@@ -3819,6 +3819,18 @@ body:not(.editing) .edit-only {
   text-align:center;
 }
 
+
+/* Nation labels beside divisions */
+td[data-label="Nation"],
+td[data-label="From Nation"],
+td[data-label="To Nation"] {
+  white-space: nowrap;
+}
+
+.transfer-club-box .muted {
+  display: block !important;
+}
+
 </style>
 </head>
 <body>
@@ -4217,6 +4229,7 @@ body:not(.editing) .edit-only {
             <label for="statTierInput">Tier Number</label>
             <input id="statTierInput" type="number" min="1" placeholder="2">
           </div>
+          <div><label for="statNationInput">Nation</label><input id="statNationInput" placeholder="England"></div>
           <div><label for="statPositionInput">Position</label><input id="statPositionInput" placeholder="ST / CM / GK"></div>
           <div><label for="statClubPrimaryColourInput">Club Colour</label><input id="statClubPrimaryColourInput" type="color" value="#ff3b3b"></div>
           <div><label for="statClubSecondaryColourInput">Club Secondary Colour</label><input id="statClubSecondaryColourInput" type="color" value="#ffffff"></div>
@@ -4232,7 +4245,7 @@ body:not(.editing) .edit-only {
         <div class="table-wrap">
           <table>
             <thead>
-              <tr><th>Player</th><th>Season</th><th>Age</th><th>Club</th><th>Division (Tier)</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Clean Sheets</th><th class="admin-only edit-only">Actions</th></tr>
+              <tr><th>Player</th><th>Season</th><th>Age</th><th>Club</th><th>Division (Tier)</th><th>Nation</th><th>Position</th><th>Apps</th><th>Goals</th><th>Assists</th><th>Rating</th><th>Clean Sheets</th><th class="admin-only edit-only">Actions</th></tr>
             </thead>
             <tbody id="savePlayerStatsBody"></tbody>
           </table>
@@ -4278,8 +4291,10 @@ body:not(.editing) .edit-only {
           <div><label for="transferFromInput">From</label><input id="transferFromInput" placeholder="Selling club / previous club"></div>
           <div><label for="transferToInput">To</label><input id="transferToInput" placeholder="Buying club / new club"></div>
           <div><label for="transferFromDivisionInput">From Division</label><input id="transferFromDivisionInput" placeholder="Championship"></div>
+          <div><label for="transferFromNationInput">From Nation</label><input id="transferFromNationInput" placeholder="England"></div>
           <div><label for="transferFromTierInput">From Tier</label><input id="transferFromTierInput" type="number" min="1" placeholder="2"></div>
           <div><label for="transferToDivisionInput">To Division</label><input id="transferToDivisionInput" placeholder="Premier League"></div>
+          <div><label for="transferToNationInput">To Nation</label><input id="transferToNationInput" placeholder="England"></div>
           <div><label for="transferToTierInput">To Tier</label><input id="transferToTierInput" type="number" min="1" placeholder="1"></div>
           <div><label for="transferFromColourInput">From Club Colour</label><input id="transferFromColourInput" type="color" value="#64748b"></div>
           <div><label for="transferToColourInput">To Club Colour</label><input id="transferToColourInput" type="color" value="#ff3b3b"></div>
@@ -4334,7 +4349,7 @@ body:not(.editing) .edit-only {
         <div class="table-wrap transfer-table-fallback">
           <table>
             <thead>
-              <tr><th>Player</th><th>Season</th><th>Age</th><th>Type</th><th>From</th><th>From Division</th><th>To</th><th>To Division</th><th>Fee</th><th>Notes</th><th class="admin-only edit-only">Action</th></tr>
+              <tr><th>Player</th><th>Season</th><th>Age</th><th>Type</th><th>From</th><th>From Division</th><th>From Nation</th><th>To</th><th>To Division</th><th>To Nation</th><th>Fee</th><th>Notes</th><th class="admin-only edit-only">Action</th></tr>
             </thead>
             <tbody id="transferTableBody"></tbody>
           </table>
@@ -4854,7 +4869,30 @@ function renderInternationalTable(){
       }
     }
 
-    function escapeHtml(value) {
+    
+    function getNationEmoji(nation) {
+      const n = String(nation || '').trim().toLowerCase();
+      const flags = {
+        "england":"🏴", "scotland":"🏴", "wales":"🏴", "northern ireland":"🇬🇧",
+        "ireland":"🇮🇪", "france":"🇫🇷", "germany":"🇩🇪", "spain":"🇪🇸",
+        "italy":"🇮🇹", "portugal":"🇵🇹", "netherlands":"🇳🇱", "belgium":"🇧🇪",
+        "brazil":"🇧🇷", "argentina":"🇦🇷", "uruguay":"🇺🇾", "usa":"🇺🇸",
+        "united states":"🇺🇸", "mexico":"🇲🇽", "japan":"🇯🇵", "south korea":"🇰🇷",
+        "australia":"🇦🇺", "new zealand":"🇳🇿", "turkey":"🇹🇷", "türkiye":"🇹🇷",
+        "norway":"🇳🇴", "sweden":"🇸🇪", "denmark":"🇩🇰", "croatia":"🇭🇷",
+        "serbia":"🇷🇸", "poland":"🇵🇱", "czechia":"🇨🇿", "czech republic":"🇨🇿",
+        "morocco":"🇲🇦", "egypt":"🇪🇬", "south africa":"🇿🇦", "ghana":"🇬🇭",
+        "senegal":"🇸🇳", "nigeria":"🇳🇬", "colombia":"🇨🇴", "chile":"🇨🇱",
+        "peru":"🇵🇪", "ecuador":"🇪🇨", "china":"🇨🇳", "india":"🇮🇳"
+      };
+      return flags[n] || "🌍";
+    }
+
+    function renderNationLabel(nation) {
+      return nation ? `${getNationEmoji(nation)} ${escapeHtml(nation)}` : "-";
+    }
+
+function escapeHtml(value) {
       return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
@@ -6127,13 +6165,13 @@ function syncTransferWindowFilter(transfers) {
               <div class="transfer-club-box">
                 <div class="transfer-mini-strip" style="--c1:${escapeHtml(fromColour)}; --c2:${escapeHtml(fromSecondaryColour)};"></div>
                 ${renderClubLogoMarkup(transfer.from || 'From', fromLogo, fromColour)}
-                <div><span>From</span><strong>${escapeHtml(transfer.from || '-')}</strong>${transfer.fromDivision ? `<span class="muted" style="font-size:0.74rem;">${escapeHtml(transfer.fromDivision)}</span>` : ''}</div>
+                <div><span>From</span><strong>${escapeHtml(transfer.from || '-')}</strong>${transfer.fromDivision ? `<span class="muted" style="font-size:0.74rem;">${escapeHtml(transfer.fromDivision)}</span>` : ''}${transfer.fromNation ? `<span class="muted" style="font-size:0.72rem;">${renderNationLabel(transfer.fromNation)}</span>` : ''}</div>
               </div>
               <div class="transfer-arrow">→</div>
               <div class="transfer-club-box">
                 <div class="transfer-mini-strip" style="--c1:${escapeHtml(toColour)}; --c2:${escapeHtml(toSecondaryColour)};"></div>
                 ${renderClubLogoMarkup(transfer.to || 'To', toLogo, toColour)}
-                <div><span>To</span><strong>${escapeHtml(transfer.to || '-')}</strong>${transfer.toDivision ? `<span class="muted" style="font-size:0.74rem;">${escapeHtml(transfer.toDivision)}</span>` : ''}</div>
+                <div><span>To</span><strong>${escapeHtml(transfer.to || '-')}</strong>${transfer.toDivision ? `<span class="muted" style="font-size:0.74rem;">${escapeHtml(transfer.toDivision)}</span>` : ''}${transfer.toNation ? `<span class="muted" style="font-size:0.72rem;">${renderNationLabel(transfer.toNation)}</span>` : ''}</div>
               </div>
             </div>
             ${transfer.notes ? `<div class="transfer-notes">${escapeHtml(transfer.notes)}</div>` : ''}
@@ -6220,7 +6258,7 @@ function syncTransferWindowFilter(transfers) {
       const filteredTransfers = getFilteredSortedTransfers(transfers);
       renderTransferCards(filteredTransfers, transfers);
       if (!filteredTransfers.length) {
-        tbody.innerHTML = '<tr><td colspan="11" style="padding:14px; color:var(--muted);">No transfers recorded for this filter.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="13" style="padding:14px; color:var(--muted);">No transfers recorded for this filter.</td></tr>';
         applyAdminMode();
         return;
       }
@@ -6234,8 +6272,10 @@ function syncTransferWindowFilter(transfers) {
             <td data-label="Type"><span class="transfer-type-chip ${escapeHtml(getTransferChipClass(transfer.type))}">${escapeHtml(transfer.type || '-')}</span></td>
             <td data-label="From">${escapeHtml(transfer.from || '-')}</td>
             <td data-label="From Division">${escapeHtml(transfer.fromDivision || '-')}${transfer.fromTier ? ` (${escapeHtml(transfer.fromTier)})` : ''}</td>
+            <td data-label="From Nation">${renderNationLabel(transfer.fromNation)}</td>
             <td data-label="To">${escapeHtml(transfer.to || '-')}</td>
             <td data-label="To Division">${escapeHtml(transfer.toDivision || '-')}${transfer.toTier ? ` (${escapeHtml(transfer.toTier)})` : ''}</td>
+            <td data-label="To Nation">${renderNationLabel(transfer.toNation)}</td>
             <td data-label="Fee"><strong>${escapeHtml(transfer.fee || '-')}</strong><div class="muted" style="font-size:0.74rem; margin-top:3px;">${escapeHtml(getFeeTypeLabel(transfer.fee))}</div></td>
             <td data-label="Notes">${escapeHtml(transfer.notes || '-')}</td>
             <td data-label="Actions" class="admin-only edit-only"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})"></button></td>
@@ -6268,8 +6308,10 @@ function syncTransferWindowFilter(transfers) {
         from: fromClub,
         to: toClub,
         fromDivision: document.getElementById('transferFromDivisionInput')?.value.trim() || '',
+        fromNation: document.getElementById('transferFromNationInput')?.value.trim() || '',
         fromTier: document.getElementById('transferFromTierInput')?.value.trim() || '',
         toDivision: document.getElementById('transferToDivisionInput')?.value.trim() || '',
+        toNation: document.getElementById('transferToNationInput')?.value.trim() || '',
         toTier: document.getElementById('transferToTierInput')?.value.trim() || '',
         fee: document.getElementById('transferFeeInput')?.value.trim() || '',
         fromColour: document.getElementById('transferFromColourInput')?.value || '#64748b',
@@ -6303,7 +6345,7 @@ function syncTransferWindowFilter(transfers) {
       updateCurrentSave(save);
       const savedAfterTransfer = getCurrentSave() || save;
 
-      ['transferSeasonInput','transferFromInput','transferToInput','transferFromDivisionInput','transferFromTierInput','transferToDivisionInput','transferToTierInput','transferFeeInput','transferFromLogoInput','transferToLogoInput','transferNotesInput','transferPlayerManualInput'].forEach(id => {
+      ['transferSeasonInput','transferFromInput','transferToInput','transferFromDivisionInput','transferFromNationInput','transferFromTierInput','transferToDivisionInput','transferToNationInput','transferToTierInput','transferFeeInput','transferFromLogoInput','transferToLogoInput','transferNotesInput','transferPlayerManualInput'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
       });
@@ -7156,7 +7198,7 @@ function renderSavePlayerStats(save) {
       renderStatsSummary(rows);
 
       if (!rows.length) {
-        tbody.innerHTML = '<tr><td colspan="12" style="padding:14px; color:var(--muted);">No stats recorded for this filter.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="13" style="padding:14px; color:var(--muted);">No stats recorded for this filter.</td></tr>';
         renderCareerStats([]);
         applyAdminMode();
         return;
@@ -7174,6 +7216,7 @@ function renderSavePlayerStats(save) {
           <td data-label="Age"><span class="stat-number-pill">${escapeHtml(getPlayerAgeForSeason(row.personName, row.season))}</span></td>
           <td data-label="Club">${escapeHtml(row.club || '-')}${renderStatsClubColours(row)}</td>
           <td data-label="Division">${escapeHtml(row.division || '-')}${row.tier ? ` (${escapeHtml(row.tier)})` : ''}</td>
+          <td data-label="Nation">${renderNationLabel(row.nation)}</td>
           <td data-label="Position">${escapeHtml(row.position || '-')}</td>
           <td data-label="Apps"><span class="stat-number-pill">${escapeHtml(row.apps || '0')}</span></td>
           <td data-label="Goals"><span class="stat-number-pill">${escapeHtml(row.goals || '0')}</span></td>
@@ -7526,6 +7569,7 @@ function renderSavePlayerStats(save) {
         season: document.getElementById('statSeasonInput').value.trim(),
         club: document.getElementById('statClubInput').value.trim() || item.club || save.club || '',
         division: document.getElementById('statDivisionInput')?.value.trim() || '',
+        nation: document.getElementById('statNationInput')?.value.trim() || '',
         tier: document.getElementById('statTierInput')?.value.trim() || '',
         position: document.getElementById('statPositionInput').value.trim() || item.position || '',
         apps: document.getElementById('statAppsInput').value.trim(),
@@ -7564,7 +7608,7 @@ function renderSavePlayerStats(save) {
         save.linkedPeople.push({ source: item.source, id: item.id, name: item.name, type: item.type, position: item.position, club: item.club });
       }
       updateCurrentSave(save);
-      ['statSeasonInput','statClubInput','statDivisionInput','statTierInput','statPositionInput','statAppsInput','statGoalsInput','statAssistsInput','statRatingInput','statCleanSheetsInput','statNotesInput'].forEach(id => document.getElementById(id).value = '');
+      ['statSeasonInput','statClubInput','statDivisionInput','statTierInput','statNationInput','statPositionInput','statAppsInput','statGoalsInput','statAssistsInput','statRatingInput','statCleanSheetsInput','statNotesInput'].forEach(id => document.getElementById(id).value = '');
       const statPrimaryColour = document.getElementById('statClubPrimaryColourInput');
       const statSecondaryColour = document.getElementById('statClubSecondaryColourInput');
       if (statPrimaryColour) statPrimaryColour.value = '#ff3b3b';
@@ -7600,6 +7644,7 @@ function renderSavePlayerStats(save) {
       setValue('statSeasonInput', stat.season);
       setValue('statClubInput', stat.club);
       setValue('statDivisionInput', stat.division);
+      setValue('statNationInput', stat.nation);
       setValue('statTierInput', stat.tier);
       setValue('statPositionInput', stat.position);
       setValue('statAppsInput', stat.apps);
@@ -7674,8 +7719,10 @@ function renderSavePlayerStats(save) {
       setValue('transferFromInput', transfer.from);
       setValue('transferToInput', transfer.to);
       setValue('transferFromDivisionInput', transfer.fromDivision);
+      setValue('transferFromNationInput', transfer.fromNation);
       setValue('transferFromTierInput', transfer.fromTier);
       setValue('transferToDivisionInput', transfer.toDivision);
+      setValue('transferToNationInput', transfer.toNation);
       setValue('transferToTierInput', transfer.toTier);
       setValue('transferFromLogoInput', transfer.fromLogo);
       setValue('transferToLogoInput', transfer.toLogo);
