@@ -3441,6 +3441,51 @@ vertical-align:middle;
 @media(max-width:1400px){.transfer-cards-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}
 @media(max-width:900px){.transfer-cards-grid{grid-template-columns:1fr!important;}}
 
+
+/* Overall spacing polish - prevents overlaps */
+.transfer-card{
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+.transfer-card-top{
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:flex-start!important;
+  gap:14px!important;
+  margin-bottom:16px!important;
+}
+.transfer-card-player{
+  min-width:0!important;
+  flex:1!important;
+}
+.transfer-meta-row{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:8px!important;
+  margin-top:10px!important;
+}
+.transfer-route{
+  display:grid!important;
+  align-items:center!important;
+  gap:14px!important;
+  margin:18px 0!important;
+}
+.transfer-club-box{
+  min-width:0!important;
+  overflow:hidden!important;
+}
+.transfer-club-box strong{
+  overflow-wrap:anywhere!important;
+}
+.transfer-arrow{
+  justify-self:center!important;
+}
+.transfer-notes{
+  margin-top:16px!important;
+  padding-top:14px!important;
+  line-height:1.45!important;
+}
+
 </style>
 </head>
 <body>
