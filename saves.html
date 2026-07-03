@@ -3789,6 +3789,36 @@ body:not(.editing) .edit-only {
   border-radius:10px!important;
 }
 
+
+/* FM style edit/delete buttons */
+.hero-actions .secondary,
+.hero-actions button[onclick*="edit"]{
+  min-width:92px!important;
+  padding:10px 18px!important;
+  border-radius:12px!important;
+  font-weight:700!important;
+}
+
+.hero-actions .delete-btn,
+.hero-actions button[onclick*="delete"]{
+  min-width:38px!important;
+  width:38px!important;
+  height:38px!important;
+  padding:0!important;
+  border-radius:10px!important;
+  font-size:0!important;
+  position:relative!important;
+}
+
+.hero-actions .delete-btn::before,
+.hero-actions button[onclick*="delete"]::before{
+  content:"🗑️";
+  font-size:16px;
+  line-height:38px;
+  display:block;
+  text-align:center;
+}
+
 </style>
 </head>
 <body>
@@ -4710,7 +4740,7 @@ function renderInternationalTable(){
       <td data-label="Assists"><span class="stat-number-pill">${escapeHtml(r.assists || 0)}</span></td>
       <td data-label="Clean Sheets"><span class="stat-number-pill">${escapeHtml(r.cleanSheets || 0)}</span></td>
       <td data-label="Competition">${escapeHtml(r.competition || "-")}</td>
-      <td data-label="Actions" class="admin-only edit-only"><button class="admin-only secondary small-btn" type="button" onclick="editInternationalStat(${r.__originalIndex ?? i})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteInternationalStat(${r.__originalIndex ?? i})">Delete</button></td>
+      <td data-label="Actions" class="admin-only edit-only"><button class="admin-only secondary small-btn" type="button" onclick="editInternationalStat(${r.__originalIndex ?? i})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteInternationalStat(${r.__originalIndex ?? i})"></button></td>
     </tr>
   `).join("");
 
@@ -5707,7 +5737,7 @@ function renderInternationalTable(){
               <span class="chip">${escapeHtml(event.type || 'Event')}</span>
             </div>
           </div>
-          <button class="admin-only delete-btn small-btn edit-only" type="button" onclick="deleteTimelineEvent(${index})">Delete</button>
+          <button class="admin-only delete-btn small-btn edit-only" type="button" onclick="deleteTimelineEvent(${index})"></button>
         </div>
       `).join('');
     }
@@ -5792,7 +5822,7 @@ function renderInternationalTable(){
           <span>${escapeHtml(award.person || '-')} • ${escapeHtml(award.season || 'No season')}</span>
           ${award.value ? `<span>Value: ${escapeHtml(award.value)}</span>` : ''}
           ${award.notes ? `<span>${escapeHtml(award.notes)}</span>` : ''}
-          <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteSeasonAward(${index})">Delete</button></div>
+          <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteSeasonAward(${index})"></button></div>
         </div>
       `).join('');
     }
@@ -5842,7 +5872,7 @@ function renderInternationalTable(){
           ${match.score ? `<div class="highlight-score">${escapeHtml(match.score)}</div>` : ''}
           ${match.star ? `<span>Star: ${escapeHtml(match.star)}</span>` : ''}
           ${match.notes ? `<span>${escapeHtml(match.notes)}</span>` : ''}
-          <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteMatchHighlight(${index})">Delete</button></div>
+          <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteMatchHighlight(${index})"></button></div>
         </div>
       `).join('');
     }
@@ -6105,7 +6135,7 @@ function syncTransferWindowFilter(transfers) {
               </div>
             </div>
             ${transfer.notes ? `<div class="transfer-notes">${escapeHtml(transfer.notes)}</div>` : ''}
-            <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></div>
+            <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})"></button></div>
           </div>
         `;
       }).join('');
@@ -6206,7 +6236,7 @@ function syncTransferWindowFilter(transfers) {
             <td data-label="To Division">${escapeHtml(transfer.toDivision || '-')}${transfer.toTier ? ` (${escapeHtml(transfer.toTier)})` : ''}</td>
             <td data-label="Fee"><strong>${escapeHtml(transfer.fee || '-')}</strong><div class="muted" style="font-size:0.74rem; margin-top:3px;">${escapeHtml(getFeeTypeLabel(transfer.fee))}</div></td>
             <td data-label="Notes">${escapeHtml(transfer.notes || '-')}</td>
-            <td data-label="Actions" class="admin-only edit-only"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})">Delete</button></td>
+            <td data-label="Actions" class="admin-only edit-only"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})"></button></td>
           </tr>
         `;
       }).join('');
@@ -6319,7 +6349,7 @@ function syncTransferWindowFilter(transfers) {
           <td>${escapeHtml(record.finish || '-')}</td>
           <td>${escapeHtml(record.points || '-')}</td>
           <td>${escapeHtml(record.trophies || '-')}</td>
-          <td class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="event.stopPropagation(); deleteSaveSeasonRecord(${index})">Delete</button></td>
+          <td class="admin-only edit-only"><button class="admin-only delete-btn small-btn" type="button" onclick="event.stopPropagation(); deleteSaveSeasonRecord(${index})"></button></td>
         </tr>
       `).join('');
     }
@@ -7140,7 +7170,7 @@ function renderSavePlayerStats(save) {
           <td data-label="Assists"><span class="stat-number-pill">${escapeHtml(row.assists || '0')}</span></td>
           <td data-label="Rating"><span class="stat-number-pill">${escapeHtml(row.rating || '-')}</span></td>
           <td data-label="Clean Sheets"><span class="stat-number-pill">${escapeHtml(row.cleanSheets || '-')}</span></td>
-          <td data-label="Actions" class="admin-only edit-only">${row.origin === 'save' ? `<button class="admin-only secondary small-btn" type="button" onclick="editSavePlayerStat(${row.index})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})">Delete</button>` : '<span class="chip">Squad</span>'}</td>
+          <td data-label="Actions" class="admin-only edit-only">${row.origin === 'save' ? `<button class="admin-only secondary small-btn" type="button" onclick="editSavePlayerStat(${row.index})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})"></button>` : '<span class="chip">Squad</span>'}</td>
         </tr>
       `).join('');
 
