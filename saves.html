@@ -3556,6 +3556,79 @@ body:not(.editing) .edit-only {
   display: none !important;
 }
 
+
+/* Transfer edit buttons + cleaner team boxes */
+.transfer-card .hero-actions.edit-only {
+  gap: 10px !important;
+  align-items: center !important;
+  margin-top: 14px !important;
+}
+
+.transfer-card .hero-actions.edit-only button[onclick^="editTransferRecord"],
+.transfer-card .hero-actions.edit-only .secondary {
+  padding: 10px 20px !important;
+  min-width: 88px !important;
+  font-size: 0.9rem !important;
+  font-weight: 900 !important;
+  border-radius: 14px !important;
+}
+
+.transfer-card .hero-actions.edit-only button[onclick^="deleteTransferRecord"],
+.transfer-card .hero-actions.edit-only .delete-btn {
+  padding: 7px 12px !important;
+  min-width: 62px !important;
+  font-size: 0.76rem !important;
+  border-radius: 11px !important;
+}
+
+.transfer-route {
+  gap: 14px !important;
+  align-items: stretch !important;
+}
+
+.transfer-club-box {
+  min-height: 86px !important;
+  padding: 13px 14px !important;
+  grid-template-columns: 44px minmax(0, 1fr) !important;
+  gap: 12px !important;
+  align-items: center !important;
+}
+
+.transfer-club-logo {
+  width: 44px !important;
+  height: 44px !important;
+  flex-shrink: 0 !important;
+}
+
+.transfer-club-box > div:last-child {
+  min-width: 0 !important;
+}
+
+.transfer-club-box span {
+  font-size: 0.68rem !important;
+  line-height: 1.15 !important;
+  margin-bottom: 4px !important;
+}
+
+.transfer-club-box strong {
+  font-size: 0.92rem !important;
+  line-height: 1.18 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  display: block !important;
+}
+
+.transfer-club-box .muted {
+  margin-top: 3px !important;
+  font-size: 0.68rem !important;
+  line-height: 1.15 !important;
+}
+
+.transfer-arrow {
+  justify-self: center !important;
+  align-self: center !important;
+}
+
 </style>
 </head>
 <body>
