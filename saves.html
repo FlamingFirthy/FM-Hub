@@ -3549,6 +3549,13 @@ vertical-align:middle;
   margin-right:2px !important;
 }
 
+
+/* Hide edit/delete controls in view mode */
+body:not(.edit-mode) .edit-only,
+body:not(.editing) .edit-only {
+  display: none !important;
+}
+
 </style>
 </head>
 <body>
@@ -7956,5 +7963,21 @@ function renderSavePlayerStats(save) {
 </script>
 
   <footer><div class="container">FM Saves • Career tracker</div></footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.edit-only').forEach(el => {
+    const update = () => {
+      const editing = document.body.classList.contains('edit-mode') ||
+                      document.body.classList.contains('editing');
+      if (!editing) el.style.display = 'none';
+      else el.style.display = '';
+    };
+    update();
+    new MutationObserver(update).observe(document.body,{attributes:true,attributeFilter:['class']});
+  });
+});
+</script>
+
 </body>
 </html> 
