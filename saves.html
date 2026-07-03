@@ -4533,6 +4533,7 @@ function populateInternationalPlayerDropdown(){
 }
 
 function addInternationalStat(){
+  const activeTabBeforeInternationalSave = getActiveSaveTabKey();
   if (currentSaveIndex === null || currentSaveIndex === undefined) return;
 
   const saves = getSaves().map(normaliseSave);
@@ -4581,6 +4582,7 @@ function addInternationalStat(){
 
   renderInternationalTable();
   populateInternationalPlayerDropdown();
+  restoreSaveTabAfterRefresh(activeTabBeforeInternationalSave);
   buildOverviewShortcuts(getCurrentSave());
   applyAdminMode();
 }
@@ -6252,6 +6254,7 @@ function syncTransferWindowFilter(transfers) {
     }
 
     function addTransferRecord() {
+      const activeTabBeforeTransferSave = getActiveSaveTabKey();
       const save = getCurrentSave();
       if (!save) return;
 
@@ -6322,15 +6325,18 @@ function syncTransferWindowFilter(transfers) {
       if (toSecondaryColour) toSecondaryColour.value = '#ffffff';
 
       renderTransferRecords(savedAfterTransfer);
+      restoreSaveTabAfterRefresh(activeTabBeforeTransferSave);
       loadSaves();
     }
 
     function deleteTransferRecord(index) {
+      const activeTabBeforeTransferDelete = getActiveSaveTabKey();
       const save = getCurrentSave();
       if (!save || !Array.isArray(save.transfers)) return;
       save.transfers.splice(index, 1);
       updateCurrentSave(save);
       renderTransferRecords(save);
+      restoreSaveTabAfterRefresh(activeTabBeforeTransferDelete);
       loadSaves();
     }
 
@@ -6392,7 +6398,9 @@ function syncTransferWindowFilter(transfers) {
       if (record.club) save.club = record.club;
       updateCurrentSave(save);
       ['saveRecordSeason','saveRecordClub','saveRecordLeagueFinish','saveRecordPoints','saveRecordTrophy','saveRecordStatus','saveRecordNotes'].forEach(id => document.getElementById(id).value = '');
+      const activeTabBeforeRefresh = getActiveSaveTabKey();
       openSaveProfile(currentSaveIndex);
+      restoreSaveTabAfterRefresh(activeTabBeforeRefresh);
       setSaveEditMode(true);
       loadSaves();
     }
@@ -6402,7 +6410,9 @@ function syncTransferWindowFilter(transfers) {
       if (!save) return;
       save.seasons.splice(index, 1);
       updateCurrentSave(save);
+      const activeTabBeforeRefresh = getActiveSaveTabKey();
       openSaveProfile(currentSaveIndex);
+      restoreSaveTabAfterRefresh(activeTabBeforeRefresh);
       setSaveEditMode(true);
       loadSaves();
     }
@@ -7894,14 +7904,14 @@ function renderSavePlayerStats(save) {
       shell.className = 'save-tab-shell';
       shell.innerHTML = `
         <div class="save-tabs" role="tablist">
-          <button class="save-tab-btn active" type="button" onclick="openSaveTab('overview')" data-save-tab-button="overview">Overview</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('people')" data-save-tab-button="people">People</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('club')" data-save-tab-button="club">Club</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('seasons')" data-save-tab-button="seasons">Seasons</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('stats')" data-save-tab-button="stats">Stats</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('international')" data-save-tab-button="international">International</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('transfers')" data-save-tab-button="transfers">Transfers</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('story')" data-save-tab-button="story">Story</button>
+          <button class="admin-only save-tab-btn active" type="button" onclick="openSaveTab('overview')" data-save-tab-button="overview">Overview</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('people')" data-save-tab-button="people">People</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('club')" data-save-tab-button="club">Club</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('seasons')" data-save-tab-button="seasons">Seasons</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('stats')" data-save-tab-button="stats">Stats</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('international')" data-save-tab-button="international">International</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('transfers')" data-save-tab-button="transfers">Transfers</button>
+          <button class="admin-only save-tab-btn" type="button" onclick="openSaveTab('story')" data-save-tab-button="story">Story</button>
         </div>
         <div id="saveTabOverview" class="save-tab-panel active" data-save-tab-panel="overview">
           <div id="overviewShortcutGrid" class="overview-shortcut-grid"></div>
@@ -8098,7 +8108,19 @@ function renderSavePlayerStats(save) {
       openSaveTab(currentSaveTab || 'overview', false);
     }
 
-    function openSaveTab(tabName, shouldScroll = true) {
+    
+    function getActiveSaveTabKey() {
+      return document.querySelector('[data-save-tab-button].active')?.dataset.saveTabButton || 'overview';
+    }
+
+    function restoreSaveTabAfterRefresh(tabKey) {
+      if (!tabKey) return;
+      setTimeout(() => {
+        if (typeof openSaveTab === 'function') openSaveTab(tabKey);
+      }, 0);
+    }
+
+function openSaveTab(tabName, shouldScroll = true) {
       const safeTab = ['overview','people','club','seasons','stats','international','transfers','story'].includes(tabName) ? tabName : 'overview';
       currentSaveTab = safeTab;
       document.querySelectorAll('[data-save-tab-panel]').forEach(panel => panel.classList.toggle('active', panel.dataset.saveTabPanel === safeTab));
