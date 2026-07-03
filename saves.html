@@ -3766,6 +3766,29 @@ body:not(.editing) .edit-only {
   justify-self: center !important;
 }
 
+
+/* Larger Edit buttons for Stats & International */
+.stats-tab .hero-actions .secondary,
+.international-tab .hero-actions .secondary,
+.stats-tab .hero-actions button[onclick*="edit"],
+.international-tab .hero-actions button[onclick*="edit"]{
+  min-width:90px!important;
+  padding:10px 20px!important;
+  font-size:.92rem!important;
+  font-weight:700!important;
+  border-radius:12px!important;
+}
+
+.stats-tab .hero-actions .delete-btn,
+.international-tab .hero-actions .delete-btn,
+.stats-tab .hero-actions button[onclick*="delete"],
+.international-tab .hero-actions button[onclick*="delete"]{
+  min-width:60px!important;
+  padding:8px 12px!important;
+  font-size:.78rem!important;
+  border-radius:10px!important;
+}
+
 </style>
 </head>
 <body>
