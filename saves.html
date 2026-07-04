@@ -4870,27 +4870,51 @@ function renderInternationalTable(){
     }
 
     
+    
+    const NATION_FLAGS = {
+      "Afghanistan":"🇦🇫","Albania":"🇦🇱","Algeria":"🇩🇿","American Samoa":"🇦🇸","Andorra":"🇦🇩","Angola":"🇦🇴","Anguilla":"🇦🇮","Antigua and Barbuda":"🇦🇬","Argentina":"🇦🇷","Armenia":"🇦🇲","Aruba":"🇦🇼","Australia":"🇦🇺","Austria":"🇦🇹","Azerbaijan":"🇦🇿",
+      "Bahamas":"🇧🇸","Bahrain":"🇧🇭","Bangladesh":"🇧🇩","Barbados":"🇧🇧","Belarus":"🇧🇾","Belgium":"🇧🇪","Belize":"🇧🇿","Benin":"🇧🇯","Bermuda":"🇧🇲","Bhutan":"🇧🇹","Bolivia":"🇧🇴","Bosnia and Herzegovina":"🇧🇦","Bosnia And Herzagovina":"🇧🇦","Botswana":"🇧🇼","Brazil":"🇧🇷","British Virgin Islands":"🇻🇬","Brunei":"🇧🇳","Bulgaria":"🇧🇬","Burkina Faso":"🇧🇫","Burundi":"🇧🇮",
+      "Cambodia":"🇰🇭","Cameroon":"🇨🇲","Canada":"🇨🇦","Cape Verde":"🇨🇻","Cabo Verde":"🇨🇻","Cayman Islands":"🇰🇾","Central African Republic":"🇨🇫","Chad":"🇹🇩","Chile":"🇨🇱","China":"🇨🇳","Chinese Taipei":"🇹🇼","Colombia":"🇨🇴","Comoros":"🇰🇲","Congo":"🇨🇬","DR Congo":"🇨🇩","Democratic Republic of Congo":"🇨🇩","Cook Islands":"🇨🇰","Costa Rica":"🇨🇷","Croatia":"🇭🇷","Cuba":"🇨🇺","Curaçao":"🇨🇼","Curacao":"🇨🇼","Cyprus":"🇨🇾","Czechia":"🇨🇿","Czech Republic":"🇨🇿",
+      "Denmark":"🇩🇰","Djibouti":"🇩🇯","Dominica":"🇩🇲","Dominican Republic":"🇩🇴","Ecuador":"🇪🇨","Egypt":"🇪🇬","El Salvador":"🇸🇻","England":"🏴","Equatorial Guinea":"🇬🇶","Eritrea":"🇪🇷","Estonia":"🇪🇪","Eswatini":"🇸🇿","Ethiopia":"🇪🇹",
+      "Faroe Islands":"🇫🇴","Fiji":"🇫🇯","Finland":"🇫🇮","France":"🇫🇷","Gabon":"🇬🇦","Gambia":"🇬🇲","Georgia":"🇬🇪","Germany":"🇩🇪","Ghana":"🇬🇭","Gibraltar":"🇬🇮","Greece":"🇬🇷","Grenada":"🇬🇩","Guam":"🇬🇺","Guatemala":"🇬🇹","Guinea":"🇬🇳","Guinea-Bissau":"🇬🇼","Guyana":"🇬🇾",
+      "Haiti":"🇭🇹","Honduras":"🇭🇳","Hong Kong":"🇭🇰","Hungary":"🇭🇺","Iceland":"🇮🇸","India":"🇮🇳","Indonesia":"🇮🇩","Iran":"🇮🇷","Iraq":"🇮🇶","Ireland":"🇮🇪","Israel":"🇮🇱","Italy":"🇮🇹","Ivory Coast":"🇨🇮","Cote d'Ivoire":"🇨🇮","Côte d'Ivoire":"🇨🇮",
+      "Jamaica":"🇯🇲","Japan":"🇯🇵","Jordan":"🇯🇴","Kazakhstan":"🇰🇿","Kenya":"🇰🇪","Kosovo":"🇽🇰","Kuwait":"🇰🇼","Kyrgyzstan":"🇰🇬","Laos":"🇱🇦","Latvia":"🇱🇻","Lebanon":"🇱🇧","Lesotho":"🇱🇸","Liberia":"🇱🇷","Libya":"🇱🇾","Liechtenstein":"🇱🇮","Lithuania":"🇱🇹","Luxembourg":"🇱🇺",
+      "Macau":"🇲🇴","Madagascar":"🇲🇬","Malawi":"🇲🇼","Malaysia":"🇲🇾","Maldives":"🇲🇻","Mali":"🇲🇱","Malta":"🇲🇹","Mauritania":"🇲🇷","Mauritius":"🇲🇺","Mexico":"🇲🇽","Moldova":"🇲🇩","Mongolia":"🇲🇳","Montenegro":"🇲🇪","Montserrat":"🇲🇸","Morocco":"🇲🇦","Mozambique":"🇲🇿","Myanmar":"🇲🇲",
+      "Namibia":"🇳🇦","Nepal":"🇳🇵","Netherlands":"🇳🇱","New Caledonia":"🇳🇨","New Zealand":"🇳🇿","Nicaragua":"🇳🇮","Niger":"🇳🇪","Nigeria":"🇳🇬","North Korea":"🇰🇵","North Macedonia":"🇲🇰","Northern Ireland":"🏴","Norway":"🇳🇴",
+      "Oman":"🇴🇲","Pakistan":"🇵🇰","Palestine":"🇵🇸","Panama":"🇵🇦","Papua New Guinea":"🇵🇬","Paraguay":"🇵🇾","Peru":"🇵🇪","Philippines":"🇵🇭","Poland":"🇵🇱","Portugal":"🇵🇹","Puerto Rico":"🇵🇷",
+      "Qatar":"🇶🇦","Romania":"🇷🇴","Russia":"🇷🇺","Rwanda":"🇷🇼","Saint Kitts and Nevis":"🇰🇳","Saint Lucia":"🇱🇨","Saint Vincent and the Grenadines":"🇻🇨","Samoa":"🇼🇸","San Marino":"🇸🇲","Saudi Arabia":"🇸🇦","Scotland":"🏴","Senegal":"🇸🇳","Serbia":"🇷🇸","Seychelles":"🇸🇨","Sierra Leone":"🇸🇱","Singapore":"🇸🇬","Slovakia":"🇸🇰","Slovenia":"🇸🇮","Solomon Islands":"🇸🇧","Somalia":"🇸🇴","South Africa":"🇿🇦","South Korea":"🇰🇷","South Sudan":"🇸🇸","Spain":"🇪🇸","Sri Lanka":"🇱🇰","Sudan":"🇸🇩","Suriname":"🇸🇷","Sweden":"🇸🇪","Switzerland":"🇨🇭","Syria":"🇸🇾",
+      "Tahiti":"🇵🇫","Taiwan":"🇹🇼","Tajikistan":"🇹🇯","Tanzania":"🇹🇿","Thailand":"🇹🇭","Togo":"🇹🇬","Tonga":"🇹🇴","Trinidad and Tobago":"🇹🇹","Tunisia":"🇹🇳","Turkey":"🇹🇷","Türkiye":"🇹🇷","Turkmenistan":"🇹🇲",
+      "Uganda":"🇺🇬","Ukraine":"🇺🇦","United Arab Emirates":"🇦🇪","UAE":"🇦🇪","United States":"🇺🇸","USA":"🇺🇸","Uruguay":"🇺🇾","Uzbekistan":"🇺🇿","Vanuatu":"🇻🇺","Venezuela":"🇻🇪","Vietnam":"🇻🇳","Wales":"🏴","Yemen":"🇾🇪","Zambia":"🇿🇲","Zimbabwe":"🇿🇼"
+    };
+
+    function normaliseNationName(nation) {
+      return String(nation || "").trim().replace(/\s+/g, " ").toLowerCase();
+    }
+
     function getNationEmoji(nation) {
-      const n = String(nation || '').trim().toLowerCase();
-      const flags = {
-        "england":"🏴", "scotland":"🏴", "wales":"🏴", "northern ireland":"🇬🇧",
-        "ireland":"🇮🇪", "france":"🇫🇷", "germany":"🇩🇪", "spain":"🇪🇸",
-        "italy":"🇮🇹", "portugal":"🇵🇹", "netherlands":"🇳🇱", "belgium":"🇧🇪",
-        "brazil":"🇧🇷", "argentina":"🇦🇷", "uruguay":"🇺🇾", "usa":"🇺🇸",
-        "united states":"🇺🇸", "mexico":"🇲🇽", "japan":"🇯🇵", "south korea":"🇰🇷",
-        "australia":"🇦🇺", "new zealand":"🇳🇿", "turkey":"🇹🇷", "türkiye":"🇹🇷",
-        "norway":"🇳🇴", "sweden":"🇸🇪", "denmark":"🇩🇰", "croatia":"🇭🇷",
-        "serbia":"🇷🇸", "poland":"🇵🇱", "czechia":"🇨🇿", "czech republic":"🇨🇿",
-        "morocco":"🇲🇦", "egypt":"🇪🇬", "south africa":"🇿🇦", "ghana":"🇬🇭",
-        "senegal":"🇸🇳", "nigeria":"🇳🇬", "colombia":"🇨🇴", "chile":"🇨🇱",
-        "peru":"🇵🇪", "ecuador":"🇪🇨", "china":"🇨🇳", "india":"🇮🇳"
-      };
-      return flags[n] || "🌍";
+      const clean = normaliseNationName(nation);
+      const match = Object.keys(NATION_FLAGS).find(key => normaliseNationName(key) === clean);
+      return match ? NATION_FLAGS[match] : "🌍";
     }
 
     function renderNationLabel(nation) {
-      return nation ? `${getNationEmoji(nation)} ${escapeHtml(nation)}` : "-";
+      const name = String(nation || "").trim();
+      return name ? `${getNationEmoji(name)} ${escapeHtml(name)}` : "-";
     }
+
+    function getNationList() {
+      return Object.keys(NATION_FLAGS).sort((a, b) => a.localeCompare(b));
+    }
+
+    function populateNationDatalist() {
+      const lists = document.querySelectorAll('datalist[data-nation-list="true"]');
+      lists.forEach(list => {
+        list.innerHTML = getNationList().map(nation => `<option value="${escapeHtml(nation)}">${getNationEmoji(nation)} ${escapeHtml(nation)}</option>`).join("");
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", populateNationDatalist);
+
 
 function escapeHtml(value) {
       return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
@@ -8310,6 +8334,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+
+
+<datalist id="nationOptions" data-nation-list="true"></datalist>
 
 </body>
 </html> 
