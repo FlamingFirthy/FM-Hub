@@ -100,7 +100,7 @@
       place-items: center;
       border-radius: 14px;
       background: rgba(255,255,255,0.075);
-      font-size: 1.55rem;
+      font-size: 2rem;
     }
 
     .flag-card strong {
@@ -392,7 +392,14 @@
       "Zimbabwe": "🇿🇼"
     };
 
-    function normaliseNationName(nation) {
+    
+    function emojiOnlyList() {
+      return Object.entries(NATION_FLAGS)
+        .sort((a,b)=>a[0].localeCompare(b[0]))
+        .map(([nation,flag])=>({nation,flag}));
+    }
+
+function normaliseNationName(nation) {
       return String(nation || "")
         .trim()
         .replace(/\s+/g, " ")
