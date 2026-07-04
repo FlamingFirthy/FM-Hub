@@ -4858,10 +4858,12 @@ function renderInternationalTable(){
         syncingFromCloud = false;
 
         initTheme();
-        if (currentSaveIndex !== null) const activeTabBeforeRefresh = rememberCurrentSaveTab();
-      openSaveProfile(currentSaveIndex);
-      lastOpenedSaveTabKey = activeTabBeforeRefresh;
-      restoreLastSaveTab();
+        if (currentSaveIndex !== null) {
+          const activeTabBeforeRefresh = typeof rememberCurrentSaveTab === 'function' ? rememberCurrentSaveTab() : (currentSaveTab || 'overview');
+          openSaveProfile(currentSaveIndex);
+          if (typeof lastOpenedSaveTabKey !== 'undefined') lastOpenedSaveTabKey = activeTabBeforeRefresh;
+          if (typeof restoreLastSaveTab === 'function') restoreLastSaveTab();
+        }
         loadSaves();
         decorateEmptyStates();
 
@@ -8240,6 +8242,7 @@ function renderSavePlayerStats(save) {
 function openSaveTab(tabName, shouldScroll = true) {
       const safeTab = ['overview','people','club','seasons','stats','international','transfers','story'].includes(tabName) ? tabName : 'overview';
       currentSaveTab = safeTab;
+      if (typeof lastOpenedSaveTabKey !== 'undefined') lastOpenedSaveTabKey = safeTab;
       document.querySelectorAll('[data-save-tab-panel]').forEach(panel => panel.classList.toggle('active', panel.dataset.saveTabPanel === safeTab));
       document.querySelectorAll('[data-save-tab-button]').forEach(btn => btn.classList.toggle('active', btn.dataset.saveTabButton === safeTab));
       decorateEmptyStates();
@@ -8350,7 +8353,11 @@ function openSaveTab(tabName, shouldScroll = true) {
     window.addEventListener('storage', event => {
       if (event.key === 'fmhub-theme') initTheme();
       if ([savesKey, squadKey, peopleKey].includes(event.key)) {
-        if (currentSaveIndex !== null) openSaveProfile(currentSaveIndex);
+        if (currentSaveIndex !== null) {
+          const activeTabBeforeStorageRefresh = currentSaveTab || (typeof lastOpenedSaveTabKey !== 'undefined' ? lastOpenedSaveTabKey : 'overview');
+          openSaveProfile(currentSaveIndex);
+          if (typeof openSaveTab === 'function') openSaveTab(activeTabBeforeStorageRefresh, false);
+        }
         loadSaves();
       }
     });
