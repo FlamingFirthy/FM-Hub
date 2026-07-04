@@ -4548,7 +4548,7 @@ function populateInternationalPlayerDropdown(){
 }
 
 function addInternationalStat(){
-  const activeTabBeforeInternationalSave = getActiveSaveTabKey();
+  var activeTabBeforeInternationalSave = getActiveSaveTabKey();
   if (currentSaveIndex === null || currentSaveIndex === undefined) return;
 
   const saves = getSaves().map(normaliseSave);
@@ -4859,7 +4859,7 @@ function renderInternationalTable(){
 
         initTheme();
         if (currentSaveIndex !== null) {
-          const activeTabBeforeRefresh = typeof rememberCurrentSaveTab === 'function' ? rememberCurrentSaveTab() : (currentSaveTab || 'overview');
+          var activeTabBeforeRefresh = typeof rememberCurrentSaveTab === 'function' ? rememberCurrentSaveTab() : (currentSaveTab || 'overview');
           openSaveProfile(currentSaveIndex);
           if (typeof lastOpenedSaveTabKey !== 'undefined') lastOpenedSaveTabKey = activeTabBeforeRefresh;
           if (typeof restoreLastSaveTab === 'function') restoreLastSaveTab();
@@ -6326,7 +6326,7 @@ function syncTransferWindowFilter(transfers) {
 
     function addTransferRecord() {
       lastOpenedSaveTabKey = 'transfers';
-      const activeTabBeforeTransferSave = getActiveSaveTabKey();
+      var activeTabBeforeTransferSave = getActiveSaveTabKey();
       const save = getCurrentSave();
       if (!save) return;
 
@@ -6404,7 +6404,7 @@ function syncTransferWindowFilter(transfers) {
     }
 
     function deleteTransferRecord(index) {
-      const activeTabBeforeTransferDelete = getActiveSaveTabKey();
+      var activeTabBeforeTransferDelete = getActiveSaveTabKey();
       const save = getCurrentSave();
       if (!save || !Array.isArray(save.transfers)) return;
       save.transfers.splice(index, 1);
@@ -6472,8 +6472,8 @@ function syncTransferWindowFilter(transfers) {
       if (record.club) save.club = record.club;
       updateCurrentSave(save);
       ['saveRecordSeason','saveRecordClub','saveRecordLeagueFinish','saveRecordPoints','saveRecordTrophy','saveRecordStatus','saveRecordNotes'].forEach(id => document.getElementById(id).value = '');
-      const activeTabBeforeRefresh = getActiveSaveTabKey();
-      const activeTabBeforeRefresh = rememberCurrentSaveTab();
+      var activeTabBeforeRefresh = getActiveSaveTabKey();
+      var activeTabBeforeRefresh = rememberCurrentSaveTab();
       openSaveProfile(currentSaveIndex);
       lastOpenedSaveTabKey = activeTabBeforeRefresh;
       restoreLastSaveTab();
@@ -6487,7 +6487,7 @@ function syncTransferWindowFilter(transfers) {
       if (!save) return;
       save.seasons.splice(index, 1);
       updateCurrentSave(save);
-      const activeTabBeforeRefresh = getActiveSaveTabKey();
+      var activeTabBeforeRefresh = getActiveSaveTabKey();
       openSaveProfile(currentSaveIndex);
       restoreSaveTabAfterRefresh(activeTabBeforeRefresh);
       setSaveEditMode(true);
@@ -6845,7 +6845,7 @@ function syncTransferWindowFilter(transfers) {
       }
 
       updateCurrentSave(save);
-      const activeTabBeforeRefresh = rememberCurrentSaveTab();
+      var activeTabBeforeRefresh = rememberCurrentSaveTab();
       openSaveProfile(currentSaveIndex);
       lastOpenedSaveTabKey = activeTabBeforeRefresh;
       restoreLastSaveTab();
@@ -6861,7 +6861,7 @@ function syncTransferWindowFilter(transfers) {
       if (!save) return;
       save.linkedPeople = (save.linkedPeople || []).filter(person => normaliseText(person.name) !== normaliseText(name) && String(person.id || '') !== String(id || ''));
       updateCurrentSave(save);
-      const activeTabBeforeRefresh = rememberCurrentSaveTab();
+      var activeTabBeforeRefresh = rememberCurrentSaveTab();
       openSaveProfile(currentSaveIndex);
       lastOpenedSaveTabKey = activeTabBeforeRefresh;
       restoreLastSaveTab();
@@ -7655,7 +7655,7 @@ function renderSavePlayerStats(save) {
       const statSecondaryColour = document.getElementById('statClubSecondaryColourInput');
       if (statPrimaryColour) statPrimaryColour.value = '#ff3b3b';
       if (statSecondaryColour) statSecondaryColour.value = '#ffffff';
-      const activeTabBeforeRefresh = rememberCurrentSaveTab();
+      var activeTabBeforeRefresh = rememberCurrentSaveTab();
       openSaveProfile(currentSaveIndex);
       lastOpenedSaveTabKey = activeTabBeforeRefresh;
       restoreLastSaveTab();
@@ -7805,7 +7805,7 @@ function renderSavePlayerStats(save) {
       if (!save || !Array.isArray(save.playerStats)) return;
       save.playerStats.splice(index, 1);
       updateCurrentSave(save);
-      const activeTabBeforeRefresh = rememberCurrentSaveTab();
+      var activeTabBeforeRefresh = rememberCurrentSaveTab();
       openSaveProfile(currentSaveIndex);
       lastOpenedSaveTabKey = activeTabBeforeRefresh;
       restoreLastSaveTab();
@@ -7930,7 +7930,7 @@ function renderSavePlayerStats(save) {
       saveNormalisedSaves(saves);
       updateSaveNameReferences(oldName, save.name);
 
-      const activeTabBeforeRefresh = rememberCurrentSaveTab();
+      var activeTabBeforeRefresh = rememberCurrentSaveTab();
       openSaveProfile(currentSaveIndex);
       lastOpenedSaveTabKey = activeTabBeforeRefresh;
       restoreLastSaveTab();
@@ -8354,7 +8354,7 @@ function openSaveTab(tabName, shouldScroll = true) {
       if (event.key === 'fmhub-theme') initTheme();
       if ([savesKey, squadKey, peopleKey].includes(event.key)) {
         if (currentSaveIndex !== null) {
-          const activeTabBeforeStorageRefresh = currentSaveTab || (typeof lastOpenedSaveTabKey !== 'undefined' ? lastOpenedSaveTabKey : 'overview');
+          var activeTabBeforeStorageRefresh = currentSaveTab || (typeof lastOpenedSaveTabKey !== 'undefined' ? lastOpenedSaveTabKey : 'overview');
           openSaveProfile(currentSaveIndex);
           if (typeof openSaveTab === 'function') openSaveTab(activeTabBeforeStorageRefresh, false);
         }
@@ -8368,7 +8368,7 @@ function openSaveTab(tabName, shouldScroll = true) {
     navigator.serviceWorker.register("./service-worker.js");
   }
   
-    applyAdminMode();
+    if (typeof applyAdminMode === 'function') applyAdminMode();
 </script>
 
   <footer><div class="container">FM Saves • Career tracker</div></footer>
