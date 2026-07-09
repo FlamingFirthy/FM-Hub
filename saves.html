@@ -4361,6 +4361,208 @@ td[data-label="To Nation"] {
   }
 }
 
+
+/* International tab FM dashboard layout */
+#internationalCombinedSummary {
+  display: block !important;
+  margin: 16px 0 20px !important;
+}
+
+.intl-dashboard-panel {
+  border: 1px solid rgba(255,255,255,0.085);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,0.055), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018));
+  padding: 18px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.intl-dashboard-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.intl-dashboard-head h3 {
+  margin-bottom: 6px;
+}
+
+.intl-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(390px, 1fr));
+  gap: 14px;
+}
+
+.intl-fm-card {
+  width: 100%;
+  text-align: left;
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,0.055), transparent 34%),
+    linear-gradient(135deg, rgba(255,255,255,0.055), rgba(255,255,255,0.022));
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.intl-fm-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  bottom: 14px;
+  width: 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent), rgba(34,197,94,0.45), rgba(59,130,246,0.45));
+}
+
+.intl-fm-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.18);
+  box-shadow: 0 16px 34px rgba(0,0,0,0.28);
+}
+
+.intl-fm-card-top {
+  display: grid;
+  grid-template-columns: 34px 58px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.intl-fm-rank {
+  width: 30px;
+  height: 30px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.intl-fm-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.16));
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+}
+
+.intl-fm-player {
+  min-width: 0;
+}
+
+.intl-fm-player strong {
+  display: block;
+  font-size: 1.2rem;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.intl-fm-player span {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.25;
+}
+
+.intl-fm-card-top em {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 900;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.intl-fm-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.intl-fm-column {
+  min-width: 0;
+  padding-top: 11px;
+  border-top: 3px solid rgba(255,255,255,0.12);
+}
+
+.intl-fm-column.senior {
+  border-top-color: rgba(34,197,94,0.85);
+}
+
+.intl-fm-column.youth {
+  border-top-color: rgba(59,130,246,0.85);
+}
+
+.intl-fm-column-title {
+  text-align: center;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  font-weight: 900;
+  margin-bottom: 9px;
+}
+
+.intl-fm-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.055);
+}
+
+.intl-fm-row span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+
+.intl-fm-row strong {
+  color: var(--text);
+  font-size: 0.98rem;
+  font-weight: 900;
+}
+
+.intl-fm-row.season-row {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  .intl-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .intl-fm-card-top {
+    grid-template-columns: 32px 52px minmax(0, 1fr);
+  }
+
+  .intl-fm-card-top em {
+    grid-column: 2 / -1;
+  }
+
+  .intl-fm-split {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -5297,6 +5499,7 @@ function buildInternationalCombinedRows(rows){
 }
 
 
+
 function renderInternationalCombinedSummary(rows){
   const c = document.getElementById('internationalCombinedSummary');
   if(!c) return;
@@ -5340,55 +5543,59 @@ function renderInternationalCombinedSummary(rows){
     return nations.map(n => typeof renderNationLabel === "function" ? renderNationLabel(n) : escapeHtml(n)).join(", ");
   };
 
+  const initialsForIntl = name => String(name || "P")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0,2)
+    .map(part => part[0])
+    .join("")
+    .toUpperCase();
+
   c.innerHTML = `
-    <div class="section-head intl-combined-head">
-      <div>
-        <div class="section-kicker">Combined International Stats</div>
-        <h3>Senior & Youth Totals</h3>
-        <p class="muted">Senior and youth international careers are split so caps stay accurate.</p>
+    <div class="intl-dashboard-panel">
+      <div class="intl-dashboard-head">
+        <div>
+          <div class="section-kicker">Combined International Stats</div>
+          <h3>Senior & Youth Totals</h3>
+          <p class="muted">Senior and youth international careers are split so caps stay accurate.</p>
+        </div>
       </div>
-    </div>
 
-    <div class="intl-clean-grid">
-      ${arr.map((p, index) => `
-        <button class="intl-clean-card" type="button" onclick="openInternationalCombinedProfile('${escapeHtml(String(p.player).replace(/'/g, "\\'"))}')">
-          <div class="intl-clean-card-top">
-            <span class="intl-clean-rank">${index + 1}</span>
-            <div>
-              <strong>${escapeHtml(p.player)}</strong>
-              <em>${nationText(p)}</em>
+      <div class="intl-dashboard-grid">
+        ${arr.map((p, index) => `
+          <button class="intl-fm-card" type="button" onclick="openInternationalCombinedProfile('${escapeHtml(String(p.player).replace(/'/g, "\\'"))}')">
+            <div class="intl-fm-card-top">
+              <span class="intl-fm-rank">${index + 1}</span>
+              <div class="intl-fm-avatar">${escapeHtml(initialsForIntl(p.player))}</div>
+              <div class="intl-fm-player">
+                <strong>${escapeHtml(p.player)}</strong>
+                <span>${nationText(p)}</span>
+              </div>
+              <em>View profile →</em>
             </div>
-          </div>
 
-          <div class="intl-clean-table">
-            <div></div>
-            <div class="intl-level senior">Senior</div>
-            <div class="intl-level youth">Youth</div>
+            <div class="intl-fm-split">
+              <div class="intl-fm-column senior">
+                <div class="intl-fm-column-title">Senior</div>
+                <div class="intl-fm-row"><span>Caps</span><strong>${p.senior.caps}</strong></div>
+                <div class="intl-fm-row"><span>Goals</span><strong>${p.senior.goals}</strong></div>
+                <div class="intl-fm-row"><span>Assists</span><strong>${p.senior.assists}</strong></div>
+                <div class="intl-fm-row"><span>Clean Sheets</span><strong>${p.senior.clean}</strong></div>
+                <div class="intl-fm-row season-row"><span>Senior Seasons</span><strong>${p.senior.seasons.size}</strong></div>
+              </div>
 
-            <span>Caps</span>
-            <b>${p.senior.caps}</b>
-            <b>${p.youth.caps}</b>
-
-            <span>Goals</span>
-            <b>${p.senior.goals}</b>
-            <b>${p.youth.goals}</b>
-
-            <span>Assists</span>
-            <b>${p.senior.assists}</b>
-            <b>${p.youth.assists}</b>
-
-            <span>Clean Sheets</span>
-            <b>${p.senior.clean}</b>
-            <b>${p.youth.clean}</b>
-          </div>
-
-          <div class="intl-clean-footer">
-            <span>${p.senior.seasons.size} senior seasons</span>
-            <span>${p.youth.seasons.size} youth seasons</span>
-            <strong>View profile →</strong>
-          </div>
-        </button>
-      `).join('')}
+              <div class="intl-fm-column youth">
+                <div class="intl-fm-column-title">Youth</div>
+                <div class="intl-fm-row"><span>Caps</span><strong>${p.youth.caps}</strong></div>
+                <div class="intl-fm-row"><span>Goals</span><strong>${p.youth.goals}</strong></div>
+                <div class="intl-fm-row"><span>Assists</span><strong>${p.youth.assists}</strong></div>
+                <div class="intl-fm-row"><span>Clean Sheets</span><strong>${p.youth.clean}</strong></div>
+                <div class="intl-fm-row season-row"><span>Youth Seasons</span><strong>${p.youth.seasons.size}</strong></div>
+              </div>
+            </div>
+          </button>
+        `).join('')}
+      </div>
     </div>
   `;
 }
