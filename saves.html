@@ -3939,24 +3939,223 @@ td[data-label="To Nation"] {
 }
 
 
+
+/* International tab clean rebuild */
+#internationalCombinedSummary {
+  display: block !important;
+  margin: 16px 0 20px !important;
+}
+
+#internationalCombinedSummary .intl-clean-panel {
+  padding: 14px !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(255,255,255,0.085) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.042), rgba(255,255,255,0.018)) !important;
+}
+
+#internationalCombinedSummary .intl-clean-panel-head {
+  margin-bottom: 12px !important;
+}
+
+#internationalCombinedSummary .intl-clean-panel-head h3 {
+  margin: 3px 0 5px !important;
+  font-size: 1.12rem !important;
+}
+
+#internationalCombinedSummary .intl-clean-cards {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 11px !important;
+}
+
+#internationalCombinedSummary .intl-clean-card-v2 {
+  width: 100% !important;
+  min-width: 0 !important;
+  text-align: left !important;
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 12px !important;
+  border-radius: 17px !important;
+  border: 1px solid rgba(255,255,255,0.085) !important;
+  background: linear-gradient(135deg, rgba(255,255,255,0.052), rgba(255,255,255,0.02)) !important;
+  color: var(--text) !important;
+  cursor: pointer !important;
+  transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease !important;
+}
+
+#internationalCombinedSummary .intl-clean-card-v2::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 12px !important;
+  bottom: 12px !important;
+  width: 4px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(180deg, var(--accent), rgba(34,197,94,.65), rgba(59,130,246,.55)) !important;
+}
+
+#internationalCombinedSummary .intl-clean-card-v2:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(255,255,255,0.17) !important;
+  box-shadow: 0 12px 26px rgba(0,0,0,0.25) !important;
+}
+
+#internationalCombinedSummary .intl-clean-top {
+  display: grid !important;
+  grid-template-columns: 26px 44px minmax(0,1fr) !important;
+  gap: 9px !important;
+  align-items: center !important;
+  margin-bottom: 10px !important;
+}
+
+#internationalCombinedSummary .intl-clean-rank {
+  width: 24px !important;
+  height: 24px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 9px !important;
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+  font-size: 0.72rem !important;
+  font-weight: 900 !important;
+}
+
+#internationalCombinedSummary .intl-clean-avatar {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 999px !important;
+  display: grid !important;
+  place-items: center !important;
+  background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.16)) !important;
+  color: #fff !important;
+  font-size: 0.82rem !important;
+  font-weight: 900 !important;
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+}
+
+#internationalCombinedSummary .intl-clean-title,
+#internationalCombinedSummary .intl-clean-title * {
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+  transform: none !important;
+}
+
+#internationalCombinedSummary .intl-clean-title {
+  min-width: 0 !important;
+}
+
+#internationalCombinedSummary .intl-clean-title strong {
+  display: block !important;
+  font-size: 1rem !important;
+  line-height: 1.14 !important;
+  letter-spacing: -0.015em !important;
+  color: var(--text) !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+#internationalCombinedSummary .intl-clean-title span {
+  display: block !important;
+  margin-top: 3px !important;
+  color: var(--muted) !important;
+  font-size: 0.74rem !important;
+  line-height: 1.22 !important;
+}
+
+#internationalCombinedSummary .intl-clean-level-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+}
+
+#internationalCombinedSummary .intl-clean-level {
+  min-width: 0 !important;
+  padding: 10px !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(255,255,255,0.065) !important;
+  background: rgba(255,255,255,0.032) !important;
+}
+
+#internationalCombinedSummary .intl-clean-level.senior {
+  box-shadow: inset 0 3px 0 rgba(34,197,94,0.78) !important;
+}
+
+#internationalCombinedSummary .intl-clean-level.youth {
+  box-shadow: inset 0 3px 0 rgba(59,130,246,0.78) !important;
+}
+
+#internationalCombinedSummary .intl-clean-level-head {
+  text-align: center !important;
+  margin-bottom: 7px !important;
+}
+
+#internationalCombinedSummary .intl-clean-level-head span {
+  display: block !important;
+  color: var(--muted) !important;
+  font-size: 0.62rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+#internationalCombinedSummary .intl-clean-level-head strong {
+  display: inline-block !important;
+  font-size: 1.42rem !important;
+  line-height: 1 !important;
+  margin-top: 5px !important;
+}
+
+#internationalCombinedSummary .intl-clean-level-head em {
+  color: var(--muted) !important;
+  font-style: normal !important;
+  font-size: 0.66rem !important;
+  margin-left: 4px !important;
+}
+
+#internationalCombinedSummary .intl-clean-lines div {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  gap: 8px !important;
+  align-items: center !important;
+  padding: 4px 0 !important;
+  border-top: 1px solid rgba(255,255,255,0.045) !important;
+}
+
+#internationalCombinedSummary .intl-clean-lines span {
+  color: var(--muted) !important;
+  font-size: 0.7rem !important;
+}
+
+#internationalCombinedSummary .intl-clean-lines strong {
+  color: var(--text) !important;
+  font-size: 0.76rem !important;
+  font-weight: 900 !important;
+}
+
+#internationalCombinedSummary .intl-clean-link {
+  margin-top: 9px !important;
+  padding-top: 8px !important;
+  border-top: 1px solid rgba(255,255,255,0.055) !important;
+  color: var(--accent) !important;
+  font-size: 0.72rem !important;
+  font-weight: 900 !important;
+  text-align: right !important;
+}
+
+@media (max-width: 560px) {
+  #internationalCombinedSummary .intl-clean-cards {
+    grid-template-columns: 1fr !important;
+  }
+
+  #internationalCombinedSummary .intl-clean-level-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 </style>
-<style id="intl-compact-overrides">
-#internationalCombinedSummary .intl-final-shell{padding:12px!important;border-radius:18px!important}
-#internationalCombinedSummary .intl-final-grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))!important;gap:10px!important}
-#internationalCombinedSummary .intl-final-card{padding:12px!important;border-radius:16px!important}
-#internationalCombinedSummary .intl-final-top{grid-template-columns:24px 42px minmax(0,1fr)!important;gap:8px!important;margin-bottom:10px!important}
-#internationalCombinedSummary .intl-final-rank{width:22px!important;height:22px!important;font-size:.72rem!important}
-#internationalCombinedSummary .intl-final-avatar{width:42px!important;height:42px!important;font-size:.8rem!important}
-#internationalCombinedSummary .intl-final-title strong{font-size:1rem!important}
-#internationalCombinedSummary .intl-final-title span{font-size:.75rem!important}
-#internationalCombinedSummary .intl-final-stats{gap:8px!important}
-#internationalCombinedSummary .intl-final-level{padding:10px!important;border-radius:12px!important}
-#internationalCombinedSummary .intl-final-big{font-size:1.6rem!important;margin-bottom:8px!important}
-#internationalCombinedSummary .intl-final-row{padding:4px 0!important}
-#internationalCombinedSummary .intl-final-row span,#internationalCombinedSummary .intl-final-row strong{font-size:.75rem!important}
-#internationalCombinedSummary .intl-final-footer{margin-top:8px!important;padding-top:8px!important}
-#internationalCombinedSummary .intl-final-footer span,#internationalCombinedSummary .intl-final-footer strong{font-size:.68rem!important}
-</style></head>
+</head>
 <body>
   <header>
     <div class="container nav-wrap">
@@ -4893,53 +5092,78 @@ function buildInternationalCombinedRows(rows){
 
 
 
+
 function renderInternationalCombinedSummary(rows){
-  const c = document.getElementById('internationalCombinedSummary');
-  if(!c) return;
+  const container = document.getElementById("internationalCombinedSummary");
+  if(!container) return;
 
-  const map = new Map();
+  const grouped = new Map();
 
-  (rows || []).forEach(r => {
-    const player = r.player || "Unknown";
-    const level = String(r.level || "Senior").trim().toLowerCase() === "senior" ? "senior" : "youth";
+  (rows || []).forEach(record => {
+    const player = record.player || "Unknown";
+    const level = String(record.level || "Senior").trim().toLowerCase() === "senior" ? "senior" : "youth";
 
-    if(!map.has(player)){
-      map.set(player, {
+    if(!grouped.has(player)){
+      grouped.set(player, {
         player,
-        senior:{caps:0,goals:0,assists:0,clean:0,seasons:new Set(),nations:new Set()},
-        youth:{caps:0,goals:0,assists:0,clean:0,seasons:new Set(),nations:new Set()}
+        senior: { caps:0, goals:0, assists:0, cleanSheets:0, seasons:new Set(), nations:new Set(), records:[] },
+        youth: { caps:0, goals:0, assists:0, cleanSheets:0, seasons:new Set(), nations:new Set(), records:[] }
       });
     }
 
-    const bucket = map.get(player)[level];
-    bucket.caps += Number(r.caps) || 0;
-    bucket.goals += Number(r.goals) || 0;
-    bucket.assists += Number(r.assists) || 0;
-    bucket.clean += Number(r.cleanSheets) || 0;
-    if(r.season) bucket.seasons.add(r.season);
-    if(r.nation) bucket.nations.add(r.nation);
+    const bucket = grouped.get(player)[level];
+    bucket.caps += Number(record.caps) || 0;
+    bucket.goals += Number(record.goals) || 0;
+    bucket.assists += Number(record.assists) || 0;
+    bucket.cleanSheets += Number(record.cleanSheets) || 0;
+    if(record.season) bucket.seasons.add(record.season);
+    if(record.nation) bucket.nations.add(record.nation);
+    bucket.records.push(record);
   });
 
-  const arr = [...map.values()].sort((a,b)=>
-    (b.senior.caps + b.youth.caps) - (a.senior.caps + a.youth.caps)
+  const players = [...grouped.values()].sort((a,b) =>
+    (b.senior.caps + b.youth.caps) - (a.senior.caps + a.youth.caps) ||
+    String(a.player).localeCompare(String(b.player))
   );
 
-  if(!arr.length){
-    c.innerHTML = '<div class="empty-state">No combined international stats yet.</div>';
+  if(!players.length){
+    container.innerHTML = '<div class="empty-state">No combined international stats yet.</div>';
     return;
   }
 
-  const initials = name => String(name || "P").split(/\s+/).filter(Boolean).slice(0,2).map(part => part[0]).join("").toUpperCase();
+  const initials = name => String(name || "P")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(part => part[0])
+    .join("")
+    .toUpperCase();
 
-  const nationText = p => {
-    const nations = [...new Set([...p.senior.nations, ...p.youth.nations])];
+  const nationLine = player => {
+    const nations = [...new Set([...player.senior.nations, ...player.youth.nations])];
     if(!nations.length) return "No nation set";
-    return nations.map(n => typeof renderNationLabel === "function" ? renderNationLabel(n) : escapeHtml(n)).join(", ");
+    return nations.map(nation => typeof renderNationLabel === "function" ? renderNationLabel(nation) : escapeHtml(nation)).join(", ");
   };
 
-  c.innerHTML = `
-    <div class="intl-final-shell">
-      <div class="intl-final-head">
+  const levelBlock = (label, data, type) => `
+    <div class="intl-clean-level ${type}">
+      <div class="intl-clean-level-head">
+        <span>${label}</span>
+        <strong>${data.caps}</strong>
+        <em>Caps</em>
+      </div>
+      <div class="intl-clean-lines">
+        <div><span>Goals</span><strong>${data.goals}</strong></div>
+        <div><span>Assists</span><strong>${data.assists}</strong></div>
+        <div><span>Clean Sheets</span><strong>${data.cleanSheets}</strong></div>
+        <div><span>Seasons</span><strong>${data.seasons.size}</strong></div>
+      </div>
+    </div>
+  `;
+
+  container.innerHTML = `
+    <section class="intl-clean-panel">
+      <div class="intl-clean-panel-head">
         <div>
           <div class="section-kicker">Combined International Stats</div>
           <h3>Senior & Youth Totals</h3>
@@ -4947,45 +5171,28 @@ function renderInternationalCombinedSummary(rows){
         </div>
       </div>
 
-      <div class="intl-final-grid">
-        ${arr.map((p, index) => `
-          <button class="intl-final-card" type="button" onclick="openInternationalCombinedProfile('${escapeHtml(String(p.player).replace(/'/g, "\\'"))}')">
-            <div class="intl-final-top">
-              <div class="intl-final-rank">${index + 1}</div>
-              <div class="intl-final-avatar">${escapeHtml(initials(p.player))}</div>
-              <div class="intl-final-title">
-                <strong>${escapeHtml(p.player)}</strong>
-                <span>${nationText(p)}</span>
+      <div class="intl-clean-cards">
+        ${players.map((player, index) => `
+          <button class="intl-clean-card-v2" type="button" onclick="openInternationalCombinedProfile('${escapeHtml(String(player.player).replace(/'/g, "\\'"))}')">
+            <div class="intl-clean-top">
+              <div class="intl-clean-rank">${index + 1}</div>
+              <div class="intl-clean-avatar">${escapeHtml(initials(player.player))}</div>
+              <div class="intl-clean-title">
+                <strong>${escapeHtml(player.player)}</strong>
+                <span>${nationLine(player)}</span>
               </div>
             </div>
 
-            <div class="intl-final-stats">
-              <div class="intl-final-level senior">
-                <div class="intl-final-level-title">Senior</div>
-                <div class="intl-final-big">${p.senior.caps}<span>Caps</span></div>
-                <div class="intl-final-row"><span>Goals</span><strong>${p.senior.goals}</strong></div>
-                <div class="intl-final-row"><span>Assists</span><strong>${p.senior.assists}</strong></div>
-                <div class="intl-final-row"><span>Clean Sheets</span><strong>${p.senior.clean}</strong></div>
-              </div>
-
-              <div class="intl-final-level youth">
-                <div class="intl-final-level-title">Youth</div>
-                <div class="intl-final-big">${p.youth.caps}<span>Caps</span></div>
-                <div class="intl-final-row"><span>Goals</span><strong>${p.youth.goals}</strong></div>
-                <div class="intl-final-row"><span>Assists</span><strong>${p.youth.assists}</strong></div>
-                <div class="intl-final-row"><span>Clean Sheets</span><strong>${p.youth.clean}</strong></div>
-              </div>
+            <div class="intl-clean-level-grid">
+              ${levelBlock("Senior", player.senior, "senior")}
+              ${levelBlock("Youth", player.youth, "youth")}
             </div>
 
-            <div class="intl-final-footer">
-              <span>${p.senior.seasons.size} senior seasons</span>
-              <span>${p.youth.seasons.size} youth seasons</span>
-              <strong>View profile →</strong>
-            </div>
+            <div class="intl-clean-link">View international profile →</div>
           </button>
-        `).join('')}
+        `).join("")}
       </div>
-    </div>
+    </section>
   `;
 }
 
