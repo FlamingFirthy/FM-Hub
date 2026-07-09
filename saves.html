@@ -3938,6 +3938,121 @@ td[data-label="To Nation"] {
   line-height: 1.38 !important;
 }
 
+
+/* International combined senior/youth cards */
+#internationalCombinedSummary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.intl-combined-card {
+  text-align: left;
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.052), rgba(255,255,255,0.02));
+  color: var(--text);
+  border-radius: 18px;
+  padding: 14px;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.intl-combined-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.16);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.24);
+}
+
+.intl-combined-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.intl-combined-card-head span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.intl-combined-card-head strong {
+  font-size: 1.02rem;
+  overflow-wrap: anywhere;
+}
+
+.intl-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.intl-split-box {
+  padding: 12px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.065);
+}
+
+.intl-split-box span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.intl-split-box strong {
+  display: block;
+  font-size: 1.65rem;
+  line-height: 1;
+  margin: 7px 0 2px;
+}
+
+.intl-split-box em {
+  display: block;
+  color: var(--muted);
+  font-style: normal;
+  font-size: 0.75rem;
+}
+
+.intl-mini-stats {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.intl-mini-stats b {
+  color: var(--text);
+}
+
+.intl-split-box small {
+  display: block;
+  color: var(--muted);
+  margin-top: 9px;
+  line-height: 1.25;
+}
+
+.intl-card-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
 </style>
 </head>
 <body>
@@ -4837,29 +4952,198 @@ function updateInternationalFilterDropdowns(records){
 }
 
 
-function renderInternationalCombinedSummary(rows){
- const c=document.getElementById('internationalCombinedSummary');
- if(!c) return;
- const map=new Map();
- (rows||[]).forEach(r=>{
-  const k=r.player||'Unknown';
-  if(!map.has(k)) map.set(k,{player:k,caps:0,goals:0,assists:0,clean:0,seasons:new Set(),nations:new Set()});
-  const o=map.get(k);
-  o.caps+=Number(r.caps)||0;o.goals+=Number(r.goals)||0;o.assists+=Number(r.assists)||0;o.clean+=Number(r.cleanSheets)||0;
-  if(r.season)o.seasons.add(r.season);
-  if(r.nation)o.nations.add(r.nation);
- });
- const arr=[...map.values()].sort((a,b)=>b.caps-a.caps);
- if(!arr.length){c.innerHTML='<div class="empty-state">No combined international stats yet.</div>';return;}
- c.innerHTML=arr.map(p=>`<div class="stat-card"><h4>${escapeHtml(p.player)}</h4><div class="info-list">
- <div class="info-row"><span>Caps</span><strong>${p.caps}</strong></div>
- <div class="info-row"><span>Goals</span><strong>${p.goals}</strong></div>
- <div class="info-row"><span>Assists</span><strong>${p.assists}</strong></div>
- <div class="info-row"><span>Clean Sheets</span><strong>${p.clean}</strong></div>
- <div class="info-row"><span>Seasons</span><strong>${p.seasons.size}</strong></div>
- <div class="info-row"><span>Nation</span><strong>${escapeHtml([...p.nations].join(", "))}</strong></div>
- </div></div>`).join('');
+function isSeniorInternationalLevel(level){
+  return String(level || "Senior").trim().toLowerCase() === "senior";
 }
+
+function buildInternationalCombinedRows(rows){
+  const map = new Map();
+
+  (rows || []).forEach(r => {
+    const player = r.player || "Unknown";
+    if(!map.has(player)){
+      map.set(player, {
+        player,
+        senior:{caps:0,goals:0,assists:0,clean:0,seasons:new Set(),nations:new Set(),rows:[]},
+        youth:{caps:0,goals:0,assists:0,clean:0,seasons:new Set(),nations:new Set(),rows:[]},
+        allRows:[]
+      });
+    }
+
+    const item = map.get(player);
+    const bucket = isSeniorInternationalLevel(r.level) ? item.senior : item.youth;
+
+    bucket.caps += Number(r.caps) || 0;
+    bucket.goals += Number(r.goals) || 0;
+    bucket.assists += Number(r.assists) || 0;
+    bucket.clean += Number(r.cleanSheets) || 0;
+    if(r.season) bucket.seasons.add(r.season);
+    if(r.nation) bucket.nations.add(r.nation);
+    bucket.rows.push(r);
+    item.allRows.push(r);
+  });
+
+  return [...map.values()].sort((a,b)=>
+    (b.senior.caps + b.youth.caps) - (a.senior.caps + a.youth.caps)
+  );
+}
+
+function renderInternationalCombinedSummary(rows){
+  const c = document.getElementById('internationalCombinedSummary');
+  if(!c) return;
+
+  const arr = buildInternationalCombinedRows(rows);
+
+  if(!arr.length){
+    c.innerHTML = '<div class="empty-state">No combined international stats yet.</div>';
+    return;
+  }
+
+  c.innerHTML = `
+    <div class="section-head" style="grid-column:1/-1; margin-bottom:2px;">
+      <div>
+        <div class="section-kicker">Combined International Stats</div>
+        <h3>Senior & Youth Totals</h3>
+        <p class="muted">Senior caps and youth caps are tracked separately so international records stay accurate.</p>
+      </div>
+    </div>
+    ${arr.map((p, index) => {
+      const seniorNations = [...p.senior.nations].map(n => typeof renderNationLabel === "function" ? renderNationLabel(n) : escapeHtml(n)).join(", ") || "-";
+      const youthNations = [...p.youth.nations].map(n => typeof renderNationLabel === "function" ? renderNationLabel(n) : escapeHtml(n)).join(", ") || "-";
+      return `
+        <button class="intl-combined-card" type="button" onclick="openInternationalCombinedProfile('${escapeHtml(String(p.player).replace(/'/g, "\'"))}')">
+          <div class="intl-combined-card-head">
+            <span>${index + 1}</span>
+            <strong>${escapeHtml(p.player)}</strong>
+          </div>
+          <div class="intl-split-grid">
+            <div class="intl-split-box senior">
+              <span>Senior</span>
+              <strong>${p.senior.caps}</strong>
+              <em>Caps</em>
+              <div class="intl-mini-stats">
+                <b>${p.senior.goals}</b> G
+                <b>${p.senior.assists}</b> A
+                <b>${p.senior.clean}</b> CS
+              </div>
+              <small>${seniorNations}</small>
+            </div>
+            <div class="intl-split-box youth">
+              <span>Youth</span>
+              <strong>${p.youth.caps}</strong>
+              <em>Caps</em>
+              <div class="intl-mini-stats">
+                <b>${p.youth.goals}</b> G
+                <b>${p.youth.assists}</b> A
+                <b>${p.youth.clean}</b> CS
+              </div>
+              <small>${youthNations}</small>
+            </div>
+          </div>
+          <div class="intl-card-footer">
+            <span>${p.senior.seasons.size} senior seasons</span>
+            <span>${p.youth.seasons.size} youth seasons</span>
+          </div>
+        </button>
+      `;
+    }).join('')}
+  `;
+}
+
+function openInternationalCombinedProfile(playerName){
+  const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
+  if(!save) return;
+
+  const rows = Array.isArray(save.internationalStats) ? save.internationalStats.filter(r => (r.player || "") === playerName) : [];
+  const combined = buildInternationalCombinedRows(rows)[0];
+  if(!combined) return;
+
+  let overlay = document.getElementById("internationalCombinedProfileOverlay");
+  if(!overlay){
+    overlay = document.createElement("div");
+    overlay.id = "internationalCombinedProfileOverlay";
+    overlay.className = "profile-overlay";
+    overlay.onclick = closeInternationalCombinedProfile;
+    overlay.innerHTML = `
+      <div class="profile-modal" onclick="event.stopPropagation();">
+        <div class="profile-modal-head">
+          <div>
+            <div class="section-kicker">International Profile</div>
+            <h2 id="internationalCombinedProfileTitle">Player</h2>
+            <p class="muted" id="internationalCombinedProfileSubtitle">Senior and youth international career.</p>
+          </div>
+          <button class="secondary" type="button" onclick="closeInternationalCombinedProfile()">Close</button>
+        </div>
+        <div id="internationalCombinedProfileContent"></div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+
+  const title = document.getElementById("internationalCombinedProfileTitle");
+  const subtitle = document.getElementById("internationalCombinedProfileSubtitle");
+  const content = document.getElementById("internationalCombinedProfileContent");
+
+  if(title) title.textContent = playerName;
+  if(subtitle) subtitle.textContent = `${combined.senior.caps} senior caps • ${combined.youth.caps} youth caps`;
+
+  const renderLevelRows = (label, data) => {
+    const nations = [...data.nations].map(n => typeof renderNationLabel === "function" ? renderNationLabel(n) : escapeHtml(n)).join(", ") || "-";
+    const seasons = [...data.seasons].sort((a,b)=> typeof compareSeasons === "function" ? compareSeasons(a,b,"asc") : String(a).localeCompare(String(b)));
+    return `
+      <div class="detail-card">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">${label}</div>
+            <h3>${data.caps} Caps</h3>
+            <p class="muted">${nations}</p>
+          </div>
+        </div>
+        <div class="stats-summary-grid">
+          <div class="stats-summary-card"><span>Goals</span><strong>${data.goals}</strong></div>
+          <div class="stats-summary-card"><span>Assists</span><strong>${data.assists}</strong></div>
+          <div class="stats-summary-card"><span>Clean Sheets</span><strong>${data.clean}</strong></div>
+          <div class="stats-summary-card"><span>Seasons</span><strong>${data.seasons.size}</strong></div>
+        </div>
+        <div class="table-wrap" style="margin-top:12px;">
+          <table>
+            <thead><tr><th>Season</th><th>Nation</th><th>Level</th><th>Caps</th><th>Goals</th><th>Assists</th><th>CS</th><th>Competition</th></tr></thead>
+            <tbody>
+              ${data.rows.sort((a,b)=> typeof compareSeasons === "function" ? compareSeasons(a.season,b.season,"desc") : String(b.season || "").localeCompare(String(a.season || ""))).map(r=>`
+                <tr>
+                  <td>${escapeHtml(r.season || "-")}</td>
+                  <td>${typeof renderNationLabel === "function" ? renderNationLabel(r.nation) : escapeHtml(r.nation || "-")}</td>
+                  <td>${escapeHtml(r.level || "-")}</td>
+                  <td>${escapeHtml(r.caps || "0")}</td>
+                  <td>${escapeHtml(r.goals || "0")}</td>
+                  <td>${escapeHtml(r.assists || "0")}</td>
+                  <td>${escapeHtml(r.cleanSheets || "0")}</td>
+                  <td>${escapeHtml(r.competition || "-")}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  };
+
+  if(content){
+    content.innerHTML = `
+      <div class="career-insight-grid">
+        ${renderLevelRows("Senior International", combined.senior)}
+        ${renderLevelRows("Youth International", combined.youth)}
+      </div>
+    `;
+  }
+
+  overlay.classList.remove("hidden");
+}
+
+function closeInternationalCombinedProfile(){
+  document.getElementById("internationalCombinedProfileOverlay")?.classList.add("hidden");
+}
+
 function renderInternationalTable(){
   const body = document.getElementById("internationalTableBody");
   const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
@@ -8269,7 +8553,7 @@ function renderSavePlayerStats(save) {
                 <label for="intlLevelInput">Level</label>
                 <select id="intlLevelInput">
                   <option value="Senior">Senior</option>
-                  <option value="U21">U21</option>
+                  <option value="U23">U23</option>
                   <option value="U20">U20</option>
                   <option value="U19">U19</option>
                   <option value="U18">U18</option>
@@ -8316,7 +8600,7 @@ function renderSavePlayerStats(save) {
                 <select id="intlFilterLevel" onchange="renderInternationalTable()">
                   <option value="">All levels</option>
                   <option value="Senior">Senior</option>
-                  <option value="U21">U21</option>
+                  <option value="U23">U23</option>
                   <option value="U20">U20</option>
                   <option value="U19">U19</option>
                   <option value="U18">U18</option>
