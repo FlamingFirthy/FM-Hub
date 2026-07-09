@@ -4172,6 +4172,21 @@ td[data-label="To Nation"] {
             </div>
           </div>
         </div>
+
+        <div class="form-grid edit-only" style="margin-top:16px;" onclick="event.stopPropagation();">
+          <div><label for="clubEditNameInput">Club Name</label><input id="clubEditNameInput" placeholder="Club name"></div>
+          <div><label for="clubEditNationInput">Nation</label><input id="clubEditNationInput" placeholder="England"></div>
+          <div><label for="clubEditLeagueInput">League</label><input id="clubEditLeagueInput" placeholder="League"></div>
+          <div><label for="clubEditStadiumInput">Stadium</label><input id="clubEditStadiumInput" placeholder="Stadium"></div>
+          <div><label for="clubEditNicknameInput">Nickname</label><input id="clubEditNicknameInput" placeholder="Nickname"></div>
+          <div><label for="clubEditFoundedInput">Founded</label><input id="clubEditFoundedInput" placeholder="Founded year"></div>
+          <div><label for="clubEditPrimaryInput">Primary Colour</label><input id="clubEditPrimaryInput" type="color" value="#ff3b3b"></div>
+          <div><label for="clubEditSecondaryInput">Secondary Colour</label><input id="clubEditSecondaryInput" type="color" value="#26070b"></div>
+          <div class="wide"><label for="clubEditLogoInput">Logo URL / Data URL</label><input id="clubEditLogoInput" placeholder="Paste image URL or uploaded data URL"></div>
+        </div>
+        <div class="hero-actions edit-only" style="margin-top:12px;" onclick="event.stopPropagation();">
+          <button class="admin-only primary" type="button" onclick="saveClubFromSavePage()">Save Club</button>
+        </div>
       </div>
 
       <div class="career-insight-grid key-players-first" style="margin-top:20px;">
@@ -5760,6 +5775,7 @@ function escapeHtml(value) {
       if (nationEl) nationEl.textContent = `Nation: ${club.nation || '-'}`;
       if (leagueEl) leagueEl.textContent = `League: ${club.league || '-'}`;
       if (stadiumEl) stadiumEl.textContent = `Stadium: ${club.stadium || '-'}`;
+      populateClubEditForm(save, club);
       if (logoEl) {
         if (club.logo) {
           logoEl.innerHTML = `<img src="${escapeHtml(club.logo)}" alt="${escapeHtml(clubName)} logo">`;
@@ -5768,6 +5784,60 @@ function escapeHtml(value) {
         }
       }
     }
+
+    function populateClubEditForm(save, club) {
+      const setValue = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.value = value || '';
+      };
+
+      const fallbackColours = getThemeFallbackColours(save?.theme || 'red');
+      setValue('clubEditNameInput', club?.name || save?.club || '');
+      setValue('clubEditNationInput', club?.nation || '');
+      setValue('clubEditLeagueInput', club?.league || '');
+      setValue('clubEditStadiumInput', club?.stadium || '');
+      setValue('clubEditNicknameInput', club?.nickname || '');
+      setValue('clubEditFoundedInput', club?.founded || '');
+      setValue('clubEditLogoInput', club?.logo || '');
+      setValue('clubEditPrimaryInput', club?.primaryColour || fallbackColours[0] || '#ff3b3b');
+      setValue('clubEditSecondaryInput', club?.secondaryColour || fallbackColours[1] || '#26070b');
+    }
+
+    function saveClubFromSavePage() {
+      const save = getCurrentSave();
+      if (!save) return;
+
+      const key = save.name || 'global';
+      const getValue = id => document.getElementById(id)?.value?.trim() || '';
+
+      const name = getValue('clubEditNameInput');
+      const logo = getValue('clubEditLogoInput');
+
+      const profile = {
+        nation: getValue('clubEditNationInput'),
+        league: getValue('clubEditLeagueInput'),
+        stadium: getValue('clubEditStadiumInput'),
+        nickname: getValue('clubEditNicknameInput'),
+        founded: getValue('clubEditFoundedInput'),
+        primaryColour: getValue('clubEditPrimaryInput'),
+        secondaryColour: getValue('clubEditSecondaryInput')
+      };
+
+      localStorage.setItem(`fmhub-team-name-${key}`, name);
+      localStorage.setItem(`fmhub-team-logo-${key}`, logo);
+      localStorage.setItem(`fmhub-team-profile-${key}`, JSON.stringify(profile));
+      localStorage.setItem(`fmhub-team-primary-${key}`, profile.primaryColour);
+      localStorage.setItem(`fmhub-team-secondary-${key}`, profile.secondaryColour);
+
+      save.club = name || save.club || '';
+      save.logo = logo || save.logo || '';
+      updateCurrentSave(save);
+
+      renderSquadClubSummary(save);
+      renderOpenedSaveClubHeader(save);
+      if (typeof openSaveTab === 'function') openSaveTab('club', false);
+    }
+
     function renderCareerInsights(save) {
       renderMiniGraph(save);
       renderKeyPlayers(save);
