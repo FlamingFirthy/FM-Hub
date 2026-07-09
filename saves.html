@@ -4836,6 +4836,30 @@ function updateInternationalFilterDropdowns(records){
   keepValue(document.getElementById("intlFilterSeason"), seasons, "All seasons");
 }
 
+
+function renderInternationalCombinedSummary(rows){
+ const c=document.getElementById('internationalCombinedSummary');
+ if(!c) return;
+ const map=new Map();
+ (rows||[]).forEach(r=>{
+  const k=r.player||'Unknown';
+  if(!map.has(k)) map.set(k,{player:k,caps:0,goals:0,assists:0,clean:0,seasons:new Set(),nations:new Set()});
+  const o=map.get(k);
+  o.caps+=Number(r.caps)||0;o.goals+=Number(r.goals)||0;o.assists+=Number(r.assists)||0;o.clean+=Number(r.cleanSheets)||0;
+  if(r.season)o.seasons.add(r.season);
+  if(r.nation)o.nations.add(r.nation);
+ });
+ const arr=[...map.values()].sort((a,b)=>b.caps-a.caps);
+ if(!arr.length){c.innerHTML='<div class="empty-state">No combined international stats yet.</div>';return;}
+ c.innerHTML=arr.map(p=>`<div class="stat-card"><h4>${escapeHtml(p.player)}</h4><div class="info-list">
+ <div class="info-row"><span>Caps</span><strong>${p.caps}</strong></div>
+ <div class="info-row"><span>Goals</span><strong>${p.goals}</strong></div>
+ <div class="info-row"><span>Assists</span><strong>${p.assists}</strong></div>
+ <div class="info-row"><span>Clean Sheets</span><strong>${p.clean}</strong></div>
+ <div class="info-row"><span>Seasons</span><strong>${p.seasons.size}</strong></div>
+ <div class="info-row"><span>Nation</span><strong>${escapeHtml([...p.nations].join(", "))}</strong></div>
+ </div></div>`).join('');
+}
 function renderInternationalTable(){
   const body = document.getElementById("internationalTableBody");
   const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
@@ -4844,6 +4868,7 @@ function renderInternationalTable(){
   
   let allRows = Array.isArray(save.internationalStats) ? save.internationalStats : [];
   updateInternationalFilterDropdowns(allRows);
+  renderInternationalCombinedSummary(allRows);
 
   const fp = document.getElementById("intlFilterPlayer")?.value || "";
   const fn = document.getElementById("intlFilterNation")?.value || "";
@@ -8265,7 +8290,9 @@ function renderSavePlayerStats(save) {
             </div>
 
             
-            <div class="stats-refurb-toolbar international-filter-toolbar">
+            <div id="internationalCombinedSummary" class="stats-summary-grid" style="margin:16px 0;"></div>
+
+<div class="stats-refurb-toolbar international-filter-toolbar">
               <div>
                 <label for="intlFilterPlayer">Player</label>
                 <select id="intlFilterPlayer" onchange="renderInternationalTable()">
