@@ -4448,6 +4448,126 @@ td[data-label="To Nation"] {
 }
 </style>
 
+
+<style id="international-v3-polish">
+/* International V3 polish: cleaner cards and no black headers */
+#internationalCombinedSummary .intl-v3-panel {
+  padding: 12px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015)) !important;
+}
+
+#internationalCombinedSummary .intl-v3-grid {
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)) !important;
+  gap: 12px !important;
+}
+
+#internationalCombinedSummary button.intl-v3-card {
+  padding: 14px !important;
+  border-radius: 18px !important;
+}
+
+#internationalCombinedSummary .intl-v3-card-header {
+  grid-template-columns: 26px 46px minmax(0,1fr) !important;
+  gap: 10px !important;
+  margin-bottom: 12px !important;
+}
+
+#internationalCombinedSummary .intl-v3-identity strong {
+  font-size: 1.04rem !important;
+  line-height: 1.18 !important;
+}
+
+#internationalCombinedSummary .intl-v3-levels {
+  gap: 10px !important;
+}
+
+#internationalCombinedSummary .intl-v3-level {
+  padding: 11px !important;
+  border-radius: 14px !important;
+}
+
+#internationalCombinedSummary .intl-v3-level-title {
+  padding: 0 0 7px !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+#internationalCombinedSummary .intl-v3-caps {
+  margin: 4px 0 8px !important;
+}
+
+#internationalCombinedSummary .intl-v3-stat-row {
+  padding: 5px 0 !important;
+}
+
+#internationalCombinedSummary .intl-v3-open {
+  margin-top: 10px !important;
+  padding-top: 9px !important;
+}
+
+/* Profile popup */
+.intl-v3-profile-section {
+  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02)) !important;
+}
+
+.intl-v3-profile-section > header {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 0 10px !important;
+  margin: 0 0 10px !important;
+}
+
+.intl-v3-profile-section > header > div {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.intl-v3-profile-section > header span,
+.intl-v3-profile-section > header strong {
+  background: transparent !important;
+}
+
+.intl-v3-profile-totals {
+  gap: 10px !important;
+}
+
+.intl-v3-profile-totals > div {
+  background: rgba(255,255,255,.04) !important;
+}
+
+.intl-v3-profile-section .table-wrap {
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,.06) !important;
+  background: rgba(255,255,255,.018) !important;
+}
+
+.intl-v3-profile-section table thead,
+.intl-v3-profile-section table thead tr,
+.intl-v3-profile-section table thead th {
+  background: rgba(255,255,255,.045) !important;
+  color: var(--muted) !important;
+}
+
+.intl-v3-profile-section table tbody tr {
+  background: transparent !important;
+}
+
+.intl-v3-profile-section table tbody tr:nth-child(even) {
+  background: rgba(255,255,255,.018) !important;
+}
+
+.intl-v3-modal .profile-modal-head {
+  background: transparent !important;
+}
+
+@media (max-width: 720px) {
+  #internationalCombinedSummary .intl-v3-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>
+
 </head>
 <body>
   <header>
