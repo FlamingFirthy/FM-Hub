@@ -4232,6 +4232,42 @@ td[data-label="To Nation"] {
 }
 </style>
 
+
+<style id="honours-expanded-style">
+#saveTabHonours .honour-card {
+  display: grid;
+  gap: 7px;
+}
+
+#saveTabHonours .honour-card-head {
+  display: grid;
+  grid-template-columns: 38px minmax(0,1fr);
+  gap: 10px;
+  align-items: center;
+}
+
+#saveTabHonours .honour-icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  font-size: 1.15rem;
+}
+
+#saveTabHonours .honour-card-head strong {
+  display: block;
+}
+
+#saveTabHonours .honour-card-head span {
+  display: block;
+  color: var(--muted);
+  font-size: .72rem;
+  margin-top: 2px;
+}
+</style>
+
 </head>
 <body>
   <header>
@@ -4571,17 +4607,140 @@ td[data-label="To Nation"] {
       <div class="detail-card" style="margin-top:20px;">
         <div class="section-head">
           <div>
-            <div class="section-kicker">Season Awards</div>
-            <h3>End of Season Awards</h3>
-            <p class="muted">Record your player of the season, top scorer, best signing, wonderkid, and other save awards.</p><p class="edit-mode-note">Awards editor is open.</p>
+            <div class="section-kicker">Personal Honours</div>
+            <h3>Awards, Milestones & Records</h3>
+            <p class="muted">Record personal awards, team selections, career milestones, club records, and international achievements.</p><p class="edit-mode-note">Awards editor is open.</p>
           </div>
         </div>
+        
         <div class="form-grid edit-only">
+          <div>
+            <label for="awardTypeInput">Honour Type</label>
+            <select id="awardTypeInput">
+              <option value="Individual Award">Individual Award</option>
+              <option value="Milestone">Milestone</option>
+              <option value="Record">Record</option>
+              <option value="Team Honour">Team Honour</option>
+              <option value="International Honour">International Honour</option>
+              <option value="Career Event">Career Event</option>
+            </select>
+          </div>
+
           <div><label for="awardSeasonInput">Season</label><input id="awardSeasonInput" placeholder="2026/27"></div>
-          <div><label for="awardCategoryInput">Award</label><select id="awardCategoryInput"><option value="Player of the Season">Player of the Season</option><option value="Young Player of the Season">Young Player of the Season</option><option value="Top Scorer">Top Scorer</option><option value="Best Signing">Best Signing</option><option value="Most Improved">Most Improved</option><option value="Fans Favourite">Fans Favourite</option><option value="Custom Award">Custom Award</option></select></div>
           <div><label for="awardPersonInput">Person / Player</label><select id="awardPersonInput"></select></div>
-          <div><label for="awardValueInput">Stat / Value</label><input id="awardValueInput" placeholder="28 goals / 7.42 rating / £5m"></div>
-          <div class="wide"><label for="awardNotesInput">Award Notes</label><textarea id="awardNotesInput" placeholder="Why they won it, big moments, storyline..."></textarea></div>
+          <div><label for="awardClubInput">Club</label><input id="awardClubInput" placeholder="Chelmsford City"></div>
+          <div><label for="awardNationInput">Nation</label><input id="awardNationInput" placeholder="New Zealand"></div>
+          <div><label for="awardCompetitionInput">Competition</label><input id="awardCompetitionInput" placeholder="National League / World Cup"></div>
+
+          <div class="wide">
+            <label for="awardCategoryInput">Honour / Milestone</label>
+            <select id="awardCategoryInput">
+              <optgroup label="Individual Awards">
+                <option value="Player of the Season">Player of the Season</option>
+                <option value="Young Player of the Season">Young Player of the Season</option>
+                <option value="Players' Player of the Season">Players' Player of the Season</option>
+                <option value="Fans' Player of the Season">Fans' Player of the Season</option>
+                <option value="Player of the Year">Player of the Year</option>
+                <option value="Young Player of the Year">Young Player of the Year</option>
+                <option value="Players' Player of the Year">Players' Player of the Year</option>
+                <option value="Fans' Player of the Year">Fans' Player of the Year</option>
+                <option value="Golden Boot">Golden Boot</option>
+                <option value="Top Scorer">Top Scorer</option>
+                <option value="Top Assists">Top Assists</option>
+                <option value="Golden Glove">Golden Glove</option>
+                <option value="Team of the Season">Team of the Season</option>
+                <option value="Best Nation Eleven for Season">Best Nation Eleven for Season</option>
+                <option value="Team of the Tournament">Team of the Tournament</option>
+                <option value="Player of the Tournament">Player of the Tournament</option>
+                <option value="Young Player of the Tournament">Young Player of the Tournament</option>
+                <option value="Goal of the Season">Goal of the Season</option>
+                <option value="Player of the Month">Player of the Month</option>
+                <option value="Young Player of the Month">Young Player of the Month</option>
+                <option value="Best Signing">Best Signing</option>
+                <option value="Most Improved">Most Improved</option>
+                <option value="Fans Favourite">Fans Favourite</option>
+                <option value="Ballon d'Or">Ballon d'Or</option>
+                <option value="FIFA Best Player">FIFA Best Player</option>
+                <option value="FIFPro World XI">FIFPro World XI</option>
+                <option value="Golden Boy">Golden Boy</option>
+                <option value="Kopa Trophy">Kopa Trophy</option>
+              </optgroup>
+
+              <optgroup label="Milestones">
+                <option value="First Team Debut">First Team Debut</option>
+                <option value="International Debut">International Debut</option>
+                <option value="Captain Debut">Captain Debut</option>
+                <option value="First Professional Contract">First Professional Contract</option>
+                <option value="First Transfer">First Transfer</option>
+                <option value="Record Transfer">Record Transfer</option>
+                <option value="First Goal">First Goal</option>
+                <option value="First International Goal">First International Goal</option>
+                <option value="First Assist">First Assist</option>
+                <option value="First Hat-trick">First Hat-trick</option>
+                <option value="First Clean Sheet">First Clean Sheet</option>
+                <option value="First Captaincy">First Captaincy</option>
+                <option value="25 Club Appearances">25 Club Appearances</option>
+                <option value="50 Club Appearances">50 Club Appearances</option>
+                <option value="100 Club Appearances">100 Club Appearances</option>
+                <option value="200 Club Appearances">200 Club Appearances</option>
+                <option value="300 Club Appearances">300 Club Appearances</option>
+                <option value="500 Club Appearances">500 Club Appearances</option>
+                <option value="25 International Caps">25 International Caps</option>
+                <option value="50 International Caps">50 International Caps</option>
+                <option value="100 International Caps">100 International Caps</option>
+                <option value="150 International Caps">150 International Caps</option>
+                <option value="50 Career Goals">50 Career Goals</option>
+                <option value="100 Career Goals">100 Career Goals</option>
+                <option value="250 Career Goals">250 Career Goals</option>
+                <option value="500 Career Goals">500 Career Goals</option>
+                <option value="50 Career Assists">50 Career Assists</option>
+                <option value="100 Career Assists">100 Career Assists</option>
+                <option value="250 Career Assists">250 Career Assists</option>
+                <option value="50 Clean Sheets">50 Clean Sheets</option>
+                <option value="100 Clean Sheets">100 Clean Sheets</option>
+                <option value="250 Clean Sheets">250 Clean Sheets</option>
+                <option value="Penalty Saved">Penalty Saved</option>
+                <option value="Club Legend">Club Legend</option>
+                <option value="Hall of Fame">Hall of Fame</option>
+              </optgroup>
+
+              <optgroup label="Team Honours">
+                <option value="League Champions">League Champions</option>
+                <option value="League Runners-up">League Runners-up</option>
+                <option value="Promotion">Promotion</option>
+                <option value="Playoff Winners">Playoff Winners</option>
+                <option value="Domestic Cup Winner">Domestic Cup Winner</option>
+                <option value="Domestic Cup Runner-up">Domestic Cup Runner-up</option>
+                <option value="Continental Competition Winner">Continental Competition Winner</option>
+                <option value="Continental Competition Runner-up">Continental Competition Runner-up</option>
+                <option value="Club World Cup Winner">Club World Cup Winner</option>
+                <option value="International Tournament Winner">International Tournament Winner</option>
+                <option value="International Tournament Runner-up">International Tournament Runner-up</option>
+              </optgroup>
+
+              <optgroup label="Records">
+                <option value="Club Appearance Record">Club Appearance Record</option>
+                <option value="Club Goals Record">Club Goals Record</option>
+                <option value="Club Assists Record">Club Assists Record</option>
+                <option value="Club Clean Sheets Record">Club Clean Sheets Record</option>
+                <option value="International Caps Record">International Caps Record</option>
+                <option value="International Goals Record">International Goals Record</option>
+                <option value="International Assists Record">International Assists Record</option>
+                <option value="International Clean Sheets Record">International Clean Sheets Record</option>
+                <option value="Youngest Debut Record">Youngest Debut Record</option>
+                <option value="Youngest Goalscorer Record">Youngest Goalscorer Record</option>
+                <option value="Oldest Appearance Record">Oldest Appearance Record</option>
+                <option value="Fastest Goal Record">Fastest Goal Record</option>
+                <option value="Highest Transfer Fee Record">Highest Transfer Fee Record</option>
+                <option value="Custom Record">Custom Record</option>
+              </optgroup>
+
+              <option value="Custom Honour">Custom Honour</option>
+            </select>
+          </div>
+
+          <div><label for="awardValueInput">Stat / Value</label><input id="awardValueInput" placeholder="31 goals / 100 caps / £25m"></div>
+          <div class="wide"><label for="awardNotesInput">Honour Notes</label><textarea id="awardNotesInput" placeholder="Why it mattered, match details, record context, or storyline..."></textarea></div>
         </div>
         <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addSeasonAward()">Add Award</button></div>
         <div id="seasonAwardsList" class="award-grid"></div>
@@ -6579,42 +6738,97 @@ function escapeHtml(value) {
         : '<option value="">No people linked yet</option>';
     }
 
+    function getHonourIcon(type, category) {
+      const value = `${type || ''} ${category || ''}`.toLowerCase();
+      if (value.includes('record')) return '📈';
+      if (value.includes('milestone') || value.includes('debut') || value.includes('appearance') || value.includes('caps') || value.includes('goals') || value.includes('assists') || value.includes('clean sheets')) return '🎖️';
+      if (value.includes('international') || value.includes('nation eleven') || value.includes('tournament')) return '🌍';
+      if (value.includes('team honour') || value.includes('champion') || value.includes('winner') || value.includes('promotion') || value.includes('runner-up')) return '🏆';
+      return '⭐';
+    }
+
     function renderSeasonAwards(save) {
       const container = document.getElementById('seasonAwardsList');
       if (!container || !save) return;
+
       const awards = Array.isArray(save.seasonAwards) ? save.seasonAwards : [];
+
       if (!awards.length) {
-        container.innerHTML = '<div class="empty-state" style="grid-column:1/-1; margin-top:0;">No awards yet. Add end-of-season awards in edit mode.</div>';
+        container.innerHTML = '<div class="empty-state" style="grid-column:1/-1; margin-top:0;">No honours yet. Add awards, milestones, records, and team selections in edit mode.</div>';
         return;
       }
-      container.innerHTML = awards.map((award, index) => `
-        <div class="award-card">
-          <strong>⭐ ${escapeHtml(award.category || 'Award')}</strong>
-          <span>${escapeHtml(award.person || '-')} • ${escapeHtml(award.season || 'No season')}</span>
-          ${award.value ? `<span>Value: ${escapeHtml(award.value)}</span>` : ''}
-          ${award.notes ? `<span>${escapeHtml(award.notes)}</span>` : ''}
-          <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only delete-btn small-btn" type="button" onclick="deleteSeasonAward(${index})"></button></div>
-        </div>
-      `).join('');
+
+      const sorted = awards
+        .map((award, index) => ({ ...award, __index: index }))
+        .sort((a, b) => String(b.season || '').localeCompare(String(a.season || '')));
+
+      container.innerHTML = sorted.map(award => {
+        const icon = getHonourIcon(award.type, award.category);
+        const location = [award.club, award.nation, award.competition].filter(Boolean).join(' • ');
+
+        return `
+          <div class="award-card honour-card">
+            <div class="honour-card-head">
+              <span class="honour-icon">${icon}</span>
+              <div>
+                <strong>${escapeHtml(award.category || 'Honour')}</strong>
+                <span>${escapeHtml(award.type || 'Individual Award')}</span>
+              </div>
+            </div>
+
+            <span>${escapeHtml(award.person || '-')} • ${escapeHtml(award.season || 'No season')}</span>
+            ${location ? `<span>${escapeHtml(location)}</span>` : ''}
+            ${award.value ? `<span><strong>Value:</strong> ${escapeHtml(award.value)}</span>` : ''}
+            ${award.notes ? `<span>${escapeHtml(award.notes)}</span>` : ''}
+
+            <div class="hero-actions edit-only" style="margin-top:12px;">
+              <button class="admin-only delete-btn small-btn" type="button" onclick="deleteSeasonAward(${award.__index})"></button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     function addSeasonAward() {
       const save = getCurrentSave();
       if (!save) return;
+
       const award = {
+        type: document.getElementById('awardTypeInput')?.value || 'Individual Award',
         season: document.getElementById('awardSeasonInput')?.value.trim() || '',
         category: document.getElementById('awardCategoryInput')?.value || 'Player of the Season',
         person: document.getElementById('awardPersonInput')?.value || '',
+        club: document.getElementById('awardClubInput')?.value.trim() || '',
+        nation: document.getElementById('awardNationInput')?.value.trim() || '',
+        competition: document.getElementById('awardCompetitionInput')?.value.trim() || '',
         value: document.getElementById('awardValueInput')?.value.trim() || '',
         notes: document.getElementById('awardNotesInput')?.value.trim() || ''
       };
-      if (!award.person && !award.notes) return;
+
+      if (!award.person && !award.notes && !award.club && !award.nation) return;
+
       save.seasonAwards = Array.isArray(save.seasonAwards) ? save.seasonAwards : [];
       save.seasonAwards.push(award);
       updateCurrentSave(save);
-      ['awardSeasonInput','awardValueInput','awardNotesInput'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-      const cat = document.getElementById('awardCategoryInput');
-      if (cat) cat.value = 'Player of the Season';
+
+      [
+        'awardSeasonInput',
+        'awardClubInput',
+        'awardNationInput',
+        'awardCompetitionInput',
+        'awardValueInput',
+        'awardNotesInput'
+      ].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
+      const type = document.getElementById('awardTypeInput');
+      if (type) type.value = 'Individual Award';
+
+      const category = document.getElementById('awardCategoryInput');
+      if (category) category.value = 'Player of the Season';
+
       renderSeasonAwards(save);
       loadSaves();
     }
