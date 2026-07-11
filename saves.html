@@ -4155,6 +4155,299 @@ td[data-label="To Nation"] {
 }
 
 </style>
+
+<style id="international-v3-style">
+#internationalCombinedSummary {
+  display: block !important;
+  margin: 16px 0 20px !important;
+}
+
+#internationalCombinedSummary .intl-v3-panel {
+  padding: 14px !important;
+  border: 1px solid rgba(255,255,255,.09) !important;
+  border-radius: 20px !important;
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,.05), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018)) !important;
+}
+
+#internationalCombinedSummary .intl-v3-panel-header {
+  margin-bottom: 12px !important;
+}
+
+#internationalCombinedSummary .intl-v3-panel-header h3 {
+  margin: 3px 0 5px !important;
+  font-size: 1.12rem !important;
+}
+
+#internationalCombinedSummary .intl-v3-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+  gap: 10px !important;
+}
+
+#internationalCombinedSummary button.intl-v3-card {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 12px !important;
+  margin: 0 !important;
+  text-align: left !important;
+  color: var(--text) !important;
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,.05), transparent 36%),
+    linear-gradient(135deg, rgba(255,255,255,.055), rgba(255,255,255,.022)) !important;
+  border: 1px solid rgba(255,255,255,.09) !important;
+  border-radius: 17px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  font: inherit !important;
+  line-height: normal !important;
+  box-shadow: none !important;
+  transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease !important;
+}
+
+#internationalCombinedSummary button.intl-v3-card::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 12px !important;
+  bottom: 12px !important;
+  width: 4px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(180deg, var(--accent), rgba(34,197,94,.7), rgba(59,130,246,.6)) !important;
+}
+
+#internationalCombinedSummary button.intl-v3-card:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(255,255,255,.18) !important;
+  box-shadow: 0 12px 28px rgba(0,0,0,.26) !important;
+}
+
+#internationalCombinedSummary .intl-v3-card-header {
+  display: grid !important;
+  grid-template-columns: 24px 44px minmax(0,1fr) !important;
+  gap: 9px !important;
+  align-items: center !important;
+  margin-bottom: 10px !important;
+}
+
+#internationalCombinedSummary .intl-v3-rank {
+  width: 24px !important;
+  height: 24px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 9px !important;
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+  font-size: .72rem !important;
+  font-weight: 900 !important;
+}
+
+#internationalCombinedSummary .intl-v3-avatar {
+  width: 44px !important;
+  height: 44px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, var(--accent), rgba(255,255,255,.17)) !important;
+  color: #fff !important;
+  font-size: .82rem !important;
+  font-weight: 900 !important;
+  writing-mode: horizontal-tb !important;
+}
+
+#internationalCombinedSummary .intl-v3-identity {
+  min-width: 0 !important;
+  display: block !important;
+  writing-mode: horizontal-tb !important;
+}
+
+#internationalCombinedSummary .intl-v3-identity strong {
+  display: block !important;
+  color: var(--text) !important;
+  font-size: 1rem !important;
+  line-height: 1.14 !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  writing-mode: horizontal-tb !important;
+  transform: none !important;
+}
+
+#internationalCombinedSummary .intl-v3-identity small {
+  display: block !important;
+  margin-top: 3px !important;
+  color: var(--muted) !important;
+  font-size: .73rem !important;
+  line-height: 1.2 !important;
+  white-space: normal !important;
+  writing-mode: horizontal-tb !important;
+}
+
+#internationalCombinedSummary .intl-v3-levels {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+}
+
+#internationalCombinedSummary .intl-v3-level {
+  min-width: 0 !important;
+  padding: 9px !important;
+  border: 1px solid rgba(255,255,255,.065) !important;
+  border-radius: 13px !important;
+  background: rgba(255,255,255,.03) !important;
+}
+
+#internationalCombinedSummary .intl-v3-level.senior {
+  box-shadow: inset 0 3px 0 rgba(34,197,94,.8) !important;
+}
+
+#internationalCombinedSummary .intl-v3-level.youth {
+  box-shadow: inset 0 3px 0 rgba(59,130,246,.8) !important;
+}
+
+#internationalCombinedSummary .intl-v3-level-title {
+  color: var(--muted) !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  letter-spacing: .08em !important;
+  font-size: .62rem !important;
+  font-weight: 900 !important;
+}
+
+#internationalCombinedSummary .intl-v3-caps {
+  text-align: center !important;
+  margin: 5px 0 7px !important;
+}
+
+#internationalCombinedSummary .intl-v3-caps strong {
+  display: inline !important;
+  color: var(--text) !important;
+  font-size: 1.4rem !important;
+  line-height: 1 !important;
+}
+
+#internationalCombinedSummary .intl-v3-caps span {
+  margin-left: 4px !important;
+  color: var(--muted) !important;
+  font-size: .66rem !important;
+}
+
+#internationalCombinedSummary .intl-v3-stat-row {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  gap: 8px !important;
+  align-items: center !important;
+  padding: 4px 0 !important;
+  border-top: 1px solid rgba(255,255,255,.045) !important;
+}
+
+#internationalCombinedSummary .intl-v3-stat-row span {
+  color: var(--muted) !important;
+  font-size: .7rem !important;
+}
+
+#internationalCombinedSummary .intl-v3-stat-row strong {
+  color: var(--text) !important;
+  font-size: .76rem !important;
+  font-weight: 900 !important;
+}
+
+#internationalCombinedSummary .intl-v3-open {
+  margin-top: 8px !important;
+  padding-top: 8px !important;
+  border-top: 1px solid rgba(255,255,255,.055) !important;
+  color: var(--accent) !important;
+  text-align: right !important;
+  font-size: .71rem !important;
+  font-weight: 900 !important;
+}
+
+.intl-v3-modal {
+  width: min(1180px, 96vw) !important;
+}
+
+.intl-v3-profile-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 14px !important;
+}
+
+.intl-v3-profile-section {
+  padding: 14px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(255,255,255,.075) !important;
+  background: rgba(255,255,255,.028) !important;
+}
+
+.intl-v3-profile-section.senior {
+  box-shadow: inset 0 3px 0 rgba(34,197,94,.8) !important;
+}
+
+.intl-v3-profile-section.youth {
+  box-shadow: inset 0 3px 0 rgba(59,130,246,.8) !important;
+}
+
+.intl-v3-profile-section > header span {
+  display: block !important;
+  color: var(--muted) !important;
+  text-transform: uppercase !important;
+  letter-spacing: .08em !important;
+  font-size: .68rem !important;
+  font-weight: 900 !important;
+}
+
+.intl-v3-profile-section > header strong {
+  display: block !important;
+  margin-top: 4px !important;
+  font-size: 1.35rem !important;
+}
+
+.intl-v3-profile-totals {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0,1fr)) !important;
+  gap: 8px !important;
+  margin: 12px 0 !important;
+}
+
+.intl-v3-profile-totals > div {
+  padding: 10px !important;
+  border-radius: 12px !important;
+  background: rgba(255,255,255,.035) !important;
+  border: 1px solid rgba(255,255,255,.055) !important;
+}
+
+.intl-v3-profile-totals span {
+  display: block !important;
+  color: var(--muted) !important;
+  font-size: .66rem !important;
+}
+
+.intl-v3-profile-totals strong {
+  display: block !important;
+  margin-top: 4px !important;
+  font-size: 1.05rem !important;
+}
+
+@media (max-width: 720px) {
+  #internationalCombinedSummary .intl-v3-grid,
+  .intl-v3-profile-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  #internationalCombinedSummary .intl-v3-levels {
+    grid-template-columns: 1fr !important;
+  }
+
+  .intl-v3-profile-totals {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  }
+}
+</style>
+
 </head>
 <body>
   <header>
@@ -5093,38 +5386,12 @@ function buildInternationalCombinedRows(rows){
 
 
 
+
 function renderInternationalCombinedSummary(rows){
   const container = document.getElementById("internationalCombinedSummary");
   if(!container) return;
 
-  const grouped = new Map();
-
-  (rows || []).forEach(record => {
-    const player = record.player || "Unknown";
-    const level = String(record.level || "Senior").trim().toLowerCase() === "senior" ? "senior" : "youth";
-
-    if(!grouped.has(player)){
-      grouped.set(player, {
-        player,
-        senior: { caps:0, goals:0, assists:0, cleanSheets:0, seasons:new Set(), nations:new Set(), records:[] },
-        youth: { caps:0, goals:0, assists:0, cleanSheets:0, seasons:new Set(), nations:new Set(), records:[] }
-      });
-    }
-
-    const bucket = grouped.get(player)[level];
-    bucket.caps += Number(record.caps) || 0;
-    bucket.goals += Number(record.goals) || 0;
-    bucket.assists += Number(record.assists) || 0;
-    bucket.cleanSheets += Number(record.cleanSheets) || 0;
-    if(record.season) bucket.seasons.add(record.season);
-    if(record.nation) bucket.nations.add(record.nation);
-    bucket.records.push(record);
-  });
-
-  const players = [...grouped.values()].sort((a,b) =>
-    (b.senior.caps + b.youth.caps) - (a.senior.caps + a.youth.caps) ||
-    String(a.player).localeCompare(String(b.player))
-  );
+  const players = buildInternationalCombinedRows(rows || []);
 
   if(!players.length){
     container.innerHTML = '<div class="empty-state">No combined international stats yet.</div>';
@@ -5139,61 +5406,187 @@ function renderInternationalCombinedSummary(rows){
     .join("")
     .toUpperCase();
 
-  const nationLine = player => {
-    const nations = [...new Set([...player.senior.nations, ...player.youth.nations])];
+  const nationLabel = player => {
+    const nations = [...new Set([
+      ...player.senior.nations,
+      ...player.youth.nations
+    ])];
+
     if(!nations.length) return "No nation set";
-    return nations.map(nation => typeof renderNationLabel === "function" ? renderNationLabel(nation) : escapeHtml(nation)).join(", ");
+
+    return nations
+      .map(nation => typeof renderNationLabel === "function"
+        ? renderNationLabel(nation)
+        : escapeHtml(nation))
+      .join(", ");
   };
 
-  const levelBlock = (label, data, type) => `
-    <div class="intl-clean-level ${type}">
-      <div class="intl-clean-level-head">
-        <span>${label}</span>
-        <strong>${data.caps}</strong>
-        <em>Caps</em>
+  const levelMarkup = (label, stats, className) => `
+    <section class="intl-v3-level ${className}">
+      <div class="intl-v3-level-title">${label}</div>
+      <div class="intl-v3-caps">
+        <strong>${stats.caps}</strong>
+        <span>Caps</span>
       </div>
-      <div class="intl-clean-lines">
-        <div><span>Goals</span><strong>${data.goals}</strong></div>
-        <div><span>Assists</span><strong>${data.assists}</strong></div>
-        <div><span>Clean Sheets</span><strong>${data.cleanSheets}</strong></div>
-        <div><span>Seasons</span><strong>${data.seasons.size}</strong></div>
-      </div>
-    </div>
+      <div class="intl-v3-stat-row"><span>Goals</span><strong>${stats.goals}</strong></div>
+      <div class="intl-v3-stat-row"><span>Assists</span><strong>${stats.assists}</strong></div>
+      <div class="intl-v3-stat-row"><span>Clean Sheets</span><strong>${stats.clean}</strong></div>
+      <div class="intl-v3-stat-row"><span>Seasons</span><strong>${stats.seasons.size}</strong></div>
+    </section>
   `;
 
   container.innerHTML = `
-    <section class="intl-clean-panel">
-      <div class="intl-clean-panel-head">
+    <section class="intl-v3-panel">
+      <header class="intl-v3-panel-header">
         <div>
           <div class="section-kicker">Combined International Stats</div>
           <h3>Senior & Youth Totals</h3>
-          <p class="muted">Senior caps and youth caps are separated so records stay accurate.</p>
+          <p class="muted">Senior and youth records are shown separately.</p>
         </div>
-      </div>
+      </header>
 
-      <div class="intl-clean-cards">
+      <div class="intl-v3-grid">
         ${players.map((player, index) => `
-          <button class="intl-clean-card-v2" type="button" onclick="openInternationalCombinedProfile('${escapeHtml(String(player.player).replace(/'/g, "\\'"))}')">
-            <div class="intl-clean-top">
-              <div class="intl-clean-rank">${index + 1}</div>
-              <div class="intl-clean-avatar">${escapeHtml(initials(player.player))}</div>
-              <div class="intl-clean-title">
+          <button
+            class="intl-v3-card"
+            type="button"
+            data-player="${encodeURIComponent(player.player)}"
+            onclick="openInternationalProfileV3(decodeURIComponent(this.dataset.player))"
+          >
+            <div class="intl-v3-card-header">
+              <span class="intl-v3-rank">${index + 1}</span>
+              <span class="intl-v3-avatar">${escapeHtml(initials(player.player))}</span>
+              <span class="intl-v3-identity">
                 <strong>${escapeHtml(player.player)}</strong>
-                <span>${nationLine(player)}</span>
-              </div>
+                <small>${nationLabel(player)}</small>
+              </span>
             </div>
 
-            <div class="intl-clean-level-grid">
-              ${levelBlock("Senior", player.senior, "senior")}
-              ${levelBlock("Youth", player.youth, "youth")}
+            <div class="intl-v3-levels">
+              ${levelMarkup("Senior", player.senior, "senior")}
+              ${levelMarkup("Youth", player.youth, "youth")}
             </div>
 
-            <div class="intl-clean-link">View international profile →</div>
+            <div class="intl-v3-open">View profile →</div>
           </button>
         `).join("")}
       </div>
     </section>
   `;
+}
+
+function openInternationalProfileV3(playerName){
+  const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
+  if(!save) return;
+
+  const records = (Array.isArray(save.internationalStats) ? save.internationalStats : [])
+    .filter(record => String(record.player || "") === String(playerName || ""));
+
+  const player = buildInternationalCombinedRows(records)[0];
+  if(!player) return;
+
+  let overlay = document.getElementById("internationalProfileV3");
+  if(!overlay){
+    overlay = document.createElement("div");
+    overlay.id = "internationalProfileV3";
+    overlay.className = "profile-overlay hidden";
+    overlay.addEventListener("click", event => {
+      if(event.target === overlay) closeInternationalProfileV3();
+    });
+    overlay.innerHTML = `
+      <div class="profile-modal intl-v3-modal" onclick="event.stopPropagation()">
+        <div class="profile-modal-head">
+          <div>
+            <div class="section-kicker">International Profile</div>
+            <h2 id="internationalProfileV3Title">Player</h2>
+            <p id="internationalProfileV3Subtitle" class="muted"></p>
+          </div>
+          <button class="secondary" type="button" onclick="closeInternationalProfileV3()">Close</button>
+        </div>
+        <div id="internationalProfileV3Body"></div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+
+  const title = document.getElementById("internationalProfileV3Title");
+  const subtitle = document.getElementById("internationalProfileV3Subtitle");
+  const body = document.getElementById("internationalProfileV3Body");
+
+  if(title) title.textContent = playerName;
+  if(subtitle) subtitle.textContent = `${player.senior.caps} senior caps • ${player.youth.caps} youth caps`;
+
+  const profileSection = (label, data, className) => `
+    <section class="intl-v3-profile-section ${className}">
+      <header>
+        <div>
+          <span>${label}</span>
+          <strong>${data.caps} Caps</strong>
+        </div>
+      </header>
+
+      <div class="intl-v3-profile-totals">
+        <div><span>Goals</span><strong>${data.goals}</strong></div>
+        <div><span>Assists</span><strong>${data.assists}</strong></div>
+        <div><span>Clean Sheets</span><strong>${data.clean}</strong></div>
+        <div><span>Seasons</span><strong>${data.seasons.size}</strong></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Season</th>
+              <th>Nation</th>
+              <th>Level</th>
+              <th>Caps</th>
+              <th>Goals</th>
+              <th>Assists</th>
+              <th>Clean Sheets</th>
+              <th>Competition</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${
+              data.rows.length
+                ? [...data.rows]
+                    .sort((a,b) => typeof compareSeasons === "function"
+                      ? compareSeasons(a.season, b.season, "desc")
+                      : String(b.season || "").localeCompare(String(a.season || "")))
+                    .map(record => `
+                      <tr>
+                        <td>${escapeHtml(record.season || "-")}</td>
+                        <td>${typeof renderNationLabel === "function" ? renderNationLabel(record.nation) : escapeHtml(record.nation || "-")}</td>
+                        <td>${escapeHtml(record.level || "-")}</td>
+                        <td>${escapeHtml(record.caps || 0)}</td>
+                        <td>${escapeHtml(record.goals || 0)}</td>
+                        <td>${escapeHtml(record.assists || 0)}</td>
+                        <td>${escapeHtml(record.cleanSheets || 0)}</td>
+                        <td>${escapeHtml(record.competition || "-")}</td>
+                      </tr>
+                    `).join("")
+                : '<tr><td colspan="8" class="muted">No records at this level.</td></tr>'
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  `;
+
+  if(body){
+    body.innerHTML = `
+      <div class="intl-v3-profile-grid">
+        ${profileSection("Senior", player.senior, "senior")}
+        ${profileSection("Youth", player.youth, "youth")}
+      </div>
+    `;
+  }
+
+  overlay.classList.remove("hidden");
+}
+
+function closeInternationalProfileV3(){
+  document.getElementById("internationalProfileV3")?.classList.add("hidden");
 }
 
 function renderInternationalTable(){
