@@ -4352,6 +4352,43 @@ td[data-label="To Nation"] {
 }
 </style>
 
+
+<style id="honours-edit-button-style">
+#saveTabHonours .honour-card-actions {
+  display: grid !important;
+  grid-template-columns: minmax(110px, 1fr) 42px !important;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+#saveTabHonours .honour-edit-btn {
+  min-height: 40px !important;
+  padding: 10px 18px !important;
+  font-size: .86rem !important;
+  font-weight: 900 !important;
+  width: 100% !important;
+}
+
+#saveTabHonours .honour-delete-btn {
+  width: 42px !important;
+  min-width: 42px !important;
+  height: 36px !important;
+  padding: 0 !important;
+}
+
+#saveTabHonours .honour-section.personal {
+  order: 1;
+}
+
+#saveTabHonours .honour-section.international {
+  order: 2;
+}
+
+#saveTabHonours .honour-section.club {
+  order: 3;
+}
+</style>
+
 </head>
 <body>
   <header>
@@ -4826,7 +4863,10 @@ td[data-label="To Nation"] {
           <div><label for="awardValueInput">Stat / Value</label><input id="awardValueInput" placeholder="31 goals / 100 caps / £25m"></div>
           <div class="wide"><label for="awardNotesInput">Honour Notes</label><textarea id="awardNotesInput" placeholder="Why it mattered, match details, record context, or storyline..."></textarea></div>
         </div>
-        <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addSeasonAward()">Add Award</button></div>
+        <div class="hero-actions edit-only">
+          <button id="awardSaveBtn" class="admin-only primary" type="button" onclick="addSeasonAward()">Add Award</button>
+          <button id="awardCancelEditBtn" class="admin-only secondary hidden" type="button" onclick="cancelSeasonAwardEdit()">Cancel Edit</button>
+        </div>
         <div id="seasonAwardsList" class="award-grid"></div>
       </div>
 
@@ -6893,8 +6933,9 @@ function escapeHtml(value) {
           ${award.value ? `<span><strong>Value:</strong> ${escapeHtml(award.value)}</span>` : ''}
           ${award.notes ? `<span>${escapeHtml(award.notes)}</span>` : ''}
 
-          <div class="hero-actions edit-only" style="margin-top:12px;">
-            <button class="admin-only delete-btn small-btn" type="button" onclick="deleteSeasonAward(${award.__index})"></button>
+          <div class="hero-actions edit-only honour-card-actions" style="margin-top:12px;">
+            <button class="admin-only secondary honour-edit-btn" type="button" onclick="editSeasonAward(${award.__index})">Edit</button>
+            <button class="admin-only delete-btn small-btn honour-delete-btn" type="button" onclick="deleteSeasonAward(${award.__index})"></button>
           </div>
         </div>
       `;
@@ -6952,19 +6993,19 @@ function escapeHtml(value) {
       container.innerHTML = `
         <div class="honours-section-stack">
           ${renderHonourSection(
-            'International Honours',
-            'National team selections, international tournaments, caps milestones, and international records.',
-            '🌍',
-            grouped.international,
-            'international'
-          )}
-
-          ${renderHonourSection(
             'Personal Honours',
             'Individual awards, milestones, records, team selections, and career achievements.',
             '⭐',
             grouped.personal,
             'personal'
+          )}
+
+          ${renderHonourSection(
+            'International Honours',
+            'National team selections, international tournaments, caps milestones, and international records.',
+            '🌍',
+            grouped.international,
+            'international'
           )}
 
           ${renderHonourSection(
@@ -6976,6 +7017,37 @@ function escapeHtml(value) {
           )}
         </div>
       `;
+    }
+
+    function resetSeasonAwardForm() {
+      [
+        'awardSeasonInput',
+        'awardClubInput',
+        'awardNationInput',
+        'awardCompetitionInput',
+        'awardValueInput',
+        'awardNotesInput'
+      ].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
+      const type = document.getElementById('awardTypeInput');
+      if (type) type.value = 'Individual Award';
+
+      const category = document.getElementById('awardCategoryInput');
+      if (category) category.value = 'Player of the Season';
+
+      const person = document.getElementById('awardPersonInput');
+      if (person) person.value = '';
+
+      window.editingSeasonAwardIndex = null;
+
+      const saveBtn = document.getElementById('awardSaveBtn');
+      if (saveBtn) saveBtn.textContent = 'Add Award';
+
+      const cancelBtn = document.getElementById('awardCancelEditBtn');
+      if (cancelBtn) cancelBtn.classList.add('hidden');
     }
 
     function addSeasonAward() {
@@ -6997,38 +7069,91 @@ function escapeHtml(value) {
       if (!award.person && !award.notes && !award.club && !award.nation) return;
 
       save.seasonAwards = Array.isArray(save.seasonAwards) ? save.seasonAwards : [];
-      save.seasonAwards.push(award);
+
+      const editIndex = Number.isInteger(window.editingSeasonAwardIndex)
+        ? window.editingSeasonAwardIndex
+        : null;
+
+      if (editIndex !== null && save.seasonAwards[editIndex]) {
+        save.seasonAwards[editIndex] = award;
+      } else {
+        save.seasonAwards.push(award);
+      }
+
       updateCurrentSave(save);
-
-      [
-        'awardSeasonInput',
-        'awardClubInput',
-        'awardNationInput',
-        'awardCompetitionInput',
-        'awardValueInput',
-        'awardNotesInput'
-      ].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-      });
-
-      const type = document.getElementById('awardTypeInput');
-      if (type) type.value = 'Individual Award';
-
-      const category = document.getElementById('awardCategoryInput');
-      if (category) category.value = 'Player of the Season';
-
+      resetSeasonAwardForm();
       renderSeasonAwards(save);
-      loadSaves();
+      if (typeof applyAdminMode === 'function') applyAdminMode();
+    }
+
+    function editSeasonAward(index) {
+      const save = getCurrentSave();
+      if (!save || !Array.isArray(save.seasonAwards) || !save.seasonAwards[index]) return;
+
+      const award = save.seasonAwards[index];
+      const setValue = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.value = value || '';
+      };
+
+      setValue('awardTypeInput', award.type || 'Individual Award');
+      setValue('awardSeasonInput', award.season);
+      setValue('awardClubInput', award.club);
+      setValue('awardNationInput', award.nation);
+      setValue('awardCompetitionInput', award.competition);
+      setValue('awardCategoryInput', award.category || 'Player of the Season');
+      setValue('awardValueInput', award.value);
+      setValue('awardNotesInput', award.notes);
+
+      const personSelect = document.getElementById('awardPersonInput');
+      if (personSelect) {
+        const personName = award.person || '';
+        const exists = Array.from(personSelect.options).some(option => option.value === personName);
+        if (personName && !exists) {
+          const option = document.createElement('option');
+          option.value = personName;
+          option.textContent = personName;
+          personSelect.appendChild(option);
+        }
+        personSelect.value = personName;
+      }
+
+      window.editingSeasonAwardIndex = index;
+
+      const saveBtn = document.getElementById('awardSaveBtn');
+      if (saveBtn) saveBtn.textContent = 'Save Honour Edit';
+
+      const cancelBtn = document.getElementById('awardCancelEditBtn');
+      if (cancelBtn) cancelBtn.classList.remove('hidden');
+
+      document.getElementById('awardTypeInput')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    }
+
+    function cancelSeasonAwardEdit() {
+      resetSeasonAwardForm();
     }
 
     function deleteSeasonAward(index) {
       const save = getCurrentSave();
       if (!save || !Array.isArray(save.seasonAwards)) return;
+
       save.seasonAwards.splice(index, 1);
       updateCurrentSave(save);
+
+      if (window.editingSeasonAwardIndex === index) {
+        resetSeasonAwardForm();
+      } else if (
+        Number.isInteger(window.editingSeasonAwardIndex) &&
+        window.editingSeasonAwardIndex > index
+      ) {
+        window.editingSeasonAwardIndex -= 1;
+      }
+
       renderSeasonAwards(save);
-      loadSaves();
+      if (typeof applyAdminMode === 'function') applyAdminMode();
     }
 
     function renderMatchHighlights(save) {
