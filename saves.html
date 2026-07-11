@@ -4214,6 +4214,24 @@ td[data-label="To Nation"] {
 @media(max-width:900px){.intl-v3-profile-totals{grid-template-columns:repeat(2,1fr)!important}}
 </style>
 
+
+<style id="honours-tab-layout">
+#saveTabHonours .detail-card,
+#saveTabHonours .section-card {
+  margin-top: 0 !important;
+  margin-bottom: 16px !important;
+}
+
+#saveTabHonours .honours-grid,
+#saveTabHonours .award-grid {
+  margin-top: 14px !important;
+}
+
+#saveTabHonours .section-head {
+  align-items: flex-start !important;
+}
+</style>
+
 </head>
 <body>
   <header>
@@ -4492,8 +4510,8 @@ td[data-label="To Nation"] {
         <div class="section-head">
           <div>
             <div class="section-kicker">Honours</div>
-            <h3>Career Achievements</h3>
-            <p class="muted">Trophies and major achievements pulled from your season records.</p>
+            <h3>Career Honours</h3>
+            <p class="muted">Trophies, promotions, player awards, and major achievements from this save.</p>
           </div>
         </div>
         <div id="honoursList" class="honours-grid"></div>
@@ -8687,7 +8705,7 @@ function renderSavePlayerStats(save) {
           <button class="save-tab-btn active" type="button" onclick="openSaveTab('overview')" data-save-tab-button="overview">Overview</button>
           <button class="save-tab-btn" type="button" onclick="openSaveTab('people')" data-save-tab-button="people">People</button>
           <button class="save-tab-btn" type="button" onclick="openSaveTab('club')" data-save-tab-button="club">Club</button>
-          <button class="save-tab-btn" type="button" onclick="openSaveTab('seasons')" data-save-tab-button="seasons">Seasons</button>
+          <button class="save-tab-btn" type="button" onclick="openSaveTab('honours')" data-save-tab-button="honours">Honours</button>
           <button class="save-tab-btn" type="button" onclick="openSaveTab('stats')" data-save-tab-button="stats">Stats</button>
           <button class="save-tab-btn" type="button" onclick="openSaveTab('international')" data-save-tab-button="international">International</button>
           <button class="save-tab-btn" type="button" onclick="openSaveTab('transfers')" data-save-tab-button="transfers">Transfers</button>
@@ -8698,7 +8716,7 @@ function renderSavePlayerStats(save) {
         </div>
         <div id="saveTabPeople" class="save-tab-panel" data-save-tab-panel="people"></div>
         <div id="saveTabClub" class="save-tab-panel" data-save-tab-panel="club"></div>
-        <div id="saveTabSeasons" class="save-tab-panel" data-save-tab-panel="seasons"></div>
+        <div id="saveTabHonours" class="save-tab-panel" data-save-tab-panel="honours"></div>
         <div id="saveTabStats" class="save-tab-panel" data-save-tab-panel="stats"></div>
         <div id="saveTabInternational" class="save-tab-panel" data-save-tab-panel="international">
           <div class="detail-card">
@@ -8851,13 +8869,13 @@ function renderSavePlayerStats(save) {
       const cards = [
         { tab: 'people', label: 'People', icon: 'People', value: `${peopleCount} linked`, note: 'Open players, managers, and save-specific profiles.' },
         { tab: 'club', label: 'Club', icon: 'Club', value: clubName, note: 'View club information and season records.' },
-        { tab: 'seasons', label: 'Seasons', icon: 'Seasons', value: `${seasonCount} seasons`, note: `${awardCount} awards • ${matchCount} big matches` },
+        { tab: 'honours', label: 'Honours', icon: 'Honours', value: `${awardCount} awards`, note: `${seasonCount} seasons • ${matchCount} big matches` },
         { tab: 'stats', label: 'Stats', icon: 'Stats', value: `${statCount} records`, note: 'Save-only apps, goals, assists, ratings, and notes.' },
         { tab: 'transfers', label: 'Transfers', icon: 'Transfers', value: `${transferCount} moves`, note: 'Transfer cards, fees, windows, and club movement.' },
         { tab: 'story', label: 'Story', icon: 'Story', value: `${storyCount} events`, note: 'Timeline moments, rivalries, drama, and milestones.' }
       ];
 
-      const iconMap = { people: '👥', club: '🏟️', seasons: '📅', stats: '📊', transfers: '↔', story: '★' };
+      const iconMap = { people: '👥', club: '🏟️', honours: '🏆', stats: '📊', transfers: '↔', story: '★' };
       grid.innerHTML = cards.map(card => `
         <button class="admin-only overview-shortcut-card" type="button" onclick="openSaveTab('${card.tab}')">
           <div class="shortcut-icon">${iconMap[card.tab] || '•'}</div>
@@ -8873,14 +8891,14 @@ function renderSavePlayerStats(save) {
 
       moveCardToTab(document.querySelector('#saveProfile .current-situation-card'), 'overview');
       moveCardToTab(document.querySelector('#saveProfile .key-players-first'), 'overview');
-      moveCardToTab(findSaveCardByKicker('Honours'), 'overview');
 
       moveCardToTab(findSaveCardByKicker('People'), 'people');
       moveCardToTab(document.querySelector('#saveProfile .club-from-squad-card'), 'club');
       moveCardToTab(findSaveCardByKicker('Season Tracker'), 'club');
 
-      moveCardToTab(findSaveCardByKicker('Season Awards'), 'seasons');
-      moveCardToTab(findSaveCardByKicker('Match Highlights'), 'seasons');
+      moveCardToTab(findSaveCardByKicker('Honours'), 'honours');
+      moveCardToTab(findSaveCardByKicker('Season Awards'), 'honours');
+      moveCardToTab(findSaveCardByKicker('Match Highlights'), 'honours');
 
       moveCardToTab(findSaveCardByKicker('Save-Specific Stats'), 'stats');
       moveCardToTab(document.querySelector('#saveProfile .transfers-card'), 'transfers');
@@ -8924,7 +8942,7 @@ function renderSavePlayerStats(save) {
     }
 
 function openSaveTab(tabName, shouldScroll = true) {
-      const safeTab = ['overview','people','club','seasons','stats','international','transfers','story'].includes(tabName) ? tabName : 'overview';
+      const safeTab = ['overview','people','club','honours','stats','international','transfers','story'].includes(tabName) ? tabName : 'overview';
       currentSaveTab = safeTab;
       if (typeof lastOpenedSaveTabKey !== 'undefined') lastOpenedSaveTabKey = safeTab;
       document.querySelectorAll('[data-save-tab-panel]').forEach(panel => panel.classList.toggle('active', panel.dataset.saveTabPanel === safeTab));
