@@ -8850,7 +8850,7 @@ function renderSavePlayerStats(save) {
 
       const cards = [
         { tab: 'people', label: 'People', icon: 'People', value: `${peopleCount} linked`, note: 'Open players, managers, and save-specific profiles.' },
-        { tab: 'club', label: 'Club', icon: 'Club', value: clubName, note: 'View the club identity pulled from the Squad page.' },
+        { tab: 'club', label: 'Club', icon: 'Club', value: clubName, note: 'View club information and season records.' },
         { tab: 'seasons', label: 'Seasons', icon: 'Seasons', value: `${seasonCount} seasons`, note: `${awardCount} awards • ${matchCount} big matches` },
         { tab: 'stats', label: 'Stats', icon: 'Stats', value: `${statCount} records`, note: 'Save-only apps, goals, assists, ratings, and notes.' },
         { tab: 'transfers', label: 'Transfers', icon: 'Transfers', value: `${transferCount} moves`, note: 'Transfer cards, fees, windows, and club movement.' },
@@ -8877,8 +8877,8 @@ function renderSavePlayerStats(save) {
 
       moveCardToTab(findSaveCardByKicker('People'), 'people');
       moveCardToTab(document.querySelector('#saveProfile .club-from-squad-card'), 'club');
+      moveCardToTab(findSaveCardByKicker('Season Tracker'), 'club');
 
-      moveCardToTab(findSaveCardByKicker('Season Tracker'), 'seasons');
       moveCardToTab(findSaveCardByKicker('Season Awards'), 'seasons');
       moveCardToTab(findSaveCardByKicker('Match Highlights'), 'seasons');
 
