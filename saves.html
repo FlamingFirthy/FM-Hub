@@ -4268,6 +4268,90 @@ td[data-label="To Nation"] {
 }
 </style>
 
+
+<style id="honours-section-split-style">
+#saveTabHonours #seasonAwardsList {
+  display: block !important;
+}
+
+#saveTabHonours .honours-section-stack {
+  display: grid;
+  gap: 18px;
+}
+
+#saveTabHonours .honour-section {
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.075);
+  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+}
+
+#saveTabHonours .honour-section.international {
+  box-shadow: inset 4px 0 0 rgba(59,130,246,.8);
+}
+
+#saveTabHonours .honour-section.personal {
+  box-shadow: inset 4px 0 0 rgba(249,115,22,.82);
+}
+
+#saveTabHonours .honour-section.club {
+  box-shadow: inset 4px 0 0 rgba(234,179,8,.82);
+}
+
+#saveTabHonours .honour-section-head {
+  display: grid;
+  grid-template-columns: 44px minmax(0,1fr) auto;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+#saveTabHonours .honour-section-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(255,255,255,.045);
+  font-size: 1.25rem;
+}
+
+#saveTabHonours .honour-section-head h3 {
+  margin: 2px 0 4px;
+}
+
+#saveTabHonours .honour-section-head p {
+  margin: 0;
+}
+
+#saveTabHonours .honour-section-count {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 9px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 900;
+}
+
+#saveTabHonours .honour-section .award-grid {
+  margin-top: 0 !important;
+}
+
+@media (max-width: 640px) {
+  #saveTabHonours .honour-section-head {
+    grid-template-columns: 40px minmax(0,1fr);
+  }
+
+  #saveTabHonours .honour-section-count {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+</style>
+
 </head>
 <body>
   <header>
@@ -6747,6 +6831,99 @@ function escapeHtml(value) {
       return '⭐';
     }
 
+    function getHonourSection(award) {
+      const type = String(award.type || '').toLowerCase();
+      const category = String(award.category || '').toLowerCase();
+      const competition = String(award.competition || '').toLowerCase();
+      const nation = String(award.nation || '').trim();
+
+      if (
+        type.includes('international') ||
+        category.includes('international') ||
+        category.includes('nation eleven') ||
+        category.includes('team of the tournament') ||
+        category.includes('player of the tournament') ||
+        category.includes('young player of the tournament') ||
+        category.includes('international caps') ||
+        category.includes('international goals') ||
+        category.includes('international assists') ||
+        category.includes('international clean sheets') ||
+        competition.includes('world cup') ||
+        competition.includes('euros') ||
+        competition.includes('copa') ||
+        competition.includes('nations cup') ||
+        competition.includes('international') ||
+        nation
+      ) {
+        return 'international';
+      }
+
+      if (
+        type.includes('team honour') ||
+        category.includes('champion') ||
+        category.includes('runner-up') ||
+        category.includes('promotion') ||
+        category.includes('playoff') ||
+        category.includes('cup winner') ||
+        category.includes('club world cup') ||
+        category.includes('continental competition')
+      ) {
+        return 'club';
+      }
+
+      return 'personal';
+    }
+
+    function renderHonourCard(award) {
+      const icon = getHonourIcon(award.type, award.category);
+      const location = [award.club, award.nation, award.competition].filter(Boolean).join(' • ');
+
+      return `
+        <div class="award-card honour-card">
+          <div class="honour-card-head">
+            <span class="honour-icon">${icon}</span>
+            <div>
+              <strong>${escapeHtml(award.category || 'Honour')}</strong>
+              <span>${escapeHtml(award.type || 'Individual Award')}</span>
+            </div>
+          </div>
+
+          <span>${escapeHtml(award.person || '-')} • ${escapeHtml(award.season || 'No season')}</span>
+          ${location ? `<span>${escapeHtml(location)}</span>` : ''}
+          ${award.value ? `<span><strong>Value:</strong> ${escapeHtml(award.value)}</span>` : ''}
+          ${award.notes ? `<span>${escapeHtml(award.notes)}</span>` : ''}
+
+          <div class="hero-actions edit-only" style="margin-top:12px;">
+            <button class="admin-only delete-btn small-btn" type="button" onclick="deleteSeasonAward(${award.__index})"></button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderHonourSection(title, subtitle, icon, awards, className) {
+      return `
+        <section class="honour-section ${className}">
+          <div class="honour-section-head">
+            <div class="honour-section-icon">${icon}</div>
+            <div>
+              <div class="section-kicker">${escapeHtml(title)}</div>
+              <h3>${escapeHtml(title)}</h3>
+              <p class="muted">${escapeHtml(subtitle)}</p>
+            </div>
+            <span class="honour-section-count">${awards.length}</span>
+          </div>
+
+          <div class="award-grid">
+            ${
+              awards.length
+                ? awards.map(renderHonourCard).join('')
+                : `<div class="empty-state" style="grid-column:1/-1; margin-top:0;">No ${escapeHtml(title.toLowerCase())} yet.</div>`
+            }
+          </div>
+        </section>
+      `;
+    }
+
     function renderSeasonAwards(save) {
       const container = document.getElementById('seasonAwardsList');
       if (!container || !save) return;
@@ -6762,31 +6939,43 @@ function escapeHtml(value) {
         .map((award, index) => ({ ...award, __index: index }))
         .sort((a, b) => String(b.season || '').localeCompare(String(a.season || '')));
 
-      container.innerHTML = sorted.map(award => {
-        const icon = getHonourIcon(award.type, award.category);
-        const location = [award.club, award.nation, award.competition].filter(Boolean).join(' • ');
+      const grouped = {
+        international: [],
+        personal: [],
+        club: []
+      };
 
-        return `
-          <div class="award-card honour-card">
-            <div class="honour-card-head">
-              <span class="honour-icon">${icon}</span>
-              <div>
-                <strong>${escapeHtml(award.category || 'Honour')}</strong>
-                <span>${escapeHtml(award.type || 'Individual Award')}</span>
-              </div>
-            </div>
+      sorted.forEach(award => {
+        grouped[getHonourSection(award)].push(award);
+      });
 
-            <span>${escapeHtml(award.person || '-')} • ${escapeHtml(award.season || 'No season')}</span>
-            ${location ? `<span>${escapeHtml(location)}</span>` : ''}
-            ${award.value ? `<span><strong>Value:</strong> ${escapeHtml(award.value)}</span>` : ''}
-            ${award.notes ? `<span>${escapeHtml(award.notes)}</span>` : ''}
+      container.innerHTML = `
+        <div class="honours-section-stack">
+          ${renderHonourSection(
+            'International Honours',
+            'National team selections, international tournaments, caps milestones, and international records.',
+            '🌍',
+            grouped.international,
+            'international'
+          )}
 
-            <div class="hero-actions edit-only" style="margin-top:12px;">
-              <button class="admin-only delete-btn small-btn" type="button" onclick="deleteSeasonAward(${award.__index})"></button>
-            </div>
-          </div>
-        `;
-      }).join('');
+          ${renderHonourSection(
+            'Personal Honours',
+            'Individual awards, milestones, records, team selections, and career achievements.',
+            '⭐',
+            grouped.personal,
+            'personal'
+          )}
+
+          ${renderHonourSection(
+            'Club Honours',
+            'League titles, promotions, cup wins, playoff victories, and club achievements.',
+            '🏆',
+            grouped.club,
+            'club'
+          )}
+        </div>
+      `;
     }
 
     function addSeasonAward() {
