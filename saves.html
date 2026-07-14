@@ -4723,6 +4723,23 @@ td[data-label="To Nation"] {
 #saveTabHonours .honour-section.international{order:2!important}
 #saveTabHonours .honour-section.club{order:3!important}
 </style>
+
+<style id="club-honours-only-style">
+#saveTabClub .honour-section.personal,
+#saveTabClub .honour-section.international,
+#saveTabClub .honours-section-stack {
+  display: none !important;
+}
+
+#saveTabClub .club-honours-only-card {
+  margin-top: 0 !important;
+}
+
+#saveTabClub .club-honours-only-grid {
+  margin-top: 14px !important;
+}
+</style>
+
 </head>
 <body>
   <header>
@@ -9858,6 +9875,74 @@ function renderSavePlayerStats(save) {
       `;
     }
 
+    function renderClubHonoursInClubTab(save) {
+      const clubPanel = document.querySelector('[data-save-tab-panel="club"]');
+      if (!clubPanel || !save) return;
+
+      let card = document.getElementById('clubHonoursOnlyCard');
+      if (!card) {
+        card = document.createElement('div');
+        card.id = 'clubHonoursOnlyCard';
+        card.className = 'detail-card club-honours-only-card';
+        clubPanel.appendChild(card);
+      } else if (card.parentElement !== clubPanel) {
+        clubPanel.appendChild(card);
+      }
+
+      const awards = (Array.isArray(save.seasonAwards) ? save.seasonAwards : [])
+        .map((award, index) => ({ ...award, __index: index }))
+        .filter(award => {
+          const type = String(award.type || '').trim().toLowerCase();
+          const category = String(award.category || '').trim().toLowerCase();
+
+          return (
+            type === 'club honour' ||
+            type === 'team honour' ||
+            type.includes('club') ||
+            type.includes('team honour') ||
+            category.includes('league champions') ||
+            category.includes('league runners-up') ||
+            category.includes('promotion') ||
+            category.includes('playoff winners') ||
+            category.includes('domestic cup winner') ||
+            category.includes('domestic cup runner-up') ||
+            category.includes('continental competition') ||
+            category.includes('club world cup')
+          );
+        })
+        .sort((a, b) => String(b.season || '').localeCompare(String(a.season || '')));
+
+      card.innerHTML = `
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Club Honours</div>
+            <h3>Club Honours</h3>
+            <p class="muted">League titles, promotions, cup wins, playoff victories, and club achievements.</p>
+          </div>
+        </div>
+
+        <div class="award-grid club-honours-only-grid">
+          ${
+            awards.length
+              ? awards.map(award => typeof renderHonourCard === 'function'
+                  ? renderHonourCard(award)
+                  : `
+                    <div class="award-card honour-card">
+                      <strong>${escapeHtml(award.category || 'Club Honour')}</strong>
+                      <span>${escapeHtml(award.person || '-')} • ${escapeHtml(award.season || 'No season')}</span>
+                      ${award.club ? `<span>${escapeHtml(award.club)}</span>` : ''}
+                      ${award.notes ? `<span>${escapeHtml(award.notes)}</span>` : ''}
+                    </div>
+                  `
+                ).join('')
+              : '<div class="empty-state" style="grid-column:1/-1;margin-top:0;">No club honours yet.</div>'
+          }
+        </div>
+      `;
+
+      if (typeof applyAdminMode === 'function') applyAdminMode();
+    }
+
     function organiseOpenedSaveTabs(save) {
       ensureSaveTabs();
 
@@ -9868,9 +9953,11 @@ function renderSavePlayerStats(save) {
       moveCardToTab(document.querySelector('#saveProfile .club-from-squad-card'), 'club');
       moveCardToTab(findSaveCardByKicker('Season Tracker'), 'club');
 
-      moveCardToTab(findSaveCardByKicker('Season Awards'), 'honours');
+      moveCardToTab(findSaveCardByKicker('Personal Honours'), 'honours');
       moveCardToTab(findSaveCardByKicker('Honours'), 'honours');
       moveCardToTab(findSaveCardByKicker('Match Highlights'), 'honours');
+
+      renderClubHonoursInClubTab(save);
 
       moveCardToTab(findSaveCardByKicker('Save-Specific Stats'), 'stats');
       moveCardToTab(document.querySelector('#saveProfile .transfers-card'), 'transfers');
