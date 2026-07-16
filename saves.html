@@ -4740,6 +4740,129 @@ td[data-label="To Nation"] {
 }
 </style>
 
+
+<style id="honours-view-cleanup">
+/* Honour controls only appear while Edit Save mode is active */
+#saveTabHonours .edit-only,
+#saveTabClub .club-honours-only-card .edit-only {
+  display: none !important;
+}
+
+#saveProfile.profile-edit-mode #saveTabHonours .edit-only,
+#saveProfile.profile-edit-mode #saveTabClub .club-honours-only-card .edit-only {
+  display: grid !important;
+}
+
+/* Cleaner Honours page spacing */
+#saveTabHonours {
+  display: none;
+  gap: 14px;
+}
+
+#saveTabHonours.active {
+  display: grid !important;
+}
+
+#saveTabHonours > .detail-card {
+  margin: 0 !important;
+  padding: 18px !important;
+  border-radius: 22px !important;
+}
+
+/* The outer Personal Honours card is the editor shell */
+#saveTabHonours > .detail-card:has(#seasonAwardsList) > .section-head {
+  margin-bottom: 14px !important;
+}
+
+#saveTabHonours #seasonAwardsList {
+  margin-top: 0 !important;
+}
+
+#saveTabHonours .honours-section-stack {
+  display: grid !important;
+  gap: 14px !important;
+}
+
+#saveTabHonours .honour-section {
+  padding: 16px !important;
+  border-radius: 18px !important;
+  background:
+    radial-gradient(circle at top right, rgba(255,255,255,.035), transparent 35%),
+    linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015)) !important;
+}
+
+#saveTabHonours .honour-section-head {
+  margin-bottom: 12px !important;
+}
+
+#saveTabHonours .honour-section-head h3 {
+  margin: 2px 0 3px !important;
+  font-size: 1.02rem !important;
+}
+
+#saveTabHonours .honour-section-head p {
+  font-size: .78rem !important;
+  line-height: 1.35 !important;
+}
+
+#saveTabHonours .award-grid {
+  gap: 10px !important;
+}
+
+#saveTabHonours .honour-card {
+  padding: 14px !important;
+  border-radius: 15px !important;
+  gap: 6px !important;
+  background: rgba(255,255,255,.028) !important;
+}
+
+#saveTabHonours .honour-card-head {
+  grid-template-columns: 38px minmax(0,1fr) !important;
+}
+
+#saveTabHonours .honour-card > span {
+  color: var(--muted) !important;
+  font-size: .76rem !important;
+  line-height: 1.35 !important;
+}
+
+#saveTabHonours .honour-card > span strong {
+  color: var(--text) !important;
+}
+
+#saveTabHonours .honour-card-actions {
+  margin-top: 10px !important;
+  grid-template-columns: minmax(120px,1fr) 42px !important;
+}
+
+/* Prevent hidden edit controls from leaving empty space */
+#saveTabHonours:not(.profile-edit-mode) .honour-card-actions {
+  margin: 0 !important;
+}
+
+/* Cleaner empty states */
+#saveTabHonours .honour-section .empty-state {
+  min-height: 100px !important;
+  padding: 20px !important;
+  border-radius: 14px !important;
+}
+
+/* Match Highlights sits after honours with matching spacing */
+#saveTabHonours .highlight-grid {
+  gap: 10px !important;
+}
+
+@media (max-width: 720px) {
+  #saveTabHonours > .detail-card {
+    padding: 14px !important;
+  }
+
+  #saveTabHonours .honour-section {
+    padding: 13px !important;
+  }
+}
+</style>
+
 </head>
 <body>
   <header>
@@ -6583,6 +6706,7 @@ function escapeHtml(value) {
       profile.classList.toggle('profile-edit-mode', Boolean(enabled));
       if (btn) btn.textContent = enabled ? 'Done Editing' : 'Edit Save';
       setupSectionEditing();
+      if (typeof applyAdminMode === 'function') applyAdminMode();
       if (!enabled) closeAllEditors(false);
     }
 
