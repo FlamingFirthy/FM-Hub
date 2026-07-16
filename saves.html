@@ -4863,6 +4863,27 @@ td[data-label="To Nation"] {
 }
 </style>
 
+<style>
+/* === Honours badge refresh === */
+.honour-icon{
+display:flex!important;
+align-items:center!important;
+justify-content:center!important;
+width:54px!important;
+height:54px!important;
+border-radius:16px!important;
+font-size:1.45rem!important;
+line-height:1!important;
+flex-shrink:0;
+box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
+}
+.honour-icon.gold{background:linear-gradient(135deg,#8d5b10,#d39b28);}
+.honour-icon.green{background:linear-gradient(135deg,#1d6b42,#2fb86a);}
+.honour-icon.blue{background:linear-gradient(135deg,#2159a8,#4d8df0);}
+.honour-icon.purple{background:linear-gradient(135deg,#5d36a9,#8d63e8);}
+.honour-icon.red{background:linear-gradient(135deg,#8b2d2d,#d95c5c);}
+.honour-icon.orange{background:linear-gradient(135deg,#9a4d12,#ef8b2d);}
+</style>
 </head>
 <body>
   <header>
@@ -7232,31 +7253,21 @@ function escapeHtml(value) {
         : '<option value="">No people linked yet</option>';
     }
 
-    function getHonourIcon(type, category) {
-      const value = `${type || ''} ${category || ''}`.toLowerCase();
-
-      if (value.includes('ballon')) return '⚽';
-      if (value.includes('golden boot') || value.includes('top scorer')) return '👟';
-      if (value.includes('golden glove')) return '🧤';
-      if (value.includes('assist')) return '🎯';
-      if (value.includes('player of the season') || value.includes('player of the year')) return '🏅';
-      if (value.includes('young player')) return '🌟';
-      if (value.includes('team of the season')) return '⭐';
-      if (value.includes('nation eleven')) return '🇳🇿';
-      if (value.includes('team of the tournament')) return '🥇';
-      if (value.includes('player of the tournament')) return '🏆';
-      if (value.includes('champion')) return '👑';
-      if (value.includes('promotion')) return '⬆️';
-      if (value.includes('cup')) return '🏆';
-      if (value.includes('record')) return '📈';
-      if (value.includes('legend')) return '❤️';
-      if (value.includes('hall of fame')) return '🏛️';
-      if (value.includes('debut')) return '🎬';
-      if (value.includes('international')) return '🌍';
-      if (value.includes('milestone') || value.includes('appearance') || value.includes('caps')) return '🎖️';
-
-      return '🏅';
-    }
+    function getHonourIcon(type, category){
+ const c=String(category||'').toLowerCase();
+ if(c.includes('player of the season')||c.includes('player of the year')) return {icon:'🏅',cls:'gold'};
+ if(c.includes('young player')) return {icon:'🌟',cls:'blue'};
+ if(c.includes('golden boot')||c.includes('top scorer')) return {icon:'👟',cls:'orange'};
+ if(c.includes('golden glove')) return {icon:'🧤',cls:'green'};
+ if(c.includes('assist')) return {icon:'🎯',cls:'purple'};
+ if(c.includes('team of the season')) return {icon:'⭐',cls:'blue'};
+ if(c.includes('champion')) return {icon:'👑',cls:'gold'};
+ if(c.includes('promotion')) return {icon:'⬆️',cls:'green'};
+ if(c.includes('cup')) return {icon:'🏆',cls:'gold'};
+ if(c.includes('record')) return {icon:'📈',cls:'blue'};
+ if(c.includes('debut')) return {icon:'🎬',cls:'purple'};
+ return {icon:'🎖️',cls:'orange'};
+}
 
     function getHonourSection(award) {
       const type = String(award.type || '').toLowerCase();
@@ -7302,13 +7313,13 @@ function escapeHtml(value) {
     }
 
     function renderHonourCard(award) {
-      const icon = getHonourIcon(award.type, award.category);
+      const iconData = getHonourIcon(award.type, award.category);
       const location = [award.club, award.nation, award.competition].filter(Boolean).join(' • ');
 
       return `
         <div class="award-card honour-card">
           <div class="honour-card-head">
-            <span class="honour-icon">${icon}</span>
+            <span class="honour-icon ${iconData.cls}">${iconData.icon}</span>
             <div>
               <strong>${escapeHtml(award.category || 'Honour')}</strong>
               <span>${escapeHtml(award.type || 'Individual Award')}</span>
