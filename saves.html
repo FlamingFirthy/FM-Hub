@@ -5488,6 +5488,180 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
 }
 </style>
 
+
+<style id="transfer-dashboard-upgrade">
+#saveTabTransfers .transfer-dashboard {
+  display: block !important;
+  margin: 16px 0 18px !important;
+}
+
+#saveTabTransfers .transfer-dashboard-shell {
+  padding: 16px !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(255,255,255,.085) !important;
+  background:
+    radial-gradient(circle at top right, var(--accent-soft), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.016)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035) !important;
+}
+
+#saveTabTransfers .transfer-dashboard-heading {
+  margin-bottom: 14px !important;
+}
+
+#saveTabTransfers .transfer-dashboard-heading h3 {
+  margin: 3px 0 5px !important;
+  font-size: 1.18rem !important;
+}
+
+#saveTabTransfers .transfer-metric-grid {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0,1fr)) !important;
+  gap: 10px !important;
+}
+
+#saveTabTransfers .transfer-metric-card {
+  display: grid !important;
+  grid-template-columns: 42px minmax(0,1fr) !important;
+  gap: 10px !important;
+  align-items: center !important;
+  min-height: 96px !important;
+  padding: 13px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(255,255,255,.065) !important;
+  background: rgba(255,255,255,.028) !important;
+}
+
+#saveTabTransfers .transfer-metric-card.incoming {
+  box-shadow: inset 0 3px 0 rgba(34,197,94,.8) !important;
+}
+
+#saveTabTransfers .transfer-metric-card.outgoing {
+  box-shadow: inset 0 3px 0 rgba(239,68,68,.8) !important;
+}
+
+#saveTabTransfers .transfer-metric-card.free {
+  box-shadow: inset 0 3px 0 rgba(59,130,246,.8) !important;
+}
+
+#saveTabTransfers .transfer-metric-card.retired {
+  box-shadow: inset 0 3px 0 rgba(148,163,184,.75) !important;
+}
+
+#saveTabTransfers .transfer-metric-icon,
+#saveTabTransfers .transfer-highlight-icon {
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 13px !important;
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+  font-weight: 900 !important;
+}
+
+#saveTabTransfers .transfer-metric-icon {
+  width: 42px !important;
+  height: 42px !important;
+  font-size: .8rem !important;
+}
+
+#saveTabTransfers .transfer-metric-card span:not(.transfer-metric-icon),
+#saveTabTransfers .transfer-dashboard-highlight > div > span {
+  display: block !important;
+  color: var(--muted) !important;
+  text-transform: uppercase !important;
+  letter-spacing: .07em !important;
+  font-size: .62rem !important;
+  font-weight: 900 !important;
+}
+
+#saveTabTransfers .transfer-metric-card strong {
+  display: block !important;
+  margin-top: 5px !important;
+  font-size: 1.55rem !important;
+  line-height: 1 !important;
+}
+
+#saveTabTransfers .transfer-highlight-grid {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0,1fr)) !important;
+  gap: 10px !important;
+  margin-top: 10px !important;
+}
+
+#saveTabTransfers .transfer-dashboard-highlight {
+  display: grid !important;
+  grid-template-columns: 42px minmax(0,1fr) !important;
+  gap: 10px !important;
+  align-items: start !important;
+  min-height: 118px !important;
+  padding: 13px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(255,255,255,.065) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.018)) !important;
+}
+
+#saveTabTransfers .transfer-highlight-icon {
+  width: 42px !important;
+  height: 42px !important;
+  font-size: .95rem !important;
+}
+
+#saveTabTransfers .transfer-dashboard-highlight strong {
+  display: block !important;
+  margin-top: 5px !important;
+  font-size: .92rem !important;
+  line-height: 1.2 !important;
+  overflow-wrap: break-word !important;
+}
+
+#saveTabTransfers .transfer-dashboard-highlight em {
+  display: block !important;
+  margin-top: 5px !important;
+  color: var(--muted) !important;
+  font-style: normal !important;
+  font-size: .72rem !important;
+  line-height: 1.35 !important;
+}
+
+#saveTabTransfers .transfer-dashboard-highlight.signing {
+  box-shadow: inset 3px 0 0 rgba(34,197,94,.78) !important;
+}
+
+#saveTabTransfers .transfer-dashboard-highlight.sale {
+  box-shadow: inset 3px 0 0 rgba(239,68,68,.78) !important;
+}
+
+#saveTabTransfers .transfer-dashboard-highlight.travelled {
+  box-shadow: inset 3px 0 0 rgba(168,85,247,.78) !important;
+}
+
+#saveTabTransfers .transfer-dashboard-highlight.season {
+  box-shadow: inset 3px 0 0 rgba(59,130,246,.78) !important;
+}
+
+#saveTabTransfers .transfer-refurb-toolbar {
+  margin-top: 16px !important;
+  padding: 14px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(255,255,255,.06) !important;
+  background: rgba(255,255,255,.02) !important;
+}
+
+@media (max-width: 1200px) {
+  #saveTabTransfers .transfer-metric-grid,
+  #saveTabTransfers .transfer-highlight-grid {
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  #saveTabTransfers .transfer-metric-grid,
+  #saveTabTransfers .transfer-highlight-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>
+
 </head>
 <body>
   <header>
@@ -8376,25 +8550,133 @@ function syncTransferWindowFilter(transfers) {
     function renderTransferDashboard(transfers) {
       const dashboard = document.getElementById('transferDashboard');
       if (!dashboard) return;
-      const paidIn = transfers
-        .filter(t => ['in', 'loan in'].includes(String(t.type || '').toLowerCase()))
-        .sort((a, b) => getTransferFeeValue(b.fee) - getTransferFeeValue(a.fee));
-      const paidOut = transfers
-        .filter(t => ['out', 'loan out'].includes(String(t.type || '').toLowerCase()))
-        .sort((a, b) => getTransferFeeValue(b.fee) - getTransferFeeValue(a.fee));
-      const biggestSigning = paidIn[0];
-      const biggestSale = paidOut[0];
+
+      const rows = Array.isArray(transfers) ? transfers : [];
+      const typeOf = transfer => String(transfer?.type || '').trim().toLowerCase();
+      const isIncoming = transfer => ['in', 'loan in'].includes(typeOf(transfer));
+      const isOutgoing = transfer => ['out', 'loan out', 'released'].includes(typeOf(transfer));
+      const isFree = transfer => {
+        const fee = String(transfer?.fee || '').trim().toLowerCase();
+        return fee === 'free' || fee === '£0' || fee === '$0' || fee === '€0' || fee === '0';
+      };
+      const isRetired = transfer => typeOf(transfer) === 'retired';
+
+      const incoming = rows.filter(isIncoming);
+      const outgoing = rows.filter(isOutgoing);
+      const freeTransfers = rows.filter(isFree);
+      const retirements = rows.filter(isRetired);
+
+      const biggestSigning = [...incoming]
+        .sort((a, b) => getTransferFeeValue(b.fee) - getTransferFeeValue(a.fee))[0];
+
+      const biggestSale = [...outgoing]
+        .sort((a, b) => getTransferFeeValue(b.fee) - getTransferFeeValue(a.fee))[0];
+
+      const latestTransfer = rows.length ? rows[rows.length - 1] : null;
+
+      const playerCounts = new Map();
+      rows.forEach(transfer => {
+        const player = transfer.player || 'Unknown player';
+        playerCounts.set(player, (playerCounts.get(player) || 0) + 1);
+      });
+      const mostTravelled = [...playerCounts.entries()]
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0];
+
+      const seasonCounts = new Map();
+      rows.forEach(transfer => {
+        const season = transfer.season || 'Unknown season';
+        seasonCounts.set(season, (seasonCounts.get(season) || 0) + 1);
+      });
+      const busiestSeason = [...seasonCounts.entries()]
+        .sort((a, b) => b[1] - a[1] || String(b[0]).localeCompare(String(a[0])))[0];
+
+      const metric = (icon, label, value, className = '') => `
+        <div class="transfer-metric-card ${className}">
+          <span class="transfer-metric-icon">${icon}</span>
+          <div>
+            <span>${label}</span>
+            <strong>${value}</strong>
+          </div>
+        </div>
+      `;
+
+      const highlight = (icon, label, title, detail, className = '') => `
+        <div class="transfer-dashboard-highlight ${className}">
+          <span class="transfer-highlight-icon">${icon}</span>
+          <div>
+            <span>${label}</span>
+            <strong>${title}</strong>
+            <em>${detail}</em>
+          </div>
+        </div>
+      `;
+
       dashboard.innerHTML = `
-        <div class="transfer-highlight-card">
-          <span>Biggest Signing</span>
-          <strong>${biggestSigning ? escapeHtml(biggestSigning.player || '-') : 'No signing yet'}</strong>
-          <em>${biggestSigning ? `${escapeHtml(biggestSigning.fee || '-')} from ${escapeHtml(biggestSigning.from || '-')}` : 'Add an incoming transfer to fill this.'}</em>
-        </div>
-        <div class="transfer-highlight-card">
-          <span>Biggest Sale</span>
-          <strong>${biggestSale ? escapeHtml(biggestSale.player || '-') : 'No sale yet'}</strong>
-          <em>${biggestSale ? `${escapeHtml(biggestSale.fee || '-')} to ${escapeHtml(biggestSale.to || '-')}` : 'Add an outgoing transfer to fill this.'}</em>
-        </div>
+        <section class="transfer-dashboard-shell">
+          <div class="transfer-dashboard-heading">
+            <div>
+              <div class="section-kicker">Transfer Dashboard</div>
+              <h3>Career Movement</h3>
+              <p class="muted">A quick summary of every move recorded in this save.</p>
+            </div>
+          </div>
+
+          <div class="transfer-metric-grid">
+            ${metric('↔', 'Total Transfers', rows.length, 'total')}
+            ${metric('↓', 'Transfers In', incoming.length, 'incoming')}
+            ${metric('↑', 'Transfers Out', outgoing.length, 'outgoing')}
+            ${metric('Free', 'Free Transfers', freeTransfers.length, 'free')}
+            ${metric('⏹', 'Retirements', retirements.length, 'retired')}
+          </div>
+
+          <div class="transfer-highlight-grid">
+            ${highlight(
+              '★',
+              'Latest Transfer',
+              latestTransfer ? latestTransfer.player || 'Unknown player' : 'No transfer yet',
+              latestTransfer
+                ? `${latestTransfer.from || '-'} → ${latestTransfer.to || '-'} • ${latestTransfer.season || 'No season'}`
+                : 'Add a transfer to begin the history.',
+              'latest'
+            )}
+
+            ${highlight(
+              '£',
+              'Biggest Signing',
+              biggestSigning ? biggestSigning.player || 'Unknown player' : 'No signing yet',
+              biggestSigning
+                ? `${biggestSigning.fee || '-'} from ${biggestSigning.from || '-'}`
+                : 'No paid incoming transfer recorded.',
+              'signing'
+            )}
+
+            ${highlight(
+              '£',
+              'Biggest Sale',
+              biggestSale ? biggestSale.player || 'Unknown player' : 'No sale yet',
+              biggestSale
+                ? `${biggestSale.fee || '-'} to ${biggestSale.to || '-'}`
+                : 'No paid outgoing transfer recorded.',
+              'sale'
+            )}
+
+            ${highlight(
+              '🧳',
+              'Most Travelled Player',
+              mostTravelled ? mostTravelled[0] : 'No player yet',
+              mostTravelled ? `${mostTravelled[1]} recorded moves` : 'No transfer history available.',
+              'travelled'
+            )}
+
+            ${highlight(
+              '📅',
+              'Most Active Season',
+              busiestSeason ? busiestSeason[0] : 'No season yet',
+              busiestSeason ? `${busiestSeason[1]} recorded transfers` : 'No season activity available.',
+              'season'
+            )}
+          </div>
+        </section>
       `;
     }
 
