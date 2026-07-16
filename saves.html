@@ -5440,6 +5440,54 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
 }
 </style>
 
+
+<style id="overview-leader-name-fit">
+/* Keep Top Performer names fitting cleanly inside their cards */
+#saveTabOverview .overview-leader-card {
+  grid-template-columns: 48px minmax(0,1fr) auto !important;
+  gap: 12px !important;
+}
+
+#saveTabOverview .overview-leader-card > div {
+  min-width: 0 !important;
+}
+
+#saveTabOverview .overview-leader-card strong {
+  display: block !important;
+  max-width: 100% !important;
+  font-size: clamp(.9rem, 1.2vw, 1.08rem) !important;
+  line-height: 1.15 !important;
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+#saveTabOverview .overview-leader-card em {
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+}
+
+#saveTabOverview .overview-card-link {
+  max-width: 110px !important;
+  white-space: normal !important;
+  text-align: center !important;
+  line-height: 1.15 !important;
+}
+
+@media (max-width: 760px) {
+  #saveTabOverview .overview-leader-card {
+    grid-template-columns: 44px minmax(0,1fr) !important;
+  }
+
+  #saveTabOverview .overview-card-link {
+    grid-column: 2 !important;
+    justify-self: start !important;
+    max-width: none !important;
+    margin-top: 4px !important;
+  }
+}
+</style>
+
 </head>
 <body>
   <header>
