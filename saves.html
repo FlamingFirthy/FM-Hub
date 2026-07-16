@@ -7234,11 +7234,28 @@ function escapeHtml(value) {
 
     function getHonourIcon(type, category) {
       const value = `${type || ''} ${category || ''}`.toLowerCase();
+
+      if (value.includes('ballon')) return '⚽';
+      if (value.includes('golden boot') || value.includes('top scorer')) return '👟';
+      if (value.includes('golden glove')) return '🧤';
+      if (value.includes('assist')) return '🎯';
+      if (value.includes('player of the season') || value.includes('player of the year')) return '🏅';
+      if (value.includes('young player')) return '🌟';
+      if (value.includes('team of the season')) return '⭐';
+      if (value.includes('nation eleven')) return '🇳🇿';
+      if (value.includes('team of the tournament')) return '🥇';
+      if (value.includes('player of the tournament')) return '🏆';
+      if (value.includes('champion')) return '👑';
+      if (value.includes('promotion')) return '⬆️';
+      if (value.includes('cup')) return '🏆';
       if (value.includes('record')) return '📈';
-      if (value.includes('milestone') || value.includes('debut') || value.includes('appearance') || value.includes('caps') || value.includes('goals') || value.includes('assists') || value.includes('clean sheets')) return '🎖️';
-      if (value.includes('international') || value.includes('nation eleven') || value.includes('tournament')) return '🌍';
-      if (value.includes('team honour') || value.includes('champion') || value.includes('winner') || value.includes('promotion') || value.includes('runner-up')) return '🏆';
-      return '⭐';
+      if (value.includes('legend')) return '❤️';
+      if (value.includes('hall of fame')) return '🏛️';
+      if (value.includes('debut')) return '🎬';
+      if (value.includes('international')) return '🌍';
+      if (value.includes('milestone') || value.includes('appearance') || value.includes('caps')) return '🎖️';
+
+      return '🏅';
     }
 
     function getHonourSection(award) {
