@@ -4884,42 +4884,6 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
 .honour-icon.red{background:linear-gradient(135deg,#8b2d2d,#d95c5c);}
 .honour-icon.orange{background:linear-gradient(135deg,#9a4d12,#ef8b2d);}
 </style>
-<style>
-/* Honour card typography refresh */
-#saveTabHonours .honour-card{
-  display:flex!important;
-  flex-direction:column;
-  gap:10px!important;
-}
-#saveTabHonours .honour-card-head{
-  display:grid!important;
-  grid-template-columns:56px 1fr;
-  align-items:center;
-  column-gap:14px!important;
-}
-#saveTabHonours .honour-card-head strong{
-  display:block;
-  font-size:1.28rem!important;
-  line-height:1.2;
-  margin-bottom:4px;
-}
-#saveTabHonours .honour-card-head span{
-  display:block;
-  letter-spacing:.12em;
-  font-size:.72rem!important;
-  color:var(--muted);
-}
-#saveTabHonours .honour-card>span{
-  display:block;
-  font-size:.9rem!important;
-  line-height:1.6!important;
-  letter-spacing:.02em;
-  color:#cfd5e6!important;
-}
-#saveTabHonours .honour-card>span strong{
-  margin-right:6px;
-}
-</style>
 </head>
 <body>
   <header>
@@ -7364,7 +7328,7 @@ function escapeHtml(value) {
 
           <span>${escapeHtml(award.person || '-')} • ${escapeHtml(award.season || 'No season')}</span>
           ${location ? `<span>${escapeHtml(location)}</span>` : ''}
-          ${award.value ? `<span><strong>Value</strong> ${escapeHtml(award.value)}</span>` : ''}
+          ${award.value ? `<span><strong>Value:</strong> ${escapeHtml(award.value)}</span>` : ''}
           ${award.notes ? `<span>${escapeHtml(award.notes)}</span>` : ''}
 
           <div class="hero-actions edit-only honour-card-actions" style="margin-top:12px;">
