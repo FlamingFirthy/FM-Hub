@@ -7389,7 +7389,22 @@ function escapeHtml(value) {
       `;
     }
 
-    function resetSeasonAwardForm() {
+    
+function updateHonourCategoryOptions(selected=''){
+  const type=document.getElementById('awardTypeInput');
+  const cat=document.getElementById('awardCategoryInput');
+  if(!type||!cat) return;
+  const lists={
+    'Personal Honour':['Player of the Season','Young Player of the Season','Golden Boot','Team of the Season','Custom Award'],
+    'International Honour':['Best Nation Eleven','Team of the Tournament','Player of the Tournament','International Debut','Custom International Honour'],
+    'Club Honour':['League Champions','Promotion','Domestic Cup Winner','Continental Competition Winner','Custom Club Honour']
+  };
+  const opts=lists[type.value]||lists['Personal Honour'];
+  cat.innerHTML=opts.map(o=>`<option value="${o}">${o}</option>`).join('');
+  if(selected&&opts.includes(selected)) cat.value=selected;
+}
+
+function resetSeasonAwardForm() {
       [
         'awardSeasonInput',
         'awardClubInput',
