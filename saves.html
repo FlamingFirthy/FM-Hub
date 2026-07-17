@@ -5662,6 +5662,39 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
 }
 </style>
 
+
+<style id="honours-v2-style">
+#saveTabHonours .honour-section.personal { order:1; box-shadow:inset 4px 0 0 rgba(249,115,22,.85); }
+#saveTabHonours .honour-section.club { order:2; box-shadow:inset 4px 0 0 rgba(234,179,8,.85); }
+#saveTabHonours .honour-section.international { order:3; box-shadow:inset 4px 0 0 rgba(59,130,246,.85); }
+#saveTabHonours .honour-section.records { order:4; box-shadow:inset 4px 0 0 rgba(168,85,247,.85); }
+#saveTabHonours .honour-section.others { order:5; box-shadow:inset 4px 0 0 rgba(148,163,184,.85); }
+
+#saveTabHonours #awardCategoryInput {
+  min-height:46px;
+  font-weight:800;
+}
+#saveTabHonours #awardCategoryInput optgroup {
+  font-weight:900;
+}
+#saveTabHonours #awardCustomTitleWrap,
+#saveTabHonours #awardCustomSectionWrap {
+  padding:12px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.07);
+  background:var(--accent-soft);
+}
+#saveTabHonours .honours-section-stack {
+  grid-template-columns:1fr;
+}
+#saveTabHonours .honour-section .award-grid {
+  grid-template-columns:repeat(auto-fit,minmax(235px,1fr));
+}
+#saveTabHonours .honour-card {
+  min-height:210px;
+}
+</style>
+
 </head>
 <body>
   <header>
@@ -6008,12 +6041,22 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
         </div>
         
         <div class="form-grid edit-only">
-          <div>
-            <label for="awardTypeInput">Honour Type</label>
-            <select id="awardTypeInput" onchange="updateHonourCategoryOptions()">
-              <option value="Personal Honour">Personal Honour</option>
-              <option value="International Honour">International Honour</option>
-              <option value="Club Honour">Club Honour</option>
+          <div class="wide">
+            <label for="awardCategoryInput">Award / Achievement</label>
+            <select id="awardCategoryInput" onchange="handleHonourAwardChange()"></select>
+          </div>
+          <div id="awardCustomTitleWrap" class="wide hidden">
+            <label for="awardCustomTitleInput">Custom Honour Title</label>
+            <input id="awardCustomTitleInput" placeholder="Supporters' Player of the Year">
+          </div>
+          <div id="awardCustomSectionWrap" class="hidden">
+            <label for="awardTypeInput">Custom Honour Section</label>
+            <select id="awardTypeInput">
+              <option value="Personal Honour">Personal Honours</option>
+              <option value="Club Honour">Club Honours</option>
+              <option value="International Honour">International Honours</option>
+              <option value="Record">Records</option>
+              <option value="Other">Others</option>
             </select>
           </div>
 
@@ -6023,10 +6066,7 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
           <div><label for="awardNationInput">Nation</label><input id="awardNationInput" placeholder="New Zealand"></div>
           <div><label for="awardCompetitionInput">Competition</label><input id="awardCompetitionInput" placeholder="National League / World Cup"></div>
 
-          <div class="wide">
-            <label for="awardCategoryInput">Honour / Milestone</label>
-            <select id="awardCategoryInput"></select>
-          </div>
+          
 
           <div><label for="awardValueInput">Stat / Value</label><input id="awardValueInput" placeholder="31 goals / 100 caps / £25m"></div>
           <div class="wide"><label for="awardNotesInput">Honour Notes</label><textarea id="awardNotesInput" placeholder="Why it mattered, match details, record context, or storyline..."></textarea></div>
@@ -8047,47 +8087,45 @@ function escapeHtml(value) {
  return {icon:'🎖️',cls:'orange'};
 }
 
-    function getHonourSection(award) {
-      const type = String(award.type || '').toLowerCase();
-      const category = String(award.category || '').toLowerCase();
-      const competition = String(award.competition || '').toLowerCase();
-      const nation = String(award.nation || '').trim();
+    const HONOUR_AWARD_LIBRARY = {"Personal Honour": ["Player of the Season", "Young Player of the Season", "Fans' Player of the Season", "Players' Player of the Season", "Manager's Player of the Season", "Supporters' Player of the Year", "Player of the Year", "Young Player of the Year", "Golden Boot", "Golden Glove", "Top Goalscorer", "Top Assister", "Most Clean Sheets", "Best Average Rating", "Most Player of the Match Awards", "Goal of the Season", "Signing of the Season", "Breakthrough Player of the Season", "Most Improved Player", "Team of the Season", "Dream Team", "Best XI", "League Best XI", "Competition Best XI", "Ballon d'Or", "FIFA Best Men's Player", "UEFA Men's Player of the Year", "European Golden Shoe", "Golden Boy", "Kopa Trophy", "Wonderkid of the Year", "World Player of the Year", "Footballer of the Year", "Players' Player of the Year", "Writers' Player of the Year", "Player of the Tournament", "Young Player of the Tournament", "Golden Ball", "Silver Ball", "Bronze Ball", "Player of the Month", "Young Player of the Month", "Manager of the Month", "Player of the Week", "Goal of the Month", "Goalkeeper of the Season", "Defender of the Season", "Midfielder of the Season", "Forward of the Season", "Rookie of the Season", "Academy Player of the Season", "Youth Player of the Season", "Manager of the Season", "Coach of the Season", "Staff Member of the Season"], "Club Honour": ["League Champions", "League Winners", "League Runners-up", "Promotion", "Automatic Promotion", "Playoff Winners", "Playoff Finalists", "Domestic Cup Winners", "Domestic Cup Runners-up", "League Cup Winners", "League Cup Runners-up", "Super Cup Winners", "Community Shield Winners", "Continental Competition Winner", "Continental Competition Runner-up", "Champions League Winners", "Champions League Runners-up", "Europa League Winners", "Europa Conference League Winners", "Club World Cup Winners", "Club World Cup Runners-up", "Regional Cup Winners", "County Cup Winners", "Youth League Champions", "Youth Cup Winners", "Reserve League Champions", "Domestic Double", "Continental Double", "Treble Winners", "Quadruple Winners", "Invincible League Season", "Unbeaten Season", "Perfect Home Record", "Record Points Total", "Record League Wins", "Record Goals Scored", "Record Clean Sheets", "Longest Winning Run", "Longest Unbeaten Run", "Survival Achieved", "Great Escape", "Relegation", "Playoff Qualification", "European Qualification", "Continental Qualification", "First Major Trophy", "First League Title", "First Continental Trophy"], "International Honour": ["International Debut", "First International Start", "First International Goal", "First International Assist", "First International Clean Sheet", "International Captaincy Debut", "Best Nation Eleven", "National Team Best XI", "Team of the Tournament", "Tournament Best XI", "Player of the Tournament", "Young Player of the Tournament", "Golden Ball", "Golden Boot", "Golden Glove", "World Cup Winner", "World Cup Runner-up", "World Cup Third Place", "Continental Championship Winner", "Continental Championship Runner-up", "European Championship Winner", "Copa América Winner", "AFCON Winner", "Asian Cup Winner", "CONCACAF Gold Cup Winner", "OFC Nations Cup Winner", "Nations League Winner", "Olympic Gold Medal", "Olympic Silver Medal", "Olympic Bronze Medal", "International Tournament Winner", "International Tournament Runner-up", "Qualified for World Cup", "Qualified for Continental Championship", "International Promotion", "International Centurion", "50 International Caps", "75 International Caps", "100 International Caps", "150 International Caps", "International Goals Milestone", "International Assists Milestone", "International Clean Sheets Milestone", "National Team Record Appearance Holder", "National Team Record Goalscorer", "National Team Record Assist Holder", "National Team Record Clean Sheets"], "Record": ["Youngest Debutant", "Youngest Goalscorer", "Youngest Captain", "Youngest International", "Oldest Player", "Oldest Goalscorer", "Oldest Captain", "Most Appearances", "Most League Appearances", "Most International Appearances", "Most Goals", "Most Goals in a Season", "Most League Goals", "Most International Goals", "Most Assists", "Most Assists in a Season", "Most Clean Sheets", "Most Clean Sheets in a Season", "Most Player of the Match Awards", "Highest Average Rating", "Highest Match Rating", "Fastest Goal", "Fastest Hat-trick", "Most Goals in a Match", "Most Assists in a Match", "Longest Scoring Streak", "Longest Clean Sheet Streak", "Longest Unbeaten Run", "Longest Winning Run", "Record Points Total", "Record Wins", "Record Goals Scored", "Fewest Goals Conceded", "Biggest League Win", "Biggest Cup Win", "Biggest International Win", "Highest Transfer Fee Paid", "Highest Transfer Fee Received", "Club Record Signing", "Club Record Sale", "League Record Transfer", "World Record Transfer", "Most Expensive Teenager", "Most Expensive Goalkeeper", "Most Expensive Defender", "Most Expensive Midfielder", "Most Expensive Forward", "Record Attendance", "Record Gate Receipts", "Most Trophies Won", "Most Promotions", "Most Manager Awards", "Competition Record Holder"], "Other": ["Club Captain", "Vice Captain", "National Team Captain", "Leadership Group", "Club Legend", "Club Icon", "Favoured Personnel", "Hall of Fame", "Hall of Fame Induction", "Testimonial", "Farewell Match", "Retirement", "Came Out of Retirement", "Academy Graduate", "First Team Debut", "Professional Debut", "Managerial Debut", "Coaching Debut", "First Senior Contract", "New Contract", "Named Club Captain", "Named Vice Captain", "Named National Team Captain", "100 Appearances", "200 Appearances", "250 Appearances", "300 Appearances", "400 Appearances", "500 Appearances", "750 Appearances", "1000 Appearances", "50 Goals", "100 Goals", "200 Goals", "250 Goals", "300 Goals", "500 Goals", "50 Assists", "100 Assists", "200 Assists", "50 Clean Sheets", "100 Clean Sheets", "200 Clean Sheets", "10 Trophies", "25 Trophies", "50 Trophies", "Community Award", "Charity Award", "Special Recognition", "Lifetime Achievement", "One Club Player", "One Club Manager", "Cult Hero", "Comeback of the Year", "Custom Honour"]};
 
-      if (
-        type.includes('international') ||
-        category.includes('international') ||
-        category.includes('nation eleven') ||
-        category.includes('team of the tournament') ||
-        category.includes('player of the tournament') ||
-        category.includes('young player of the tournament') ||
-        category.includes('international caps') ||
-        category.includes('international goals') ||
-        category.includes('international assists') ||
-        category.includes('international clean sheets') ||
-        competition.includes('world cup') ||
-        competition.includes('euros') ||
-        competition.includes('copa') ||
-        competition.includes('nations cup') ||
-        competition.includes('international') ||
-        nation
-      ) {
-        return 'international';
-      }
+    const HONOUR_AWARD_SECTION = Object.entries(HONOUR_AWARD_LIBRARY).reduce((map, [section, awards]) => {
+      awards.forEach(award => {
+        if (award !== 'Custom Honour' && !map[award]) map[award] = section;
+      });
+      return map;
+    }, {});
 
-      if (
-        type.includes('team honour') ||
-        category.includes('champion') ||
-        category.includes('runner-up') ||
-        category.includes('promotion') ||
-        category.includes('playoff') ||
-        category.includes('cup winner') ||
-        category.includes('club world cup') ||
-        category.includes('continental competition')
-      ) {
-        return 'club';
-      }
-
+    function normaliseHonourSection(section) {
+      const value = String(section || '').toLowerCase();
+      if (value.includes('international')) return 'international';
+      if (value.includes('club') || value.includes('team honour')) return 'club';
+      if (value.includes('record')) return 'records';
+      if (value.includes('other')) return 'others';
       return 'personal';
+    }
+
+    function getHonourSection(award) {
+      const category = String(award?.category || '').trim();
+      const mapped = HONOUR_AWARD_SECTION[category];
+      if (mapped) return normaliseHonourSection(mapped);
+
+      const explicit = normaliseHonourSection(award?.type);
+      if (String(award?.type || '').trim()) return explicit;
+
+      const lower = category.toLowerCase();
+      if (lower.includes('record') || lower.includes('youngest') || lower.includes('oldest') ||
+          lower.includes('most ') || lower.includes('highest ') || lower.includes('fastest ') ||
+          lower.includes('longest ') || lower.includes('biggest ')) return 'records';
+      if (lower.includes('captain') || lower.includes('legend') || lower.includes('hall of fame') ||
+          lower.includes('retirement') || lower.includes('debut') || lower.includes('appearance') ||
+          lower.includes('goal milestone') || lower.includes('custom')) return 'others';
+      return 'personal';
+    }
+
+    function getHonourTypeForAward(category, customType) {
+      if (category === 'Custom Honour') return customType || 'Other';
+      return HONOUR_AWARD_SECTION[category] || customType || 'Personal Honour';
     }
 
     function renderHonourCard(award) {
@@ -8146,9 +8184,8 @@ function escapeHtml(value) {
       if (!container || !save) return;
 
       const awards = Array.isArray(save.seasonAwards) ? save.seasonAwards : [];
-
       if (!awards.length) {
-        container.innerHTML = '<div class="empty-state" style="grid-column:1/-1; margin-top:0;">No honours yet. Add awards, milestones, records, and team selections in edit mode.</div>';
+        container.innerHTML = '<div class="empty-state" style="grid-column:1/-1; margin-top:0;">No honours yet. Add awards, trophies, records, milestones, and special achievements in edit mode.</div>';
         return;
       }
 
@@ -8156,99 +8193,123 @@ function escapeHtml(value) {
         .map((award, index) => ({ ...award, __index: index }))
         .sort((a, b) => String(b.season || '').localeCompare(String(a.season || '')));
 
-      const grouped = {
-        international: [],
-        personal: [],
-        club: []
-      };
-
+      const grouped = { personal: [], club: [], international: [], records: [], others: [] };
       sorted.forEach(award => {
-        grouped[getHonourSection(award)].push(award);
+        const section = getHonourSection(award);
+        (grouped[section] || grouped.others).push(award);
       });
 
       container.innerHTML = `
         <div class="honours-section-stack">
           ${renderHonourSection(
             'Personal Honours',
-            'Individual awards, milestones, records, team selections, and career achievements.',
-            '⭐',
-            grouped.personal,
-            'personal'
+            'Individual awards, seasonal awards, best elevens, and player or staff recognition.',
+            '🏅', grouped.personal, 'personal'
           )}
-
-          ${renderHonourSection(
-            'International Honours',
-            'National team selections, international tournaments, caps milestones, and international records.',
-            '🌍',
-            grouped.international,
-            'international'
-          )}
-
           ${renderHonourSection(
             'Club Honours',
-            'League titles, promotions, cup wins, playoff victories, and club achievements.',
-            '🏆',
-            grouped.club,
-            'club'
+            'League titles, promotions, cup victories, continental success, and team achievements.',
+            '🏆', grouped.club, 'club'
+          )}
+          ${renderHonourSection(
+            'International Honours',
+            'National-team achievements, tournament awards, selections, and cap milestones.',
+            '🌍', grouped.international, 'international'
+          )}
+          ${renderHonourSection(
+            'Records',
+            'Club, competition, transfer, appearance, scoring, and performance records.',
+            '📜', grouped.records, 'records'
+          )}
+          ${renderHonourSection(
+            'Others',
+            'Captaincies, debuts, milestones, retirements, legends, testimonials, and custom honours.',
+            '⭐', grouped.others, 'others'
           )}
         </div>
       `;
     }
 
-    
-function updateHonourCategoryOptions(selected=''){
-  const type=document.getElementById('awardTypeInput');
-  const cat=document.getElementById('awardCategoryInput');
-  if(!type||!cat) return;
-  const lists={
-    'Personal Honour':['Player of the Season','Young Player of the Season','Golden Boot','Team of the Season','Custom Award'],
-    'International Honour':['Best Nation Eleven','Team of the Tournament','Player of the Tournament','International Debut','Custom International Honour'],
-    'Club Honour':['League Champions','Promotion','Domestic Cup Winner','Continental Competition Winner','Custom Club Honour']
+function updateHonourCategoryOptions(selected='') {
+  const select = document.getElementById('awardCategoryInput');
+  if (!select) return;
+
+  const labels = {
+    'Personal Honour': 'Personal Honours',
+    'Club Honour': 'Club Honours',
+    'International Honour': 'International Honours',
+    'Record': 'Records',
+    'Other': 'Others'
   };
-  const opts=lists[type.value]||lists['Personal Honour'];
-  cat.innerHTML=opts.map(o=>`<option value="${o}">${o}</option>`).join('');
-  if(selected&&opts.includes(selected)) cat.value=selected;
+
+  select.innerHTML = Object.entries(HONOUR_AWARD_LIBRARY).map(([section, awards]) => `
+    <optgroup label="${labels[section] || section}">
+      ${awards.map(award => `<option value="${escapeHtml(award)}">${escapeHtml(award)}</option>`).join('')}
+    </optgroup>
+  `).join('');
+
+  if (selected) {
+    const exists = Array.from(select.options).some(option => option.value === selected);
+    if (!exists) {
+      const customGroup = Array.from(select.querySelectorAll('optgroup')).find(group => group.label === 'Others');
+      const option = document.createElement('option');
+      option.value = selected;
+      option.textContent = `${selected} (Legacy)`;
+      (customGroup || select).appendChild(option);
+    }
+    select.value = selected;
+  } else {
+    select.value = 'Player of the Season';
+  }
+  handleHonourAwardChange();
+}
+
+function handleHonourAwardChange() {
+  const category = document.getElementById('awardCategoryInput')?.value || '';
+  const isCustom = category === 'Custom Honour';
+  document.getElementById('awardCustomTitleWrap')?.classList.toggle('hidden', !isCustom);
+  document.getElementById('awardCustomSectionWrap')?.classList.toggle('hidden', !isCustom);
 }
 
 function resetSeasonAwardForm() {
       [
-        'awardSeasonInput',
-        'awardClubInput',
-        'awardNationInput',
-        'awardCompetitionInput',
-        'awardValueInput',
-        'awardNotesInput'
+        'awardSeasonInput','awardClubInput','awardNationInput','awardCompetitionInput',
+        'awardValueInput','awardNotesInput','awardCustomTitleInput'
       ].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
       });
 
       const type = document.getElementById('awardTypeInput');
-      if (type) type.value = 'Individual Award';
+      if (type) type.value = 'Personal Honour';
 
-      const category = document.getElementById('awardCategoryInput');
-      if (category) category.value = 'Player of the Season';
+      updateHonourCategoryOptions('Player of the Season');
 
       const person = document.getElementById('awardPersonInput');
       if (person) person.value = '';
 
       window.editingSeasonAwardIndex = null;
-
       const saveBtn = document.getElementById('awardSaveBtn');
-      if (saveBtn) saveBtn.textContent = 'Add Award';
-
-      const cancelBtn = document.getElementById('awardCancelEditBtn');
-      if (cancelBtn) cancelBtn.classList.add('hidden');
+      if (saveBtn) saveBtn.textContent = 'Add Honour';
+      document.getElementById('awardCancelEditBtn')?.classList.add('hidden');
+      handleHonourAwardChange();
     }
 
     function addSeasonAward() {
       const save = getCurrentSave();
       if (!save) return;
 
+      const selectedAward = document.getElementById('awardCategoryInput')?.value || 'Player of the Season';
+      const customTitle = document.getElementById('awardCustomTitleInput')?.value.trim() || '';
+      const category = selectedAward === 'Custom Honour' ? customTitle : selectedAward;
+      const customType = document.getElementById('awardTypeInput')?.value || 'Other';
+
+      if (!category) return;
+
       const award = {
-        type: document.getElementById('awardTypeInput')?.value || 'Individual Award',
+        type: getHonourTypeForAward(selectedAward, customType),
         season: document.getElementById('awardSeasonInput')?.value.trim() || '',
-        category: document.getElementById('awardCategoryInput')?.value || 'Player of the Season',
+        category,
         person: document.getElementById('awardPersonInput')?.value || '',
         club: document.getElementById('awardClubInput')?.value.trim() || '',
         nation: document.getElementById('awardNationInput')?.value.trim() || '',
@@ -8257,13 +8318,11 @@ function resetSeasonAwardForm() {
         notes: document.getElementById('awardNotesInput')?.value.trim() || ''
       };
 
-      if (!award.person && !award.notes && !award.club && !award.nation) return;
+      if (!award.person && !award.notes && !award.club && !award.nation && !award.competition && !award.value) return;
 
       save.seasonAwards = Array.isArray(save.seasonAwards) ? save.seasonAwards : [];
-
       const editIndex = Number.isInteger(window.editingSeasonAwardIndex)
-        ? window.editingSeasonAwardIndex
-        : null;
+        ? window.editingSeasonAwardIndex : null;
 
       if (editIndex !== null && save.seasonAwards[editIndex]) {
         save.seasonAwards[editIndex] = award;
@@ -8287,14 +8346,17 @@ function resetSeasonAwardForm() {
         if (el) el.value = value || '';
       };
 
-      setValue('awardTypeInput', award.type || 'Individual Award');
+      const knownAward = Boolean(HONOUR_AWARD_SECTION[award.category]);
+      updateHonourCategoryOptions(knownAward ? award.category : 'Custom Honour');
+      setValue('awardTypeInput', award.type || 'Other');
+      setValue('awardCustomTitleInput', knownAward ? '' : award.category);
       setValue('awardSeasonInput', award.season);
       setValue('awardClubInput', award.club);
       setValue('awardNationInput', award.nation);
       setValue('awardCompetitionInput', award.competition);
-      setValue('awardCategoryInput', award.category || 'Player of the Season');
       setValue('awardValueInput', award.value);
       setValue('awardNotesInput', award.notes);
+      handleHonourAwardChange();
 
       const personSelect = document.getElementById('awardPersonInput');
       if (personSelect) {
@@ -8310,17 +8372,10 @@ function resetSeasonAwardForm() {
       }
 
       window.editingSeasonAwardIndex = index;
-
       const saveBtn = document.getElementById('awardSaveBtn');
       if (saveBtn) saveBtn.textContent = 'Save Honour Edit';
-
-      const cancelBtn = document.getElementById('awardCancelEditBtn');
-      if (cancelBtn) cancelBtn.classList.remove('hidden');
-
-      document.getElementById('awardTypeInput')?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      });
+      document.getElementById('awardCancelEditBtn')?.classList.remove('hidden');
+      document.getElementById('awardCategoryInput')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     function cancelSeasonAwardEdit() {
@@ -11204,6 +11259,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <datalist id="nationOptions" data-nation-list="true"></datalist>
+
+
+<script id="honours-v2-init">
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof updateHonourCategoryOptions === 'function') {
+    const current = document.getElementById('awardCategoryInput')?.value || '';
+    updateHonourCategoryOptions(current);
+  }
+});
+</script>
 
 </body>
 </html> 
