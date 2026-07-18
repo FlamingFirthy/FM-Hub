@@ -5796,6 +5796,68 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
 }
 </style>
 
+
+<style id="story-v2-style">
+.story-v2-shell{display:grid;gap:18px}
+.story-v2-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:7px;border-radius:18px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07)}
+.story-v2-tab{appearance:none;border:0;border-radius:13px;padding:11px 18px;background:transparent;color:var(--muted);font:inherit;font-weight:900;cursor:pointer}
+.story-v2-tab.active{background:var(--accent-soft);color:var(--accent);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.story-v2-panel{display:none}
+.story-v2-panel.active{display:grid;gap:18px}
+.story-score-grid{display:grid;grid-template-columns:1.3fr repeat(3,minmax(0,1fr));gap:12px}
+.story-identity-card,.story-insight-card,.story-headlines-card,.story-chapter,.story-legacy-section,.story-journey-card{
+  border:1px solid rgba(255,255,255,.075);background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.016));border-radius:22px
+}
+.story-identity-card{padding:20px;background:radial-gradient(circle at 90% 0,var(--accent-soft),transparent 40%),linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.018))}
+.story-identity-title{font-size:clamp(1.55rem,3vw,2.4rem);font-weight:950;margin:4px 0 8px}
+.story-stars{font-size:1.2rem;letter-spacing:2px;color:#facc15}
+.story-insight-card{padding:16px}
+.story-insight-card span,.story-legacy-stat span,.story-chapter-stat span{display:block;color:var(--muted);font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.07em}
+.story-insight-card strong,.story-legacy-stat strong,.story-chapter-stat strong{display:block;margin-top:7px;overflow-wrap:anywhere}
+.story-headlines-card{padding:18px;overflow:hidden}
+.story-headlines-strip{display:grid;gap:9px;margin-top:12px}
+.story-headline{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:11px;align-items:center;padding:12px;border-radius:15px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.055);cursor:pointer}
+.story-headline:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.14)}
+.story-headline-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:11px;background:rgba(255,255,255,.055)}
+.story-headline strong{font-size:.88rem;letter-spacing:.015em}
+.story-headline time{color:var(--muted);font-size:.72rem;font-weight:900}
+.story-chapter-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.story-chapter{padding:18px;position:relative;overflow:hidden}
+.story-chapter::after{content:"";position:absolute;right:-36px;top:-48px;width:135px;height:135px;border-radius:50%;border:25px solid rgba(255,255,255,.022)}
+.story-chapter-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;position:relative;z-index:1}
+.story-chapter-rating{color:#facc15;letter-spacing:1px;white-space:nowrap}
+.story-chapter-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:15px 0;position:relative;z-index:1}
+.story-chapter-stat{padding:11px;border-radius:13px;background:rgba(0,0,0,.14)}
+.story-chapter-events{display:grid;gap:8px;position:relative;z-index:1}
+.story-chapter-event{display:flex;gap:9px;align-items:flex-start;padding:9px;border-radius:12px;background:rgba(255,255,255,.025)}
+.story-chapter-event span{flex:0 0 auto}
+.story-chapter-event strong{font-size:.82rem;line-height:1.3}
+.story-legacy-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.story-legacy-section{padding:18px}
+.story-legacy-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:13px}
+.story-legend-card{padding:14px;border-radius:16px;background:rgba(255,255,255,.026);border:1px solid rgba(255,255,255,.055)}
+.story-legend-rank{color:var(--accent);font-size:.72rem;font-weight:950;text-transform:uppercase;letter-spacing:.07em}
+.story-legend-card h4{margin:6px 0 4px}
+.story-legend-card p{margin:0;color:var(--muted);font-size:.78rem}
+.story-legacy-stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:13px}
+.story-legacy-stat{padding:13px;border-radius:15px;background:rgba(255,255,255,.025)}
+.story-journey-card{padding:18px}
+.story-journey{display:flex;gap:8px;align-items:stretch;overflow-x:auto;padding:8px 2px 2px;margin-top:12px}
+.story-journey-stop{min-width:165px;padding:14px;border-radius:16px;background:rgba(255,255,255,.027);border:1px solid rgba(255,255,255,.055);position:relative}
+.story-journey-stop:not(:last-child)::after{content:"→";position:absolute;right:-14px;top:50%;transform:translateY(-50%);color:var(--accent);font-weight:950;z-index:2}
+.story-journey-stop span{display:block;color:var(--muted);font-size:.68rem;font-weight:900;text-transform:uppercase}
+.story-journey-stop strong{display:block;margin-top:7px}
+.story-cinematic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.story-cinematic{min-height:180px;padding:22px;border-radius:22px;border:1px solid rgba(255,255,255,.075);background:radial-gradient(circle at top right,var(--accent-soft),transparent 42%),linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.015));display:flex;flex-direction:column;justify-content:flex-end}
+.story-cinematic h3{margin:5px 0 8px;font-size:1.25rem}
+.story-cinematic p{margin:0;color:var(--muted);line-height:1.55}
+.story-link-btn{appearance:none;border:0;background:transparent;color:inherit;text-align:left;padding:0;font:inherit;cursor:pointer;width:100%}
+.story-v2-empty{padding:24px;border-radius:18px;border:1px dashed rgba(255,255,255,.12);color:var(--muted);text-align:center}
+@media(max-width:1050px){.story-score-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.story-identity-card{grid-column:1/-1}}
+@media(max-width:800px){.story-chapter-grid,.story-legacy-grid,.story-cinematic-grid{grid-template-columns:1fr}}
+@media(max-width:620px){.story-score-grid,.story-legacy-cards,.story-legacy-stat-grid,.story-chapter-stats{grid-template-columns:1fr}.story-headline{grid-template-columns:34px minmax(0,1fr)}.story-headline time{grid-column:2}}
+</style>
+
 </head>
 <body>
   <header>
@@ -11714,6 +11776,211 @@ function renderStoryV1(save) {
   if (filter) filter.value = window.storySourceFilterValue || 'all';
   if (typeof applyAdminMode === 'function') applyAdminMode();
   if (typeof setupSectionEditing === 'function') setTimeout(setupSectionEditing, 0);
+}
+</script>
+
+
+<script id="story-v2-script">
+function storyV2Num(value){ return typeof numberFromValue === 'function' ? numberFromValue(value) : (Number(String(value||'').match(/-?\d+(?:\.\d+)?/)?.[0])||0); }
+function storyV2Esc(value){ return typeof escapeHtml === 'function' ? escapeHtml(value) : String(value??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+function storyV2SetSubtab(name){
+  window.storyV2ActiveTab = ['timeline','chapters','legacy'].includes(name) ? name : 'timeline';
+  document.querySelectorAll('.story-v2-tab').forEach(btn=>btn.classList.toggle('active',btn.dataset.storyV2Tab===window.storyV2ActiveTab));
+  document.querySelectorAll('.story-v2-panel').forEach(panel=>panel.classList.toggle('active',panel.dataset.storyV2Panel===window.storyV2ActiveTab));
+}
+
+function storyV2Go(tab){
+  if(typeof openSaveTab==='function') openSaveTab(tab);
+}
+
+function storyV2Headline(event, club){
+  const title=String(event?.title||'').trim();
+  const detail=String(event?.detail||'');
+  const text=`${event?.type||''} ${title} ${detail}`.toLowerCase();
+  const upper=s=>String(s||'').replace(/[–—]/g,'-').toUpperCase();
+  if(text.includes('promotion')) return upper(`${club} secure promotion`);
+  if(text.includes('relegat')) return upper(`${club} suffer relegation`);
+  if(text.includes('champion')||text.includes('league winner')) return upper(`${club} crowned champions`);
+  if(text.includes('cup winner')||text.includes('trophy')) return upper(`${club} lift silverware`);
+  if(text.includes('record signing')) return upper(`${club} complete record signing`);
+  if(text.includes('record sale')) return upper(`${club} agree record sale`);
+  if(text.includes('retired')) return upper(title);
+  if(text.includes('debut')) return upper(title);
+  if(text.includes('joined')) return upper(title);
+  if(text.includes('left for')||text.includes('released')) return upper(title);
+  if(text.includes('goal record')||text.includes('most goals')) return upper(title);
+  if(event?.source==='Matches') return upper(title);
+  return upper(title||`${club} story update`);
+}
+
+function storyV2StoryIdentity(save,events,chapters,stats){
+  const text=events.map(e=>`${e.title} ${e.detail}`).join(' ').toLowerCase();
+  const promotions=(text.match(/promotion/g)||[]).length;
+  const trophies=events.filter(e=>/winner|champion|trophy|cup/i.test(`${e.type} ${e.title}`)).length;
+  const academy=(text.match(/academy|youth|wonderkid/g)||[]).length;
+  const giant=(text.match(/upset|shock|giant|famous win/g)||[]).length;
+  const relegations=(text.match(/relegat/g)||[]).length;
+  let name='The Journey';
+  let tagline='A career still writing its defining chapter.';
+  if(trophies>=8){name='The Dynasty';tagline='Sustained success turned this save into an era of dominance.';}
+  else if(promotions>=3){name='The Road to Glory';tagline='A climb through the divisions built on momentum and ambition.';}
+  else if(academy>=5){name='The Youth Revolution';tagline='Young players became the foundation of the project.';}
+  else if(giant>=3){name='The Giant Killers';tagline='Big occasions and famous upsets defined the journey.';}
+  else if(relegations>=2&&promotions>=1){name='The Resurrection';tagline='Setbacks were followed by recovery, resilience, and renewal.';}
+  else if(trophies>=3){name='The Rise';tagline='The project grew from promise into genuine success.';}
+
+  const rating=Math.max(1,Math.min(5,Math.round(1+chapters.length*.35+trophies*.25+promotions*.35+Math.min(events.length,40)/35)));
+  return {name,tagline,rating};
+}
+
+function storyV2BuildStats(save){
+  const rows=typeof getAllStatsForSave==='function' ? getAllStatsForSave(save) : (save.playerStats||[]);
+  const map=new Map();
+  rows.forEach(row=>{
+    const name=row.personName||row.player||row.name||'Unknown';
+    if(!map.has(name)) map.set(name,{name,apps:0,goals:0,assists:0,cleanSheets:0,ratingTotal:0,ratingCount:0,seasons:new Set()});
+    const item=map.get(name);
+    item.apps+=storyV2Num(row.apps);
+    item.goals+=storyV2Num(row.goals);
+    item.assists+=storyV2Num(row.assists);
+    item.cleanSheets+=storyV2Num(row.cleanSheets||row.cs);
+    const rating=storyV2Num(row.rating);
+    if(rating){item.ratingTotal+=rating;item.ratingCount++;}
+    if(row.season) item.seasons.add(row.season);
+  });
+  const honours=save.seasonAwards||[];
+  map.forEach(item=>{
+    item.honours=honours.filter(a=>String(a.person||'').toLowerCase()===item.name.toLowerCase()).length;
+    item.rating=item.ratingCount?item.ratingTotal/item.ratingCount:0;
+    item.legendScore=item.apps+item.goals*4+item.assists*3+item.cleanSheets*2+item.honours*30+item.seasons.size*12;
+  });
+  return [...map.values()].sort((a,b)=>b.legendScore-a.legendScore);
+}
+
+function storyV2BuildChapters(save,events,stats){
+  const keys=new Set([...(save.seasons||[]).map(s=>storySeasonKey(s.season)),...events.map(e=>storySeasonKey(e.season)),...stats.flatMap(s=>[...s.seasons])]);
+  keys.delete('Unsorted');
+  return [...keys].sort((a,b)=>storySeasonNumber(b)-storySeasonNumber(a)).map(season=>{
+    const seasonRow=(save.seasons||[]).find(s=>storySeasonKey(s.season)===season)||{};
+    const ev=events.filter(e=>storySeasonKey(e.season)===season);
+    const statRows=(typeof getAllStatsForSave==='function'?getAllStatsForSave(save):save.playerStats||[]).filter(r=>storySeasonKey(r.season)===season);
+    const topGoal=[...statRows].sort((a,b)=>storyV2Num(b.goals)-storyV2Num(a.goals))[0];
+    const topAssist=[...statRows].sort((a,b)=>storyV2Num(b.assists)-storyV2Num(a.assists))[0];
+    const bestRating=[...statRows].sort((a,b)=>storyV2Num(b.rating)-storyV2Num(a.rating))[0];
+    const trophies=ev.filter(e=>/winner|champion|trophy|cup|promotion/i.test(`${e.type} ${e.title}`));
+    const bestMatch=ev.find(e=>e.source==='Matches');
+    const bigTransfer=ev.find(e=>e.source==='Transfers');
+    let score=1+Math.min(2,trophies.length)+Math.min(1,ev.filter(e=>e.source==='Honours').length)+Math.min(1,ev.length>=6?1:0);
+    score=Math.max(1,Math.min(5,score));
+    return {season,seasonRow,events:ev,topGoal,topAssist,bestRating,trophies,bestMatch,bigTransfer,score};
+  });
+}
+
+function storyV2BiggestMoments(save,events,stats){
+  const transfers=save.transfers||[];
+  const fees=transfers.map(t=>({label:t.player||'Transfer',value:storyV2Num(t.fee),raw:t.fee||'-',type:t.type||''})).filter(x=>x.value);
+  const incoming=fees.filter(x=>/in|join|sign/i.test(x.type)).sort((a,b)=>b.value-a.value)[0]||fees.sort((a,b)=>b.value-a.value)[0];
+  const outgoing=fees.filter(x=>/out|sale|sold/i.test(x.type)).sort((a,b)=>b.value-a.value)[0];
+  const topGoals=[...stats].sort((a,b)=>b.goals-a.goals)[0];
+  const topApps=[...stats].sort((a,b)=>b.apps-a.apps)[0];
+  const topAssists=[...stats].sort((a,b)=>b.assists-a.assists)[0];
+  const topCS=[...stats].sort((a,b)=>b.cleanSheets-a.cleanSheets)[0];
+  const biggestMatch=(save.matchHighlights||[]).map(m=>{
+    const nums=String(m.score||'').match(/\d+/g)||[];
+    return {...m,margin:nums.length>=2?Math.abs(Number(nums[0])-Number(nums[1])):0};
+  }).sort((a,b)=>b.margin-a.margin)[0];
+  return [
+    {label:'Record Signing',value:incoming?`${incoming.label} • ${incoming.raw}`:'Not logged'},
+    {label:'Record Sale',value:outgoing?`${outgoing.label} • ${outgoing.raw}`:'Not logged'},
+    {label:'Top Goalscorer',value:topGoals?`${topGoals.name} • ${topGoals.goals}`:'Not logged'},
+    {label:'Most Appearances',value:topApps?`${topApps.name} • ${topApps.apps}`:'Not logged'},
+    {label:'Assist King',value:topAssists?`${topAssists.name} • ${topAssists.assists}`:'Not logged'},
+    {label:'Most Clean Sheets',value:topCS?`${topCS.name} • ${topCS.cleanSheets}`:'Not logged'},
+    {label:'Biggest Logged Win',value:biggestMatch?`${biggestMatch.fixture||'Match'} • ${biggestMatch.score||'-'}`:'Not logged'},
+    {label:'Story Events',value:String(events.length)}
+  ];
+}
+
+function storyV2RenderTimeline(save,events){
+  const grouped=new Map();
+  events.forEach(e=>{const key=storySeasonKey(e.season);if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push(e);});
+  const seasons=[...grouped.keys()].sort((a,b)=>storySeasonNumber(b)-storySeasonNumber(a));
+  const selected=window.storySourceFilterValue||'all';
+  return `
+    <div class="story-toolbar">
+      <div><div class="section-kicker">Career Timeline</div><h3 style="margin:4px 0 0">Season-by-season history</h3></div>
+      <div class="story-toolbar-controls"><select id="storySourceFilter" onchange="window.storySourceFilterValue=this.value;renderStoryV1(getCurrentSave())">
+        <option value="all">All event types</option><option value="Season">Season records</option><option value="Honours">Honours</option><option value="Transfers">Transfers</option><option value="International">International</option><option value="Matches">Matches</option><option value="Manual">Manual stories</option>
+      </select></div>
+    </div>
+    <div class="story-timeline">${seasons.map(season=>{
+      const seasonEvents=(grouped.get(season)||[]).filter(e=>selected==='all'||e.source===selected);
+      if(!seasonEvents.length)return'';
+      return `<section class="story-season"><div class="story-season-head"><div class="story-season-title"><div class="story-season-badge">${storyV2Esc(String(season).slice(-5))}</div><div><h3>${storyV2Esc(season)}</h3><div class="story-season-count">${seasonEvents.length} events</div></div></div></div><div class="story-event-list">${seasonEvents.map(e=>`<article class="story-event"><div class="story-event-icon">${storyEventIcon(e.type,e.title)}</div><div><button class="story-link-btn" onclick="storyV2Go('${e.source==='Transfers'?'transfers':e.source==='Honours'?'honours':e.source==='International'?'international':e.source==='Season'?'club':'story'}')"><strong>${storyV2Esc(e.title)}</strong>${e.detail?`<p>${storyV2Esc(e.detail)}</p>`:''}</button></div><span class="story-event-source">${storyV2Esc(e.source)}</span></article>`).join('')}</div></section>`;
+    }).join('')||'<div class="story-v2-empty">No events match this filter.</div>'}</div>
+    <section class="story-manual-editor"><div class="section-head"><div><div class="section-kicker">Manual Story Moment</div><h3>Add the moments data cannot explain</h3><p class="muted">Use this for rivalries, dressing-room drama, miraculous escapes, tactical changes, or personal memories.</p></div></div>
+    <div class="timeline-form-grid edit-only"><div><label for="timelineSeasonInput">Season</label><input id="timelineSeasonInput" placeholder="2026/27"></div><div><label for="timelineTypeInput">Event Type</label><select id="timelineTypeInput"><option>Milestone</option><option>Trophy</option><option>Transfer</option><option>Match</option><option>Manager</option><option>Drama</option><option>Other</option></select></div><div><label for="timelineTitleInput">Title</label><input id="timelineTitleInput" placeholder="Won promotion after a 15-point deduction"></div><div class="wide"><label for="timelineNotesInput">Story Notes</label><textarea id="timelineNotesInput" placeholder="What happened and why it mattered..."></textarea></div></div>
+    <div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addTimelineEvent()">Add Story Moment</button></div></section>`;
+}
+
+function storyV2RenderChapters(save,events,chapters,club){
+  const headlines=[...events].sort((a,b)=>storyEventPriority(b)-storyEventPriority(a)).slice(0,8);
+  return `
+    <section class="story-headlines-card"><div class="section-head"><div><div class="section-kicker">News Archive</div><h3>Career Headlines</h3><p class="muted">The biggest moments, rewritten like the front pages of your save.</p></div></div>
+      <div class="story-headlines-strip">${headlines.length?headlines.map(e=>`<button class="story-headline" type="button" onclick="storyV2Go('${e.source==='Transfers'?'transfers':e.source==='Honours'?'honours':e.source==='International'?'international':'story'}')"><span class="story-headline-icon">📰</span><strong>${storyV2Esc(storyV2Headline(e,club))}</strong><time>${storyV2Esc(e.season)}</time></button>`).join(''):'<div class="story-v2-empty">No headlines yet.</div>'}</div>
+    </section>
+    <div class="story-chapter-grid">${chapters.length?chapters.map(ch=>{
+      const league=ch.seasonRow.competition||ch.seasonRow.league||ch.seasonRow.division||'-';
+      const finish=ch.seasonRow.finish||ch.seasonRow.position||'-';
+      return `<article class="story-chapter"><div class="story-chapter-head"><div><div class="section-kicker">Chapter</div><h3>${storyV2Esc(ch.season)}</h3><p class="muted" style="margin:5px 0 0">${storyV2Esc(league)}</p></div><div class="story-chapter-rating">${'★'.repeat(ch.score)}${'☆'.repeat(5-ch.score)}</div></div>
+      <div class="story-chapter-stats"><div class="story-chapter-stat"><span>Finish</span><strong>${storyV2Esc(finish)}</strong></div><div class="story-chapter-stat"><span>Top Scorer</span><strong>${ch.topGoal?`${storyV2Esc(ch.topGoal.personName||ch.topGoal.player||'-')} • ${storyV2Num(ch.topGoal.goals)}`:'-'}</strong></div><div class="story-chapter-stat"><span>Top Assister</span><strong>${ch.topAssist?`${storyV2Esc(ch.topAssist.personName||ch.topAssist.player||'-')} • ${storyV2Num(ch.topAssist.assists)}`:'-'}</strong></div></div>
+      <div class="story-chapter-events">${[...ch.trophies.slice(0,2),ch.bestMatch,ch.bigTransfer].filter(Boolean).slice(0,4).map(e=>`<div class="story-chapter-event"><span>${storyEventIcon(e.type,e.title)}</span><strong>${storyV2Esc(e.title)}</strong></div>`).join('')||'<div class="story-v2-empty">No major moments logged for this chapter.</div>'}</div></article>`;
+    }).join(''):'<div class="story-v2-empty">Add season records to create chapters.</div>'}</div>`;
+}
+
+function storyV2RenderLegacy(save,events,chapters,stats,identity){
+  const legends=stats.slice(0,6);
+  const moments=storyV2BiggestMoments(save,events,stats);
+  const journey=[...(save.seasons||[])].filter(s=>s.season).sort((a,b)=>storySeasonNumber(a.season)-storySeasonNumber(b.season));
+  const manual=(save.timeline||[]).slice().sort((a,b)=>storySeasonNumber(b.season)-storySeasonNumber(a.season)).slice(0,4);
+  return `
+    <section class="story-journey-card"><div class="section-head"><div><div class="section-kicker">Career Arc</div><h3>The Journey</h3><p class="muted">Your progression through clubs, leagues, and seasons.</p></div></div><div class="story-journey">${journey.length?journey.map(s=>`<div class="story-journey-stop"><span>${storyV2Esc(s.season)}</span><strong>${storyV2Esc(s.competition||s.league||s.division||s.club||'Season')}</strong><small class="muted">${storyV2Esc(s.finish||s.position||s.outcome||'')}</small></div>`).join(''):'<div class="story-v2-empty">No season journey has been logged yet.</div>'}</div></section>
+    <div class="story-legacy-grid">
+      <section class="story-legacy-section"><div class="section-head"><div><div class="section-kicker">Hall of Fame</div><h3>Save Legends</h3><p class="muted">Ranked using appearances, output, honours, and longevity.</p></div></div><div class="story-legacy-cards">${legends.length?legends.map((p,i)=>`<div class="story-legend-card"><div class="story-legend-rank">#${i+1} Legend</div><h4>${storyV2Esc(p.name)}</h4><p>${p.apps} apps • ${p.goals} goals • ${p.assists} assists • ${p.honours||0} honours</p></div>`).join(''):'<div class="story-v2-empty">No player statistics are available yet.</div>'}</div></section>
+      <section class="story-legacy-section"><div class="section-head"><div><div class="section-kicker">Records</div><h3>Biggest Moments</h3><p class="muted">The standout numbers from the whole save.</p></div></div><div class="story-legacy-stat-grid">${moments.map(m=>`<div class="story-legacy-stat"><span>${storyV2Esc(m.label)}</span><strong>${storyV2Esc(m.value)}</strong></div>`).join('')}</div></section>
+    </div>
+    <section class="story-legacy-section"><div class="section-head"><div><div class="section-kicker">Documentary Moments</div><h3>Cinematic Stories</h3><p class="muted">Your personal memories, promoted into feature cards.</p></div></div><div class="story-cinematic-grid">${manual.length?manual.map(m=>`<article class="story-cinematic"><div class="section-kicker">${storyV2Esc(m.season||'Story Moment')}</div><h3>${storyV2Esc(m.title||'Untitled Story')}</h3><p>${storyV2Esc(m.notes||'A defining moment in the save.')}</p></article>`).join(''):'<div class="story-v2-empty">Add manual Story Moments in the Timeline tab to create cinematic cards.</div>'}</div></section>`;
+}
+
+function renderStoryV1(save){
+  const panel=document.getElementById('saveTabStory');
+  if(!panel||!save)return;
+  const events=buildAutomaticStoryEvents(save);
+  const stats=storyV2BuildStats(save);
+  const chapters=storyV2BuildChapters(save,events,stats);
+  const identity=storyV2StoryIdentity(save,events,chapters,stats);
+  const club=save.club&&save.club!=='-'?save.club:save.name;
+  const featured=[...events].sort((a,b)=>storyEventPriority(b)-storyEventPriority(a))[0];
+  const biggest=featured?.title||'The story is still being written';
+  const currentChapter=chapters[0]?`${chapters[0].season}: ${chapters[0].seasonRow.competition||chapters[0].seasonRow.league||'Current campaign'}`:(save.season||'Current campaign');
+  const start=chapters.length?chapters[chapters.length-1].season:'-';
+  const thisDay=events.length?events[Math.abs(new Date().getDate()+new Date().getMonth())%events.length]:null;
+  panel.innerHTML=`
+    <div class="story-v2-shell">
+      <section class="story-cover"><div class="story-cover-main"><div class="story-cover-logo">${save.logo?`<img src="${storyV2Esc(save.logo)}" alt="${storyV2Esc(club)} logo">`:storyV2Esc(getSaveInitials(save))}</div><div><div class="section-kicker">The Story So Far</div><h2>${storyV2Esc(club)}</h2><p class="muted">${storyV2Esc(save.name)} • ${storyV2Esc(save.status||'Active')} career</p></div></div>
+      <div class="story-dashboard-grid"><div class="story-metric"><span>Started</span><strong>${storyV2Esc(start)}</strong></div><div class="story-metric"><span>Current Season</span><strong>${storyV2Esc(save.season||'-')}</strong></div><div class="story-metric"><span>Chapters</span><strong>${chapters.length}</strong></div><div class="story-metric"><span>Story Events</span><strong>${events.length}</strong></div><div class="story-metric"><span>Legends Ranked</span><strong>${stats.length}</strong></div><div class="story-metric"><span>Story Rating</span><strong>${identity.rating}/5</strong></div></div></section>
+      <div class="story-score-grid"><section class="story-identity-card"><div class="section-kicker">Save Identity</div><div class="story-identity-title">${storyV2Esc(identity.name)}</div><div class="story-stars">${'★'.repeat(identity.rating)}${'☆'.repeat(5-identity.rating)}</div><p class="muted">${storyV2Esc(identity.tagline)}</p></section>
+      <div class="story-insight-card"><span>Biggest Achievement</span><strong>${storyV2Esc(biggest)}</strong></div><div class="story-insight-card"><span>Current Chapter</span><strong>${storyV2Esc(currentChapter)}</strong></div><div class="story-insight-card"><span>This Day in History</span><strong>${storyV2Esc(thisDay?`${thisDay.season}: ${thisDay.title}`:'No historic moment yet')}</strong></div></div>
+      <div class="story-v2-tabs"><button class="story-v2-tab" data-story-v2-tab="timeline" onclick="storyV2SetSubtab('timeline')">Timeline</button><button class="story-v2-tab" data-story-v2-tab="chapters" onclick="storyV2SetSubtab('chapters')">Chapters</button><button class="story-v2-tab" data-story-v2-tab="legacy" onclick="storyV2SetSubtab('legacy')">Legacy</button></div>
+      <div class="story-v2-panel" data-story-v2-panel="timeline">${storyV2RenderTimeline(save,events)}</div>
+      <div class="story-v2-panel" data-story-v2-panel="chapters">${storyV2RenderChapters(save,events,chapters,club)}</div>
+      <div class="story-v2-panel" data-story-v2-panel="legacy">${storyV2RenderLegacy(save,events,chapters,stats,identity)}</div>
+    </div>`;
+  const filter=document.getElementById('storySourceFilter');if(filter)filter.value=window.storySourceFilterValue||'all';
+  storyV2SetSubtab(window.storyV2ActiveTab||'timeline');
+  if(typeof applyAdminMode==='function')applyAdminMode();
+  if(typeof setupSectionEditing==='function')setTimeout(setupSectionEditing,0);
 }
 </script>
 
