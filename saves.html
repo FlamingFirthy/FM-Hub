@@ -5904,6 +5904,12 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
 @media(max-width:560px){.doc-hero-inner{padding:24px}.doc-title{font-size:2.7rem}.doc-stats{grid-template-columns:1fr 1fr}.doc-section{padding:17px}.doc-player{padding:8px}.doc-player-stage{border-radius:20px}.doc-player-controls{left:18px;right:18px}}
 </style>
 
+
+<style id="historical-engine-v21-style">
+.doc-won-with{display:block!important;margin-top:9px;color:var(--accent)!important;font-weight:900!important;text-transform:none!important;letter-spacing:0!important}
+.doc-honour-person{display:block!important;margin-top:4px;color:var(--muted)!important;text-transform:none!important;letter-spacing:0!important}
+.honour-history-chip{display:inline-flex!important;width:max-content;padding:5px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)!important;font-size:.64rem!important;font-weight:900!important;text-transform:uppercase;letter-spacing:.05em}
+</style>
 </head>
 <body>
   <header>
@@ -8354,7 +8360,8 @@ function escapeHtml(value) {
           </div>
 
           <span>${escapeHtml(award.person || '-')} • ${escapeHtml(award.season || 'No season')}</span>
-          ${location ? `<span>${escapeHtml(location)}</span>` : ''}
+          ${location ? `<span>${award.club ? '<strong>Won with:</strong> ' : ''}${escapeHtml(location)}</span>` : ''}
+          ${award.historicalContext?.capturedAt ? `<span class="honour-history-chip">Historical context saved</span>` : ''}
           ${award.value ? `<span><strong>Stats:</strong> ${escapeHtml(award.value)}</span>` : ''}
           ${award.notes ? `<span>${escapeHtml(award.notes)}</span>` : ''}
 
@@ -8391,6 +8398,7 @@ function escapeHtml(value) {
     }
 
     function renderSeasonAwards(save) {
+      if (typeof ensureHistoricalHonourSnapshots === 'function') ensureHistoricalHonourSnapshots(save);
       const container = document.getElementById('seasonAwardsList');
       if (!container || !save) return;
 
@@ -8526,7 +8534,14 @@ function resetSeasonAwardForm() {
         nation: document.getElementById('awardNationInput')?.value.trim() || '',
         competition: document.getElementById('awardCompetitionInput')?.value.trim() || '',
         value: document.getElementById('awardValueInput')?.value.trim() || '',
-        notes: document.getElementById('awardNotesInput')?.value.trim() || ''
+        notes: document.getElementById('awardNotesInput')?.value.trim() || '',
+        historicalContext: {
+          club: document.getElementById('awardClubInput')?.value.trim() || '',
+          nation: document.getElementById('awardNationInput')?.value.trim() || '',
+          competition: document.getElementById('awardCompetitionInput')?.value.trim() || '',
+          season: document.getElementById('awardSeasonInput')?.value.trim() || '',
+          capturedAt: new Date().toISOString()
+        }
       };
 
       if (!award.person && !award.notes && !award.club && !award.nation && !award.competition && !award.value) return;
@@ -12042,7 +12057,48 @@ function docEsc(v){return storyV2Esc(v==null?'':String(v));}
 function docNum(v){const n=Number(v);return Number.isFinite(n)?n:0;}
 function docClub(save){return save?.club&&save.club!=='-'?save.club:(save?.name||'My Career');}
 function docSetTab(tab){window.docActiveTab=tab;document.querySelectorAll('.doc-tab').forEach(b=>b.classList.toggle('active',b.dataset.docTab===tab));document.querySelectorAll('.doc-panel').forEach(p=>p.classList.toggle('active',p.dataset.docPanel===tab));}
-function docHonours(save){return Array.isArray(save?.honours)?save.honours:[];}
+function historicalHonourClub(honour, save){
+ const ctx=honour?.historicalContext||honour?.snapshot||{};
+ return ctx.club||honour?.club||honour?.winningClub||honour?.team||'';
+}
+function ensureHistoricalHonourSnapshots(save){
+ if(!save)return save;
+ const awards=Array.isArray(save.seasonAwards)?save.seasonAwards:[];
+ let changed=false;
+ awards.forEach(award=>{
+   if(!award.historicalContext){
+     award.historicalContext={
+       club:award.club||'', nation:award.nation||'', competition:award.competition||'',
+       season:award.season||'', capturedAt:new Date().toISOString(), migrated:true
+     };
+     changed=true;
+   }
+ });
+ if(changed && typeof updateCurrentSave==='function') updateCurrentSave(save);
+ return save;
+}
+function docHonours(save){
+ ensureHistoricalHonourSnapshots(save);
+ const direct=Array.isArray(save?.honours)?save.honours:[];
+ const awards=(Array.isArray(save?.seasonAwards)?save.seasonAwards:[]).map(a=>({
+   ...a,
+   title:a.title||a.category||a.name||a.honour||'Honour',
+   historicalClub:historicalHonourClub(a,save),
+   source:'award'
+ }));
+ const seasonHonours=[];
+ (save?.seasons||[]).forEach(record=>{
+   if(typeof splitTrophies==='function') splitTrophies(record.trophies).forEach(trophy=>seasonHonours.push({
+     title:trophy, season:record.season||'', historicalClub:record.club||'', club:record.club||'', competition:record.competition||record.league||record.division||'', source:'season'
+   }));
+ });
+ const combined=[...direct.map(h=>({...h,title:h.title||h.category||h.name||h.honour||'Honour',historicalClub:historicalHonourClub(h,save)})),...awards,...seasonHonours];
+ const seen=new Set();
+ return combined.filter(h=>{
+   const key=[h.title,h.season,h.person,h.historicalClub].map(v=>String(v||'').toLowerCase()).join('|');
+   if(seen.has(key))return false; seen.add(key); return true;
+ });
+}
 function docSeasonRows(save){return [...(save?.seasons||[])].filter(x=>x&&x.season).sort((a,b)=>storySeasonNumber(a.season)-storySeasonNumber(b.season));}
 function docHeadline(event,club){return typeof storyV2Headline==='function'?storyV2Headline(event,club):(event?.title||'A defining moment');}
 function docDescription(event){return event?.detail||event?.notes||'A defining chapter in the story of this career.';}
@@ -12079,7 +12135,7 @@ function renderDocumentary(save){
    return `<article class="doc-chapter"><div class="doc-chapter-no">Chapter ${String(i+1).padStart(2,'0')}</div><h4>${docEsc(ch.season)}</h4><div class="doc-chapter-meta">${docEsc(row.competition||row.league||row.division||'Season chapter')} • ${'★'.repeat(Math.max(1,ch.score||3))}</div><div class="doc-chapter-points">${points.slice(0,4).map(x=>`<div class="doc-chapter-point">${docEsc(x)}</div>`).join('')||'<div class="doc-chapter-point">The story of this season is still being written.</div>'}</div></article>`;
  }).join('');
  const headlineCards=topEvents.map((e,i)=>`<article class="doc-headline"><time>${docEsc(e.season||'Career')} • ${docEsc(e.source||'Story')}</time><h4>${docEsc(docHeadline(e,club))}</h4><p>${docEsc(docDescription(e))}</p></article>`).join('');
- const trophyCards=honours.length?honours.map(h=>`<article class="doc-trophy"><div><div class="doc-trophy-icon">🏆</div><h4>${docEsc(h.title||h.name||h.honour||'Honour')}</h4><span>${docEsc(h.season||h.year||h.date||'Career honour')}</span></div></article>`).join(''):'<div class="doc-empty">Add honours to fill the cinematic trophy cabinet.</div>';
+ const trophyCards=honours.length?honours.map(h=>{const wonWith=h.historicalClub||historicalHonourClub(h,save);return `<article class="doc-trophy"><div><div class="doc-trophy-icon">🏆</div><h4>${docEsc(h.title||h.name||h.honour||'Honour')}</h4><span>${docEsc(h.season||h.year||h.date||'Career honour')}</span>${wonWith?`<span class="doc-won-with">Won with ${docEsc(wonWith)}</span>`:''}${h.person?`<span class="doc-honour-person">${docEsc(h.person)}</span>`:''}</div></article>`}).join(''):'<div class="doc-empty">Add honours to fill the cinematic trophy cabinet.</div>';
  const legendCards=legends.length?legends.map((p,i)=>`<article class="doc-legend"><div class="doc-legend-rank">Hall of Fame • #${i+1}</div><h4>${docEsc(p.name)}</h4><div class="doc-legend-stats">${p.apps} appearances<br>${p.goals} goals • ${p.assists} assists<br>${p.honours||0} honours</div><div class="doc-legend-score">${Math.round(p.score||0)} pts</div></article>`).join(''):'<div class="doc-empty">Player statistics will automatically create the Hall of Fame.</div>';
  panel.innerHTML=`<div class="doc-shell">
  <section class="doc-hero"><div class="doc-hero-inner"><div><div class="doc-eyebrow">FM Hub Original Documentary</div><h2 class="doc-title">${docEsc(club)}</h2><div class="doc-subtitle"><strong>${docEsc(identity.name)}</strong> — ${docEsc(identity.tagline)} Follow the full journey from ${docEsc(start)} to ${docEsc(latest)}.</div><div class="doc-actions"><button class="doc-play" onclick="docOpenPlayer()">▶ Play Documentary</button><button class="doc-secondary" onclick="docSetTab('chapters')">Browse Chapters</button></div></div><div class="doc-poster"><div class="doc-poster-ring"><div class="doc-poster-logo">${logo}</div></div><div class="doc-poster-caption"><strong>${docEsc(save.name||club)}</strong><span>${docEsc(save.status||'Active')} Save</span></div></div></div></section>
