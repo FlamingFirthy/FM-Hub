@@ -6210,6 +6210,47 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
     .doc-icon-btn { transition: none !important; }
   }
 </style>
+<script>
+
+/* === FM HUB Historical Context Engine v2.2 Phase 1 === */
+window.HistoricalContextEngine=window.HistoricalContextEngine||(()=>{
+ const ids={event:1,club:1,player:1,manager:1,honour:1};
+ const next=(t)=>`${t.toUpperCase()}-${String(ids[t]++).padStart(6,'0')}`;
+ function snapshot(data={}){
+   return {
+    eventId:data.eventId||next('event'),
+    clubId:data.clubId||next('club'),
+    clubName:data.clubName||'',
+    clubBadge:data.clubBadge||'',
+    clubColours:data.clubColours||{},
+    nation:data.nation||'',
+    competition:data.competition||'',
+    season:data.season||'',
+    managerId:data.managerId||next('manager'),
+    managerName:data.managerName||'',
+    playerId:data.playerId||next('player'),
+    playerName:data.playerName||'',
+    capturedAt:data.capturedAt||Date.now()
+   };
+ }
+ function ensureHistoricalContext(obj,fallback={}){
+   if(!obj) return null;
+   if(!obj.historicalContext){
+      obj.historicalContext=snapshot({
+        clubName: obj.club||fallback.clubName||'',
+        competition: obj.competition||fallback.competition||'',
+        season: obj.season||fallback.season||'',
+        playerName: obj.player||fallback.playerName||'',
+        managerName: fallback.managerName||'',
+        nation: fallback.nation||''
+      });
+   }
+   return obj.historicalContext;
+ }
+ return {snapshot,ensureHistoricalContext,nextId:next};
+})();
+
+</script>
 </head>
 <body>
   <header>
@@ -12714,5 +12755,19 @@ function renderDocumentary(save){
 </script>
 
 <!-- STORY V3.1 ROADMAP: Interactive Story foundation prepared. -->
+
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+ try{
+  if(window.saves&&Array.isArray(window.saves)){
+    window.saves.forEach(save=>{
+      const fb={clubName:save?.club?.name||save?.clubName||'',managerName:save?.manager?.name||'',nation:save?.nation||''};
+      (save.honours||[]).forEach(h=>HistoricalContextEngine.ensureHistoricalContext(h,fb));
+    });
+  }
+ }catch(e){console.warn('Historical migration skipped',e);}
+});
+</script>
+
 </body>
 </html> 
