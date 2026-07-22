@@ -5858,7 +5858,7 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
 @media(max-width:620px){.story-score-grid,.story-legacy-cards,.story-legacy-stat-grid,.story-chapter-stats{grid-template-columns:1fr}.story-headline{grid-template-columns:34px minmax(0,1fr)}.story-headline time{grid-column:2}}
 
 
-/* FM HUB 2.0 — DOCUMENTARY MODE */
+/* FM HUB 2.2 — DOCUMENTARY HISTORICAL CONTEXT PHASE 2.1 */
 #saveTabDocumentary{padding:0!important;}
 .doc-shell{display:grid;gap:18px;position:relative;overflow:hidden}
 .doc-hero{min-height:420px;border:1px solid rgba(255,255,255,.09);border-radius:28px;overflow:hidden;position:relative;background:
@@ -6220,9 +6220,9 @@ window.HistoricalContextEngine=window.HistoricalContextEngine||(()=>{
    return {
     eventId:data.eventId||next('event'),
     clubId:data.clubId||next('club'),
-    clubName:data.clubName||'',
-    clubBadge:data.clubBadge||'',
-    clubColours:data.clubColours||{},
+    clubName:data.clubName||data.club||'',
+    clubBadge:data.clubBadge||data.badge||'',
+    clubColours:data.clubColours||data.colours||{},
     nation:data.nation||'',
     competition:data.competition||'',
     season:data.season||'',
@@ -6237,12 +6237,14 @@ window.HistoricalContextEngine=window.HistoricalContextEngine||(()=>{
    if(!obj) return null;
    if(!obj.historicalContext){
       obj.historicalContext=snapshot({
-        clubName: obj.club||fallback.clubName||'',
+        clubName: obj.clubName||obj.club||obj.winningClub||obj.team||fallback.clubName||fallback.club||'',
+        clubBadge: obj.clubBadge||obj.badge||fallback.clubBadge||'',
+        clubColours: obj.clubColours||obj.colours||fallback.clubColours||{},
         competition: obj.competition||fallback.competition||'',
         season: obj.season||fallback.season||'',
-        playerName: obj.player||fallback.playerName||'',
-        managerName: fallback.managerName||'',
-        nation: fallback.nation||''
+        playerName: obj.person||obj.player||obj.personName||fallback.playerName||'',
+        managerName: obj.managerName||fallback.managerName||'',
+        nation: obj.nation||fallback.nation||''
       });
    }
    return obj.historicalContext;
@@ -11889,12 +11891,21 @@ function buildAutomaticStoryEvents(save) {
   const events = [];
   const push = event => {
     if (!event || !event.title) return;
+    const historicalContext = event.historicalContext || event.snapshot || null;
     events.push({
       season: storySeasonKey(event.season),
       type: event.type || 'Milestone',
       title: event.title,
       detail: event.detail || '',
-      source: event.source || 'Automatic'
+      source: event.source || 'Automatic',
+      club: event.club || event.clubName || historicalContext?.clubName || historicalContext?.club || '',
+      clubName: event.clubName || event.club || historicalContext?.clubName || historicalContext?.club || '',
+      clubBadge: event.clubBadge || historicalContext?.clubBadge || '',
+      clubColours: event.clubColours || historicalContext?.clubColours || {},
+      nation: event.nation || historicalContext?.nation || '',
+      competition: event.competition || historicalContext?.competition || '',
+      player: event.player || event.person || historicalContext?.playerName || '',
+      historicalContext: historicalContext ? {...historicalContext} : null
     });
   };
 
@@ -11917,7 +11928,17 @@ function buildAutomaticStoryEvents(save) {
         type: 'Season',
         title: `${club || save.name}: ${seasonName}`,
         detail: bits.join(' • '),
-        source: 'Season'
+        source: 'Season',
+        club,
+        competition,
+        historicalContext: {
+          clubName: club,
+          competition,
+          season: seasonName,
+          nation: season.nation || '',
+          clubBadge: season.clubBadge || season.badge || '',
+          clubColours: season.clubColours || season.colours || {}
+        }
       });
     }
 
@@ -11926,7 +11947,17 @@ function buildAutomaticStoryEvents(save) {
       type: 'Trophy',
       title: trophy,
       detail: [club, competition].filter(Boolean).join(' • '),
-      source: 'Season'
+      source: 'Season',
+      club,
+      competition,
+      historicalContext: {
+        clubName: club,
+        competition,
+        season: seasonName,
+        nation: season.nation || '',
+        clubBadge: season.clubBadge || season.badge || '',
+        clubColours: season.clubColours || season.colours || {}
+      }
     }));
 
     if (outcome) push({
@@ -11934,7 +11965,17 @@ function buildAutomaticStoryEvents(save) {
       type: /promotion|title|winner/i.test(outcome) ? 'Trophy' : 'Milestone',
       title: outcome,
       detail: [club, competition].filter(Boolean).join(' • '),
-      source: 'Season'
+      source: 'Season',
+      club,
+      competition,
+      historicalContext: {
+        clubName: club,
+        competition,
+        season: seasonName,
+        nation: season.nation || '',
+        clubBadge: season.clubBadge || season.badge || '',
+        clubColours: season.clubColours || season.colours || {}
+      }
     });
   });
 
@@ -11946,7 +11987,19 @@ function buildAutomaticStoryEvents(save) {
       type: award.type || 'Award',
       title: award.category || 'Honour',
       detail: context,
-      source: 'Honours'
+      source: 'Honours',
+      club: award.historicalContext?.clubName || award.historicalContext?.club || award.club || '',
+      competition: award.historicalContext?.competition || award.competition || '',
+      player: award.historicalContext?.playerName || award.person || '',
+      historicalContext: award.historicalContext || {
+        clubName: award.club || '',
+        competition: award.competition || '',
+        season: award.season || '',
+        playerName: award.person || '',
+        nation: award.nation || '',
+        clubBadge: award.clubBadge || '',
+        clubColours: award.clubColours || {}
+      }
     });
   });
 
@@ -11969,7 +12022,18 @@ function buildAutomaticStoryEvents(save) {
       type: 'Transfer',
       title,
       detail: [from && to ? `${from} → ${to}` : (from || to), fee, transfer.notes].filter(Boolean).join(' • '),
-      source: 'Transfers'
+      source: 'Transfers',
+      club: /out|released|retired/i.test(type) ? from : (to || from),
+      player,
+      historicalContext: transfer.historicalContext || {
+        clubName: /out|released|retired/i.test(type) ? from : (to || from),
+        competition: transfer.competition || '',
+        season: transfer.season || '',
+        playerName: player,
+        nation: transfer.nation || '',
+        clubBadge: transfer.clubBadge || '',
+        clubColours: transfer.clubColours || {}
+      }
     });
   });
 
@@ -12245,8 +12309,11 @@ function storyV2BuildStats(save){
   const map=new Map();
   rows.forEach(row=>{
     const name=row.personName||row.player||row.name||'Unknown';
-    if(!map.has(name)) map.set(name,{name,apps:0,goals:0,assists:0,cleanSheets:0,ratingTotal:0,ratingCount:0,seasons:new Set()});
+    if(!map.has(name)) map.set(name,{name,apps:0,goals:0,assists:0,cleanSheets:0,ratingTotal:0,ratingCount:0,seasons:new Set(),clubs:new Map(),historicalContext:null});
     const item=map.get(name);
+    const rowClub=docHistoricalClub(row,'');
+    if(rowClub)item.clubs.set(rowClub,(item.clubs.get(rowClub)||0)+storyV2Num(row.apps||1));
+    if(!item.historicalContext&&row.historicalContext)item.historicalContext={...row.historicalContext};
     item.apps+=storyV2Num(row.apps);
     item.goals+=storyV2Num(row.goals);
     item.assists+=storyV2Num(row.assists);
@@ -12259,6 +12326,8 @@ function storyV2BuildStats(save){
   map.forEach(item=>{
     item.honours=honours.filter(a=>String(a.person||'').toLowerCase()===item.name.toLowerCase()).length;
     item.rating=item.ratingCount?item.ratingTotal/item.ratingCount:0;
+    item.club=[...item.clubs.entries()].sort((a,b)=>b[1]-a[1])[0]?.[0]||'';
+    if(item.club&&!item.historicalContext)item.historicalContext={clubName:item.club,playerName:item.name};
     item.legendScore=item.apps+item.goals*4+item.assists*3+item.cleanSheets*2+item.honours*30+item.seasons.size*12;
   });
   return [...map.values()].sort((a,b)=>b.legendScore-a.legendScore);
@@ -12396,11 +12465,40 @@ window.docPlayerIndex=0;
 window.docPlayerScenes=[];
 function docEsc(v){return storyV2Esc(v==null?'':String(v));}
 function docNum(v){const n=Number(v);return Number.isFinite(n)?n:0;}
-function docClub(save){return save?.club&&save.club!=='-'?save.club:(save?.name||'My Career');}
+function docClub(save){
+ const raw=save?.club;
+ if(raw && typeof raw==='object') return raw.name||raw.clubName||save?.clubName||save?.name||'My Career';
+ return raw&&raw!=='-'?raw:(save?.clubName||save?.name||'My Career');
+}
+function docHistoricalContext(item){
+ return item?.historicalContext||item?.snapshot||item?.historySnapshot||{};
+}
+function docHistoricalClub(item,fallback=''){
+ const ctx=docHistoricalContext(item);
+ const raw=ctx.clubName||ctx.club||item?.historicalClub||item?.winningClub||item?.clubName||
+   (typeof item?.club==='string'?item.club:item?.club?.name)||item?.team||item?.forClub||item?.representedClub||'';
+ return raw&&raw!=='-'?String(raw):String(fallback||'');
+}
+function docHistoricalBadge(item,fallback=''){
+ const ctx=docHistoricalContext(item);
+ return ctx.clubBadge||ctx.badge||item?.clubBadge||item?.badge||fallback||'';
+}
+function docHistoricalColours(item,fallback={}){
+ const ctx=docHistoricalContext(item);
+ return ctx.clubColours||ctx.colours||item?.clubColours||item?.colours||fallback||{};
+}
+function docHistoricalCompetition(item,fallback=''){
+ const ctx=docHistoricalContext(item);
+ return ctx.competition||item?.competition||item?.league||item?.division||fallback||'';
+}
+function docHistoricalPlayer(item,fallback=''){
+ const ctx=docHistoricalContext(item);
+ return ctx.playerName||item?.person||item?.player||item?.personName||fallback||'';
+}
+
 function docSetTab(tab){window.docActiveTab=tab;document.querySelectorAll('.doc-tab').forEach(b=>b.classList.toggle('active',b.dataset.docTab===tab));document.querySelectorAll('.doc-panel').forEach(p=>p.classList.toggle('active',p.dataset.docPanel===tab));}
 function historicalHonourClub(honour, save){
- const ctx=honour?.historicalContext||honour?.snapshot||{};
- return ctx.club||honour?.club||honour?.winningClub||honour?.team||'';
+ return docHistoricalClub(honour,'');
 }
 function ensureHistoricalHonourSnapshots(save){
  if(!save)return save;
@@ -12409,8 +12507,17 @@ function ensureHistoricalHonourSnapshots(save){
  awards.forEach(award=>{
    if(!award.historicalContext){
      award.historicalContext={
-       club:award.club||'', nation:award.nation||'', competition:award.competition||'',
-       season:award.season||'', capturedAt:new Date().toISOString(), migrated:true
+       eventId:typeof HistoricalContextEngine!=='undefined'?HistoricalContextEngine.nextId('event'):'',
+       clubId:typeof HistoricalContextEngine!=='undefined'?HistoricalContextEngine.nextId('club'):'',
+       clubName:award.club||award.winningClub||award.team||'',
+       clubBadge:award.clubBadge||award.badge||'',
+       clubColours:award.clubColours||award.colours||{},
+       nation:award.nation||'',
+       competition:award.competition||'',
+       season:award.season||'',
+       playerName:award.person||award.player||'',
+       capturedAt:Date.now(),
+       migrated:true
      };
      changed=true;
    }
@@ -12444,18 +12551,92 @@ function docSeasonRows(save){return [...(save?.seasons||[])].filter(x=>x&&x.seas
 function docHeadline(event,club){return typeof storyV2Headline==='function'?storyV2Headline(event,club):(event?.title||'A defining moment');}
 function docDescription(event){return event?.detail||event?.notes||'A defining chapter in the story of this career.';}
 function docBuildScenes(save,events,chapters,stats,identity){
- const club=docClub(save), seasons=docSeasonRows(save), honours=docHonours(save);
+ const currentClub=docClub(save), seasons=docSeasonRows(save), honours=docHonours(save);
  const top=[...events].sort((a,b)=>storyEventPriority(b)-storyEventPriority(a)).slice(0,8);
- const scenes=[{kicker:'FM HUB PRESENTS',title:club,copy:`${identity.name}. ${identity.tagline}` }];
- if(seasons.length) scenes.push({kicker:'THE BEGINNING',title:seasons[0].season,copy:`The journey began in ${seasons[0].competition||seasons[0].league||seasons[0].division||'a new campaign'}. Every dynasty starts somewhere.`});
- top.forEach((e,i)=>{
- const eventClub=e.historicalContext?.club||e.club||e.historicalClub||club;
- const body=docDescription(e)+(eventClub?`\n\nClub: ${eventClub}`:'');
- scenes.push({kicker:`CHAPTER ${String(i+1).padStart(2,'0')} • ${e.season||'Career'}`,title:docHeadline(e,eventClub),copy:body});
-});
- if(stats[0]) scenes.push({kicker:'CLUB LEGEND',title:stats[0].name,copy:`${stats[0].apps} appearances, ${stats[0].goals} goals and ${stats[0].assists} assists. A career that became part of the club's identity.`});
- if(honours.length) scenes.push({kicker:'THE TROPHY CABINET',title:`${honours.length} HONOUR${honours.length===1?'':'S'}`,copy:'The moments when ambition became silverware and the story became history.'});
- scenes.push({kicker:'THE STORY CONTINUES',title:save?.season||'THE NEXT CHAPTER',copy:'This documentary updates automatically as new seasons, honours, transfers and memories are added to FM Hub.'});
+ const scenes=[{
+   type:'opening',
+   kicker:'FM HUB PRESENTS',
+   title:currentClub,
+   copy:`${identity.name}. ${identity.tagline}`,
+   club:currentClub
+ }];
+ if(seasons.length){
+   const firstSeason=seasons[0];
+   const firstClub=docHistoricalClub(firstSeason,'');
+   const competition=docHistoricalCompetition(firstSeason,'a new campaign');
+   scenes.push({
+     type:'chapter',
+     kicker:'THE BEGINNING',
+     title:firstSeason.season,
+     copy:`The journey began in ${competition}.${firstClub?`\n\nClub: ${firstClub}`:''} Every dynasty starts somewhere.`,
+     club:firstClub,
+     clubBadge:docHistoricalBadge(firstSeason),
+     clubColours:docHistoricalColours(firstSeason),
+     historicalContext:firstSeason.historicalContext||null
+   });
+ }
+ top.forEach((event,index)=>{
+   const eventClub=docHistoricalClub(event,'');
+   const competition=docHistoricalCompetition(event,'');
+   const player=docHistoricalPlayer(event,'');
+   const details=[
+     docDescription(event),
+     eventClub?`Club: ${eventClub}`:'',
+     competition?`Competition: ${competition}`:'',
+     player?`Player: ${player}`:''
+   ].filter(Boolean);
+   scenes.push({
+     type:docSceneType(event),
+     kicker:`CHAPTER ${String(index+1).padStart(2,'0')} • ${event.season||'Career'}`,
+     title:docHeadline(event,eventClub||currentClub),
+     copy:details.join('\n\n'),
+     club:eventClub,
+     clubBadge:docHistoricalBadge(event),
+     clubColours:docHistoricalColours(event),
+     competition,
+     player,
+     historicalContext:event.historicalContext||null
+   });
+ });
+ if(stats[0]){
+   const legendClub=docHistoricalClub(stats[0],'');
+   scenes.push({
+     type:'player',
+     kicker:'CLUB LEGEND',
+     title:stats[0].name,
+     copy:`${stats[0].apps} appearances, ${stats[0].goals} goals and ${stats[0].assists} assists.${legendClub?`\n\nClub: ${legendClub}`:''}`,
+     club:legendClub,
+     clubBadge:docHistoricalBadge(stats[0]),
+     clubColours:docHistoricalColours(stats[0])
+   });
+ }
+ honours.slice(0,12).forEach(honour=>{
+   const wonWith=docHistoricalClub(honour,'');
+   const competition=docHistoricalCompetition(honour,honour.title||honour.name||honour.honour||'Honour');
+   const player=docHistoricalPlayer(honour,'');
+   scenes.push({
+     type:'trophy',
+     kicker:`TROPHY • ${honour.season||honour.year||'CAREER'}`,
+     title:honour.title||honour.name||honour.honour||'Honour',
+     copy:[
+       wonWith?`Won with ${wonWith}`:'',
+       competition&&competition!==(honour.title||honour.name||honour.honour)?competition:'',
+       player?`Awarded to ${player}`:''
+     ].filter(Boolean).join('\n\n')||'A defining achievement in this career.',
+     club:wonWith,
+     clubBadge:docHistoricalBadge(honour),
+     clubColours:docHistoricalColours(honour),
+     competition,
+     player,
+     historicalContext:honour.historicalContext||null
+   });
+ });
+ scenes.push({
+   type:'finale',
+   kicker:'THE STORY CONTINUES',
+   title:save?.season||'THE NEXT CHAPTER',
+   copy:'This documentary updates automatically as new seasons, honours, transfers and memories are added to FM Hub.'
+ });
  return scenes;
 }
 const DOC_PLAYER_DEFAULT_DURATION = 6500;
@@ -12737,9 +12918,9 @@ function renderDocumentary(save){
    const e=events.filter(x=>String(x.season)===String(ch.season)).sort((a,b)=>storyEventPriority(b)-storyEventPriority(a))[0];if(e)points.push(e.title);
    return `<article class="doc-chapter"><div class="doc-chapter-no">Chapter ${String(i+1).padStart(2,'0')}</div><h4>${docEsc(ch.season)}</h4><div class="doc-chapter-meta">${docEsc(row.competition||row.league||row.division||'Season chapter')} • ${'★'.repeat(Math.max(1,ch.score||3))}</div><div class="doc-chapter-points">${points.slice(0,4).map(x=>`<div class="doc-chapter-point">${docEsc(x)}</div>`).join('')||'<div class="doc-chapter-point">The story of this season is still being written.</div>'}</div></article>`;
  }).join('');
- const headlineCards=topEvents.map((e,i)=>`<article class="doc-headline"><time>${docEsc(e.season||'Career')} • ${docEsc(e.source||'Story')}</time><h4>${docEsc(docHeadline(e,club))}</h4><p>${docEsc(docDescription(e))}</p></article>`).join('');
+ const headlineCards=topEvents.map((e,i)=>{const eventClub=docHistoricalClub(e,'');const eventCompetition=docHistoricalCompetition(e,'');return `<article class="doc-headline"><time>${docEsc(e.season||'Career')} • ${docEsc(e.source||'Story')}</time><h4>${docEsc(docHeadline(e,eventClub||club))}</h4><p>${docEsc(docDescription(e))}</p>${eventClub?`<span class="doc-won-with">Club: ${docEsc(eventClub)}</span>`:''}${eventCompetition?`<span class="doc-honour-person">${docEsc(eventCompetition)}</span>`:''}</article>`}).join('');
  const trophyCards=honours.length?honours.map(h=>{const wonWith=h.historicalClub||historicalHonourClub(h,save);return `<article class="doc-trophy"><div><div class="doc-trophy-icon">🏆</div><h4>${docEsc(h.title||h.name||h.honour||'Honour')}</h4><span>${docEsc(h.season||h.year||h.date||'Career honour')}</span>${wonWith?`<span class="doc-won-with">Won with ${docEsc(wonWith)}</span>`:''}${h.person?`<span class="doc-honour-person">${docEsc(h.person)}</span>`:''}</div></article>`}).join(''):'<div class="doc-empty">Add honours to fill the cinematic trophy cabinet.</div>';
- const legendCards=legends.length?legends.map((p,i)=>`<article class="doc-legend"><div class="doc-legend-rank">Hall of Fame • #${i+1}</div><h4>${docEsc(p.name)}</h4><div class="doc-legend-stats">${p.apps} appearances<br>${p.goals} goals • ${p.assists} assists<br>${p.honours||0} honours</div><div class="doc-legend-score">${Math.round(p.score||0)} pts</div></article>`).join(''):'<div class="doc-empty">Player statistics will automatically create the Hall of Fame.</div>';
+ const legendCards=legends.length?legends.map((p,i)=>{const playerClub=docHistoricalClub(p,'');return `<article class="doc-legend"><div class="doc-legend-rank">Hall of Fame • #${i+1}</div><h4>${docEsc(p.name)}</h4>${playerClub?`<div class="doc-won-with">${docEsc(playerClub)}</div>`:''}<div class="doc-legend-stats">${p.apps} appearances<br>${p.goals} goals • ${p.assists} assists<br>${p.honours||0} honours</div><div class="doc-legend-score">${Math.round(p.legendScore||p.score||0)} pts</div></article>`}).join(''):'<div class="doc-empty">Player statistics will automatically create the Hall of Fame.</div>';
  panel.innerHTML=`<div class="doc-shell">
  <section class="doc-hero"><div class="doc-hero-inner"><div><div class="doc-eyebrow">FM Hub Original Documentary</div><h2 class="doc-title">${docEsc(club)}</h2><div class="doc-subtitle"><strong>${docEsc(identity.name)}</strong> — ${docEsc(identity.tagline)} Follow the full journey from ${docEsc(start)} to ${docEsc(latest)}.</div><div class="doc-actions"><button class="doc-play" onclick="docOpenPlayer()">▶ Play Documentary</button><button class="doc-secondary" onclick="docSetTab('chapters')">Browse Chapters</button></div></div><div class="doc-poster"><div class="doc-poster-ring"><div class="doc-poster-logo">${logo}</div></div><div class="doc-poster-caption"><strong>${docEsc(save.name||club)}</strong><span>${docEsc(save.status||'Active')} Save</span></div></div></div></section>
  <div class="doc-stats"><div class="doc-stat"><span>Story Type</span><strong>${docEsc(identity.name)}</strong></div><div class="doc-stat"><span>Seasons</span><strong>${seasons.length||chapters.length}</strong></div><div class="doc-stat"><span>Honours</span><strong>${honours.length}</strong></div><div class="doc-stat"><span>Story Events</span><strong>${events.length}</strong></div><div class="doc-stat"><span>Rating</span><strong>${identity.rating}/5</strong></div></div>
