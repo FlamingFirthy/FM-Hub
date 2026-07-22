@@ -12407,7 +12407,11 @@ function docBuildScenes(save,events,chapters,stats,identity){
  const top=[...events].sort((a,b)=>storyEventPriority(b)-storyEventPriority(a)).slice(0,8);
  const scenes=[{kicker:'FM HUB PRESENTS',title:club,copy:`${identity.name}. ${identity.tagline}` }];
  if(seasons.length) scenes.push({kicker:'THE BEGINNING',title:seasons[0].season,copy:`The journey began in ${seasons[0].competition||seasons[0].league||seasons[0].division||'a new campaign'}. Every dynasty starts somewhere.`});
- top.forEach((e,i)=>scenes.push({kicker:`CHAPTER ${String(i+1).padStart(2,'0')} • ${e.season||'Career'}`,title:docHeadline(e,club),copy:docDescription(e)}));
+ top.forEach((e,i)=>{
+ const eventClub=e.historicalContext?.club||e.club||e.historicalClub||club;
+ const body=docDescription(e)+(eventClub?`\n\nClub: ${eventClub}`:'');
+ scenes.push({kicker:`CHAPTER ${String(i+1).padStart(2,'0')} • ${e.season||'Career'}`,title:docHeadline(e,eventClub),copy:body});
+});
  if(stats[0]) scenes.push({kicker:'CLUB LEGEND',title:stats[0].name,copy:`${stats[0].apps} appearances, ${stats[0].goals} goals and ${stats[0].assists} assists. A career that became part of the club's identity.`});
  if(honours.length) scenes.push({kicker:'THE TROPHY CABINET',title:`${honours.length} HONOUR${honours.length===1?'':'S'}`,copy:'The moments when ambition became silverware and the story became history.'});
  scenes.push({kicker:'THE STORY CONTINUES',title:save?.season||'THE NEXT CHAPTER',copy:'This documentary updates automatically as new seasons, honours, transfers and memories are added to FM Hub.'});
