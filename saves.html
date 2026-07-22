@@ -5910,6 +5910,306 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
 .doc-honour-person{display:block!important;margin-top:4px;color:var(--muted)!important;text-transform:none!important;letter-spacing:0!important}
 .honour-history-chip{display:inline-flex!important;width:max-content;padding:5px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)!important;font-size:.64rem!important;font-weight:900!important;text-transform:uppercase;letter-spacing:.05em}
 </style>
+<style id="documentary-playback-build1">
+  body.doc-player-open { overflow: hidden !important; }
+
+  .doc-player {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: none;
+    background:
+      radial-gradient(circle at 50% 38%, rgba(83, 55, 160, .24), transparent 42%),
+      linear-gradient(145deg, #05060a 0%, #101321 52%, #05060a 100%);
+    color: #fff;
+  }
+
+  .doc-player.active { display: block; }
+
+  .doc-player-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 100dvh;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .doc-player-stage::before,
+  .doc-player-stage::after {
+    content: "";
+    position: absolute;
+    inset: -25%;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .doc-player-stage::before {
+    background: repeating-linear-gradient(115deg, transparent 0 80px, rgba(255,255,255,.018) 81px 82px);
+    transform: rotate(-5deg);
+  }
+
+  .doc-player-stage::after {
+    background: radial-gradient(circle at center, transparent 35%, rgba(0,0,0,.72) 100%);
+  }
+
+  .doc-player-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 8;
+    min-height: 72px;
+    padding: 18px clamp(18px, 4vw, 56px);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(to bottom, rgba(0,0,0,.72), transparent);
+  }
+
+  .doc-player-brand {
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: .24em;
+    opacity: .78;
+  }
+
+  .doc-player-counter {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    opacity: .82;
+  }
+
+  .doc-player-top-actions {
+    justify-self: end;
+    display: flex;
+    gap: 10px;
+  }
+
+  .doc-icon-btn {
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 50%;
+    background: rgba(255,255,255,.07);
+    color: #fff;
+    font-size: 21px;
+    cursor: pointer;
+    transition: .2s ease;
+  }
+
+  .doc-icon-btn:hover {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,.15);
+  }
+
+  .doc-player-scene {
+    position: absolute;
+    inset: 80px 8vw 145px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(24px) scale(.985);
+    transition: opacity .55s ease, transform .7s cubic-bezier(.2,.8,.2,1);
+  }
+
+  .doc-player-scene.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .doc-player-scene-inner {
+    width: min(980px, 100%);
+    padding: clamp(28px, 5vw, 72px);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 34px;
+    background: linear-gradient(145deg, rgba(255,255,255,.10), rgba(255,255,255,.025));
+    box-shadow: 0 34px 100px rgba(0,0,0,.42);
+    backdrop-filter: blur(18px);
+  }
+
+  .doc-player-scene[data-scene-type="opening"] .doc-player-scene-inner {
+    border-color: rgba(255,215,110,.32);
+    box-shadow: 0 34px 110px rgba(166,116,35,.18);
+  }
+
+  .doc-player-scene[data-scene-type="trophy"] .doc-player-scene-inner {
+    border-color: rgba(255,215,110,.42);
+    background: linear-gradient(145deg, rgba(180,128,35,.20), rgba(255,255,255,.03));
+  }
+
+  .doc-player-scene[data-scene-type="player"] .doc-player-scene-inner {
+    border-color: rgba(130,170,255,.34);
+  }
+
+  .doc-player-kicker {
+    margin-bottom: 20px;
+    font-size: clamp(11px, 1.2vw, 15px);
+    font-weight: 950;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: #e3c776;
+  }
+
+  .doc-player-title {
+    font-size: clamp(38px, 7vw, 96px);
+    line-height: .96;
+    font-weight: 950;
+    letter-spacing: -.045em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    text-shadow: 0 10px 40px rgba(0,0,0,.4);
+  }
+
+  .doc-player-copy {
+    max-width: 760px;
+    margin: 26px auto 0;
+    font-size: clamp(16px, 2vw, 23px);
+    line-height: 1.55;
+    color: rgba(255,255,255,.76);
+    text-wrap: balance;
+  }
+
+  .doc-player-hit {
+    position: absolute;
+    top: 80px;
+    bottom: 132px;
+    z-index: 5;
+    width: 9vw;
+    min-width: 52px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .doc-player-hit-left { left: 0; }
+  .doc-player-hit-right { right: 0; }
+
+  .doc-player-bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9;
+    padding: 12px clamp(18px, 4vw, 56px) 20px;
+    background: linear-gradient(to top, rgba(0,0,0,.88), rgba(0,0,0,.18), transparent);
+  }
+
+  .doc-player-progress-wrap {
+    padding: 8px 0 10px;
+    cursor: pointer;
+  }
+
+  .doc-player-progress {
+    height: 5px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: rgba(255,255,255,.16);
+  }
+
+  .doc-player-progress > span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #b68b32, #ffe19a);
+    transition: width .12s linear;
+  }
+
+  .doc-player-scene-dots {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 10px;
+  }
+
+  .doc-player-scene-dots button {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,.28);
+    cursor: pointer;
+    transition: .2s ease;
+  }
+
+  .doc-player-scene-dots button.active {
+    width: 22px;
+    border-radius: 99px;
+    background: #f4d477;
+  }
+
+  .doc-player-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .doc-player-controls button {
+    min-height: 42px;
+    padding: 10px 17px;
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 12px;
+    background: rgba(255,255,255,.07);
+    color: #fff;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s ease;
+  }
+
+  .doc-player-controls button:hover {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,.14);
+  }
+
+  .doc-player-controls .doc-player-primary {
+    min-width: 112px;
+    border-color: rgba(255,215,110,.52);
+    background: linear-gradient(135deg, #9b7026, #d8ad54);
+    color: #140e05;
+  }
+
+  .doc-player-help {
+    margin-top: 9px;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: .06em;
+    color: rgba(255,255,255,.48);
+  }
+
+  @media (max-width: 700px) {
+    .doc-player-topbar {
+      grid-template-columns: 1fr auto;
+      padding: 12px 14px;
+    }
+
+    .doc-player-counter { display: none; }
+    .doc-player-scene { inset: 68px 14px 160px; }
+    .doc-player-scene-inner { padding: 28px 20px; border-radius: 24px; }
+    .doc-player-title { font-size: clamp(34px, 12vw, 58px); }
+    .doc-player-copy { font-size: 15px; }
+    .doc-player-bottom { padding: 8px 12px 14px; }
+    .doc-player-controls { gap: 7px; }
+    .doc-player-controls button { padding: 9px 11px; font-size: 12px; }
+    .doc-player-help { display: none; }
+    .doc-player-hit { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .doc-player-scene,
+    .doc-player-progress > span,
+    .doc-player-controls button,
+    .doc-icon-btn { transition: none !important; }
+  }
+</style>
 </head>
 <body>
   <header>
@@ -12113,12 +12413,270 @@ function docBuildScenes(save,events,chapters,stats,identity){
  scenes.push({kicker:'THE STORY CONTINUES',title:save?.season||'THE NEXT CHAPTER',copy:'This documentary updates automatically as new seasons, honours, transfers and memories are added to FM Hub.'});
  return scenes;
 }
-function docOpenPlayer(){const save=getCurrentSave();if(!save)return;const events=buildAutomaticStoryEvents(save),stats=storyV2BuildStats(save),chapters=storyV2BuildChapters(save,events,stats),identity=storyV2StoryIdentity(save,events,chapters,stats);window.docPlayerScenes=docBuildScenes(save,events,chapters,stats,identity);window.docPlayerIndex=0;let overlay=document.getElementById('docPlayer');if(!overlay){overlay=document.createElement('div');overlay.id='docPlayer';overlay.className='doc-player';overlay.innerHTML=`<div class="doc-player-stage"><div class="doc-player-progress"><span id="docPlayerProgress"></span></div><button class="doc-close" onclick="docClosePlayer()">×</button><div id="docPlayerScene" class="doc-player-scene"></div><div class="doc-player-controls"><button onclick="docPrevScene()">← Previous</button><button onclick="docNextScene()">Next →</button></div></div>`;document.body.appendChild(overlay);}overlay.classList.add('active');document.body.style.overflow='hidden';docRenderScene();}
-function docClosePlayer(){document.getElementById('docPlayer')?.classList.remove('active');document.body.style.overflow='';}
-function docRenderScene(){const scene=window.docPlayerScenes[window.docPlayerIndex];if(!scene)return;const el=document.getElementById('docPlayerScene');el.innerHTML=`<div class="doc-player-kicker">${docEsc(scene.kicker)}</div><div class="doc-player-title">${docEsc(scene.title)}</div><div class="doc-player-copy">${docEsc(scene.copy)}</div>`;const p=document.getElementById('docPlayerProgress');if(p)p.style.width=`${((window.docPlayerIndex+1)/window.docPlayerScenes.length)*100}%`;}
-function docNextScene(){if(window.docPlayerIndex>=window.docPlayerScenes.length-1){docClosePlayer();return;}window.docPlayerIndex++;docRenderScene();}
-function docPrevScene(){if(window.docPlayerIndex<=0)return;window.docPlayerIndex--;docRenderScene();}
-document.addEventListener('keydown',e=>{if(!document.getElementById('docPlayer')?.classList.contains('active'))return;if(e.key==='Escape')docClosePlayer();if(e.key==='ArrowRight')docNextScene();if(e.key==='ArrowLeft')docPrevScene();});
+const DOC_PLAYER_DEFAULT_DURATION = 6500;
+window.docPlayerTimer = null;
+window.docPlayerPlaying = false;
+window.docPlayerSceneStartedAt = 0;
+window.docPlayerRemaining = DOC_PLAYER_DEFAULT_DURATION;
+
+function docSceneType(scene){
+  const key = `${scene?.type || ''} ${scene?.kicker || ''} ${scene?.title || ''}`.toLowerCase();
+  if(key.includes('trophy') || key.includes('champion') || key.includes('honour')) return 'trophy';
+  if(key.includes('transfer') || key.includes('signing') || key.includes('arrival')) return 'transfer';
+  if(key.includes('legend') || key.includes('player')) return 'player';
+  if(key.includes('beginning') || key.includes('presents')) return 'opening';
+  if(key.includes('continues') || key.includes('credits') || key.includes('final')) return 'finale';
+  return 'chapter';
+}
+
+function docCreatePlayer(){
+  let overlay = document.getElementById('docPlayer');
+  if(overlay) return overlay;
+
+  overlay = document.createElement('div');
+  overlay.id = 'docPlayer';
+  overlay.className = 'doc-player';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', 'FM Hub documentary player');
+  overlay.innerHTML = `
+    <div class="doc-player-stage">
+      <div class="doc-player-topbar">
+        <div class="doc-player-brand">FM HUB DOCUMENTARY</div>
+        <div class="doc-player-counter" id="docPlayerCounter">Scene 1 of 1</div>
+        <div class="doc-player-top-actions">
+          <button type="button" class="doc-icon-btn" onclick="docToggleFullscreen()" title="Toggle fullscreen" aria-label="Toggle fullscreen">⛶</button>
+          <button type="button" class="doc-icon-btn doc-close" onclick="docClosePlayer()" title="Close documentary" aria-label="Close documentary">×</button>
+        </div>
+      </div>
+
+      <button type="button" class="doc-player-hit doc-player-hit-left" onclick="docPrevScene()" aria-label="Previous scene"></button>
+      <button type="button" class="doc-player-hit doc-player-hit-right" onclick="docNextScene()" aria-label="Next scene"></button>
+
+      <div id="docPlayerScene" class="doc-player-scene" aria-live="polite"></div>
+
+      <div class="doc-player-bottom">
+        <div class="doc-player-progress-wrap" id="docPlayerProgressWrap" onclick="docSeekFromProgress(event)">
+          <div class="doc-player-progress"><span id="docPlayerProgress"></span></div>
+          <div class="doc-player-scene-dots" id="docPlayerDots"></div>
+        </div>
+
+        <div class="doc-player-controls">
+          <button type="button" onclick="docRestartPlayer()" title="Restart documentary">↺ Restart</button>
+          <button type="button" onclick="docPrevScene()" title="Previous scene">← Previous</button>
+          <button type="button" class="doc-player-primary" id="docPlayerPlayButton" onclick="docTogglePlayback()" title="Play or pause">▶ Play</button>
+          <button type="button" onclick="docNextScene()" title="Next scene">Next →</button>
+          <button type="button" onclick="docClosePlayer()" title="Exit documentary">Exit</button>
+        </div>
+
+        <div class="doc-player-help">Space: play/pause · ← →: change scene · R: restart · Esc: exit</div>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  return overlay;
+}
+
+function docOpenPlayer(startIndex = 0, autoPlay = false){
+  const save = getCurrentSave();
+  if(!save) return;
+
+  const events = buildAutomaticStoryEvents(save);
+  const stats = storyV2BuildStats(save);
+  const chapters = storyV2BuildChapters(save, events, stats);
+  const identity = storyV2StoryIdentity(save, events, chapters, stats);
+
+  window.docPlayerScenes = docBuildScenes(save, events, chapters, stats, identity).map((scene, index) => ({
+    id: scene.id || `documentary-scene-${index + 1}`,
+    type: scene.type || docSceneType(scene),
+    duration: Math.max(2500, Number(scene.duration) || DOC_PLAYER_DEFAULT_DURATION),
+    ...scene
+  }));
+  window.docPlayerIndex = Math.min(Math.max(0, Number(startIndex) || 0), Math.max(0, window.docPlayerScenes.length - 1));
+  window.docPlayerRemaining = window.docPlayerScenes[window.docPlayerIndex]?.duration || DOC_PLAYER_DEFAULT_DURATION;
+
+  const overlay = docCreatePlayer();
+  overlay.classList.add('active');
+  document.body.classList.add('doc-player-open');
+  document.body.style.overflow = 'hidden';
+
+  docRenderScene(true);
+  if(autoPlay) docPlayPlayer();
+  else docPausePlayer(false);
+}
+
+function docClosePlayer(){
+  docPausePlayer(false);
+  const overlay = document.getElementById('docPlayer');
+  overlay?.classList.remove('active');
+  document.body.classList.remove('doc-player-open');
+  document.body.style.overflow = '';
+  if(document.fullscreenElement === overlay) document.exitFullscreen?.().catch(() => {});
+}
+
+function docRenderScene(resetTimer = true){
+  const scenes = window.docPlayerScenes || [];
+  const scene = scenes[window.docPlayerIndex];
+  if(!scene) return;
+
+  const el = document.getElementById('docPlayerScene');
+  if(!el) return;
+
+  el.classList.remove('is-visible');
+  el.dataset.sceneType = scene.type || 'chapter';
+  el.innerHTML = `
+    <div class="doc-player-scene-inner">
+      <div class="doc-player-kicker">${docEsc(scene.kicker || 'FM HUB DOCUMENTARY')}</div>
+      <div class="doc-player-title">${docEsc(scene.title || 'Untitled Scene')}</div>
+      <div class="doc-player-copy">${docEsc(scene.copy || '')}</div>
+    </div>`;
+
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('is-visible')));
+
+  const counter = document.getElementById('docPlayerCounter');
+  if(counter) counter.textContent = `Scene ${window.docPlayerIndex + 1} of ${scenes.length}`;
+
+  const dots = document.getElementById('docPlayerDots');
+  if(dots){
+    dots.innerHTML = scenes.map((_, index) =>
+      `<button type="button" class="${index === window.docPlayerIndex ? 'active' : ''}" onclick="event.stopPropagation();docGoToScene(${index})" aria-label="Go to scene ${index + 1}"></button>`
+    ).join('');
+  }
+
+  if(resetTimer) window.docPlayerRemaining = scene.duration || DOC_PLAYER_DEFAULT_DURATION;
+  docUpdateProgress();
+
+  if(window.docPlayerPlaying) docScheduleNext();
+}
+
+function docUpdateProgress(){
+  const scenes = window.docPlayerScenes || [];
+  const p = document.getElementById('docPlayerProgress');
+  if(!p || !scenes.length) return;
+
+  let withinScene = 0;
+  const scene = scenes[window.docPlayerIndex];
+  if(window.docPlayerPlaying && scene){
+    const elapsed = Date.now() - window.docPlayerSceneStartedAt;
+    withinScene = Math.min(1, elapsed / Math.max(1, window.docPlayerRemaining || scene.duration));
+  }
+  const overall = ((window.docPlayerIndex + withinScene) / scenes.length) * 100;
+  p.style.width = `${Math.max(0, Math.min(100, overall))}%`;
+}
+
+function docScheduleNext(){
+  clearTimeout(window.docPlayerTimer);
+  const scene = (window.docPlayerScenes || [])[window.docPlayerIndex];
+  if(!scene || !window.docPlayerPlaying) return;
+
+  window.docPlayerSceneStartedAt = Date.now();
+  const delay = Math.max(300, window.docPlayerRemaining || scene.duration || DOC_PLAYER_DEFAULT_DURATION);
+  window.docPlayerTimer = setTimeout(() => {
+    if(window.docPlayerIndex >= window.docPlayerScenes.length - 1){
+      docPausePlayer(false);
+      docUpdateProgress();
+      return;
+    }
+    window.docPlayerIndex++;
+    window.docPlayerRemaining = window.docPlayerScenes[window.docPlayerIndex]?.duration || DOC_PLAYER_DEFAULT_DURATION;
+    docRenderScene(true);
+  }, delay);
+}
+
+function docPlayPlayer(){
+  if(!(window.docPlayerScenes || []).length) return;
+  window.docPlayerPlaying = true;
+  const button = document.getElementById('docPlayerPlayButton');
+  if(button) button.textContent = '❚❚ Pause';
+  docScheduleNext();
+  docProgressAnimationLoop();
+}
+
+function docPausePlayer(preserveRemaining = true){
+  if(preserveRemaining && window.docPlayerPlaying){
+    const elapsed = Date.now() - (window.docPlayerSceneStartedAt || Date.now());
+    window.docPlayerRemaining = Math.max(300, (window.docPlayerRemaining || DOC_PLAYER_DEFAULT_DURATION) - elapsed);
+  }
+  window.docPlayerPlaying = false;
+  clearTimeout(window.docPlayerTimer);
+  window.docPlayerTimer = null;
+  const button = document.getElementById('docPlayerPlayButton');
+  if(button) button.textContent = '▶ Play';
+  docUpdateProgress();
+}
+
+function docTogglePlayback(){
+  window.docPlayerPlaying ? docPausePlayer(true) : docPlayPlayer();
+}
+
+function docProgressAnimationLoop(){
+  if(!window.docPlayerPlaying) return;
+  docUpdateProgress();
+  requestAnimationFrame(docProgressAnimationLoop);
+}
+
+function docGoToScene(index){
+  const scenes = window.docPlayerScenes || [];
+  if(!scenes.length) return;
+  const wasPlaying = window.docPlayerPlaying;
+  clearTimeout(window.docPlayerTimer);
+  window.docPlayerIndex = Math.min(Math.max(0, index), scenes.length - 1);
+  window.docPlayerRemaining = scenes[window.docPlayerIndex]?.duration || DOC_PLAYER_DEFAULT_DURATION;
+  docRenderScene(true);
+  if(!wasPlaying) docPausePlayer(false);
+}
+
+function docNextScene(){
+  const scenes = window.docPlayerScenes || [];
+  if(!scenes.length) return;
+  if(window.docPlayerIndex >= scenes.length - 1){
+    docPausePlayer(false);
+    return;
+  }
+  docGoToScene(window.docPlayerIndex + 1);
+}
+
+function docPrevScene(){
+  if(window.docPlayerIndex <= 0){
+    docGoToScene(0);
+    return;
+  }
+  docGoToScene(window.docPlayerIndex - 1);
+}
+
+function docRestartPlayer(){
+  docGoToScene(0);
+  docPlayPlayer();
+}
+
+function docSeekFromProgress(event){
+  const scenes = window.docPlayerScenes || [];
+  const wrap = document.getElementById('docPlayerProgressWrap');
+  if(!wrap || !scenes.length) return;
+  const rect = wrap.getBoundingClientRect();
+  const ratio = Math.max(0, Math.min(0.9999, (event.clientX - rect.left) / rect.width));
+  docGoToScene(Math.floor(ratio * scenes.length));
+}
+
+function docToggleFullscreen(){
+  const overlay = document.getElementById('docPlayer');
+  if(!overlay) return;
+  if(document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+  else overlay.requestFullscreen?.().catch(() => {});
+}
+
+if(!window.docPlaybackKeyboardBound){
+  window.docPlaybackKeyboardBound = true;
+  document.addEventListener('keydown', event => {
+    if(!document.getElementById('docPlayer')?.classList.contains('active')) return;
+    const key = event.key.toLowerCase();
+    if([' ', 'arrowleft', 'arrowright', 'escape', 'r'].includes(key)) event.preventDefault();
+    if(key === 'escape') docClosePlayer();
+    else if(key === 'arrowright') docNextScene();
+    else if(key === 'arrowleft') docPrevScene();
+    else if(key === ' ') docTogglePlayback();
+    else if(key === 'r') docRestartPlayer();
+  });
+}
 function renderDocumentary(save){
  const panel=document.getElementById('saveTabDocumentary');if(!panel||!save)return;
  const events=buildAutomaticStoryEvents(save),stats=storyV2BuildStats(save),chapters=storyV2BuildChapters(save,events,stats),identity=storyV2StoryIdentity(save,events,chapters,stats);
