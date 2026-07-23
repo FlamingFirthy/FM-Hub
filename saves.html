@@ -13047,5 +13047,53 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+
+<!-- FM HUB 3.0 LIVING CAREER ENGINE BUILD 2 -->
+<script id="living-career-engine">
+window.LivingCareerEngine={
+ build(save){
+  const e={version:"2.0",players:new Map(),clubs:new Map(),competitions:new Map(),managers:new Map(),timeline:[],records:{}};
+  const ensure=(map,key,f)=>{if(!key)return null;if(!map.has(key))map.set(key,f());return map.get(key);};
+  (save?.honours||[]).forEach(h=>{
+    const hc=h.historicalContext||{};
+    const club=hc.clubName||h.club||save?.club||"Unknown Club";
+    const player=h.person||h.player||hc.playerName||"";
+    const manager=hc.managerName||save?.manager||"Unknown Manager";
+    const comp=hc.competition||h.title||"Unknown Competition";
+    const c=ensure(e.clubs,club,()=>({name:club,honours:0,players:new Set(),competitions:new Set(),managers:new Set()}));
+    const m=ensure(e.managers,manager,()=>({name:manager,honours:0,clubs:new Set()}));
+    const co=ensure(e.competitions,comp,()=>({name:comp,titles:0,winners:new Set()}));
+    c.honours++; c.competitions.add(comp); c.managers.add(manager);
+    m.honours++; m.clubs.add(club);
+    co.titles++; co.winners.add(club);
+    if(player){
+      const p=ensure(e.players,player,()=>({name:player,honours:0,clubs:new Set(),competitions:new Set(),managers:new Set()}));
+      p.honours++; p.clubs.add(club); p.competitions.add(comp); p.managers.add(manager);
+      c.players.add(player);
+    }
+    e.timeline.push({season:h.season||hc.season||"",club,competition:comp,player,manager,title:h.title||""});
+  });
+  return e;
+ },
+ get(save){
+  if(!save)return null;
+  if(!save.__livingCareerEngine){
+    const eng=this.build(save);
+    const top=(m,k)=>{const a=[...m.values()];a.sort((x,y)=>(y[k]||0)-(x[k]||0));return a[0]||null;};
+    eng.records.topPlayer=top(eng.players,"honours");
+    eng.records.topClub=top(eng.clubs,"honours");
+    eng.records.topManager=top(eng.managers,"honours");
+    eng.records.topCompetition=top(eng.competitions,"titles");
+    eng.findPlayer=n=>eng.players.get(n)||null;
+    eng.findClub=n=>eng.clubs.get(n)||null;
+    eng.findCompetition=n=>eng.competitions.get(n)||null;
+    eng.findManager=n=>eng.managers.get(n)||null;
+    save.__livingCareerEngine=eng;
+  }
+  return save.__livingCareerEngine;
+ }
+};
+</script>
+
 </body>
 </html> 
