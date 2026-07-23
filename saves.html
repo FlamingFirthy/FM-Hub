@@ -13048,50 +13048,168 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 
 
-<!-- FM HUB 3.0 LIVING CAREER ENGINE BUILD 2 -->
+<!-- FM HUB 3.0 LIVING CAREER ENGINE BUILD 3 -->
 <script id="living-career-engine">
 window.LivingCareerEngine={
- build(save){
-  const e={version:"2.0",players:new Map(),clubs:new Map(),competitions:new Map(),managers:new Map(),timeline:[],records:{}};
-  const ensure=(map,key,f)=>{if(!key)return null;if(!map.has(key))map.set(key,f());return map.get(key);};
-  (save?.honours||[]).forEach(h=>{
-    const hc=h.historicalContext||{};
-    const club=hc.clubName||h.club||save?.club||"Unknown Club";
-    const player=h.person||h.player||hc.playerName||"";
-    const manager=hc.managerName||save?.manager||"Unknown Manager";
-    const comp=hc.competition||h.title||"Unknown Competition";
-    const c=ensure(e.clubs,club,()=>({name:club,honours:0,players:new Set(),competitions:new Set(),managers:new Set()}));
-    const m=ensure(e.managers,manager,()=>({name:manager,honours:0,clubs:new Set()}));
-    const co=ensure(e.competitions,comp,()=>({name:comp,titles:0,winners:new Set()}));
-    c.honours++; c.competitions.add(comp); c.managers.add(manager);
-    m.honours++; m.clubs.add(club);
-    co.titles++; co.winners.add(club);
-    if(player){
-      const p=ensure(e.players,player,()=>({name:player,honours:0,clubs:new Set(),competitions:new Set(),managers:new Set()}));
-      p.honours++; p.clubs.add(club); p.competitions.add(comp); p.managers.add(manager);
-      c.players.add(player);
-    }
-    e.timeline.push({season:h.season||hc.season||"",club,competition:comp,player,manager,title:h.title||""});
-  });
-  return e;
+ version:"3.0",
+ _norm(value){return String(value??"").trim();},
+ _key(type,value){return `${type}:${this._norm(value).toLowerCase()}`;},
+ _arr(value){return Array.isArray(value)?value:[];},
+ _num(value){const n=Number(value);return Number.isFinite(n)?n:0;},
+ _season(value){return this._norm(value)||"Unknown Season";},
+ _clubFrom(row,save){const hc=row?.historicalContext||{};return this._norm(hc.clubName||row?.club||row?.team||save?.club||save?.name)||"Unknown Club";},
+ _managerFrom(row,save){const hc=row?.historicalContext||{};return this._norm(hc.managerName||row?.manager||save?.manager)||"Unknown Manager";},
+ _competitionFrom(row){const hc=row?.historicalContext||{};return this._norm(hc.competition||row?.competition||row?.league||row?.division||row?.title)||"Unknown Competition";},
+ _playerFrom(row){const hc=row?.historicalContext||{};return this._norm(row?.personName||row?.person||row?.player||row?.name||hc.playerName);},
+ _ensureNode(engine,type,name,extra={}){
+   name=this._norm(name); if(!name)return null;
+   const id=this._key(type,name);
+   if(!engine.nodes.has(id))engine.nodes.set(id,{id,type,name,...extra,links:new Set()});
+   else Object.assign(engine.nodes.get(id),extra);
+   return engine.nodes.get(id);
  },
- get(save){
-  if(!save)return null;
-  if(!save.__livingCareerEngine){
-    const eng=this.build(save);
-    const top=(m,k)=>{const a=[...m.values()];a.sort((x,y)=>(y[k]||0)-(x[k]||0));return a[0]||null;};
-    eng.records.topPlayer=top(eng.players,"honours");
-    eng.records.topClub=top(eng.clubs,"honours");
-    eng.records.topManager=top(eng.managers,"honours");
-    eng.records.topCompetition=top(eng.competitions,"titles");
-    eng.findPlayer=n=>eng.players.get(n)||null;
-    eng.findClub=n=>eng.clubs.get(n)||null;
-    eng.findCompetition=n=>eng.competitions.get(n)||null;
-    eng.findManager=n=>eng.managers.get(n)||null;
-    save.__livingCareerEngine=eng;
-  }
-  return save.__livingCareerEngine;
- }
+ _link(engine,fromType,fromName,toType,toName,relation,meta={}){
+   fromName=this._norm(fromName); toName=this._norm(toName);
+   if(!fromName||!toName)return null;
+   const from=this._ensureNode(engine,fromType,fromName);
+   const to=this._ensureNode(engine,toType,toName);
+   const id=`${from.id}|${relation}|${to.id}|${this._season(meta.season)}`;
+   if(!engine.edges.has(id))engine.edges.set(id,{id,from:from.id,to:to.id,relation,...meta});
+   from.links.add(id); to.links.add(id);
+   return engine.edges.get(id);
+ },
+ build(save){
+   const engine={
+     version:this.version,
+     builtAt:new Date().toISOString(),
+     saveName:save?.name||"",
+     nodes:new Map(), edges:new Map(), timeline:[],
+     players:new Map(), clubs:new Map(), managers:new Map(), competitions:new Map(), seasons:new Map(),
+     records:{}, indexes:{byRelation:new Map(),bySeason:new Map()}
+   };
+   const ensureProfile=(map,name,factory)=>{name=this._norm(name);if(!name)return null;if(!map.has(name))map.set(name,factory(name));return map.get(name);};
+   const addSeasonEvent=(season,event)=>{season=this._season(season);if(!engine.indexes.bySeason.has(season))engine.indexes.bySeason.set(season,[]);engine.indexes.bySeason.get(season).push(event);};
+
+   const honours=this._arr(save?.honours);
+   honours.forEach((h,index)=>{
+     const hc=h.historicalContext||{};
+     const season=this._season(h.season||hc.season);
+     const club=this._clubFrom(h,save);
+     const manager=this._managerFrom(h,save);
+     const competition=this._competitionFrom(h);
+     const player=this._playerFrom(h);
+     const title=this._norm(h.title||competition||"Honour");
+     const isClubHonour=!player||h.section==='Club Honours'||h.category==='club';
+
+     const c=ensureProfile(engine.clubs,club,n=>({name:n,honours:0,players:new Set(),competitions:new Set(),managers:new Set(),seasons:new Set(),timeline:[]}));
+     const m=ensureProfile(engine.managers,manager,n=>({name:n,honours:0,clubs:new Set(),players:new Set(),seasons:new Set(),timeline:[]}));
+     const co=ensureProfile(engine.competitions,competition,n=>({name:n,titles:0,winners:new Set(),players:new Set(),seasons:new Set(),timeline:[]}));
+     c.honours++; c.competitions.add(competition); c.managers.add(manager); c.seasons.add(season);
+     m.honours++; m.clubs.add(club); m.seasons.add(season);
+     co.titles++; co.winners.add(club); co.seasons.add(season);
+
+     this._ensureNode(engine,'club',club,{profile:c});
+     this._ensureNode(engine,'manager',manager,{profile:m});
+     this._ensureNode(engine,'competition',competition,{profile:co});
+     this._ensureNode(engine,'season',season);
+     this._link(engine,'manager',manager,'club',club,'managed',{season});
+     this._link(engine,'club',club,'competition',competition,'won',{season,title});
+     this._link(engine,'club',club,'season',season,'appeared_in',{title});
+     this._link(engine,'competition',competition,'season',season,'contested_in',{title});
+
+     if(player){
+       const p=ensureProfile(engine.players,player,n=>({name:n,honours:0,clubs:new Set(),competitions:new Set(),managers:new Set(),teammates:new Set(),seasons:new Set(),timeline:[]}));
+       p.honours++; p.clubs.add(club); p.competitions.add(competition); p.managers.add(manager); p.seasons.add(season);
+       c.players.add(player); m.players.add(player); co.players.add(player);
+       this._ensureNode(engine,'player',player,{profile:p});
+       this._link(engine,'player',player,'club',club,'played_for',{season});
+       this._link(engine,'player',player,'manager',manager,'managed_by',{season});
+       this._link(engine,'player',player,'competition',competition,'won',{season,title});
+       this._link(engine,'player',player,'season',season,'active_in',{title});
+     }
+
+     const event={id:`honour-${index}`,kind:'honour',season,club,manager,competition,player,title,isClubHonour,historicalContext:hc};
+     engine.timeline.push(event); c.timeline.push(event);m.timeline.push(event);co.timeline.push(event);if(player)engine.players.get(player).timeline.push(event);addSeasonEvent(season,event);
+   });
+
+   const stats=[...this._arr(save?.playerStats),...this._arr(save?.stats),...this._arr(save?.seasonStats)];
+   const squads=new Map();
+   stats.forEach((row,index)=>{
+     const player=this._playerFrom(row); if(!player)return;
+     const season=this._season(row.season||row.year);
+     const club=this._clubFrom(row,save);
+     const manager=this._managerFrom(row,save);
+     const p=ensureProfile(engine.players,player,n=>({name:n,honours:0,clubs:new Set(),competitions:new Set(),managers:new Set(),teammates:new Set(),seasons:new Set(),timeline:[],stats:{apps:0,goals:0,assists:0,cleanSheets:0}}));
+     p.clubs.add(club);p.managers.add(manager);p.seasons.add(season);
+     p.stats=p.stats||{apps:0,goals:0,assists:0,cleanSheets:0};
+     p.stats.apps+=this._num(row.apps||row.appearances);p.stats.goals+=this._num(row.goals);p.stats.assists+=this._num(row.assists);p.stats.cleanSheets+=this._num(row.cleanSheets||row.cs);
+     const c=ensureProfile(engine.clubs,club,n=>({name:n,honours:0,players:new Set(),competitions:new Set(),managers:new Set(),seasons:new Set(),timeline:[]}));c.players.add(player);c.managers.add(manager);c.seasons.add(season);
+     const m=ensureProfile(engine.managers,manager,n=>({name:n,honours:0,clubs:new Set(),players:new Set(),seasons:new Set(),timeline:[]}));m.players.add(player);m.clubs.add(club);m.seasons.add(season);
+     this._ensureNode(engine,'player',player,{profile:p});this._ensureNode(engine,'club',club,{profile:c});this._ensureNode(engine,'manager',manager,{profile:m});this._ensureNode(engine,'season',season);
+     this._link(engine,'player',player,'club',club,'played_for',{season});this._link(engine,'player',player,'manager',manager,'managed_by',{season});this._link(engine,'player',player,'season',season,'active_in',{});
+     const squadKey=`${club.toLowerCase()}|${season.toLowerCase()}`;if(!squads.has(squadKey))squads.set(squadKey,{club,season,players:new Set()});squads.get(squadKey).players.add(player);
+   });
+
+   squads.forEach(group=>{
+     const players=[...group.players];
+     for(let i=0;i<players.length;i++)for(let j=i+1;j<players.length;j++){
+       const a=players[i],b=players[j];
+       engine.players.get(a)?.teammates.add(b);engine.players.get(b)?.teammates.add(a);
+       this._link(engine,'player',a,'player',b,'teammate',{season:group.season,club:group.club});
+       this._link(engine,'player',b,'player',a,'teammate',{season:group.season,club:group.club});
+     }
+   });
+
+   const storyEvents=[...this._arr(save?.storyEvents),...this._arr(save?.events),...this._arr(save?.timeline)];
+   storyEvents.forEach((row,index)=>{
+     const season=this._season(row.season||row.year||row.date);
+     const club=this._clubFrom(row,save);const player=this._playerFrom(row);const manager=this._managerFrom(row,save);const competition=this._competitionFrom(row);
+     const title=this._norm(row.title||row.name||row.type||'Story Event');
+     const event={id:`story-${index}`,kind:'story',season,club,player,manager,competition,title,detail:row.detail||row.description||''};
+     engine.timeline.push(event);addSeasonEvent(season,event);
+     this._ensureNode(engine,'story',title,{event});this._link(engine,'story',title,'season',season,'belongs_to',{});this._link(engine,'story',title,'club',club,'features',{season});
+     if(player)this._link(engine,'story',title,'player',player,'features',{season});
+     if(manager)this._link(engine,'story',title,'manager',manager,'features',{season});
+     if(competition&&competition!=='Unknown Competition')this._link(engine,'story',title,'competition',competition,'features',{season});
+   });
+
+   const documentary=this._arr(save?.documentaryScenes||save?.documentary?.scenes);
+   documentary.forEach((scene,index)=>{
+     const title=this._norm(scene.title||`Documentary Scene ${index+1}`);const season=this._season(scene.season||scene.year);const club=this._clubFrom(scene,save);const player=this._playerFrom(scene);
+     this._ensureNode(engine,'documentary',title,{scene});this._link(engine,'documentary',title,'season',season,'covers',{});this._link(engine,'documentary',title,'club',club,'covers',{season});if(player)this._link(engine,'documentary',title,'player',player,'covers',{season});
+   });
+
+   engine.edges.forEach(edge=>{if(!engine.indexes.byRelation.has(edge.relation))engine.indexes.byRelation.set(edge.relation,[]);engine.indexes.byRelation.get(edge.relation).push(edge);});
+   const top=(map,key)=>[...map.values()].sort((a,b)=>(b[key]||0)-(a[key]||0))[0]||null;
+   engine.records.topPlayer=top(engine.players,'honours');engine.records.topClub=top(engine.clubs,'honours');engine.records.topManager=top(engine.managers,'honours');engine.records.topCompetition=top(engine.competitions,'titles');
+   engine.records.mostAppearances=[...engine.players.values()].sort((a,b)=>(b.stats?.apps||0)-(a.stats?.apps||0))[0]||null;
+   engine.records.topScorer=[...engine.players.values()].sort((a,b)=>(b.stats?.goals||0)-(a.stats?.goals||0))[0]||null;
+   engine.records.topAssister=[...engine.players.values()].sort((a,b)=>(b.stats?.assists||0)-(a.stats?.assists||0))[0]||null;
+
+   engine.findPlayer=name=>engine.players.get(this._norm(name))||null;
+   engine.findClub=name=>engine.clubs.get(this._norm(name))||null;
+   engine.findManager=name=>engine.managers.get(this._norm(name))||null;
+   engine.findCompetition=name=>engine.competitions.get(this._norm(name))||null;
+   engine.findNode=(type,name)=>engine.nodes.get(this._key(type,name))||null;
+   engine.getRelationships=(type,name,relation)=>{
+     const node=engine.findNode(type,name);if(!node)return[];
+     return [...node.links].map(id=>engine.edges.get(id)).filter(Boolean).filter(e=>!relation||e.relation===relation);
+   };
+   engine.getConnected=(type,name,relation)=>engine.getRelationships(type,name,relation).map(edge=>{
+     const nodeId=edge.from===this._key(type,name)?edge.to:edge.from;return {node:engine.nodes.get(nodeId)||null,edge};
+   });
+   engine.getTeammates=name=>engine.getConnected('player',name,'teammate').map(x=>x.node).filter(Boolean);
+   engine.getCareerPath=name=>{
+     const p=engine.findPlayer(name);if(!p)return[];
+     return engine.getRelationships('player',name,'played_for').map(e=>({club:engine.nodes.get(e.to)?.name||'',season:e.season||''})).sort((a,b)=>String(a.season).localeCompare(String(b.season)));
+   };
+   engine.getClubHistory=name=>({profile:engine.findClub(name),relationships:engine.getRelationships('club',name),timeline:engine.timeline.filter(e=>e.club===name)});
+   engine.getPlayerHistory=name=>({profile:engine.findPlayer(name),relationships:engine.getRelationships('player',name),timeline:engine.timeline.filter(e=>e.player===name)});
+   return engine;
+ },
+ get(save,{refresh=false}={}){if(!save)return null;if(refresh||!save.__livingCareerEngine||save.__livingCareerEngine.version!==this.version)save.__livingCareerEngine=this.build(save);return save.__livingCareerEngine;},
+ refresh(save){return this.get(save,{refresh:true});},
+ invalidate(save){if(save)delete save.__livingCareerEngine;}
 };
 </script>
 
