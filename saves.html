@@ -6253,6 +6253,17 @@ window.HistoricalContextEngine=window.HistoricalContextEngine||(()=>{
 })();
 
 </script>
+
+<style id="honours2-build2">
+.honours2-featured{display:grid;grid-template-columns:1.4fr .9fr;gap:16px;margin:18px 0}
+.h2box{padding:20px;border-radius:20px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.02))}
+.h2stars{color:#ffd54a;letter-spacing:2px}
+.honours2-toggle{display:flex;gap:8px;margin:14px 0}
+.honours2-toggle button.active{background:var(--accent);color:#fff}
+.h2cabinet{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.h2shelf{padding:16px;border-radius:16px;background:rgba(255,255,255,.04);text-align:center;border:1px solid rgba(255,255,255,.08)}
+</style>
+
 </head>
 <body>
   <header>
@@ -8929,7 +8940,7 @@ function renderHonourCard(award) {
 
   container.innerHTML = `
     ${honours2RenderHero(awards)}
-    ${honours2RenderFilters(awards, filtered.length)}
+    ${(()=>{const b=filtered[0]||awards[0]||{};const n=(b.historicalContext?.competition)||b.competition||b.category||'No honours';return `<div class="honours2-featured"><div class="h2box"><div class="section-kicker">Greatest Achievement</div><h2>${escapeHtml(n)}</h2><div>${escapeHtml((b.historicalContext?.clubName)||b.club||'')}</div><div class="h2stars">${honoursPrestigeName(n)}</div></div><div class="h2box"><b>Career Insights</b><br>Total Honours: ${awards.length}<br>Filtered: ${filtered.length}</div></div><div class="honours2-toggle"><button class="${HONOURS2_VIEW.mode==='gallery'?'active':''}" onclick="HONOURS2_VIEW.mode='gallery';renderSeasonAwards(getCurrentSave())">Gallery</button><button class="${HONOURS2_VIEW.mode==='cabinet'?'active':''}" onclick="HONOURS2_VIEW.mode='cabinet';renderSeasonAwards(getCurrentSave())">Cabinet</button></div>${HONOURS2_VIEW.mode==='cabinet'?`<div class='h2cabinet'>${Object.entries(filtered.reduce((o,a)=>{const k=(a.historicalContext?.competition)||a.competition||a.category||'Other';o[k]=(o[k]||0)+1;return o;},{})).map(([k,v])=>`<div class='h2shelf'><div style='font-size:2rem'>🏆</div><strong>${escapeHtml(k)}</strong><div>x${v}</div></div>`).join('')}</div>`:''}`})()}${honours2RenderFilters(awards, filtered.length)}
     ${filtered.length ? `
       <div class="honours-section-stack honours2-stack">
         ${sectionData.filter(([, , ,key])=>grouped[key].length).map(([title,subtitle,icon,key])=>
@@ -13401,6 +13412,12 @@ window.LivingCareerEngine={
  refresh(save){return this.get(save,{refresh:true});},
  invalidate(save){if(save)delete save.__livingCareerEngine;}
 };
+</script>
+
+
+<script id="honours2build2">
+window.HONOURS2_VIEW=window.HONOURS2_VIEW||{mode:'gallery'};
+function honoursPrestigeName(n){if(!n)return'★☆☆☆☆';const s=n.toLowerCase();if(s.includes('world cup')||s.includes('champions league'))return'★★★★★';if(s.includes('league'))return'★★★★☆';if(s.includes('cup'))return'★★★☆☆';return'★★☆☆☆';}
 </script>
 
 </body>
