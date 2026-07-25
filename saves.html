@@ -8688,33 +8688,191 @@ function escapeHtml(value) {
       return HONOUR_AWARD_SECTION[category] || customType || 'Personal Honour';
     }
 
-    function renderHonourCard(award) {
-      const iconData = getHonourIcon(award.type, award.category);
-      const location = [award.club, award.nation, award.competition].filter(Boolean).join(' • ');
+    
+const HONOURS2_STATE = {
+  search: '',
+  type: 'all',
+  season: 'all',
+  club: 'all',
+  competition: 'all',
+  person: 'all',
+  manager: 'all',
+  sort: 'newest'
+};
 
-      return `
-        <div class="award-card honour-card">
-          <div class="honour-card-head">
-            <span class="honour-icon ${iconData.cls}">${iconData.icon}</span>
-            <div>
-              <strong>${escapeHtml(award.category || 'Honour')}</strong>
-              <span>${escapeHtml(award.type || 'Individual Award')}</span>
-            </div>
-          </div>
+function honours2Value(award, key) {
+  const hc = award?.historicalContext || {};
+  const map = {
+    club: hc.clubName || hc.club || award?.club || '',
+    competition: hc.competition || award?.competition || '',
+    person: hc.playerName || award?.person || award?.player || '',
+    manager: hc.managerName || award?.manager || '',
+    season: hc.season || award?.season || '',
+    nation: hc.nation || award?.nation || ''
+  };
+  return String(map[key] || '').trim();
+}
 
-          <span>${escapeHtml(award.person || '-')} • ${escapeHtml(award.season || 'No season')}</span>
-          ${location ? `<span>${award.club ? '<strong>Won with:</strong> ' : ''}${escapeHtml(location)}</span>` : ''}
-          ${award.historicalContext?.capturedAt ? `<span class="honour-history-chip">Historical context saved</span>` : ''}
-          ${award.value ? `<span><strong>Stats:</strong> ${escapeHtml(award.value)}</span>` : ''}
-          ${award.notes ? `<span>${escapeHtml(award.notes)}</span>` : ''}
+function honours2Unique(awards, key) {
+  return [...new Set(awards.map(a => honours2Value(a, key)).filter(Boolean))]
+    .sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
+}
 
-          <div class="hero-actions edit-only honour-card-actions" style="margin-top:12px;">
-            <button class="admin-only secondary honour-edit-btn" type="button" onclick="editSeasonAward(${award.__index})">Edit</button>
-            <button class="admin-only delete-btn small-btn honour-delete-btn" type="button" onclick="deleteSeasonAward(${award.__index})"></button>
-          </div>
-        </div>
-      `;
+function honours2Options(values, selected, placeholder) {
+  return `<option value="all">${escapeHtml(placeholder)}</option>` +
+    values.map(value => `<option value="${escapeHtml(value)}"${value===selected?' selected':''}>${escapeHtml(value)}</option>`).join('');
+}
+
+function honours2SetFilter(key, value) {
+  HONOURS2_STATE[key] = value;
+  const save = getCurrentSave();
+  if (save) renderSeasonAwards(save);
+}
+
+function honours2ResetFilters() {
+  Object.assign(HONOURS2_STATE, {
+    search:'', type:'all', season:'all', club:'all',
+    competition:'all', person:'all', manager:'all', sort:'newest'
+  });
+  const save = getCurrentSave();
+  if (save) renderSeasonAwards(save);
+}
+
+function honours2NormalisedTitle(award) {
+  return String(award?.category || award?.title || award?.name || 'Honour').trim();
+}
+
+function honours2FilterAwards(awards) {
+  const search = HONOURS2_STATE.search.toLowerCase().trim();
+  return awards.filter(award => {
+    const section = getHonourSection(award);
+    if (HONOURS2_STATE.type !== 'all' && section !== HONOURS2_STATE.type) return false;
+    for (const key of ['season','club','competition','person','manager']) {
+      if (HONOURS2_STATE[key] !== 'all' && honours2Value(award,key) !== HONOURS2_STATE[key]) return false;
     }
+    if (search) {
+      const haystack = [
+        honours2NormalisedTitle(award), award.type, award.value, award.notes,
+        honours2Value(award,'season'), honours2Value(award,'club'),
+        honours2Value(award,'competition'), honours2Value(award,'person'),
+        honours2Value(award,'manager'), honours2Value(award,'nation')
+      ].join(' ').toLowerCase();
+      if (!haystack.includes(search)) return false;
+    }
+    return true;
+  }).sort((a,b) => {
+    const aSeason = honours2Value(a,'season');
+    const bSeason = honours2Value(b,'season');
+    if (HONOURS2_STATE.sort === 'oldest') return aSeason.localeCompare(bSeason,undefined,{numeric:true});
+    if (HONOURS2_STATE.sort === 'az') return honours2NormalisedTitle(a).localeCompare(honours2NormalisedTitle(b));
+    if (HONOURS2_STATE.sort === 'za') return honours2NormalisedTitle(b).localeCompare(honours2NormalisedTitle(a));
+    return bSeason.localeCompare(aSeason,undefined,{numeric:true});
+  });
+}
+
+function honours2Summary(awards) {
+  const sections = {personal:0,club:0,international:0,records:0,others:0};
+  awards.forEach(a => sections[getHonourSection(a)] = (sections[getHonourSection(a)]||0)+1);
+  const seasons = new Set(awards.map(a=>honours2Value(a,'season')).filter(Boolean));
+  const latest = [...awards].sort((a,b)=>honours2Value(b,'season').localeCompare(honours2Value(a,'season'),undefined,{numeric:true}))[0];
+  return {sections,seasons:seasons.size,latest};
+}
+
+function honours2RenderHero(awards) {
+  const summary = honours2Summary(awards);
+  return `
+    <section class="honours2-hero">
+      <div class="honours2-hero-copy">
+        <div class="section-kicker">Career Trophy Room</div>
+        <h2>Honours</h2>
+        <p>Explore every trophy, award, record, and milestone from this save.</p>
+      </div>
+      <div class="honours2-stats">
+        <div><span>Total</span><strong>${awards.length}</strong></div>
+        <div><span>Club</span><strong>${summary.sections.club}</strong></div>
+        <div><span>Personal</span><strong>${summary.sections.personal}</strong></div>
+        <div><span>International</span><strong>${summary.sections.international}</strong></div>
+        <div><span>Seasons</span><strong>${summary.seasons}</strong></div>
+      </div>
+    </section>`;
+}
+
+function honours2RenderFilters(awards, shown) {
+  const active = Object.entries(HONOURS2_STATE).filter(([k,v]) => !['sort'].includes(k) && v && v !== 'all').length;
+  return `
+    <section class="honours2-filter-shell">
+      <div class="honours2-filter-top">
+        <label class="honours2-search">
+          <span>⌕</span>
+          <input type="search" value="${escapeHtml(HONOURS2_STATE.search)}" placeholder="Search honours, clubs, players..." oninput="honours2SetFilter('search',this.value)">
+        </label>
+        <div class="honours2-results"><strong>${shown}</strong> of ${awards.length} honours</div>
+        <button type="button" class="secondary honours2-reset" onclick="honours2ResetFilters()" ${active?'':'disabled'}>Reset</button>
+      </div>
+      <div class="honours2-filter-grid">
+        <select onchange="honours2SetFilter('type',this.value)">
+          <option value="all">All types</option>
+          <option value="personal"${HONOURS2_STATE.type==='personal'?' selected':''}>Personal</option>
+          <option value="club"${HONOURS2_STATE.type==='club'?' selected':''}>Club</option>
+          <option value="international"${HONOURS2_STATE.type==='international'?' selected':''}>International</option>
+          <option value="records"${HONOURS2_STATE.type==='records'?' selected':''}>Records</option>
+          <option value="others"${HONOURS2_STATE.type==='others'?' selected':''}>Others</option>
+        </select>
+        <select onchange="honours2SetFilter('season',this.value)">${honours2Options(honours2Unique(awards,'season'),HONOURS2_STATE.season,'All seasons')}</select>
+        <select onchange="honours2SetFilter('club',this.value)">${honours2Options(honours2Unique(awards,'club'),HONOURS2_STATE.club,'All clubs')}</select>
+        <select onchange="honours2SetFilter('competition',this.value)">${honours2Options(honours2Unique(awards,'competition'),HONOURS2_STATE.competition,'All competitions')}</select>
+        <select onchange="honours2SetFilter('person',this.value)">${honours2Options(honours2Unique(awards,'person'),HONOURS2_STATE.person,'All people')}</select>
+        <select onchange="honours2SetFilter('manager',this.value)">${honours2Options(honours2Unique(awards,'manager'),HONOURS2_STATE.manager,'All managers')}</select>
+        <select onchange="honours2SetFilter('sort',this.value)">
+          <option value="newest"${HONOURS2_STATE.sort==='newest'?' selected':''}>Newest first</option>
+          <option value="oldest"${HONOURS2_STATE.sort==='oldest'?' selected':''}>Oldest first</option>
+          <option value="az"${HONOURS2_STATE.sort==='az'?' selected':''}>A–Z</option>
+          <option value="za"${HONOURS2_STATE.sort==='za'?' selected':''}>Z–A</option>
+        </select>
+      </div>
+    </section>`;
+}
+
+function renderHonourCard(award) {
+  const iconData = getHonourIcon(award.type, award.category);
+  const section = getHonourSection(award);
+  const club = honours2Value(award,'club');
+  const competition = honours2Value(award,'competition');
+  const person = honours2Value(award,'person');
+  const manager = honours2Value(award,'manager');
+  const season = honours2Value(award,'season') || 'No season';
+  const nation = honours2Value(award,'nation');
+  const badge = award?.historicalContext?.clubBadge || award?.clubBadge || '';
+  const subtitle = competition || club || award.type || 'Career honour';
+
+  return `
+    <article class="award-card honour-card honours2-card honours2-${section}">
+      <div class="honours2-card-accent"></div>
+      <div class="honours2-card-top">
+        <div class="honour-icon ${iconData.cls}">${iconData.icon}</div>
+        ${badge ? `<div class="honours2-badge"><img src="${escapeHtml(badge)}" alt=""></div>` : `<div class="honours2-badge fallback">${escapeHtml((club||competition||'FM').slice(0,2).toUpperCase())}</div>`}
+        <span class="honours2-season">${escapeHtml(season)}</span>
+      </div>
+      <div class="honours2-card-body">
+        <div class="honours2-type">${escapeHtml(award.type || section)}</div>
+        <h3>${escapeHtml(honours2NormalisedTitle(award))}</h3>
+        <p>${escapeHtml(subtitle)}</p>
+        <div class="honours2-meta">
+          ${club ? `<span><b>Club</b>${escapeHtml(club)}</span>` : ''}
+          ${person ? `<span><b>Person</b>${escapeHtml(person)}</span>` : ''}
+          ${manager ? `<span><b>Manager</b>${escapeHtml(manager)}</span>` : ''}
+          ${nation ? `<span><b>Nation</b>${escapeHtml(nation)}</span>` : ''}
+          ${award.value ? `<span><b>Detail</b>${escapeHtml(award.value)}</span>` : ''}
+        </div>
+        ${award.notes ? `<div class="honours2-notes">${escapeHtml(award.notes)}</div>` : ''}
+        ${award.historicalContext?.capturedAt ? `<div class="honour-history-chip">Historical context saved</div>` : ''}
+      </div>
+      <div class="hero-actions edit-only honour-card-actions honours2-actions">
+        <button class="admin-only secondary honour-edit-btn" type="button" onclick="editSeasonAward(${award.__index})">Edit</button>
+        <button class="admin-only delete-btn small-btn honour-delete-btn" type="button" onclick="deleteSeasonAward(${award.__index})"></button>
+      </div>
+    </article>`;
+}
 
     function renderHonourSection(title, subtitle, icon, awards, className) {
       return `
@@ -8741,56 +8899,46 @@ function escapeHtml(value) {
     }
 
     function renderSeasonAwards(save) {
-      if (typeof ensureHistoricalHonourSnapshots === 'function') ensureHistoricalHonourSnapshots(save);
-      const container = document.getElementById('seasonAwardsList');
-      if (!container || !save) return;
+  if (typeof ensureHistoricalHonourSnapshots === 'function') ensureHistoricalHonourSnapshots(save);
+  const container = document.getElementById('seasonAwardsList');
+  if (!container || !save) return;
 
-      const awards = Array.isArray(save.seasonAwards) ? save.seasonAwards : [];
-      if (!awards.length) {
-        container.innerHTML = '<div class="empty-state" style="grid-column:1/-1; margin-top:0;">No honours yet. Add awards, trophies, records, milestones, and special achievements in edit mode.</div>';
-        return;
-      }
+  const awards = (Array.isArray(save.seasonAwards) ? save.seasonAwards : [])
+    .map((award,index)=>({...award,__index:index}));
 
-      const sorted = awards
-        .map((award, index) => ({ ...award, __index: index }))
-        .sort((a, b) => String(b.season || '').localeCompare(String(a.season || '')));
+  if (!awards.length) {
+    container.innerHTML = `${honours2RenderHero([])}
+      <div class="honours2-empty">
+        <div>🏆</div><h3>Your trophy room is empty</h3>
+        <p>Add awards, trophies, records, milestones, and achievements in edit mode.</p>
+      </div>`;
+    return;
+  }
 
-      const grouped = { personal: [], club: [], international: [], records: [], others: [] };
-      sorted.forEach(award => {
-        const section = getHonourSection(award);
-        (grouped[section] || grouped.others).push(award);
-      });
+  const filtered = honours2FilterAwards(awards);
+  const grouped = { personal: [], club: [], international: [], records: [], others: [] };
+  filtered.forEach(award => (grouped[getHonourSection(award)] || grouped.others).push(award));
 
-      container.innerHTML = `
-        <div class="honours-section-stack">
-          ${renderHonourSection(
-            'Personal Honours',
-            'Individual awards, seasonal awards, best elevens, and player or staff recognition.',
-            '🏅', grouped.personal, 'personal'
-          )}
-          ${renderHonourSection(
-            'Club Honours',
-            'League titles, promotions, cup victories, continental success, and team achievements.',
-            '🏆', grouped.club, 'club'
-          )}
-          ${renderHonourSection(
-            'International Honours',
-            'National-team achievements, tournament awards, selections, and cap milestones.',
-            '🌍', grouped.international, 'international'
-          )}
-          ${renderHonourSection(
-            'Records',
-            'Club, competition, transfer, appearance, scoring, and performance records.',
-            '📜', grouped.records, 'records'
-          )}
-          ${renderHonourSection(
-            'Others',
-            'Captaincies, debuts, milestones, retirements, legends, testimonials, and custom honours.',
-            '⭐', grouped.others, 'others'
-          )}
-        </div>
-      `;
-    }
+  const sectionData = [
+    ['Personal Honours','Individual awards, seasonal recognition, best elevens, and staff awards.','🏅','personal'],
+    ['Club Honours','League titles, promotions, cup victories, and team achievements.','🏆','club'],
+    ['International Honours','National-team success, tournament honours, and cap milestones.','🌍','international'],
+    ['Records','Club, competition, transfer, scoring, and performance records.','📜','records'],
+    ['Others','Captaincies, debuts, milestones, retirements, legends, and custom honours.','⭐','others']
+  ];
+
+  container.innerHTML = `
+    ${honours2RenderHero(awards)}
+    ${honours2RenderFilters(awards, filtered.length)}
+    ${filtered.length ? `
+      <div class="honours-section-stack honours2-stack">
+        ${sectionData.filter(([, , ,key])=>grouped[key].length).map(([title,subtitle,icon,key])=>
+          renderHonourSection(title,subtitle,icon,grouped[key],key)
+        ).join('')}
+      </div>` :
+      `<div class="honours2-empty"><div>⌕</div><h3>No honours match</h3><p>Try changing or resetting the filters.</p><button type="button" class="secondary" onclick="honours2ResetFilters()">Reset filters</button></div>`
+    }`;
+}
 
 function updateHonourCategoryOptions(selected='') {
   const select = document.getElementById('awardCategoryInput');
@@ -11835,6 +11983,48 @@ document.addEventListener('DOMContentLoaded', () => {
 <datalist id="nationOptions" data-nation-list="true"></datalist>
 
 
+
+<style id="honours-2-build1">
+#saveTabHonours > .detail-card:has(#seasonAwardsList){background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}
+#saveTabHonours > .detail-card:has(#seasonAwardsList) > .section-head{display:none!important}
+#saveTabHonours #seasonAwardsList{display:block!important}
+.honours2-hero{position:relative;overflow:hidden;padding:28px;border:1px solid rgba(255,255,255,.09);border-radius:26px;background:radial-gradient(circle at 88% 15%,var(--accent-soft),transparent 36%),linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.02));margin-bottom:16px}
+.honours2-hero:after{content:"🏆";position:absolute;right:24px;top:10px;font-size:100px;opacity:.055;transform:rotate(10deg)}
+.honours2-hero-copy{position:relative;z-index:1}.honours2-hero h2{font-size:clamp(2rem,4vw,3.3rem);margin:4px 0 6px}.honours2-hero p{margin:0;color:var(--muted)}
+.honours2-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:22px;position:relative;z-index:1}
+.honours2-stats div{padding:14px;border:1px solid rgba(255,255,255,.07);border-radius:16px;background:rgba(0,0,0,.16)}
+.honours2-stats span{display:block;color:var(--muted);font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.09em}.honours2-stats strong{display:block;margin-top:5px;font-size:1.45rem}
+.honours2-filter-shell{position:sticky;top:8px;z-index:12;padding:14px;border:1px solid rgba(255,255,255,.09);border-radius:20px;background:color-mix(in srgb,var(--panel,#17191f) 92%,transparent);backdrop-filter:blur(18px);margin-bottom:18px;box-shadow:0 14px 35px rgba(0,0,0,.18)}
+.honours2-filter-top{display:grid;grid-template-columns:minmax(220px,1fr) auto auto;gap:10px;align-items:center}
+.honours2-search{display:flex;align-items:center;gap:9px;padding:0 13px;border:1px solid rgba(255,255,255,.1);border-radius:13px;background:rgba(255,255,255,.035)}
+.honours2-search input{width:100%;border:0!important;background:transparent!important;padding:12px 0!important;outline:none}
+.honours2-results{font-size:.8rem;color:var(--muted);white-space:nowrap}.honours2-results strong{color:inherit}
+.honours2-reset:disabled{opacity:.35;cursor:default}
+.honours2-filter-grid{display:grid;grid-template-columns:repeat(7,minmax(120px,1fr));gap:8px;margin-top:10px}.honours2-filter-grid select{min-width:0}
+.honours2-stack{display:grid!important;gap:18px}
+#saveTabHonours .honour-section{padding:20px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.08)}
+#saveTabHonours .honour-section-head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;margin-bottom:16px}
+#saveTabHonours .honour-section-icon{width:50px;height:50px;display:grid;place-items:center;border-radius:15px;background:var(--accent-soft);font-size:1.45rem}
+#saveTabHonours .honour-section-head h3{margin:2px 0 4px}.honour-section-count{min-width:38px;height:38px;display:grid;place-items:center;border-radius:999px;background:rgba(255,255,255,.07);font-weight:900}
+#saveTabHonours .honour-section .award-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:13px}
+#saveTabHonours .honours2-card{position:relative;overflow:hidden;min-height:0!important;padding:18px;border-radius:20px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+#saveTabHonours .honours2-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.18);box-shadow:0 18px 40px rgba(0,0,0,.2)}
+.honours2-card-accent{position:absolute;inset:0 0 auto 0;height:3px;background:var(--accent)}
+.honours2-personal .honours2-card-accent{background:#f97316}.honours2-club .honours2-card-accent{background:#eab308}.honours2-international .honours2-card-accent{background:#3b82f6}.honours2-records .honours2-card-accent{background:#a855f7}.honours2-others .honours2-card-accent{background:#94a3b8}
+.honours2-card-top{display:grid;grid-template-columns:50px 42px 1fr;align-items:center;gap:10px}.honours2-card-top .honour-icon{width:50px;height:50px;display:grid;place-items:center;border-radius:15px;font-size:1.45rem}
+.honours2-badge{width:42px;height:42px;border-radius:12px;overflow:hidden;display:grid;place-items:center;background:rgba(255,255,255,.07);font-size:.72rem;font-weight:950}.honours2-badge img{width:100%;height:100%;object-fit:contain}
+.honours2-season{justify-self:end;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.07);color:var(--muted);font-size:.72rem;font-weight:900}
+.honours2-card-body{margin-top:16px}.honours2-type{font-size:.68rem;font-weight:950;text-transform:uppercase;letter-spacing:.1em;color:var(--accent)}.honours2-card h3{font-size:1.12rem;margin:6px 0 5px}.honours2-card-body>p{margin:0;color:var(--muted);font-size:.84rem}
+.honours2-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}.honours2-meta span{padding:9px;border-radius:12px;background:rgba(0,0,0,.15);font-size:.78rem;overflow-wrap:anywhere}.honours2-meta b{display:block;margin-bottom:3px;color:var(--muted);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em}
+.honours2-notes{margin-top:12px;padding:10px 12px;border-left:3px solid rgba(255,255,255,.15);border-radius:0 10px 10px 0;background:rgba(255,255,255,.03);font-size:.8rem;color:var(--muted)}
+.honours2-actions{margin-top:14px!important}
+.honours2-empty{text-align:center;padding:46px 20px;border:1px dashed rgba(255,255,255,.12);border-radius:22px;background:rgba(255,255,255,.02)}.honours2-empty>div{font-size:2rem}.honours2-empty h3{margin:10px 0 5px}.honours2-empty p{margin:0 0 14px;color:var(--muted)}
+@media(max-width:1150px){.honours2-filter-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:760px){.honours2-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.honours2-filter-shell{position:relative;top:auto}.honours2-filter-top{grid-template-columns:1fr auto}.honours2-results{grid-column:1/-1;grid-row:2}.honours2-filter-grid{grid-template-columns:1fr 1fr}.honours2-meta{grid-template-columns:1fr}}
+@media(max-width:480px){.honours2-filter-grid{grid-template-columns:1fr}.honours2-card-top{grid-template-columns:50px 42px 1fr}.honours2-stats{grid-template-columns:1fr 1fr}.honours2-hero{padding:21px}}
+</style>
+
+<!-- HONOURS 2.0 BUILD 1 -->
 <script id="honours-v2-init">
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof updateHonourCategoryOptions === 'function') {
