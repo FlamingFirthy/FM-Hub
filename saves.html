@@ -6264,7 +6264,7 @@ window.HistoricalContextEngine=window.HistoricalContextEngine||(()=>{
 .h2shelf{padding:16px;border-radius:16px;background:rgba(255,255,255,.04);text-align:center;border:1px solid rgba(255,255,255,.08)}
 </style>
 
-</head>
+<style id="honours-build3">.honour-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.honour-links button{padding:6px 10px;border-radius:999px}.honour-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center}.honour-modal.open{display:flex}.honour-modal>div{background:#1b1f26;padding:24px;border-radius:18px;width:min(700px,92%)}</style></head>
 <body>
   <header>
     <div class="container nav-wrap">
@@ -8882,7 +8882,7 @@ function renderHonourCard(award) {
         <button class="admin-only secondary honour-edit-btn" type="button" onclick="editSeasonAward(${award.__index})">Edit</button>
         <button class="admin-only delete-btn small-btn honour-delete-btn" type="button" onclick="deleteSeasonAward(${award.__index})"></button>
       </div>
-    </article>`;
+    <div class="honour-links"><button onclick="openHonourModal()">Details</button><button>Story</button><button>Documentary</button><button>Club</button><button>Player</button></div></article>`;
 }
 
     function renderHonourSection(title, subtitle, icon, awards, className) {
@@ -13420,5 +13420,5 @@ window.HONOURS2_VIEW=window.HONOURS2_VIEW||{mode:'gallery'};
 function honoursPrestigeName(n){if(!n)return'★☆☆☆☆';const s=n.toLowerCase();if(s.includes('world cup')||s.includes('champions league'))return'★★★★★';if(s.includes('league'))return'★★★★☆';if(s.includes('cup'))return'★★★☆☆';return'★★☆☆☆';}
 </script>
 
-</body>
+<div id="honourModal" class="honour-modal" onclick="if(event.target===this)this.classList.remove('open')"><div><h2 id="hmTitle">Honour</h2><p>This is the new Honour Details modal. Future builds will populate Story, Documentary and Living Career Engine links here.</p><button onclick="document.getElementById('honourModal').classList.remove('open')">Close</button></div></div><script>function openHonourModal(){document.getElementById("honourModal").classList.add("open");}</script></body>
 </html> 
