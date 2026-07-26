@@ -6264,7 +6264,20 @@ window.HistoricalContextEngine=window.HistoricalContextEngine||(()=>{
 .h2shelf{padding:16px;border-radius:16px;background:rgba(255,255,255,.04);text-align:center;border:1px solid rgba(255,255,255,.08)}
 </style>
 
-<style id="honours-build3">.honour-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.honour-links button{padding:6px 10px;border-radius:999px}.honour-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center}.honour-modal.open{display:flex}.honour-modal>div{background:#1b1f26;padding:24px;border-radius:18px;width:min(700px,92%)}</style><style>.honour-detail-btn{margin-top:12px;width:100%;padding:10px;border-radius:10px}.honour-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center}.honour-modal.open{display:flex}.honour-modal>div{background:#1d2129;padding:20px;border-radius:16px;width:min(700px,92%)}</style></head>
+<style id="honours-build3">.honour-links{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.honour-links button{padding:6px 10px;border-radius:999px}.honour-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center}.honour-modal.open{display:flex}.honour-modal>div{background:#1b1f26;padding:24px;border-radius:18px;width:min(700px,92%)}</style><style>.honour-detail-btn{margin-top:12px;width:100%;padding:10px;border-radius:10px}.honour-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center}.honour-modal.open{display:flex}.honour-modal>div{background:#1d2129;padding:20px;border-radius:16px;width:min(700px,92%)}</style>
+<style id="stat-duplicate-polish">
+.stat-duplicate-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.stat-duplicate-btn::before{
+  content:"⧉";
+  font-size:.95em;
+}
+</style>
+
+</head>
 <body>
   <header>
     <div class="container nav-wrap">
@@ -10574,7 +10587,7 @@ function renderSavePlayerStats(save) {
           <td data-label="Assists"><span class="stat-number-pill">${escapeHtml(row.assists || '0')}</span></td>
           <td data-label="Rating"><span class="stat-number-pill">${escapeHtml(row.rating || '-')}</span></td>
           <td data-label="Clean Sheets"><span class="stat-number-pill">${escapeHtml(row.cleanSheets || '-')}</span></td>
-          <td data-label="Actions" class="admin-only edit-only">${row.origin === 'save' ? `<button class="admin-only secondary small-btn" type="button" onclick="editSavePlayerStat(${row.index})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})"></button>` : '<span class="chip">Squad</span>'}</td>
+          <td data-label="Actions" class="admin-only edit-only">${row.origin === 'save' ? `<button class="admin-only secondary small-btn" type="button" onclick="editSavePlayerStat(${row.index})">Edit</button> <button class="admin-only secondary small-btn stat-duplicate-btn" type="button" onclick="duplicateSavePlayerStat(${row.index})">Duplicate</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteSavePlayerStat(${row.index})"></button>` : '<span class="chip">Squad</span>'}</td>
         </tr>
       `).join('');
 
@@ -10971,6 +10984,28 @@ function renderSavePlayerStats(save) {
       restoreLastSaveTab();
       setSaveEditMode(true);
       loadSaves();
+    }
+
+
+    function duplicateSavePlayerStat(index) {
+      lastOpenedSaveTabKey = 'stats';
+      const save = getCurrentSave();
+      if (!save || !Array.isArray(save.playerStats) || !save.playerStats[index]) return;
+
+      const duplicate = JSON.parse(JSON.stringify(save.playerStats[index]));
+      save.playerStats.push(duplicate);
+      const duplicateIndex = save.playerStats.length - 1;
+
+      updateCurrentSave(save);
+
+      const activeTabBeforeRefresh = rememberCurrentSaveTab();
+      openSaveProfile(currentSaveIndex);
+      lastOpenedSaveTabKey = activeTabBeforeRefresh || 'stats';
+      restoreLastSaveTab();
+      setSaveEditMode(true);
+      loadSaves();
+
+      setTimeout(() => editSavePlayerStat(duplicateIndex), 0);
     }
 
 
