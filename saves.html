@@ -5858,6 +5858,50 @@ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 18px rgba(0,0,0,.25);
 @media(max-width:620px){.story-score-grid,.story-legacy-cards,.story-legacy-stat-grid,.story-chapter-stats{grid-template-columns:1fr}.story-headline{grid-template-columns:34px minmax(0,1fr)}.story-headline time{grid-column:2}}
 
 
+/* FM HUB 2.2 — DOCUMENTARY PHASE 2.1 + MERGED CLUB HONOURS */
+#saveTabDocumentary{padding:0!important;}
+.doc-shell{display:grid;gap:18px;position:relative;overflow:hidden}
+.doc-hero{min-height:420px;border:1px solid rgba(255,255,255,.09);border-radius:28px;overflow:hidden;position:relative;background:
+ radial-gradient(circle at 78% 22%,var(--hero-glow),transparent 34%),
+ linear-gradient(135deg,rgba(5,8,15,.98),rgba(14,18,28,.96));box-shadow:0 22px 70px rgba(0,0,0,.36)}
+.doc-hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.82),rgba(0,0,0,.25)),repeating-linear-gradient(115deg,transparent 0 36px,rgba(255,255,255,.018) 36px 37px);pointer-events:none}
+.doc-hero-inner{position:relative;z-index:1;min-height:420px;padding:48px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,.6fr);gap:34px;align-items:center}
+.doc-eyebrow{font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);font-weight:900}
+.doc-title{font-size:clamp(2.7rem,6vw,6.6rem);line-height:.88;margin:10px 0 16px;letter-spacing:-.06em;text-transform:uppercase;max-width:900px}
+.doc-subtitle{font-size:1.1rem;max-width:700px;color:var(--muted);line-height:1.65}
+.doc-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.doc-play,.doc-secondary{border:0;border-radius:999px;padding:14px 22px;font-weight:900;cursor:pointer;transition:.2s transform,.2s box-shadow}
+.doc-play{background:var(--accent);color:#090909;box-shadow:0 0 28px var(--btn-glow)}
+.doc-secondary{background:rgba(255,255,255,.08);color:var(--text);border:1px solid rgba(255,255,255,.1)}
+.doc-play:hover,.doc-secondary:hover{transform:translateY(-2px)}
+.doc-poster{display:grid;place-items:center;min-height:290px;position:relative}
+.doc-poster-ring{width:235px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.14);background:radial-gradient(circle,rgba(255,255,255,.09),rgba(255,255,255,.015) 65%);box-shadow:0 0 80px var(--hero-glow),inset 0 0 44px rgba(255,255,255,.035)}
+.doc-poster-logo{width:150px;height:150px;border-radius:28px;display:grid;place-items:center;overflow:hidden;background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.1);font-size:2.5rem;font-weight:1000}
+.doc-poster-logo img{width:100%;height:100%;object-fit:contain;padding:16px}
+.doc-poster-caption{position:absolute;bottom:8px;text-align:center}.doc-poster-caption strong{display:block;font-size:1.2rem}.doc-poster-caption span{color:var(--muted);font-size:.85rem}
+.doc-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.doc-stat{padding:18px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.08)}
+.doc-stat span{display:block;color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.08em}.doc-stat strong{display:block;font-size:1.35rem;margin-top:7px}
+.doc-tabs{display:flex;gap:8px;overflow:auto;padding:6px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.025)}
+.doc-tab{white-space:nowrap;border:0;border-radius:999px;padding:11px 17px;background:transparent;color:var(--muted);font-weight:900;cursor:pointer}.doc-tab.active{background:var(--accent);color:#080808}
+.doc-panel{display:none}.doc-panel.active{display:block;animation:docFade .28s ease both}@keyframes docFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.doc-section{border:1px solid rgba(255,255,255,.08);border-radius:24px;background:rgba(255,255,255,.025);padding:24px}
+.doc-section+.doc-section{margin-top:16px}.doc-section-head{display:flex;justify-content:space-between;gap:16px;align-items:end;margin-bottom:18px}.doc-section-head h3{margin:3px 0;font-size:1.5rem}.doc-section-head p{margin:0;color:var(--muted)}
+.doc-chapter-rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(290px,38%);gap:14px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}
+.doc-chapter{scroll-snap-align:start;min-height:310px;border-radius:22px;padding:24px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.09);background:linear-gradient(155deg,rgba(255,255,255,.075),rgba(255,255,255,.02))}
+.doc-chapter:after{content:"";position:absolute;right:-30px;bottom:-50px;width:180px;height:180px;border-radius:50%;background:var(--hero-glow);filter:blur(10px)}
+.doc-chapter>*{position:relative;z-index:1}.doc-chapter-no{font-size:.75rem;text-transform:uppercase;letter-spacing:.18em;color:var(--accent);font-weight:900}.doc-chapter h4{font-size:2rem;line-height:1;margin:16px 0 8px}.doc-chapter-meta{color:var(--muted)}
+.doc-chapter-points{display:grid;gap:8px;margin-top:26px}.doc-chapter-point{padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.22);font-size:.9rem}
+.doc-headline-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.doc-headline{min-height:220px;border-radius:22px;padding:25px;position:relative;overflow:hidden;background:linear-gradient(150deg,rgba(255,255,255,.07),rgba(0,0,0,.18));border:1px solid rgba(255,255,255,.08)}
+.doc-headline:first-child{grid-column:span 2;min-height:310px}.doc-headline time{font-size:.75rem;color:var(--accent);font-weight:900;text-transform:uppercase;letter-spacing:.12em}.doc-headline h4{font-size:clamp(1.45rem,3vw,2.8rem);line-height:1.02;text-transform:uppercase;max-width:820px;margin:22px 0 10px}.doc-headline p{color:var(--muted);max-width:720px}
+.doc-trophy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:14px}.doc-trophy{min-height:210px;border-radius:22px;padding:22px;text-align:center;display:grid;place-items:center;background:radial-gradient(circle at 50% 30%,var(--hero-glow),transparent 48%),rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08)}.doc-trophy-icon{font-size:3rem;filter:drop-shadow(0 0 18px var(--btn-glow))}.doc-trophy h4{margin:10px 0 4px}.doc-trophy span{color:var(--muted);font-size:.82rem}
+.doc-legend-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.doc-legend{border-radius:22px;padding:22px;background:linear-gradient(155deg,rgba(255,255,255,.065),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.08)}.doc-legend-rank{font-size:.72rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;font-weight:900}.doc-legend h4{font-size:1.35rem;margin:13px 0 8px}.doc-legend-stats{color:var(--muted);font-size:.9rem;line-height:1.6}.doc-legend-score{font-size:1.65rem;font-weight:1000;margin-top:16px}
+.doc-final{min-height:350px;border-radius:24px;padding:40px;display:grid;place-items:center;text-align:center;background:radial-gradient(circle,var(--hero-glow),transparent 55%),rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08)}.doc-final h3{font-size:clamp(2rem,5vw,4.5rem);line-height:.95;margin:10px 0;text-transform:uppercase}.doc-final p{color:var(--muted);max-width:650px;line-height:1.7}
+.doc-player{position:fixed;inset:0;z-index:9999;background:#030407;display:none;place-items:center;padding:24px}.doc-player.active{display:grid}.doc-player-stage{width:min(1180px,100%);min-height:min(690px,88vh);border-radius:28px;border:1px solid rgba(255,255,255,.11);overflow:hidden;position:relative;background:radial-gradient(circle at 75% 25%,var(--hero-glow),transparent 38%),linear-gradient(145deg,#080b12,#111724);box-shadow:0 30px 100px #000}
+.doc-player-scene{min-height:min(690px,88vh);padding:60px;display:grid;align-content:center;position:relative}.doc-player-kicker{color:var(--accent);font-weight:900;letter-spacing:.2em;text-transform:uppercase}.doc-player-title{font-size:clamp(2.8rem,7vw,7rem);line-height:.88;text-transform:uppercase;max-width:950px;margin:16px 0}.doc-player-copy{font-size:1.15rem;line-height:1.7;color:#cbd0dc;max-width:730px}.doc-player-controls{position:absolute;left:30px;right:30px;bottom:25px;display:flex;justify-content:space-between;gap:12px}.doc-player-controls button{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);color:#fff;border-radius:999px;padding:11px 17px;font-weight:900;cursor:pointer}.doc-player-progress{position:absolute;left:0;right:0;top:0;height:4px;background:rgba(255,255,255,.08)}.doc-player-progress span{display:block;height:100%;background:var(--accent);transition:width .25s}.doc-close{position:absolute;right:24px;top:22px;z-index:2;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.25);color:#fff;font-size:1.2rem;cursor:pointer}
+.doc-empty{padding:26px;border:1px dashed rgba(255,255,255,.12);border-radius:18px;color:var(--muted);text-align:center}
+@media(max-width:900px){.doc-hero-inner{grid-template-columns:1fr;padding:30px}.doc-poster{min-height:220px}.doc-stats{grid-template-columns:repeat(2,1fr)}.doc-chapter-rail{grid-auto-columns:minmax(280px,85%)}.doc-headline-grid{grid-template-columns:1fr}.doc-headline:first-child{grid-column:auto}.doc-player-scene{padding:34px 25px 90px}}
+@media(max-width:560px){.doc-hero-inner{padding:24px}.doc-title{font-size:2.7rem}.doc-stats{grid-template-columns:1fr 1fr}.doc-section{padding:17px}.doc-player{padding:8px}.doc-player-stage{border-radius:20px}.doc-player-controls{left:18px;right:18px}}
 </style>
 
 
@@ -11311,6 +11355,7 @@ function renderSavePlayerStats(save) {
           <button class="save-tab-btn" type="button" onclick="openSaveTab('international')" data-save-tab-button="international">International</button>
           <button class="save-tab-btn" type="button" onclick="openSaveTab('transfers')" data-save-tab-button="transfers">Transfers</button>
           <button class="save-tab-btn" type="button" onclick="openSaveTab('story')" data-save-tab-button="story">Story</button>
+          <button class="save-tab-btn" type="button" onclick="openSaveTab('Cinema')" data-save-tab-button="Cinema">Cinema</button>
         </div>
         <div id="saveTabOverview" class="save-tab-panel active" data-save-tab-panel="overview">
           <div id="overviewShortcutGrid" class="overview-shortcut-grid"></div>
@@ -11443,6 +11488,7 @@ function renderSavePlayerStats(save) {
         <div id="saveTabTransfers"
  class="save-tab-panel" data-save-tab-panel="transfers"></div>
         <div id="saveTabStory" class="save-tab-panel" data-save-tab-panel="story"></div>
+        <div id="saveTabDocumentary" class="save-tab-panel" data-save-tab-panel="documentary"></div>
       `;
       if (openedCard) openedCard.insertAdjacentElement('afterend', shell);
       return shell;
@@ -11830,8 +11876,9 @@ function renderSavePlayerStats(save) {
     }
 
 function openSaveTab(tabName, shouldScroll = true) {
-      const safeTab = ['overview','people','club','honours','stats','international','transfers','story',].includes(tabName) ? tabName : 'overview';
+      const safeTab = ['overview','people','club','honours','stats','international','transfers','story','documentary'].includes(tabName) ? tabName : 'overview';
       currentSaveTab = safeTab;
+      if (safeTab === 'documentary' && typeof renderDocumentary === 'function') renderDocumentary(getCurrentSave());
       if (typeof lastOpenedSaveTabKey !== 'undefined') lastOpenedSaveTabKey = safeTab;
       document.querySelectorAll('[data-save-tab-panel]').forEach(panel => panel.classList.toggle('active', panel.dataset.saveTabPanel === safeTab));
       document.querySelectorAll('[data-save-tab-button]').forEach(btn => btn.classList.toggle('active', btn.dataset.saveTabButton === safeTab));
@@ -12648,6 +12695,577 @@ function renderStoryV1(save){
 }
 
 
+/* FM HUB 2.0 — DOCUMENTARY MODE */
+window.docActiveTab=window.docActiveTab||'chapters';
+window.docPlayerIndex=0;
+window.docPlayerScenes=[];
+function docEsc(v){return storyV2Esc(v==null?'':String(v));}
+function docNum(v){const n=Number(v);return Number.isFinite(n)?n:0;}
+function docClub(save){
+ const raw=save?.club;
+ if(raw && typeof raw==='object') return raw.name||raw.clubName||save?.clubName||save?.name||'My Career';
+ return raw&&raw!=='-'?raw:(save?.clubName||save?.name||'My Career');
+}
+function docHistoricalContext(item){
+ return item?.historicalContext||item?.snapshot||item?.historySnapshot||{};
+}
+function docHistoricalClub(item,fallback=''){
+ const ctx=docHistoricalContext(item);
+ const raw=ctx.clubName||ctx.club||item?.historicalClub||item?.winningClub||item?.clubName||
+   (typeof item?.club==='string'?item.club:item?.club?.name)||item?.team||item?.forClub||item?.representedClub||'';
+ return raw&&raw!=='-'?String(raw):String(fallback||'');
+}
+function docHistoricalBadge(item,fallback=''){
+ const ctx=docHistoricalContext(item);
+ return ctx.clubBadge||ctx.badge||item?.clubBadge||item?.badge||fallback||'';
+}
+function docHistoricalColours(item,fallback={}){
+ const ctx=docHistoricalContext(item);
+ return ctx.clubColours||ctx.colours||item?.clubColours||item?.colours||fallback||{};
+}
+function docHistoricalCompetition(item,fallback=''){
+ const ctx=docHistoricalContext(item);
+ return ctx.competition||item?.competition||item?.league||item?.division||fallback||'';
+}
+function docHistoricalPlayer(item,fallback=''){
+ const ctx=docHistoricalContext(item);
+ return ctx.playerName||item?.person||item?.player||item?.personName||fallback||'';
+}
+
+function docSetTab(tab){window.docActiveTab=tab;document.querySelectorAll('.doc-tab').forEach(b=>b.classList.toggle('active',b.dataset.docTab===tab));document.querySelectorAll('.doc-panel').forEach(p=>p.classList.toggle('active',p.dataset.docPanel===tab));}
+function historicalHonourClub(honour, save){
+ return docHistoricalClub(honour,'');
+}
+function ensureHistoricalHonourSnapshots(save){
+ if(!save)return save;
+ const awards=Array.isArray(save.seasonAwards)?save.seasonAwards:[];
+ let changed=false;
+ awards.forEach(award=>{
+   if(!award.historicalContext){
+     award.historicalContext={
+       eventId:typeof HistoricalContextEngine!=='undefined'?HistoricalContextEngine.nextId('event'):'',
+       clubId:typeof HistoricalContextEngine!=='undefined'?HistoricalContextEngine.nextId('club'):'',
+       clubName:award.club||award.winningClub||award.team||'',
+       clubBadge:award.clubBadge||award.badge||'',
+       clubColours:award.clubColours||award.colours||{},
+       nation:award.nation||'',
+       competition:award.competition||'',
+       season:award.season||'',
+       playerName:award.person||award.player||'',
+       capturedAt:Date.now(),
+       migrated:true
+     };
+     changed=true;
+   }
+ });
+ if(changed && typeof updateCurrentSave==='function') updateCurrentSave(save);
+ return save;
+}
+function docHonours(save){
+ ensureHistoricalHonourSnapshots(save);
+
+ const direct=Array.isArray(save?.honours)?save.honours:[];
+ const awards=(Array.isArray(save?.seasonAwards)?save.seasonAwards:[]).map(a=>({
+   ...a,
+   title:a.title||a.category||a.name||a.honour||'Honour',
+   historicalClub:historicalHonourClub(a,save),
+   source:'award'
+ }));
+
+ const seasonHonours=[];
+ (save?.seasons||[]).forEach(record=>{
+   if(typeof splitTrophies==='function') splitTrophies(record.trophies).forEach(trophy=>seasonHonours.push({
+     title:trophy,
+     category:trophy,
+     type:'Club Honour',
+     season:record.season||'',
+     historicalClub:record.club||'',
+     club:record.club||'',
+     competition:record.competition||record.league||record.division||'',
+     source:'season'
+   }));
+ });
+
+ const combined=[
+   ...direct.map(h=>({
+     ...h,
+     title:h.title||h.category||h.name||h.honour||'Honour',
+     historicalClub:historicalHonourClub(h,save)
+   })),
+   ...awards,
+   ...seasonHonours
+ ];
+
+ const isClubHonour=honour=>{
+   if(typeof getHonourSection==='function'){
+     try{
+       if(getHonourSection(honour)==='club')return true;
+     }catch(e){}
+   }
+   const text=[
+     honour?.type,
+     honour?.section,
+     honour?.category,
+     honour?.title,
+     honour?.name,
+     honour?.honour
+   ].filter(Boolean).join(' ').toLowerCase();
+
+   return text.includes('club honour')||
+     text.includes('league champion')||
+     text.includes('league winner')||
+     text.includes('cup winner')||
+     text.includes('champions league winner')||
+     text.includes('europa league winner')||
+     text.includes('conference league winner')||
+     text.includes('promotion')||
+     text.includes('domestic double')||
+     text.includes('continental double')||
+     text.includes('treble')||
+     text.includes('quadruple')||
+     text.includes('super cup')||
+     text.includes('community shield')||
+     text.includes('club world cup');
+ };
+
+ const grouped=new Map();
+
+ combined.forEach(honour=>{
+   const title=honour.title||honour.category||honour.name||honour.honour||'Honour';
+   const season=honour.season||honour.year||honour.date||'';
+   const club=honour.historicalClub||historicalHonourClub(honour,save)||'';
+   const competition=docHistoricalCompetition(honour,'');
+   const clubHonour=isClubHonour(honour);
+
+   const normalise=value=>String(value||'').trim().toLowerCase();
+   const key=clubHonour
+     ? ['club',title,season,club,competition].map(normalise).join('|')
+     : ['individual',title,season,club,competition,honour.person||honour.player||''].map(normalise).join('|');
+
+   const person=honour.person||honour.player||docHistoricalPlayer(honour,'');
+
+   if(!grouped.has(key)){
+     grouped.set(key,{
+       ...honour,
+       title,
+       historicalClub:club,
+       competition,
+       isClubHonour:clubHonour,
+       people:person?[person]:[]
+     });
+     return;
+   }
+
+   const existing=grouped.get(key);
+   if(person&&!existing.people.some(name=>normalise(name)===normalise(person))){
+     existing.people.push(person);
+   }
+
+   if(!existing.historicalContext&&honour.historicalContext){
+     existing.historicalContext=honour.historicalContext;
+   }
+   if(!existing.clubBadge&&honour.clubBadge)existing.clubBadge=honour.clubBadge;
+   if(!existing.clubColours&&honour.clubColours)existing.clubColours=honour.clubColours;
+ });
+
+ return [...grouped.values()].map(honour=>{
+   if(honour.isClubHonour){
+     return {
+       ...honour,
+       person:'',
+       player:'',
+       mergedPlayers:honour.people
+     };
+   }
+   return honour;
+ });
+}
+function docSeasonRows(save){return [...(save?.seasons||[])].filter(x=>x&&x.season).sort((a,b)=>storySeasonNumber(a.season)-storySeasonNumber(b.season));}
+function docHeadline(event,club){return typeof storyV2Headline==='function'?storyV2Headline(event,club):(event?.title||'A defining moment');}
+function docDescription(event){return event?.detail||event?.notes||'A defining chapter in the story of this career.';}
+function docBuildScenes(save,events,chapters,stats,identity){
+ const currentClub=docClub(save), seasons=docSeasonRows(save), honours=docHonours(save);
+ const top=[...events].sort((a,b)=>storyEventPriority(b)-storyEventPriority(a)).slice(0,8);
+ const scenes=[{
+   type:'opening',
+   kicker:'FM HUB PRESENTS',
+   title:currentClub,
+   copy:`${identity.name}. ${identity.tagline}`,
+   club:currentClub
+ }];
+ if(seasons.length){
+   const firstSeason=seasons[0];
+   const firstClub=docHistoricalClub(firstSeason,'');
+   const competition=docHistoricalCompetition(firstSeason,'a new campaign');
+   scenes.push({
+     type:'chapter',
+     kicker:'THE BEGINNING',
+     title:firstSeason.season,
+     copy:`The journey began in ${competition}.${firstClub?`\n\nClub: ${firstClub}`:''} Every dynasty starts somewhere.`,
+     club:firstClub,
+     clubBadge:docHistoricalBadge(firstSeason),
+     clubColours:docHistoricalColours(firstSeason),
+     historicalContext:firstSeason.historicalContext||null
+   });
+ }
+ top.forEach((event,index)=>{
+   const eventClub=docHistoricalClub(event,'');
+   const competition=docHistoricalCompetition(event,'');
+   const player=docHistoricalPlayer(event,'');
+   const details=[
+     docDescription(event),
+     eventClub?`Club: ${eventClub}`:'',
+     competition?`Competition: ${competition}`:'',
+     player?`Player: ${player}`:''
+   ].filter(Boolean);
+   scenes.push({
+     type:docSceneType(event),
+     kicker:`CHAPTER ${String(index+1).padStart(2,'0')} • ${event.season||'Career'}`,
+     title:docHeadline(event,eventClub||currentClub),
+     copy:details.join('\n\n'),
+     club:eventClub,
+     clubBadge:docHistoricalBadge(event),
+     clubColours:docHistoricalColours(event),
+     competition,
+     player,
+     historicalContext:event.historicalContext||null
+   });
+ });
+ if(stats[0]){
+   const legendClub=docHistoricalClub(stats[0],'');
+   scenes.push({
+     type:'player',
+     kicker:'CLUB LEGEND',
+     title:stats[0].name,
+     copy:`${stats[0].apps} appearances, ${stats[0].goals} goals and ${stats[0].assists} assists.${legendClub?`\n\nClub: ${legendClub}`:''}`,
+     club:legendClub,
+     clubBadge:docHistoricalBadge(stats[0]),
+     clubColours:docHistoricalColours(stats[0])
+   });
+ }
+ honours.slice(0,12).forEach(honour=>{
+   const wonWith=docHistoricalClub(honour,'');
+   const competition=docHistoricalCompetition(honour,honour.title||honour.name||honour.honour||'Honour');
+   const player=honour.isClubHonour?'':docHistoricalPlayer(honour,'');
+   scenes.push({
+     type:'trophy',
+     kicker:`TROPHY • ${honour.season||honour.year||'CAREER'}`,
+     title:honour.title||honour.name||honour.honour||'Honour',
+     copy:[
+       wonWith?`Won with ${wonWith}`:'',
+       competition&&competition!==(honour.title||honour.name||honour.honour)?competition:'',
+       player?`Awarded to ${player}`:''
+     ].filter(Boolean).join('\n\n')||'A defining achievement in this career.',
+     club:wonWith,
+     clubBadge:docHistoricalBadge(honour),
+     clubColours:docHistoricalColours(honour),
+     competition,
+     player,
+     historicalContext:honour.historicalContext||null
+   });
+ });
+ scenes.push({
+   type:'finale',
+   kicker:'THE STORY CONTINUES',
+   title:save?.season||'THE NEXT CHAPTER',
+   copy:'This documentary updates automatically as new seasons, honours, transfers and memories are added to FM Hub.'
+ });
+ return scenes;
+}
+const DOC_PLAYER_DEFAULT_DURATION = 6500;
+window.docPlayerTimer = null;
+window.docPlayerPlaying = false;
+window.docPlayerSceneStartedAt = 0;
+window.docPlayerRemaining = DOC_PLAYER_DEFAULT_DURATION;
+
+function docSceneType(scene){
+  const key = `${scene?.type || ''} ${scene?.kicker || ''} ${scene?.title || ''}`.toLowerCase();
+  if(key.includes('trophy') || key.includes('champion') || key.includes('honour')) return 'trophy';
+  if(key.includes('transfer') || key.includes('signing') || key.includes('arrival')) return 'transfer';
+  if(key.includes('legend') || key.includes('player')) return 'player';
+  if(key.includes('beginning') || key.includes('presents')) return 'opening';
+  if(key.includes('continues') || key.includes('credits') || key.includes('final')) return 'finale';
+  return 'chapter';
+}
+
+function docCreatePlayer(){
+  let overlay = document.getElementById('docPlayer');
+  if(overlay) return overlay;
+
+  overlay = document.createElement('div');
+  overlay.id = 'docPlayer';
+  overlay.className = 'doc-player';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', 'FM Hub documentary player');
+  overlay.innerHTML = `
+    <div class="doc-player-stage">
+      <div class="doc-player-topbar">
+        <div class="doc-player-brand">FM HUB DOCUMENTARY</div>
+        <div class="doc-player-counter" id="docPlayerCounter">Scene 1 of 1</div>
+        <div class="doc-player-top-actions">
+          <button type="button" class="doc-icon-btn" onclick="docToggleFullscreen()" title="Toggle fullscreen" aria-label="Toggle fullscreen">⛶</button>
+          <button type="button" class="doc-icon-btn doc-close" onclick="docClosePlayer()" title="Close documentary" aria-label="Close documentary">×</button>
+        </div>
+      </div>
+
+      <button type="button" class="doc-player-hit doc-player-hit-left" onclick="docPrevScene()" aria-label="Previous scene"></button>
+      <button type="button" class="doc-player-hit doc-player-hit-right" onclick="docNextScene()" aria-label="Next scene"></button>
+
+      <div id="docPlayerScene" class="doc-player-scene" aria-live="polite"></div>
+
+      <div class="doc-player-bottom">
+        <div class="doc-player-progress-wrap" id="docPlayerProgressWrap" onclick="docSeekFromProgress(event)">
+          <div class="doc-player-progress"><span id="docPlayerProgress"></span></div>
+          <div class="doc-player-scene-dots" id="docPlayerDots"></div>
+        </div>
+
+        <div class="doc-player-controls">
+          <button type="button" onclick="docRestartPlayer()" title="Restart documentary">↺ Restart</button>
+          <button type="button" onclick="docPrevScene()" title="Previous scene">← Previous</button>
+          <button type="button" class="doc-player-primary" id="docPlayerPlayButton" onclick="docTogglePlayback()" title="Play or pause">▶ Play</button>
+          <button type="button" onclick="docNextScene()" title="Next scene">Next →</button>
+          <button type="button" onclick="docClosePlayer()" title="Exit documentary">Exit</button>
+        </div>
+
+        <div class="doc-player-help">Space: play/pause · ← →: change scene · R: restart · Esc: exit</div>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  return overlay;
+}
+
+function docOpenPlayer(startIndex = 0, autoPlay = false){
+  const save = getCurrentSave();
+  if(!save) return;
+
+  const events = buildAutomaticStoryEvents(save);
+  const stats = storyV2BuildStats(save);
+  const chapters = storyV2BuildChapters(save, events, stats);
+  const identity = storyV2StoryIdentity(save, events, chapters, stats);
+
+  window.docPlayerScenes = docBuildScenes(save, events, chapters, stats, identity).map((scene, index) => ({
+    id: scene.id || `documentary-scene-${index + 1}`,
+    type: scene.type || docSceneType(scene),
+    duration: Math.max(2500, Number(scene.duration) || DOC_PLAYER_DEFAULT_DURATION),
+    ...scene
+  }));
+  window.docPlayerIndex = Math.min(Math.max(0, Number(startIndex) || 0), Math.max(0, window.docPlayerScenes.length - 1));
+  window.docPlayerRemaining = window.docPlayerScenes[window.docPlayerIndex]?.duration || DOC_PLAYER_DEFAULT_DURATION;
+
+  const overlay = docCreatePlayer();
+  overlay.classList.add('active');
+  document.body.classList.add('doc-player-open');
+  document.body.style.overflow = 'hidden';
+
+  docRenderScene(true);
+  if(autoPlay) docPlayPlayer();
+  else docPausePlayer(false);
+}
+
+function docClosePlayer(){
+  docPausePlayer(false);
+  const overlay = document.getElementById('docPlayer');
+  overlay?.classList.remove('active');
+  document.body.classList.remove('doc-player-open');
+  document.body.style.overflow = '';
+  if(document.fullscreenElement === overlay) document.exitFullscreen?.().catch(() => {});
+}
+
+function docRenderScene(resetTimer = true){
+  const scenes = window.docPlayerScenes || [];
+  const scene = scenes[window.docPlayerIndex];
+  if(!scene) return;
+
+  const el = document.getElementById('docPlayerScene');
+  if(!el) return;
+
+  el.classList.remove('is-visible');
+  el.dataset.sceneType = scene.type || 'chapter';
+  el.innerHTML = `
+    <div class="doc-player-scene-inner">
+      <div class="doc-player-kicker">${docEsc(scene.kicker || 'FM HUB DOCUMENTARY')}</div>
+      <div class="doc-player-title">${docEsc(scene.title || 'Untitled Scene')}</div>
+      <div class="doc-player-copy">${docEsc(scene.copy || '')}</div>
+    </div>`;
+
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('is-visible')));
+
+  const counter = document.getElementById('docPlayerCounter');
+  if(counter) counter.textContent = `Scene ${window.docPlayerIndex + 1} of ${scenes.length}`;
+
+  const dots = document.getElementById('docPlayerDots');
+  if(dots){
+    dots.innerHTML = scenes.map((_, index) =>
+      `<button type="button" class="${index === window.docPlayerIndex ? 'active' : ''}" onclick="event.stopPropagation();docGoToScene(${index})" aria-label="Go to scene ${index + 1}"></button>`
+    ).join('');
+  }
+
+  if(resetTimer) window.docPlayerRemaining = scene.duration || DOC_PLAYER_DEFAULT_DURATION;
+  docUpdateProgress();
+
+  if(window.docPlayerPlaying) docScheduleNext();
+}
+
+function docUpdateProgress(){
+  const scenes = window.docPlayerScenes || [];
+  const p = document.getElementById('docPlayerProgress');
+  if(!p || !scenes.length) return;
+
+  let withinScene = 0;
+  const scene = scenes[window.docPlayerIndex];
+  if(window.docPlayerPlaying && scene){
+    const elapsed = Date.now() - window.docPlayerSceneStartedAt;
+    withinScene = Math.min(1, elapsed / Math.max(1, window.docPlayerRemaining || scene.duration));
+  }
+  const overall = ((window.docPlayerIndex + withinScene) / scenes.length) * 100;
+  p.style.width = `${Math.max(0, Math.min(100, overall))}%`;
+}
+
+function docScheduleNext(){
+  clearTimeout(window.docPlayerTimer);
+  const scene = (window.docPlayerScenes || [])[window.docPlayerIndex];
+  if(!scene || !window.docPlayerPlaying) return;
+
+  window.docPlayerSceneStartedAt = Date.now();
+  const delay = Math.max(300, window.docPlayerRemaining || scene.duration || DOC_PLAYER_DEFAULT_DURATION);
+  window.docPlayerTimer = setTimeout(() => {
+    if(window.docPlayerIndex >= window.docPlayerScenes.length - 1){
+      docPausePlayer(false);
+      docUpdateProgress();
+      return;
+    }
+    window.docPlayerIndex++;
+    window.docPlayerRemaining = window.docPlayerScenes[window.docPlayerIndex]?.duration || DOC_PLAYER_DEFAULT_DURATION;
+    docRenderScene(true);
+  }, delay);
+}
+
+function docPlayPlayer(){
+  if(!(window.docPlayerScenes || []).length) return;
+  window.docPlayerPlaying = true;
+  const button = document.getElementById('docPlayerPlayButton');
+  if(button) button.textContent = '❚❚ Pause';
+  docScheduleNext();
+  docProgressAnimationLoop();
+}
+
+function docPausePlayer(preserveRemaining = true){
+  if(preserveRemaining && window.docPlayerPlaying){
+    const elapsed = Date.now() - (window.docPlayerSceneStartedAt || Date.now());
+    window.docPlayerRemaining = Math.max(300, (window.docPlayerRemaining || DOC_PLAYER_DEFAULT_DURATION) - elapsed);
+  }
+  window.docPlayerPlaying = false;
+  clearTimeout(window.docPlayerTimer);
+  window.docPlayerTimer = null;
+  const button = document.getElementById('docPlayerPlayButton');
+  if(button) button.textContent = '▶ Play';
+  docUpdateProgress();
+}
+
+function docTogglePlayback(){
+  window.docPlayerPlaying ? docPausePlayer(true) : docPlayPlayer();
+}
+
+function docProgressAnimationLoop(){
+  if(!window.docPlayerPlaying) return;
+  docUpdateProgress();
+  requestAnimationFrame(docProgressAnimationLoop);
+}
+
+function docGoToScene(index){
+  const scenes = window.docPlayerScenes || [];
+  if(!scenes.length) return;
+  const wasPlaying = window.docPlayerPlaying;
+  clearTimeout(window.docPlayerTimer);
+  window.docPlayerIndex = Math.min(Math.max(0, index), scenes.length - 1);
+  window.docPlayerRemaining = scenes[window.docPlayerIndex]?.duration || DOC_PLAYER_DEFAULT_DURATION;
+  docRenderScene(true);
+  if(!wasPlaying) docPausePlayer(false);
+}
+
+function docNextScene(){
+  const scenes = window.docPlayerScenes || [];
+  if(!scenes.length) return;
+  if(window.docPlayerIndex >= scenes.length - 1){
+    docPausePlayer(false);
+    return;
+  }
+  docGoToScene(window.docPlayerIndex + 1);
+}
+
+function docPrevScene(){
+  if(window.docPlayerIndex <= 0){
+    docGoToScene(0);
+    return;
+  }
+  docGoToScene(window.docPlayerIndex - 1);
+}
+
+function docRestartPlayer(){
+  docGoToScene(0);
+  docPlayPlayer();
+}
+
+function docSeekFromProgress(event){
+  const scenes = window.docPlayerScenes || [];
+  const wrap = document.getElementById('docPlayerProgressWrap');
+  if(!wrap || !scenes.length) return;
+  const rect = wrap.getBoundingClientRect();
+  const ratio = Math.max(0, Math.min(0.9999, (event.clientX - rect.left) / rect.width));
+  docGoToScene(Math.floor(ratio * scenes.length));
+}
+
+function docToggleFullscreen(){
+  const overlay = document.getElementById('docPlayer');
+  if(!overlay) return;
+  if(document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+  else overlay.requestFullscreen?.().catch(() => {});
+}
+
+if(!window.docPlaybackKeyboardBound){
+  window.docPlaybackKeyboardBound = true;
+  document.addEventListener('keydown', event => {
+    if(!document.getElementById('docPlayer')?.classList.contains('active')) return;
+    const key = event.key.toLowerCase();
+    if([' ', 'arrowleft', 'arrowright', 'escape', 'r'].includes(key)) event.preventDefault();
+    if(key === 'escape') docClosePlayer();
+    else if(key === 'arrowright') docNextScene();
+    else if(key === 'arrowleft') docPrevScene();
+    else if(key === ' ') docTogglePlayback();
+    else if(key === 'r') docRestartPlayer();
+  });
+}
+function renderDocumentary(save){
+ const panel=document.getElementById('saveTabDocumentary');if(!panel||!save)return;
+ const events=buildAutomaticStoryEvents(save),stats=storyV2BuildStats(save),chapters=storyV2BuildChapters(save,events,stats),identity=storyV2StoryIdentity(save,events,chapters,stats);
+ const club=docClub(save),honours=docHonours(save),seasons=docSeasonRows(save),topEvents=[...events].sort((a,b)=>storyEventPriority(b)-storyEventPriority(a)).slice(0,7),legends=stats.slice(0,8);
+ const start=seasons[0]?.season||chapters[chapters.length-1]?.season||'-';
+ const latest=seasons[seasons.length-1]?.season||save.season||'-';
+ const logo=save.logo?`<img src="${docEsc(save.logo)}" alt="${docEsc(club)} logo">`:docEsc(getSaveInitials(save));
+ const chapterCards=(chapters.length?chapters.slice().reverse():seasons.map((s,i)=>({season:s.season,seasonRow:s,score:3,trophies:[]}))).map((ch,i)=>{
+   const row=ch.seasonRow||{}, points=[];
+   if(row.finish||row.position)points.push(`Finished ${row.finish||row.position}`);
+   if(row.competition||row.league||row.division)points.push(row.competition||row.league||row.division);
+   (ch.trophies||[]).slice(0,2).forEach(t=>points.push(t.title));
+   const e=events.filter(x=>String(x.season)===String(ch.season)).sort((a,b)=>storyEventPriority(b)-storyEventPriority(a))[0];if(e)points.push(e.title);
+   return `<article class="doc-chapter"><div class="doc-chapter-no">Chapter ${String(i+1).padStart(2,'0')}</div><h4>${docEsc(ch.season)}</h4><div class="doc-chapter-meta">${docEsc(row.competition||row.league||row.division||'Season chapter')} • ${'★'.repeat(Math.max(1,ch.score||3))}</div><div class="doc-chapter-points">${points.slice(0,4).map(x=>`<div class="doc-chapter-point">${docEsc(x)}</div>`).join('')||'<div class="doc-chapter-point">The story of this season is still being written.</div>'}</div></article>`;
+ }).join('');
+ const headlineCards=topEvents.map((e,i)=>{const eventClub=docHistoricalClub(e,'');const eventCompetition=docHistoricalCompetition(e,'');return `<article class="doc-headline"><time>${docEsc(e.season||'Career')} • ${docEsc(e.source||'Story')}</time><h4>${docEsc(docHeadline(e,eventClub||club))}</h4><p>${docEsc(docDescription(e))}</p>${eventClub?`<span class="doc-won-with">Club: ${docEsc(eventClub)}</span>`:''}${eventCompetition?`<span class="doc-honour-person">${docEsc(eventCompetition)}</span>`:''}</article>`}).join('');
+ const trophyCards=honours.length?honours.map(h=>{const wonWith=h.historicalClub||historicalHonourClub(h,save);const person=h.isClubHonour?'':(h.person||h.player||'');return `<article class="doc-trophy"><div><div class="doc-trophy-icon">🏆</div><h4>${docEsc(h.title||h.name||h.honour||'Honour')}</h4><span>${docEsc(h.season||h.year||h.date||'Career honour')}</span>${wonWith?`<span class="doc-won-with">Won with ${docEsc(wonWith)}</span>`:''}${person?`<span class="doc-honour-person">${docEsc(person)}</span>`:''}</div></article>`}).join(''):'<div class="doc-empty">Add honours to fill the cinematic trophy cabinet.</div>';
+ const legendCards=legends.length?legends.map((p,i)=>{const playerClub=docHistoricalClub(p,'');return `<article class="doc-legend"><div class="doc-legend-rank">Hall of Fame • #${i+1}</div><h4>${docEsc(p.name)}</h4>${playerClub?`<div class="doc-won-with">${docEsc(playerClub)}</div>`:''}<div class="doc-legend-stats">${p.apps} appearances<br>${p.goals} goals • ${p.assists} assists<br>${p.honours||0} honours</div><div class="doc-legend-score">${Math.round(p.legendScore||p.score||0)} pts</div></article>`}).join(''):'<div class="doc-empty">Player statistics will automatically create the Hall of Fame.</div>';
+ panel.innerHTML=`<div class="doc-shell">
+ <section class="doc-hero"><div class="doc-hero-inner"><div><div class="doc-eyebrow">FM Hub Original Documentary</div><h2 class="doc-title">${docEsc(club)}</h2><div class="doc-subtitle"><strong>${docEsc(identity.name)}</strong> — ${docEsc(identity.tagline)} Follow the full journey from ${docEsc(start)} to ${docEsc(latest)}.</div><div class="doc-actions"><button class="doc-play" onclick="docOpenPlayer()">▶ Play Documentary</button><button class="doc-secondary" onclick="docSetTab('chapters')">Browse Chapters</button></div></div><div class="doc-poster"><div class="doc-poster-ring"><div class="doc-poster-logo">${logo}</div></div><div class="doc-poster-caption"><strong>${docEsc(save.name||club)}</strong><span>${docEsc(save.status||'Active')} Save</span></div></div></div></section>
+ <div class="doc-stats"><div class="doc-stat"><span>Story Type</span><strong>${docEsc(identity.name)}</strong></div><div class="doc-stat"><span>Seasons</span><strong>${seasons.length||chapters.length}</strong></div><div class="doc-stat"><span>Honours</span><strong>${honours.length}</strong></div><div class="doc-stat"><span>Story Events</span><strong>${events.length}</strong></div><div class="doc-stat"><span>Rating</span><strong>${identity.rating}/5</strong></div></div>
+ <div class="doc-tabs"><button class="doc-tab" data-doc-tab="chapters" onclick="docSetTab('chapters')">Chapters</button><button class="doc-tab" data-doc-tab="headlines" onclick="docSetTab('headlines')">Big Moments</button><button class="doc-tab" data-doc-tab="trophies" onclick="docSetTab('trophies')">Trophy Cabinet</button><button class="doc-tab" data-doc-tab="legends" onclick="docSetTab('legends')">Hall of Fame</button><button class="doc-tab" data-doc-tab="finale" onclick="docSetTab('finale')">Finale</button></div>
+ <div class="doc-panel" data-doc-panel="chapters"><section class="doc-section"><div class="doc-section-head"><div><div class="section-kicker">Season Collection</div><h3>The Chapters</h3><p>Scroll through the seasons that shaped the career.</p></div></div><div class="doc-chapter-rail">${chapterCards||'<div class="doc-empty">Add season records to create documentary chapters.</div>'}</div></section></div>
+ <div class="doc-panel" data-doc-panel="headlines"><section class="doc-section"><div class="doc-section-head"><div><div class="section-kicker">Defining Scenes</div><h3>The Biggest Moments</h3><p>Major events presented as documentary headlines.</p></div></div><div class="doc-headline-grid">${headlineCards||'<div class="doc-empty">Add honours, transfers, matches or story moments to create feature scenes.</div>'}</div></section></div>
+ <div class="doc-panel" data-doc-panel="trophies"><section class="doc-section"><div class="doc-section-head"><div><div class="section-kicker">Silverware</div><h3>Trophy Cabinet</h3><p>Every honour, displayed as part of the legacy.</p></div></div><div class="doc-trophy-grid">${trophyCards}</div></section></div>
+ <div class="doc-panel" data-doc-panel="legends"><section class="doc-section"><div class="doc-section-head"><div><div class="section-kicker">Immortals</div><h3>Hall of Fame</h3><p>The players whose numbers made them legends.</p></div></div><div class="doc-legend-grid">${legendCards}</div></section></div>
+ <div class="doc-panel" data-doc-panel="finale"><section class="doc-final"><div><div class="doc-eyebrow">Current Chapter</div><h3>${docEsc(save.season||latest)}</h3><p>${docEsc(topEvents[0]?docDescription(topEvents[0]):'The story is still being written. Every new season, transfer, honour and memory will automatically become part of this documentary.')}</p><div class="doc-actions" style="justify-content:center"><button class="doc-play" onclick="docOpenPlayer()">▶ Watch From Beginning</button><button class="doc-secondary" onclick="openSaveTab('story')">Open Story Archive</button></div></div></section></div>
+ </div>`;
+ docSetTab(window.docActiveTab||'chapters');
+}
 </script>
 
 <!-- STORY V3.1 ROADMAP: Interactive Story foundation prepared. -->
