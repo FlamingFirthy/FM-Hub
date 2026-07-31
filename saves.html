@@ -6277,30 +6277,6 @@ window.HistoricalContextEngine=window.HistoricalContextEngine||(()=>{
 }
 </style>
 
-
-<style id="svg-nation-flags-fix">
-.nation-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  max-width: 100%;
-  vertical-align: middle;
-}
-.nation-flag {
-  width: 22px;
-  height: 15px;
-  flex: 0 0 22px;
-  object-fit: cover;
-  border-radius: 3px;
-  border: 1px solid rgba(255,255,255,.18);
-  box-shadow: 0 2px 6px rgba(0,0,0,.22);
-  background: rgba(255,255,255,.06);
-}
-@media (max-width: 768px) {
-  .nation-label { gap: 6px; }
-  .nation-flag { width: 20px; height: 14px; flex-basis: 20px; }
-}
-</style>
 </head>
 <body>
   <header>
@@ -7619,251 +7595,34 @@ function renderInternationalTable(){
     
     
     const NATION_FLAGS = {
-      'Afghanistan': 'af',
-      'Albania': 'al',
-      'Algeria': 'dz',
-      'American Samoa': 'as',
-      'Andorra': 'ad',
-      'Angola': 'ao',
-      'Anguilla': 'ai',
-      'Antigua and Barbuda': 'ag',
-      'Argentina': 'ar',
-      'Armenia': 'am',
-      'Aruba': 'aw',
-      'Australia': 'au',
-      'Austria': 'at',
-      'Azerbaijan': 'az',
-      'Bahamas': 'bs',
-      'Bahrain': 'bh',
-      'Bangladesh': 'bd',
-      'Barbados': 'bb',
-      'Belarus': 'by',
-      'Belgium': 'be',
-      'Belize': 'bz',
-      'Benin': 'bj',
-      'Bermuda': 'bm',
-      'Bhutan': 'bt',
-      'Bolivia': 'bo',
-      'Bosnia and Herzegovina': 'ba',
-      'Bosnia And Herzagovina': 'ba',
-      'Botswana': 'bw',
-      'Brazil': 'br',
-      'British Virgin Islands': 'vg',
-      'Brunei': 'bn',
-      'Bulgaria': 'bg',
-      'Burkina Faso': 'bf',
-      'Burundi': 'bi',
-      'Cambodia': 'kh',
-      'Cameroon': 'cm',
-      'Canada': 'ca',
-      'Cape Verde': 'cv',
-      'Cabo Verde': 'cv',
-      'Cayman Islands': 'ky',
-      'Central African Republic': 'cf',
-      'Chad': 'td',
-      'Chile': 'cl',
-      'China': 'cn',
-      'Chinese Taipei': 'tw',
-      'Colombia': 'co',
-      'Comoros': 'km',
-      'Congo': 'cg',
-      'DR Congo': 'cd',
-      'Democratic Republic of Congo': 'cd',
-      'Cook Islands': 'ck',
-      'Costa Rica': 'cr',
-      'Croatia': 'hr',
-      'Cuba': 'cu',
-      'Curaçao': 'cw',
-      'Curacao': 'cw',
-      'Cyprus': 'cy',
-      'Czechia': 'cz',
-      'Czech Republic': 'cz',
-      'Denmark': 'dk',
-      'Djibouti': 'dj',
-      'Dominica': 'dm',
-      'Dominican Republic': 'do',
-      'Ecuador': 'ec',
-      'Egypt': 'eg',
-      'El Salvador': 'sv',
-      'England': 'gb-eng',
-      'Equatorial Guinea': 'gq',
-      'Eritrea': 'er',
-      'Estonia': 'ee',
-      'Eswatini': 'sz',
-      'Ethiopia': 'et',
-      'Faroe Islands': 'fo',
-      'Fiji': 'fj',
-      'Finland': 'fi',
-      'France': 'fr',
-      'Gabon': 'ga',
-      'Gambia': 'gm',
-      'Georgia': 'ge',
-      'Germany': 'de',
-      'Ghana': 'gh',
-      'Gibraltar': 'gi',
-      'Greece': 'gr',
-      'Grenada': 'gd',
-      'Guam': 'gu',
-      'Guatemala': 'gt',
-      'Guinea': 'gn',
-      'Guinea-Bissau': 'gw',
-      'Guyana': 'gy',
-      'Haiti': 'ht',
-      'Honduras': 'hn',
-      'Hong Kong': 'hk',
-      'Hungary': 'hu',
-      'Iceland': 'is',
-      'India': 'in',
-      'Indonesia': 'id',
-      'Iran': 'ir',
-      'Iraq': 'iq',
-      'Ireland': 'ie',
-      'Israel': 'il',
-      'Italy': 'it',
-      'Ivory Coast': 'ci',
-      "Cote d'Ivoire": 'ci',
-      "Côte d'Ivoire": 'ci',
-      'Jamaica': 'jm',
-      'Japan': 'jp',
-      'Jordan': 'jo',
-      'Kazakhstan': 'kz',
-      'Kenya': 'ke',
-      'Kosovo': 'xk',
-      'Kuwait': 'kw',
-      'Kyrgyzstan': 'kg',
-      'Laos': 'la',
-      'Latvia': 'lv',
-      'Lebanon': 'lb',
-      'Lesotho': 'ls',
-      'Liberia': 'lr',
-      'Libya': 'ly',
-      'Liechtenstein': 'li',
-      'Lithuania': 'lt',
-      'Luxembourg': 'lu',
-      'Macau': 'mo',
-      'Madagascar': 'mg',
-      'Malawi': 'mw',
-      'Malaysia': 'my',
-      'Maldives': 'mv',
-      'Mali': 'ml',
-      'Malta': 'mt',
-      'Mauritania': 'mr',
-      'Mauritius': 'mu',
-      'Mexico': 'mx',
-      'Moldova': 'md',
-      'Mongolia': 'mn',
-      'Montenegro': 'me',
-      'Montserrat': 'ms',
-      'Morocco': 'ma',
-      'Mozambique': 'mz',
-      'Myanmar': 'mm',
-      'Namibia': 'na',
-      'Nepal': 'np',
-      'Netherlands': 'nl',
-      'New Caledonia': 'nc',
-      'New Zealand': 'nz',
-      'Nicaragua': 'ni',
-      'Niger': 'ne',
-      'Nigeria': 'ng',
-      'North Korea': 'kp',
-      'North Macedonia': 'mk',
-      'Northern Ireland': 'gb-nir',
-      'Norway': 'no',
-      'Oman': 'om',
-      'Pakistan': 'pk',
-      'Palestine': 'ps',
-      'Panama': 'pa',
-      'Papua New Guinea': 'pg',
-      'Paraguay': 'py',
-      'Peru': 'pe',
-      'Philippines': 'ph',
-      'Poland': 'pl',
-      'Portugal': 'pt',
-      'Puerto Rico': 'pr',
-      'Qatar': 'qa',
-      'Romania': 'ro',
-      'Russia': 'ru',
-      'Rwanda': 'rw',
-      'Saint Kitts and Nevis': 'kn',
-      'Saint Lucia': 'lc',
-      'Saint Vincent and the Grenadines': 'vc',
-      'Samoa': 'ws',
-      'San Marino': 'sm',
-      'Saudi Arabia': 'sa',
-      'Scotland': 'gb-sct',
-      'Senegal': 'sn',
-      'Serbia': 'rs',
-      'Seychelles': 'sc',
-      'Sierra Leone': 'sl',
-      'Singapore': 'sg',
-      'Slovakia': 'sk',
-      'Slovenia': 'si',
-      'Solomon Islands': 'sb',
-      'Somalia': 'so',
-      'South Africa': 'za',
-      'South Korea': 'kr',
-      'South Sudan': 'ss',
-      'Spain': 'es',
-      'Sri Lanka': 'lk',
-      'Sudan': 'sd',
-      'Suriname': 'sr',
-      'Sweden': 'se',
-      'Switzerland': 'ch',
-      'Syria': 'sy',
-      'Tahiti': 'pf',
-      'Taiwan': 'tw',
-      'Tajikistan': 'tj',
-      'Tanzania': 'tz',
-      'Thailand': 'th',
-      'Togo': 'tg',
-      'Tonga': 'to',
-      'Trinidad and Tobago': 'tt',
-      'Tunisia': 'tn',
-      'Turkey': 'tr',
-      'Türkiye': 'tr',
-      'Turkmenistan': 'tm',
-      'Uganda': 'ug',
-      'Ukraine': 'ua',
-      'United Arab Emirates': 'ae',
-      'UAE': 'ae',
-      'United States': 'us',
-      'USA': 'us',
-      'Uruguay': 'uy',
-      'Uzbekistan': 'uz',
-      'Vanuatu': 'vu',
-      'Venezuela': 've',
-      'Vietnam': 'vn',
-      'Wales': 'gb-wls',
-      'Yemen': 'ye',
-      'Zambia': 'zm',
-      'Zimbabwe': 'zw'
+      "Afghanistan":"🇦🇫","Albania":"🇦🇱","Algeria":"🇩🇿","American Samoa":"🇦🇸","Andorra":"🇦🇩","Angola":"🇦🇴","Anguilla":"🇦🇮","Antigua and Barbuda":"🇦🇬","Argentina":"🇦🇷","Armenia":"🇦🇲","Aruba":"🇦🇼","Australia":"🇦🇺","Austria":"🇦🇹","Azerbaijan":"🇦🇿",
+      "Bahamas":"🇧🇸","Bahrain":"🇧🇭","Bangladesh":"🇧🇩","Barbados":"🇧🇧","Belarus":"🇧🇾","Belgium":"🇧🇪","Belize":"🇧🇿","Benin":"🇧🇯","Bermuda":"🇧🇲","Bhutan":"🇧🇹","Bolivia":"🇧🇴","Bosnia and Herzegovina":"🇧🇦","Bosnia And Herzagovina":"🇧🇦","Botswana":"🇧🇼","Brazil":"🇧🇷","British Virgin Islands":"🇻🇬","Brunei":"🇧🇳","Bulgaria":"🇧🇬","Burkina Faso":"🇧🇫","Burundi":"🇧🇮",
+      "Cambodia":"🇰🇭","Cameroon":"🇨🇲","Canada":"🇨🇦","Cape Verde":"🇨🇻","Cabo Verde":"🇨🇻","Cayman Islands":"🇰🇾","Central African Republic":"🇨🇫","Chad":"🇹🇩","Chile":"🇨🇱","China":"🇨🇳","Chinese Taipei":"🇹🇼","Colombia":"🇨🇴","Comoros":"🇰🇲","Congo":"🇨🇬","DR Congo":"🇨🇩","Democratic Republic of Congo":"🇨🇩","Cook Islands":"🇨🇰","Costa Rica":"🇨🇷","Croatia":"🇭🇷","Cuba":"🇨🇺","Curaçao":"🇨🇼","Curacao":"🇨🇼","Cyprus":"🇨🇾","Czechia":"🇨🇿","Czech Republic":"🇨🇿",
+      "Denmark":"🇩🇰","Djibouti":"🇩🇯","Dominica":"🇩🇲","Dominican Republic":"🇩🇴","Ecuador":"🇪🇨","Egypt":"🇪🇬","El Salvador":"🇸🇻","England":"🏴","Equatorial Guinea":"🇬🇶","Eritrea":"🇪🇷","Estonia":"🇪🇪","Eswatini":"🇸🇿","Ethiopia":"🇪🇹",
+      "Faroe Islands":"🇫🇴","Fiji":"🇫🇯","Finland":"🇫🇮","France":"🇫🇷","Gabon":"🇬🇦","Gambia":"🇬🇲","Georgia":"🇬🇪","Germany":"🇩🇪","Ghana":"🇬🇭","Gibraltar":"🇬🇮","Greece":"🇬🇷","Grenada":"🇬🇩","Guam":"🇬🇺","Guatemala":"🇬🇹","Guinea":"🇬🇳","Guinea-Bissau":"🇬🇼","Guyana":"🇬🇾",
+      "Haiti":"🇭🇹","Honduras":"🇭🇳","Hong Kong":"🇭🇰","Hungary":"🇭🇺","Iceland":"🇮🇸","India":"🇮🇳","Indonesia":"🇮🇩","Iran":"🇮🇷","Iraq":"🇮🇶","Ireland":"🇮🇪","Israel":"🇮🇱","Italy":"🇮🇹","Ivory Coast":"🇨🇮","Cote d'Ivoire":"🇨🇮","Côte d'Ivoire":"🇨🇮",
+      "Jamaica":"🇯🇲","Japan":"🇯🇵","Jordan":"🇯🇴","Kazakhstan":"🇰🇿","Kenya":"🇰🇪","Kosovo":"🇽🇰","Kuwait":"🇰🇼","Kyrgyzstan":"🇰🇬","Laos":"🇱🇦","Latvia":"🇱🇻","Lebanon":"🇱🇧","Lesotho":"🇱🇸","Liberia":"🇱🇷","Libya":"🇱🇾","Liechtenstein":"🇱🇮","Lithuania":"🇱🇹","Luxembourg":"🇱🇺",
+      "Macau":"🇲🇴","Madagascar":"🇲🇬","Malawi":"🇲🇼","Malaysia":"🇲🇾","Maldives":"🇲🇻","Mali":"🇲🇱","Malta":"🇲🇹","Mauritania":"🇲🇷","Mauritius":"🇲🇺","Mexico":"🇲🇽","Moldova":"🇲🇩","Mongolia":"🇲🇳","Montenegro":"🇲🇪","Montserrat":"🇲🇸","Morocco":"🇲🇦","Mozambique":"🇲🇿","Myanmar":"🇲🇲",
+      "Namibia":"🇳🇦","Nepal":"🇳🇵","Netherlands":"🇳🇱","New Caledonia":"🇳🇨","New Zealand":"🇳🇿","Nicaragua":"🇳🇮","Niger":"🇳🇪","Nigeria":"🇳🇬","North Korea":"🇰🇵","North Macedonia":"🇲🇰","Northern Ireland":"🏴","Norway":"🇳🇴",
+      "Oman":"🇴🇲","Pakistan":"🇵🇰","Palestine":"🇵🇸","Panama":"🇵🇦","Papua New Guinea":"🇵🇬","Paraguay":"🇵🇾","Peru":"🇵🇪","Philippines":"🇵🇭","Poland":"🇵🇱","Portugal":"🇵🇹","Puerto Rico":"🇵🇷",
+      "Qatar":"🇶🇦","Romania":"🇷🇴","Russia":"🇷🇺","Rwanda":"🇷🇼","Saint Kitts and Nevis":"🇰🇳","Saint Lucia":"🇱🇨","Saint Vincent and the Grenadines":"🇻🇨","Samoa":"🇼🇸","San Marino":"🇸🇲","Saudi Arabia":"🇸🇦","Scotland":"🏴","Senegal":"🇸🇳","Serbia":"🇷🇸","Seychelles":"🇸🇨","Sierra Leone":"🇸🇱","Singapore":"🇸🇬","Slovakia":"🇸🇰","Slovenia":"🇸🇮","Solomon Islands":"🇸🇧","Somalia":"🇸🇴","South Africa":"🇿🇦","South Korea":"🇰🇷","South Sudan":"🇸🇸","Spain":"🇪🇸","Sri Lanka":"🇱🇰","Sudan":"🇸🇩","Suriname":"🇸🇷","Sweden":"🇸🇪","Switzerland":"🇨🇭","Syria":"🇸🇾",
+      "Tahiti":"🇵🇫","Taiwan":"🇹🇼","Tajikistan":"🇹🇯","Tanzania":"🇹🇿","Thailand":"🇹🇭","Togo":"🇹🇬","Tonga":"🇹🇴","Trinidad and Tobago":"🇹🇹","Tunisia":"🇹🇳","Turkey":"🇹🇷","Türkiye":"🇹🇷","Turkmenistan":"🇹🇲",
+      "Uganda":"🇺🇬","Ukraine":"🇺🇦","United Arab Emirates":"🇦🇪","UAE":"🇦🇪","United States":"🇺🇸","USA":"🇺🇸","Uruguay":"🇺🇾","Uzbekistan":"🇺🇿","Vanuatu":"🇻🇺","Venezuela":"🇻🇪","Vietnam":"🇻🇳","Wales":"🏴","Yemen":"🇾🇪","Zambia":"🇿🇲","Zimbabwe":"🇿🇼"
     };
 
     function normaliseNationName(nation) {
       return String(nation || "").trim().replace(/\s+/g, " ").toLowerCase();
     }
 
-    function getNationCode(nation) {
+    function getNationEmoji(nation) {
       const clean = normaliseNationName(nation);
       const match = Object.keys(NATION_FLAGS).find(key => normaliseNationName(key) === clean);
-      return match ? NATION_FLAGS[match] : "un";
-    }
-
-    function getNationFlagUrl(nation) {
-      const code = getNationCode(nation);
-      return `https://flagcdn.com/${code}.svg`;
-    }
-
-    function getNationFlagHtml(nation, className = "nation-flag") {
-      const name = String(nation || "").trim();
-      if (!name) return "";
-      const safeName = escapeHtml(name);
-      return `<img class="${escapeHtml(className)}" src="${getNationFlagUrl(name)}" alt="${safeName} flag" loading="lazy" onerror="this.onerror=null;this.src='https://flagcdn.com/un.svg';">`;
+      return match ? NATION_FLAGS[match] : "🌍";
     }
 
     function renderNationLabel(nation) {
       const name = String(nation || "").trim();
-      return name ? `<span class="nation-label">${getNationFlagHtml(name)}<span>${escapeHtml(name)}</span></span>` : "-";
+      return name ? `${getNationEmoji(name)} ${escapeHtml(name)}` : "-";
     }
 
     function getNationList() {
@@ -7873,7 +7632,7 @@ function renderInternationalTable(){
     function populateNationDatalist() {
       const lists = document.querySelectorAll('datalist[data-nation-list="true"]');
       lists.forEach(list => {
-        list.innerHTML = getNationList().map(nation => `<option value="${escapeHtml(nation)}">${escapeHtml(nation)}</option>`).join("");
+        list.innerHTML = getNationList().map(nation => `<option value="${escapeHtml(nation)}">${getNationEmoji(nation)} ${escapeHtml(nation)}</option>`).join("");
       });
     }
 
@@ -12063,6 +11822,7 @@ function renderSavePlayerStats(save) {
       moveCardToTab(document.querySelector('#saveProfile .key-players-first'), 'overview');
 
       moveCardToTab(findSaveCardByKicker('People'), 'people');
+      if (typeof renderPolishedPlayersTab === 'function') renderPolishedPlayersTab(save);
       moveCardToTab(document.querySelector('#saveProfile .club-from-squad-card'), 'club');
       moveCardToTab(findSaveCardByKicker('Season Tracker'), 'club');
 
@@ -13794,6 +13554,73 @@ function story4LinesPage(lines){const active=lines.filter(x=>String(x.state||'')
 function story4JourneyPage(events){const moments=story3Important(events).map(e=>({...e,category:e.source||e.type||'Story',colour:'var(--accent)',icon:storyEventIcon(e.type,e.title),score:storyEventPriority(e)})),p=story5Page(moments,'journeyPage',8);return `<section class="story4-page" data-story4-page="journey"><div class="story4-card"><div class="story4-section-head"><div><div class="story4-kicker">Generation Journey</div><h3>The moments that changed their careers</h3><p class="muted">Only the defining moments are shown, with the rest split into manageable pages.</p></div><span class="story5-count-pill">${moments.length} defining moments</span></div><div class="story4-news-list story5-reveal">${p.items.map(story4NewsCard).join('')||'<div class="story4-empty">Defining moments will appear here.</div>'}</div>${story5Pager(p,'journeyPage','journey')}</div></section>`}
 function story4TimelinePage(save,events){const selected=window.storySourceFilterValue||'all',filtered=events.filter(e=>selected==='all'||e.source===selected),p=story5Page(filtered,'timelinePage',10);return `<section class="story4-page" data-story4-page="timeline"><div class="story4-card"><div class="story4-section-head"><div><div class="story4-kicker">Full Archive</div><h3>Every event and memory</h3><p class="muted">The archive is paginated so decades of history stay usable.</p></div><div class="story4-toolbar"><select onchange="window.storySourceFilterValue=this.value;story5Reset('timelinePage');renderStoryV1(getCurrentSave());story4SetPage('timeline')"><option value="all">All event types</option>${['Season','Honours','Transfers','International','Matches','Manual'].map(x=>`<option value="${x}" ${selected===x?'selected':''}>${x}</option>`).join('')}</select><span class="story5-count-pill">${filtered.length} events</span></div></div><div class="story5-archive-note">Recent and important stories live on Home and Journey. This page keeps the complete historical record.</div><div class="story4-news-list story5-reveal" style="margin-top:12px">${p.items.map((e,i)=>story4NewsCard({...e,id:(p.page-1)*p.size+i,category:e.source||e.type,colour:'var(--accent)',icon:storyEventIcon(e.type,e.title)})).join('')||'<div class="story4-empty">No events match this filter.</div>'}</div>${story5Pager(p,'timelinePage','timeline')}<details class="story5-collapsible" style="margin-top:16px"><summary>Add a manual story moment</summary><div class="story5-collapsible-body"><div class="timeline-form-grid edit-only"><div><label for="timelineSeasonInput">Season</label><input id="timelineSeasonInput" placeholder="2026/27"></div><div><label for="timelineTypeInput">Event Type</label><select id="timelineTypeInput"><option>Milestone</option><option>Trophy</option><option>Transfer</option><option>Match</option><option>Drama</option><option>Other</option></select></div><div><label for="timelineTitleInput">Title</label><input id="timelineTitleInput" placeholder="A defining player moment"></div><div class="wide"><label for="timelineNotesInput">Story Notes</label><textarea id="timelineNotesInput" placeholder="What happened and why it mattered..."></textarea></div></div><div class="hero-actions edit-only"><button class="admin-only primary" type="button" onclick="addTimelineEvent()">Add Story Moment</button></div><p class="muted viewer-only">Enter Edit Save mode to add a manual moment.</p></div></details></div></section>`}
 const story5OriginalSetPage=story4SetPage;story4SetPage=function(page){window.story4Page=page;document.querySelectorAll('.story4-nav button').forEach(b=>b.classList.toggle('active',b.dataset.story4===page));document.querySelectorAll('.story4-page').forEach(p=>p.classList.toggle('active',p.dataset.story4Page===page));if(!window.story5SuppressScroll)document.getElementById('saveTabStory')?.scrollIntoView({behavior:'smooth',block:'start'});window.story5SuppressScroll=false}
+</script>
+
+<style id="players-tab-polish">
+#saveTabPeople{padding:0!important}
+#saveTabPeople>.detail-card{padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+#saveTabPeople>.detail-card>.section-head{display:none!important}
+.players-hub{display:grid;gap:18px}
+.players-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(310px,.85fr);gap:18px;padding:24px;border-radius:26px;border:1px solid rgba(255,255,255,.1);background:radial-gradient(circle at 88% 12%,var(--accent-soft),transparent 35%),linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.018));box-shadow:0 18px 42px rgba(0,0,0,.24)}
+.players-hero::after{content:"★";position:absolute;right:24px;top:-24px;font-size:150px;line-height:1;color:rgba(255,255,255,.025);pointer-events:none}
+.players-hero-copy{position:relative;z-index:1}.players-hero-copy h2{font-size:clamp(2rem,4vw,3.25rem);margin:5px 0 8px;letter-spacing:-.04em}.players-hero-copy p{max-width:65ch;margin:0;color:var(--muted)}
+.players-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:20px}.players-summary-card{padding:13px;border-radius:16px;background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.07)}.players-summary-card span{display:block;color:var(--muted);font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.players-summary-card strong{display:block;margin-top:6px;font-size:1.25rem}
+.player-feature{position:relative;z-index:1;display:grid;grid-template-columns:100px minmax(0,1fr);gap:16px;align-items:center;padding:18px;border-radius:22px;background:linear-gradient(145deg,var(--accent-soft),rgba(0,0,0,.16));border:1px solid rgba(255,255,255,.11);cursor:pointer;transition:.18s ease}.player-feature:hover{transform:translateY(-3px);box-shadow:0 18px 38px rgba(0,0,0,.28),0 0 18px var(--hover-glow)}
+.player-feature-photo{width:100px;height:100px;border-radius:22px;overflow:hidden;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),rgba(255,255,255,.16));border:1px solid rgba(255,255,255,.14);font-size:1.35rem;font-weight:950;color:#fff}.player-feature-photo img{width:100%;height:100%;object-fit:cover}.player-feature h3{font-size:1.45rem;margin:5px 0}.player-stars{color:#facc15;letter-spacing:1px;font-size:1.05rem}.player-feature-stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.player-feature-stats span{padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.07);font-size:.72rem;font-weight:850}
+.players-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) repeat(3,minmax(140px,.42fr));gap:10px;padding:14px;border-radius:20px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.022)}
+.players-toolbar input,.players-toolbar select{min-height:44px}
+.players-section{padding:18px;border-radius:22px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.014))}.players-section-head{display:flex;justify-content:space-between;align-items:end;gap:14px;margin-bottom:14px}.players-section-head h3{margin:3px 0 0}.players-count{padding:6px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.72rem;font-weight:900}
+.players-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:13px}
+.player-showcase-card{--player-accent:var(--accent);position:relative;overflow:hidden;min-height:300px;padding:17px;border-radius:21px;border:1px solid rgba(255,255,255,.08);background:radial-gradient(circle at 100% 0,color-mix(in srgb,var(--player-accent) 16%,transparent),transparent 34%),linear-gradient(145deg,rgba(255,255,255,.052),rgba(255,255,255,.016));cursor:pointer;transition:.18s ease}.player-showcase-card::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--player-accent)}.player-showcase-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--player-accent) 48%,rgba(255,255,255,.12));box-shadow:0 18px 40px rgba(0,0,0,.3),0 0 20px color-mix(in srgb,var(--player-accent) 17%,transparent)}
+.player-card-top{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:13px;align-items:start}.player-card-photo{width:72px;height:72px;border-radius:19px;overflow:hidden;display:grid;place-items:center;background:linear-gradient(135deg,var(--player-accent),rgba(255,255,255,.16));border:1px solid rgba(255,255,255,.12);font-weight:950;color:#fff}.player-card-photo img{width:100%;height:100%;object-fit:cover}.player-card-name{min-width:0}.player-card-name h4{font-size:1.08rem;margin:2px 0 5px;overflow-wrap:anywhere}.player-card-sub{color:var(--muted);font-size:.76rem;line-height:1.35}.player-card-rating{text-align:right}.player-card-rating strong{display:block;font-size:1.15rem}.player-card-rating span{display:block;color:#facc15;font-size:.75rem;letter-spacing:-1px}
+.player-position{display:inline-flex;align-items:center;justify-content:center;min-width:38px;padding:5px 8px;border-radius:9px;font-size:.68rem;font-weight:950;color:#fff;margin-right:5px}.pos-gk{background:#16a34a}.pos-def{background:#2563eb}.pos-mid{background:#7c3aed}.pos-att{background:#dc2626}.pos-other{background:#64748b}
+.player-status{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.055);font-size:.69rem;font-weight:850}.player-status::before{content:"";width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 10px currentColor}.player-status.loan::before{background:#60a5fa}.player-status.injured::before{background:#fb7185}.player-status.retired::before{background:#94a3b8}.player-status.rotation::before{background:#facc15}
+.player-quick-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:15px}.player-quick-stat{padding:10px 7px;text-align:center;border-radius:13px;background:rgba(0,0,0,.14);border:1px solid rgba(255,255,255,.055)}.player-quick-stat span{display:block;color:var(--muted);font-size:.58rem;text-transform:uppercase;letter-spacing:.07em;font-weight:900}.player-quick-stat strong{display:block;margin-top:4px;font-size:.95rem}
+.player-attribute-bars{display:grid;gap:8px;margin-top:15px}.player-bar-row{display:grid;grid-template-columns:70px minmax(0,1fr) 28px;gap:8px;align-items:center}.player-bar-row span{color:var(--muted);font-size:.68rem;font-weight:800}.player-bar{height:7px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden}.player-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--player-accent),rgba(255,255,255,.8))}.player-bar-row b{font-size:.68rem;text-align:right}
+.player-card-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:15px;padding-top:13px;border-top:1px solid rgba(255,255,255,.06)}.player-value{font-weight:950;color:var(--accent)}.player-open-link{font-size:.72rem;font-weight:900;color:var(--accent)}
+.players-staff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}.staff-mini-card{display:grid;grid-template-columns:50px minmax(0,1fr) auto;gap:11px;align-items:center;padding:12px;border-radius:16px;background:rgba(255,255,255,.028);border:1px solid rgba(255,255,255,.065);cursor:pointer}.staff-mini-card:hover{border-color:var(--hover-border);transform:translateY(-2px)}
+.players-editor-shell{margin-top:0;padding:16px;border-radius:20px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07)}
+@media(max-width:980px){.players-hero{grid-template-columns:1fr}.players-toolbar{grid-template-columns:1fr 1fr}.players-summary-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.players-toolbar{grid-template-columns:1fr}.players-card-grid{grid-template-columns:1fr}.player-card-top{grid-template-columns:62px minmax(0,1fr)}.player-card-photo{width:62px;height:62px}.player-card-rating{grid-column:2;text-align:left}.player-quick-stats{grid-template-columns:repeat(2,1fr)}.player-feature{grid-template-columns:74px minmax(0,1fr)}.player-feature-photo{width:74px;height:74px}.players-summary-grid{grid-template-columns:1fr 1fr}}
+</style>
+
+<script id="players-tab-polish-script">
+const PLAYERS_TAB_STATE={search:'',position:'all',status:'all',sort:'legend'};
+function playersNum(v){const n=Number(String(v??'').replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n:0}
+function playersText(v){return String(v??'').trim()}
+function playersFindSource(person){
+  const pools=[...(typeof getPeople==='function'?getPeople():[]),...(typeof getSquadPlayers==='function'?getSquadPlayers():[])];
+  return pools.find(p=>normaliseText(p.id||p.name)===normaliseText(person.id||person.name)||normaliseText(p.name)===normaliseText(person.name))||{};
+}
+function playersPositionClass(position){const p=playersText(position).toUpperCase();if(/GK/.test(p))return'pos-gk';if(/CB|LB|RB|WB|DEF/.test(p))return'pos-def';if(/CM|DM|AM|LM|RM|MID/.test(p))return'pos-mid';if(/ST|CF|LW|RW|FW|ATT/.test(p))return'pos-att';return'pos-other'}
+function playersStatus(data,latestTransfer){const raw=playersText(data.status||data.squadStatus||data.role||'').toLowerCase();if(raw.includes('injur'))return{key:'injured',label:'Injured'};if(raw.includes('retir'))return{key:'retired',label:'Retired'};if(raw.includes('loan')||playersText(latestTransfer?.type).toLowerCase().includes('loan'))return{key:'loan',label:'On Loan'};if(raw.includes('rotation')||raw.includes('backup'))return{key:'rotation',label:'Rotation'};return{key:'first-team',label:raw?playersText(data.status||data.squadStatus||data.role):'First Team'}}
+function playersStars(value){const n=playersNum(value);const stars=n?Math.max(1,Math.min(5,Math.round(n/40))):0;return '★'.repeat(stars)+'☆'.repeat(5-stars)}
+function playersAvatar(person,source,cls){const photo=source.photo||source.image||source.imageUrl||source.photoUrl||'';return `<div class="${cls}">${photo?`<img src="${escapeHtml(photo)}" alt="${escapeHtml(person.name)}">`:initials(person.name)}</div>`}
+function playersBuildRecords(save){
+ const linked=getLinkedPeopleForSave(save||{name:''});const stats=getAllStatsForSave(save||{name:''});const transfers=Array.isArray(save?.transfers)?save.transfers:[];const awards=Array.isArray(save?.seasonAwards)?save.seasonAwards:[];
+ return linked.map(person=>{const source=playersFindSource(person);const rows=stats.filter(r=>normaliseText(r.personName)===normaliseText(person.name));const total=rows.reduce((a,r)=>{a.apps+=playersNum(r.apps);a.goals+=playersNum(r.goals);a.assists+=playersNum(r.assists);a.ratingTotal+=playersNum(r.rating)*Math.max(1,playersNum(r.apps));a.ratingApps+=playersNum(r.rating)?Math.max(1,playersNum(r.apps)):0;a.cleanSheets+=playersNum(r.cleanSheets);return a},{apps:0,goals:0,assists:0,ratingTotal:0,ratingApps:0,cleanSheets:0});
+ const latest=transfers.filter(t=>normaliseText(t.player)===normaliseText(person.name)).slice(-1)[0];const honours=awards.filter(a=>normaliseText(a.person)===normaliseText(person.name)).length;const type=playersText(person.type||source.type||source.jobTitle||'Player');const role=playersText(person.position||source.position||source.role||type);const isStaff=/manager|coach|staff|director|scout|physio/i.test(type+' '+role);const ca=playersNum(source.ca||source.currentAbility||source.current_ability);const pa=playersNum(source.pa||source.potentialAbility||source.potential_ability);const avg=total.ratingApps?total.ratingTotal/total.ratingApps:0;const status=playersStatus(source,latest);const club=latest?.to||person.club||source.club||source.team||save?.club||'-';const nation=source.nation||source.nationality||person.nation||person.nationality||'';const age=source.age||'';const value=source.value||source.marketValue||source.transferValue||'';const legend=total.apps+total.goals*4+total.assists*3+honours*12+avg*5+ca*.35;
+ return{person,source,total,latest,honours,type,role,isStaff,ca,pa,avg,status,club,nation,age,value,legend};});
+}
+function playersSetFilter(key,value){PLAYERS_TAB_STATE[key]=value;renderPolishedPlayersTab(getCurrentSave())}
+function playersBar(label,value,max=200){const n=Math.max(0,Math.min(max,playersNum(value)));return `<div class="player-bar-row"><span>${label}</span><div class="player-bar"><i style="width:${Math.round(n/max*100)}%"></i></div><b>${n||'-'}</b></div>`}
+function playersCard(r){const pos=r.role||'Player';const accent=r.source.primaryColour||r.source.clubColour||'var(--accent)';return `<article class="player-showcase-card" style="--player-accent:${escapeHtml(accent)}" onclick="openSavePersonProfile(decodeFromClick('${encodeForClick(r.person.id||r.person.name)}'),decodeFromClick('${encodeForClick(r.person.name)}'))">
+ <div class="player-card-top">${playersAvatar(r.person,r.source,'player-card-photo')}<div class="player-card-name"><div><span class="player-position ${playersPositionClass(pos)}">${escapeHtml(pos.split(/[\/,]/)[0]||'P')}</span>${r.nation?renderNationLabel(r.nation):''}</div><h4>${escapeHtml(r.person.name)}</h4><div class="player-card-sub">${escapeHtml(r.club)}${r.age?` • Age ${escapeHtml(r.age)}`:''}</div><span class="player-status ${r.status.key}">${escapeHtml(r.status.label)}</span></div><div class="player-card-rating"><strong>${r.avg?r.avg.toFixed(2):'-'}</strong><span>${playersStars(r.ca||r.pa)}</span></div></div>
+ <div class="player-quick-stats"><div class="player-quick-stat"><span>Apps</span><strong>${r.total.apps}</strong></div><div class="player-quick-stat"><span>Goals</span><strong>${r.total.goals}</strong></div><div class="player-quick-stat"><span>Assists</span><strong>${r.total.assists}</strong></div><div class="player-quick-stat"><span>Honours</span><strong>${r.honours}</strong></div></div>
+ <div class="player-attribute-bars">${playersBar('Current',r.ca)}${playersBar('Potential',r.pa)}${playersBar('Impact',Math.min(200,Math.round(r.legend/3)))}</div>
+ <div class="player-card-footer"><span class="player-value">${escapeHtml(r.value||`${r.total.goals+r.total.assists} G+A`)}</span><span class="player-open-link">View Profile →</span></div></article>`}
+function renderPolishedPlayersTab(save){
+ const panel=document.getElementById('saveTabPeople'),legacy=document.getElementById('linkedPeopleList');if(!panel||!legacy||!save)return;
+ const card=legacy.closest('.detail-card');if(!card)return;const records=playersBuildRecords(save),players=records.filter(r=>!r.isStaff),staff=records.filter(r=>r.isStaff);let shown=players.filter(r=>{const q=PLAYERS_TAB_STATE.search.toLowerCase();const search=!q||[r.person.name,r.club,r.role,r.nation].some(v=>playersText(v).toLowerCase().includes(q));const pos=PLAYERS_TAB_STATE.position==='all'||playersPositionClass(r.role)===PLAYERS_TAB_STATE.position;const status=PLAYERS_TAB_STATE.status==='all'||r.status.key===PLAYERS_TAB_STATE.status;return search&&pos&&status});
+ const sorters={legend:(a,b)=>b.legend-a.legend,apps:(a,b)=>b.total.apps-a.total.apps,goals:(a,b)=>b.total.goals-a.total.goals,assists:(a,b)=>b.total.assists-a.total.assists,rating:(a,b)=>b.avg-a.avg,name:(a,b)=>a.person.name.localeCompare(b.person.name)};shown.sort(sorters[PLAYERS_TAB_STATE.sort]||sorters.legend);const featured=[...players].sort((a,b)=>b.legend-a.legend)[0];const totalApps=players.reduce((s,r)=>s+r.total.apps,0),totalGoals=players.reduce((s,r)=>s+r.total.goals,0),avgAge=(()=>{const a=players.map(r=>playersNum(r.age)).filter(Boolean);return a.length?(a.reduce((s,n)=>s+n,0)/a.length).toFixed(1):'-'})();
+ const editor=card.querySelector('.form-grid')?.outerHTML||'';const actions=card.querySelector('.hero-actions')?.outerHTML||'';
+ card.innerHTML=`<div class="players-hub"><section class="players-hero"><div class="players-hero-copy"><div class="section-kicker">Squad Collection</div><h2>Players of the Save</h2><p>Browse the stars, prospects and legends who shaped ${escapeHtml(save.name||'this career')}.</p><div class="players-summary-grid"><div class="players-summary-card"><span>Players</span><strong>${players.length}</strong></div><div class="players-summary-card"><span>Total Apps</span><strong>${totalApps}</strong></div><div class="players-summary-card"><span>Total Goals</span><strong>${totalGoals}</strong></div><div class="players-summary-card"><span>Average Age</span><strong>${avgAge}</strong></div></div></div>${featured?`<div class="player-feature" onclick="openSavePersonProfile(decodeFromClick('${encodeForClick(featured.person.id||featured.person.name)}'),decodeFromClick('${encodeForClick(featured.person.name)}'))">${playersAvatar(featured.person,featured.source,'player-feature-photo')}<div><div class="section-kicker">Player of the Save</div><h3>${escapeHtml(featured.person.name)}</h3><div class="player-stars">${playersStars(featured.ca||featured.pa)}</div><div class="muted">${escapeHtml(featured.role)} • ${escapeHtml(featured.club)}</div><div class="player-feature-stats"><span>${featured.total.apps} apps</span><span>${featured.total.goals} goals</span><span>${featured.total.assists} assists</span><span>${featured.honours} honours</span></div></div></div>`:'<div class="empty-state">Link players to create a featured player.</div>'}</section>
+ <div class="players-toolbar"><input value="${escapeHtml(PLAYERS_TAB_STATE.search)}" placeholder="Search players, clubs or nations..." oninput="playersSetFilter('search',this.value)"><select onchange="playersSetFilter('position',this.value)"><option value="all">All positions</option><option value="pos-gk" ${PLAYERS_TAB_STATE.position==='pos-gk'?'selected':''}>Goalkeepers</option><option value="pos-def" ${PLAYERS_TAB_STATE.position==='pos-def'?'selected':''}>Defenders</option><option value="pos-mid" ${PLAYERS_TAB_STATE.position==='pos-mid'?'selected':''}>Midfielders</option><option value="pos-att" ${PLAYERS_TAB_STATE.position==='pos-att'?'selected':''}>Attackers</option></select><select onchange="playersSetFilter('status',this.value)"><option value="all">All statuses</option><option value="first-team" ${PLAYERS_TAB_STATE.status==='first-team'?'selected':''}>First Team</option><option value="rotation" ${PLAYERS_TAB_STATE.status==='rotation'?'selected':''}>Rotation</option><option value="loan" ${PLAYERS_TAB_STATE.status==='loan'?'selected':''}>On Loan</option><option value="injured" ${PLAYERS_TAB_STATE.status==='injured'?'selected':''}>Injured</option><option value="retired" ${PLAYERS_TAB_STATE.status==='retired'?'selected':''}>Retired</option></select><select onchange="playersSetFilter('sort',this.value)"><option value="legend" ${PLAYERS_TAB_STATE.sort==='legend'?'selected':''}>Sort: Save impact</option><option value="apps" ${PLAYERS_TAB_STATE.sort==='apps'?'selected':''}>Appearances</option><option value="goals" ${PLAYERS_TAB_STATE.sort==='goals'?'selected':''}>Goals</option><option value="assists" ${PLAYERS_TAB_STATE.sort==='assists'?'selected':''}>Assists</option><option value="rating" ${PLAYERS_TAB_STATE.sort==='rating'?'selected':''}>Average rating</option><option value="name" ${PLAYERS_TAB_STATE.sort==='name'?'selected':''}>Name</option></select></div>
+ <section class="players-section"><div class="players-section-head"><div><div class="section-kicker">Player Cards</div><h3>Squad & Career Legends</h3></div><span class="players-count">${shown.length} shown</span></div><div class="players-card-grid">${shown.length?shown.map(playersCard).join(''):'<div class="empty-state" style="grid-column:1/-1">No players match these filters.</div>'}</div></section>
+ ${staff.length?`<section class="players-section"><div class="players-section-head"><div><div class="section-kicker">Staff</div><h3>Managers & Backroom Team</h3></div><span class="players-count">${staff.length}</span></div><div class="players-staff-grid">${staff.map(r=>`<div class="staff-mini-card" onclick="openSavePersonProfile(decodeFromClick('${encodeForClick(r.person.id||r.person.name)}'),decodeFromClick('${encodeForClick(r.person.name)}'))">${playersAvatar(r.person,r.source,'save-person-avatar')}<div><strong>${escapeHtml(r.person.name)}</strong><div class="muted">${escapeHtml(r.role||r.type)} • ${escapeHtml(r.club)}</div></div><span class="player-open-link">Open →</span></div>`).join('')}</div></section>`:''}
+ <section class="players-editor-shell edit-only"><div class="section-head"><div><div class="section-kicker">Edit Players</div><h3>Link a player or staff member</h3></div></div>${editor}${actions}</section></div>`;
+ if(typeof populatePersonSelect==='function')populatePersonSelect();if(typeof applyAdminMode==='function')applyAdminMode();
+}
 </script>
 
 </body>
