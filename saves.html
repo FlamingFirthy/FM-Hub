@@ -14128,5 +14128,156 @@ function openSavePersonProfile(id,name){
 }
 </style>
 
+
+
+<!-- Universal person identity + resilient profile lookup -->
+<script id="universal-person-link-fix">
+(function () {
+  const PERSON_UID_VERSION = 1;
+
+  function uidNormalise(value) {
+    return String(value || '')
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+
+  function stablePersonUid(entity, fallbackName) {
+    if (!entity && !fallbackName) return '';
+    const existing = entity && (entity.personUid || entity.universalPersonId || entity.peopleId);
+    if (existing) return String(existing);
+    const legacyId = entity && entity.id;
+    if (legacyId) return `person:${String(legacyId)}`;
+    const name = (entity && (entity.name || entity.fullName)) || fallbackName || '';
+    return name ? `person:name:${uidNormalise(name)}` : '';
+  }
+
+  function hasPlayingEvidence(item) {
+    if (!item) return false;
+    const text = [item.position, item.positions, item.role, item.type, item.jobTitle, item.staffRole]
+      .filter(Boolean).join(' ');
+    const footballPosition = /(^|[\s,/|()\-])(gk|goalkeeper|keeper|rb|lb|rwb|lwb|cb|dm|cdm|cm|am|cam|lm|rm|lw|rw|st|cf|forward|winger|midfielder|defender|striker)(?=$|[\s,/|()\-])/i.test(text);
+    const playerType = /\b(player|footballer|goalkeeper)\b/i.test(text);
+    const playingStats = ['apps','appearances','goals','assists','cleanSheets','rating'].some(key => Number(item[key]) > 0);
+    return footballPosition || playerType || playingStats;
+  }
+
+  function isStaffEvidence(item) {
+    if (!item) return false;
+    const text = [item.type, item.jobTitle, item.staffRole, item.role].filter(Boolean).join(' ');
+    return /\b(manager|head coach|assistant manager|coach|staff|director|scout|physio|analyst|recruitment|chairman|owner)\b/i.test(text);
+  }
+
+  function migrateUniversalPersonIds() {
+    if (localStorage.getItem('fmhub-person-uid-version') === String(PERSON_UID_VERSION)) return;
+
+    const people = typeof getPeople === 'function' ? getPeople() : [];
+    const squad = typeof getSquadPlayers === 'function' ? getSquadPlayers() : [];
+    const saves = typeof getSaves === 'function' ? getSaves() : [];
+    const uidByName = new Map();
+
+    [...people, ...squad].forEach(item => {
+      if (!item) return;
+      item.personUid = stablePersonUid(item, item.name);
+      const key = uidNormalise(item.name || item.fullName);
+      if (key && !uidByName.has(key)) uidByName.set(key, item.personUid);
+    });
+
+    saves.forEach(save => {
+      const linked = Array.isArray(save.linkedPeople) ? save.linkedPeople : [];
+      linked.forEach(item => {
+        const key = uidNormalise(item && item.name);
+        item.personUid = item.personUid || uidByName.get(key) || stablePersonUid(item, item && item.name);
+      });
+
+      const statCollections = [save.playerStats, save.internationalStats];
+      statCollections.forEach(rows => (Array.isArray(rows) ? rows : []).forEach(row => {
+        const name = row.personName || row.player || row.name || row.playerName;
+        const key = uidNormalise(name);
+        row.personUid = row.personUid || uidByName.get(key) || (name ? `person:name:${key}` : '');
+      }));
+
+      (Array.isArray(save.transfers) ? save.transfers : []).forEach(row => {
+        const key = uidNormalise(row.player);
+        row.personUid = row.personUid || uidByName.get(key) || (row.player ? `person:name:${key}` : '');
+      });
+
+      (Array.isArray(save.seasonAwards) ? save.seasonAwards : []).forEach(row => {
+        const name = row.person || row.player || row.name;
+        const key = uidNormalise(name);
+        row.personUid = row.personUid || uidByName.get(key) || (name ? `person:name:${key}` : '');
+      });
+    });
+
+    try {
+      if (typeof setPeople === 'function') setPeople(people);
+      if (typeof setSquadPlayers === 'function') setSquadPlayers(squad);
+      if (typeof saveNormalisedSaves === 'function') saveNormalisedSaves(saves);
+      localStorage.setItem('fmhub-person-uid-version', String(PERSON_UID_VERSION));
+    } catch (error) {
+      console.warn('Universal person ID migration could not be fully saved.', error);
+    }
+  }
+
+  window.findSavePerson = function resilientFindSavePerson(id, name) {
+    const decodedId = typeof decodeFromClick === 'function' ? decodeFromClick(id) : id;
+    const decodedName = typeof decodeFromClick === 'function' ? decodeFromClick(name) : name;
+    const cleanId = String(decodedId || '').trim();
+    const cleanName = typeof normaliseText === 'function' ? normaliseText(decodedName) : String(decodedName || '').trim().toLowerCase();
+    const save = typeof getCurrentSave === 'function' ? getCurrentSave() : null;
+    const linked = save && typeof getLinkedPeopleForSave === 'function' ? getLinkedPeopleForSave(save) : [];
+    const people = typeof getPeople === 'function' ? getPeople() : [];
+    const squad = typeof getSquadPlayers === 'function' ? getSquadPlayers() : [];
+
+    const nameMatches = item => item && cleanName && (typeof normaliseText === 'function' ? normaliseText(item.name || item.fullName) : String(item.name || item.fullName || '').trim().toLowerCase()) === cleanName;
+    const idMatches = item => {
+      if (!item || !cleanId) return false;
+      const candidates = [item.personUid, item.universalPersonId, item.id, item.peopleId, typeof getEntityKey === 'function' ? getEntityKey(item) : ''].filter(Boolean).map(String);
+      return candidates.includes(cleanId) || candidates.some(value => uidNormalise(value) === uidNormalise(cleanId));
+    };
+
+    const linkedCandidates = linked.filter(item => idMatches(item) || nameMatches(item));
+    const peopleCandidates = people.filter(item => idMatches(item) || nameMatches(item));
+    const squadCandidates = squad.filter(item => idMatches(item) || nameMatches(item));
+
+    const linkedEntry = linkedCandidates.sort((a, b) => Number(hasPlayingEvidence(b)) - Number(hasPlayingEvidence(a)))[0] || null;
+    const squadPlayer = squadCandidates.sort((a, b) => Number(hasPlayingEvidence(b)) - Number(hasPlayingEvidence(a)))[0] || null;
+
+    const rankedPeople = peopleCandidates.sort((a, b) => {
+      const aScore = (hasPlayingEvidence(a) ? 8 : 0) + (!isStaffEvidence(a) ? 3 : 0) + (idMatches(a) ? 2 : 0);
+      const bScore = (hasPlayingEvidence(b) ? 8 : 0) + (!isStaffEvidence(b) ? 3 : 0) + (idMatches(b) ? 2 : 0);
+      return bScore - aScore;
+    });
+
+    let person = rankedPeople[0] || null;
+    const playerContext = hasPlayingEvidence(linkedEntry) || hasPlayingEvidence(squadPlayer);
+    if (playerContext && person && isStaffEvidence(person) && squadPlayer) person = squadPlayer;
+    if (!person && squadPlayer) person = squadPlayer;
+
+    return { linkedEntry, person, squadPlayer };
+  };
+
+  window.playersOpenProfile = function resilientPlayersOpenProfile(id, name) {
+    const cleanName = String(name || '').trim();
+    const cleanId = String(id || '').trim();
+    try {
+      const found = window.findSavePerson(cleanId, cleanName);
+      const resolved = found.squadPlayer || found.person || found.linkedEntry;
+      const resolvedName = (resolved && (resolved.name || resolved.fullName)) || cleanName;
+      const resolvedId = (resolved && (resolved.personUid || resolved.id || resolved.peopleId)) || cleanId || resolvedName;
+      openSavePersonProfile(resolvedId, resolvedName);
+    } catch (error) {
+      console.warn('Universal profile lookup failed; opening by name.', error);
+      openSavePersonProfile(cleanName, cleanName);
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', migrateUniversalPersonIds);
+  window.addEventListener('FMCloudReady', migrateUniversalPersonIds);
+})();
+</script>
+
 </body>
 </html> 
