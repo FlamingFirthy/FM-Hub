@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FM Hub Flags & Emojis</title>
+  <title>FM Hub Flags</title>
   <style>
     :root {
       --bg: #090a0f;
@@ -100,7 +100,23 @@
       place-items: center;
       border-radius: 14px;
       background: rgba(255,255,255,0.075);
-      font-size: 2rem;
+      overflow: hidden;
+    }
+
+    .nation-flag {
+      width: 30px;
+      height: 22px;
+      object-fit: cover;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.3);
+      vertical-align: middle;
+      flex: 0 0 auto;
+    }
+
+    .nation-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
     }
 
     .flag-card strong {
@@ -150,13 +166,13 @@
 <body>
   <div class="wrap">
     <section class="hero">
-      <h1>FM Hub Flags & Emojis</h1>
-      <p>This page stores one reusable nation-to-emoji system. Use <strong>getNationEmoji("England")</strong> or <strong>renderNationLabel("England")</strong> anywhere in FM Hub.</p>
+      <h1>FM Hub Flags</h1>
+      <p>This page stores one reusable nation-to-flag system using SVG flag images, so flags display correctly on Windows, Android and Apple devices. Use <strong>getNationFlagHtml("England")</strong> or <strong>renderNationLabel("England")</strong> anywhere in FM Hub.</p>
     </section>
 
     <div class="tools">
       <input id="searchInput" placeholder="Search nation... e.g. England, Brazil, New Zealand" oninput="renderFlags()">
-      <button onclick="copyCode()">Copy JS</button>
+      <button onclick="copyCode()">Copy Flag JS</button>
     </div>
 
     <div id="flagGrid" class="grid"></div>
@@ -392,14 +408,24 @@
       "Zimbabwe": "🇿🇼"
     };
 
-    
-    function emojiOnlyList() {
-      return Object.entries(NATION_FLAGS)
-        .sort((a,b)=>a[0].localeCompare(b[0]))
-        .map(([nation,flag])=>({nation,flag}));
+    const SPECIAL_NATION_CODES = {
+      "England": "gb-eng",
+      "Scotland": "gb-sct",
+      "Wales": "gb-wls",
+      "Northern Ireland": "gb-nir"
+    };
+
+    function emojiToCountryCode(emoji) {
+      const chars = Array.from(String(emoji || ""));
+      if (chars.length !== 2) return "";
+      const code = chars.map(char => {
+        const value = char.codePointAt(0) - 127397;
+        return value >= 65 && value <= 90 ? String.fromCharCode(value) : "";
+      }).join("");
+      return code.length === 2 ? code.toLowerCase() : "";
     }
 
-function normaliseNationName(nation) {
+    function normaliseNationName(nation) {
       return String(nation || "")
         .trim()
         .replace(/\s+/g, " ")
@@ -412,9 +438,31 @@ function normaliseNationName(nation) {
       return match ? NATION_FLAGS[match] : "🌍";
     }
 
+    function getNationCode(nation) {
+      const clean = normaliseNationName(nation);
+      const match = Object.keys(NATION_FLAGS).find(key => normaliseNationName(key) === clean);
+      if (!match) return "";
+      return SPECIAL_NATION_CODES[match] || emojiToCountryCode(NATION_FLAGS[match]);
+    }
+
+    function getNationFlagUrl(nation) {
+      const code = getNationCode(nation);
+      return code ? `https://flagcdn.com/${code}.svg` : "";
+    }
+
+    function getNationFlagHtml(nation, className = "nation-flag") {
+      const name = String(nation || "").trim();
+      const url = getNationFlagUrl(name);
+      return url
+        ? `<img class="${className}" src="${url}" alt="${name} flag" loading="lazy">`
+        : `<span aria-hidden="true">🌍</span>`;
+    }
+
     function renderNationLabel(nation) {
       const name = String(nation || "").trim();
-      return name ? `${getNationEmoji(name)} ${name}` : "-";
+      return name
+        ? `<span class="nation-label">${getNationFlagHtml(name)}<span>${name}</span></span>`
+        : "-";
     }
 
     function getNationList() {
@@ -429,7 +477,7 @@ function normaliseNationName(nation) {
         .filter(nation => !q || nation.toLowerCase().includes(q))
         .map(nation => `
           <div class="flag-card">
-            <div class="emoji">${NATION_FLAGS[nation]}</div>
+            <div class="emoji">${getNationFlagHtml(nation)}</div>
             <div>
               <strong>${nation}</strong>
               <span>${renderNationLabel(nation)}</span>
@@ -448,22 +496,50 @@ function normaliseNationName(nation) {
       const code = `
 const NATION_FLAGS = ${JSON.stringify(NATION_FLAGS, null, 2)};
 
+const SPECIAL_NATION_CODES = ${JSON.stringify(SPECIAL_NATION_CODES, null, 2)};
+
 function normaliseNationName(nation) {
   return String(nation || "")
     .trim()
-    .replace(/\\\\s+/g, " ")
+    .replace(/\\s+/g, " ")
     .toLowerCase();
 }
 
-function getNationEmoji(nation) {
+function emojiToCountryCode(emoji) {
+  const chars = Array.from(String(emoji || ""));
+  if (chars.length !== 2) return "";
+  const code = chars.map(char => {
+    const value = char.codePointAt(0) - 127397;
+    return value >= 65 && value <= 90 ? String.fromCharCode(value) : "";
+  }).join("");
+  return code.length === 2 ? code.toLowerCase() : "";
+}
+
+function getNationCode(nation) {
   const clean = normaliseNationName(nation);
   const match = Object.keys(NATION_FLAGS).find(key => normaliseNationName(key) === clean);
-  return match ? NATION_FLAGS[match] : "🌍";
+  if (!match) return "";
+  return SPECIAL_NATION_CODES[match] || emojiToCountryCode(NATION_FLAGS[match]);
+}
+
+function getNationFlagUrl(nation) {
+  const code = getNationCode(nation);
+  return code ? \`https://flagcdn.com/\${code}.svg\` : "";
+}
+
+function getNationFlagHtml(nation, className = "nation-flag") {
+  const name = String(nation || "").trim();
+  const url = getNationFlagUrl(name);
+  return url
+    ? \`<img class="\${className}" src="\${url}" alt="\${name} flag" loading="lazy">\`
+    : '<span aria-hidden="true">🌍</span>';
 }
 
 function renderNationLabel(nation) {
   const name = String(nation || "").trim();
-  return name ? \`\${getNationEmoji(name)} \${name}\` : "-";
+  return name
+    ? \`<span class="nation-label">\${getNationFlagHtml(name)}<span>\${name}</span></span>\`
+    : "-";
 }
 
 function getNationList() {
