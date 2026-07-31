@@ -14279,5 +14279,65 @@ function openSavePersonProfile(id,name){
 })();
 </script>
 
+
+<script id="player-profile-direct-name-fix">
+(function(){
+  function clean(v){
+    try { return typeof decodeFromClick === 'function' ? decodeFromClick(v) : String(v || ''); }
+    catch (_) { return String(v || ''); }
+  }
+
+  // Final override: player cards must never trust a legacy staff ID.
+  window.playersOpenProfile = function(id, name){
+    const playerName = clean(name) || clean(id);
+    if (!playerName) return;
+
+    try {
+      // A blank ID forces the current profile renderer to resolve from the
+      // visible player name, avoiding old staff IDs stored on linkedPeople.
+      window.openSavePersonProfile('', playerName);
+
+      // If another script silently failed to reveal the overlay, retry once
+      // using the actual player record returned by playersBuildRecords().
+      const overlay = document.getElementById('savePeopleProfileOverlay');
+      if (overlay && overlay.classList.contains('hidden')) {
+        const record = typeof playersBuildRecords === 'function'
+          ? playersBuildRecords().find(r =>
+              String(r?.person?.name || '').trim().toLowerCase() === playerName.trim().toLowerCase()
+            )
+          : null;
+        const resolvedName = record?.person?.name || playerName;
+        window.openSavePersonProfile('', resolvedName);
+      }
+    } catch (error) {
+      console.error('Direct player profile open failed:', error);
+      const overlay = document.getElementById('savePeopleProfileOverlay');
+      const title = document.getElementById('savePersonProfileTitle');
+      const subtitle = document.getElementById('savePersonProfileSubtitle');
+      const content = document.getElementById('savePersonProfileContent');
+      if (overlay && title && subtitle && content) {
+        title.textContent = playerName;
+        subtitle.textContent = 'Player profile';
+        content.innerHTML = '<div class="empty-state" data-empty-icon="👤">The player was found, but some linked profile data could not be loaded. No stats were changed.</div>';
+        overlay.classList.remove('hidden');
+      }
+    }
+  };
+
+  // Capture clicks before any older inline handler can use a stale staff ID.
+  document.addEventListener('click', function(event){
+    const card = event.target.closest('.player-showcase-card, .player-feature');
+    if (!card) return;
+    const onclick = card.getAttribute('onclick') || '';
+    const matches = [...onclick.matchAll(/decodeFromClick\('([^']*)'\)/g)];
+    if (matches.length < 2) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const id = typeof decodeFromClick === 'function' ? decodeFromClick(matches[0][1]) : matches[0][1];
+    const name = typeof decodeFromClick === 'function' ? decodeFromClick(matches[1][1]) : matches[1][1];
+    window.playersOpenProfile(id, name);
+  }, true);
+})();
+</script>
 </body>
 </html> 
