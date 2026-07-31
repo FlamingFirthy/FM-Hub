@@ -14339,5 +14339,269 @@ function openSavePersonProfile(id,name){
   }, true);
 })();
 </script>
+
+<script id="alec-direct-profile-workaround">
+(function () {
+  const previousPlayersOpenProfile = window.playersOpenProfile;
+
+  function cleanText(value) {
+    return String(value || "")
+      .replace(/[’‘`´]/g, "'")
+      .trim()
+      .toLowerCase();
+  }
+
+  function isAlec(name) {
+    const value = cleanText(name);
+    return value === "alec o'dell" || value === "alec odell";
+  }
+
+  function num(value) {
+    const parsed = Number(String(value ?? "").replace(/[^0-9.-]/g, ""));
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  function openAlecDirectProfile(requestedName) {
+    const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
+    if (!save) return false;
+
+    const records = typeof playersBuildRecords === "function"
+      ? playersBuildRecords(save)
+      : [];
+
+    const record = records.find(item => isAlec(item?.person?.name || item?.source?.name));
+    if (!record) return false;
+
+    const displayName = record.person?.name || record.source?.name || requestedName || "Alec O'Dell";
+    const role = record.role || record.source?.position || "Player";
+    const club = record.club || record.source?.club || "-";
+    const source = record.source || {};
+    const person = record.person || {};
+    const isGoalkeeper = typeof playersIsGoalkeeper === "function"
+      ? playersIsGoalkeeper(role)
+      : /\b(gk|goalkeeper|keeper)\b/i.test(role);
+
+    const allStats = typeof getAllStatsForSave === "function"
+      ? getAllStatsForSave(save)
+      : [];
+
+    const stats = allStats.filter(row =>
+      isAlec(row?.personName || row?.player || row?.name)
+    );
+
+    const totals = stats.reduce((acc, row) => {
+      acc.apps += num(row.apps);
+      acc.goals += num(row.goals);
+      acc.assists += num(row.assists);
+      acc.cleanSheets += num(row.cleanSheets);
+
+      const rating = Number(String(row.rating || "").replace(",", "."));
+      const apps = Math.max(1, num(row.apps));
+      if (Number.isFinite(rating) && rating > 0) {
+        acc.ratingTotal += rating * apps;
+        acc.ratingApps += apps;
+      }
+      return acc;
+    }, {
+      apps: 0,
+      goals: 0,
+      assists: 0,
+      cleanSheets: 0,
+      ratingTotal: 0,
+      ratingApps: 0
+    });
+
+    // Use the already-calculated card totals when older stat rows use a different name field.
+    if (!totals.apps && record.total) {
+      totals.apps = num(record.total.apps);
+      totals.goals = num(record.total.goals);
+      totals.assists = num(record.total.assists);
+      totals.cleanSheets = num(record.total.cleanSheets);
+    }
+
+    const averageRating = totals.ratingApps
+      ? (totals.ratingTotal / totals.ratingApps).toFixed(2)
+      : (record.avg ? Number(record.avg).toFixed(2) : "-");
+
+    const transfers = Array.isArray(save.transfers)
+      ? save.transfers.filter(row => isAlec(row?.player || row?.personName || row?.name))
+      : [];
+
+    const internationalRows = Array.isArray(save.internationalStats)
+      ? save.internationalStats.filter(row => isAlec(row?.player || row?.personName || row?.name))
+      : [];
+
+    const international = internationalRows.reduce((acc, row) => {
+      acc.caps += num(row.caps);
+      acc.goals += num(row.goals);
+      acc.assists += num(row.assists);
+      acc.cleanSheets += num(row.cleanSheets);
+      if (row.nation && !acc.nation) acc.nation = row.nation;
+      return acc;
+    }, { caps: 0, goals: 0, assists: 0, cleanSheets: 0, nation: "" });
+
+    const nation = source.nation || source.nationality || person.nation || person.nationality || international.nation || "-";
+    const age = source.age || person.age || "-";
+    const personality = source.personality || person.personality || "-";
+    const status = source.squadStatus || source.status || source.role || "Starter";
+    const image = typeof getPersonImageFromSources === "function"
+      ? getPersonImageFromSources(person, source)
+      : (source.image || source.photo || person.image || person.photo || "");
+
+    const impact = Math.round(num(record.legend));
+    const ca = num(record.ca || source.ca || source.currentAbility);
+    const pa = num(record.pa || source.pa || source.potentialAbility);
+
+    const title = document.getElementById("savePersonProfileTitle");
+    const subtitle = document.getElementById("savePersonProfileSubtitle");
+    const content = document.getElementById("savePersonProfileContent");
+    const overlay = document.getElementById("savePeopleProfileOverlay");
+
+    if (!title || !subtitle || !content || !overlay) return false;
+
+    const esc = typeof escapeHtml === "function"
+      ? escapeHtml
+      : value => String(value ?? "").replace(/[&<>"']/g, character => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+        }[character]));
+
+    const avatar = image
+      ? `<img src="${esc(image)}" alt="${esc(displayName)}">`
+      : (typeof initials === "function" ? initials(displayName) : "AO");
+
+    const stars = typeof playersStars === "function"
+      ? playersStars(ca || pa, Math.min(200, Math.round(impact / 3)), source)
+      : "";
+
+    const statRows = stats.length
+      ? stats.map(row => `
+          <tr>
+            <td data-label="Season">${esc(row.season || "-")}</td>
+            <td data-label="Club">${esc(row.club || "-")}${typeof renderStatsClubColours === "function" ? renderStatsClubColours(row) : ""}</td>
+            <td data-label="Position">${esc(row.position || role || "-")}</td>
+            <td data-label="Apps">${esc(row.apps || "0")}</td>
+            <td data-label="${isGoalkeeper ? "Clean Sheets" : "Goals"}">${esc(isGoalkeeper ? (row.cleanSheets || "0") : (row.goals || "0"))}</td>
+            <td data-label="Assists">${esc(row.assists || "0")}</td>
+            <td data-label="Rating">${esc(row.rating || "-")}</td>
+            <td data-label="Notes">${esc(row.notes || "-")}</td>
+          </tr>
+        `).join("")
+      : `<tr><td colspan="8" style="padding:16px;color:var(--muted)">No season-by-season records were found, but the player card totals remain available.</td></tr>`;
+
+    const transferHtml = transfers.length
+      ? `<div class="transfer-mini-list">${transfers.map(row => `
+          <div class="transfer-mini-card">
+            <strong>${esc(row.season || "Transfer")}</strong>
+            <span>${esc(row.from || "-")} → ${esc(row.to || "-")} • ${esc(row.fee || row.type || "-")}</span>
+          </div>
+        `).join("")}</div>`
+      : `<div class="empty-state" data-empty-icon="↔">No transfer records have been added for this player.</div>`;
+
+    title.textContent = displayName;
+    subtitle.textContent = `${role} • ${club}`;
+
+    content.innerHTML = `
+      <div class="player-profile-clean">
+        <section class="player-profile-hero-clean">
+          <div class="player-profile-avatar-clean">${avatar}</div>
+          <div class="player-profile-main-clean">
+            <div class="section-kicker">Player</div>
+            <h2>${esc(displayName)}</h2>
+            <div class="player-profile-subline">${esc(role)} • ${esc(club)}</div>
+            <div class="player-profile-nation">
+              ${nation !== "-" && typeof renderNationLabel === "function" ? renderNationLabel(nation) : ""}
+              <span class="chip">Age ${esc(age)}</span>
+              <span class="chip">Direct save profile</span>
+            </div>
+          </div>
+          <div class="player-profile-rating-clean">
+            <strong>${esc(averageRating)}</strong>
+            <span>${stars}</span>
+          </div>
+        </section>
+
+        <div class="player-profile-kpis">
+          <div class="player-profile-kpi"><span>Apps</span><strong>${totals.apps}</strong></div>
+          <div class="player-profile-kpi"><span>${isGoalkeeper ? "Clean Sheets" : "Goals"}</span><strong>${isGoalkeeper ? totals.cleanSheets : totals.goals}</strong></div>
+          <div class="player-profile-kpi"><span>Assists</span><strong>${totals.assists}</strong></div>
+          <div class="player-profile-kpi"><span>${isGoalkeeper ? "Clean Sheets" : "G+A"}</span><strong>${isGoalkeeper ? totals.cleanSheets : totals.goals + totals.assists}</strong></div>
+          <div class="player-profile-kpi"><span>Rating</span><strong>${esc(averageRating)}</strong></div>
+          <div class="player-profile-kpi"><span>Impact</span><strong>${impact}</strong></div>
+        </div>
+
+        <div class="player-profile-layout">
+          <section class="player-profile-panel">
+            <div class="player-profile-panel-head">
+              <div><div class="section-kicker">Profile</div><h3>Player Details</h3></div>
+            </div>
+            <div class="player-profile-facts">
+              <div class="player-profile-fact"><span>Nation</span><strong>${esc(nation)}</strong></div>
+              <div class="player-profile-fact"><span>Position</span><strong>${esc(role)}</strong></div>
+              <div class="player-profile-fact"><span>Current Club</span><strong>${esc(club)}</strong></div>
+              <div class="player-profile-fact"><span>Squad Status</span><strong>${esc(status)}</strong></div>
+              <div class="player-profile-fact"><span>Personality</span><strong>${esc(personality)}</strong></div>
+              <div class="player-profile-fact"><span>Honours</span><strong>${num(record.honours)}</strong></div>
+            </div>
+          </section>
+
+          <section class="player-profile-panel">
+            <div class="player-profile-panel-head">
+              <div><div class="section-kicker">International</div><h3>National Team Record</h3></div>
+            </div>
+            ${internationalRows.length ? `
+              <div class="player-intl-summary">
+                <div class="player-intl-team"><span>Nation</span><strong>${esc(international.nation || nation)}</strong></div>
+                <div class="player-intl-total"><span>Total Caps</span><strong>${international.caps}</strong></div>
+                <div class="player-intl-total"><span>Total Goals</span><strong>${international.goals}</strong></div>
+                <div class="player-intl-total"><span>Total Assists</span><strong>${international.assists}</strong></div>
+              </div>
+            ` : `<div class="empty-state" data-empty-icon="🌍">No international records have been added for this player yet.</div>`}
+          </section>
+        </div>
+
+        <section class="player-profile-panel player-profile-table">
+          <div class="player-profile-panel-head">
+            <div><div class="section-kicker">Career Record</div><h3>Season-by-Season Stats</h3></div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Season</th><th>Club</th><th>Position</th><th>Apps</th><th>${isGoalkeeper ? "Clean Sheets" : "Goals"}</th><th>Assists</th><th>Rating</th><th>Notes</th></tr>
+              </thead>
+              <tbody>${statRows}</tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="player-profile-panel">
+          <div class="player-profile-panel-head">
+            <div><div class="section-kicker">Transfers</div><h3>Transfer History</h3></div>
+          </div>
+          ${transferHtml}
+        </section>
+      </div>
+    `;
+
+    overlay.classList.remove("hidden");
+    return true;
+  }
+
+  window.playersOpenProfile = function (id, name) {
+    let decodedName = name;
+    try {
+      if (typeof decodeFromClick === "function") decodedName = decodeFromClick(name);
+    } catch (_) {}
+
+    if (isAlec(decodedName) || isAlec(id)) {
+      if (openAlecDirectProfile(decodedName)) return;
+    }
+
+    return typeof previousPlayersOpenProfile === "function"
+      ? previousPlayersOpenProfile(id, name)
+      : window.openSavePersonProfile(id, name);
+  };
+})();
+</script>
+
 </body>
 </html> 
