@@ -6277,6 +6277,35 @@ window.HistoricalContextEngine=window.HistoricalContextEngine||(()=>{
 }
 </style>
 
+
+
+<style id="svg-nation-flags">
+.nation-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  vertical-align: middle;
+}
+.nation-flag {
+  width: 22px;
+  height: 15px;
+  object-fit: cover;
+  border-radius: 3px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 2px 6px rgba(0,0,0,.22);
+}
+.nation-label > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 720px) {
+  .nation-label { gap: 6px; }
+  .nation-flag { width: 20px; height: 14px; }
+}
+</style>
+
 </head>
 <body>
   <header>
@@ -7595,34 +7624,70 @@ function renderInternationalTable(){
     
     
     const NATION_FLAGS = {
-      "Afghanistan":"🇦🇫","Albania":"🇦🇱","Algeria":"🇩🇿","American Samoa":"🇦🇸","Andorra":"🇦🇩","Angola":"🇦🇴","Anguilla":"🇦🇮","Antigua and Barbuda":"🇦🇬","Argentina":"🇦🇷","Armenia":"🇦🇲","Aruba":"🇦🇼","Australia":"🇦🇺","Austria":"🇦🇹","Azerbaijan":"🇦🇿",
-      "Bahamas":"🇧🇸","Bahrain":"🇧🇭","Bangladesh":"🇧🇩","Barbados":"🇧🇧","Belarus":"🇧🇾","Belgium":"🇧🇪","Belize":"🇧🇿","Benin":"🇧🇯","Bermuda":"🇧🇲","Bhutan":"🇧🇹","Bolivia":"🇧🇴","Bosnia and Herzegovina":"🇧🇦","Bosnia And Herzagovina":"🇧🇦","Botswana":"🇧🇼","Brazil":"🇧🇷","British Virgin Islands":"🇻🇬","Brunei":"🇧🇳","Bulgaria":"🇧🇬","Burkina Faso":"🇧🇫","Burundi":"🇧🇮",
-      "Cambodia":"🇰🇭","Cameroon":"🇨🇲","Canada":"🇨🇦","Cape Verde":"🇨🇻","Cabo Verde":"🇨🇻","Cayman Islands":"🇰🇾","Central African Republic":"🇨🇫","Chad":"🇹🇩","Chile":"🇨🇱","China":"🇨🇳","Chinese Taipei":"🇹🇼","Colombia":"🇨🇴","Comoros":"🇰🇲","Congo":"🇨🇬","DR Congo":"🇨🇩","Democratic Republic of Congo":"🇨🇩","Cook Islands":"🇨🇰","Costa Rica":"🇨🇷","Croatia":"🇭🇷","Cuba":"🇨🇺","Curaçao":"🇨🇼","Curacao":"🇨🇼","Cyprus":"🇨🇾","Czechia":"🇨🇿","Czech Republic":"🇨🇿",
-      "Denmark":"🇩🇰","Djibouti":"🇩🇯","Dominica":"🇩🇲","Dominican Republic":"🇩🇴","Ecuador":"🇪🇨","Egypt":"🇪🇬","El Salvador":"🇸🇻","England":"🏴","Equatorial Guinea":"🇬🇶","Eritrea":"🇪🇷","Estonia":"🇪🇪","Eswatini":"🇸🇿","Ethiopia":"🇪🇹",
-      "Faroe Islands":"🇫🇴","Fiji":"🇫🇯","Finland":"🇫🇮","France":"🇫🇷","Gabon":"🇬🇦","Gambia":"🇬🇲","Georgia":"🇬🇪","Germany":"🇩🇪","Ghana":"🇬🇭","Gibraltar":"🇬🇮","Greece":"🇬🇷","Grenada":"🇬🇩","Guam":"🇬🇺","Guatemala":"🇬🇹","Guinea":"🇬🇳","Guinea-Bissau":"🇬🇼","Guyana":"🇬🇾",
-      "Haiti":"🇭🇹","Honduras":"🇭🇳","Hong Kong":"🇭🇰","Hungary":"🇭🇺","Iceland":"🇮🇸","India":"🇮🇳","Indonesia":"🇮🇩","Iran":"🇮🇷","Iraq":"🇮🇶","Ireland":"🇮🇪","Israel":"🇮🇱","Italy":"🇮🇹","Ivory Coast":"🇨🇮","Cote d'Ivoire":"🇨🇮","Côte d'Ivoire":"🇨🇮",
-      "Jamaica":"🇯🇲","Japan":"🇯🇵","Jordan":"🇯🇴","Kazakhstan":"🇰🇿","Kenya":"🇰🇪","Kosovo":"🇽🇰","Kuwait":"🇰🇼","Kyrgyzstan":"🇰🇬","Laos":"🇱🇦","Latvia":"🇱🇻","Lebanon":"🇱🇧","Lesotho":"🇱🇸","Liberia":"🇱🇷","Libya":"🇱🇾","Liechtenstein":"🇱🇮","Lithuania":"🇱🇹","Luxembourg":"🇱🇺",
-      "Macau":"🇲🇴","Madagascar":"🇲🇬","Malawi":"🇲🇼","Malaysia":"🇲🇾","Maldives":"🇲🇻","Mali":"🇲🇱","Malta":"🇲🇹","Mauritania":"🇲🇷","Mauritius":"🇲🇺","Mexico":"🇲🇽","Moldova":"🇲🇩","Mongolia":"🇲🇳","Montenegro":"🇲🇪","Montserrat":"🇲🇸","Morocco":"🇲🇦","Mozambique":"🇲🇿","Myanmar":"🇲🇲",
-      "Namibia":"🇳🇦","Nepal":"🇳🇵","Netherlands":"🇳🇱","New Caledonia":"🇳🇨","New Zealand":"🇳🇿","Nicaragua":"🇳🇮","Niger":"🇳🇪","Nigeria":"🇳🇬","North Korea":"🇰🇵","North Macedonia":"🇲🇰","Northern Ireland":"🏴","Norway":"🇳🇴",
-      "Oman":"🇴🇲","Pakistan":"🇵🇰","Palestine":"🇵🇸","Panama":"🇵🇦","Papua New Guinea":"🇵🇬","Paraguay":"🇵🇾","Peru":"🇵🇪","Philippines":"🇵🇭","Poland":"🇵🇱","Portugal":"🇵🇹","Puerto Rico":"🇵🇷",
-      "Qatar":"🇶🇦","Romania":"🇷🇴","Russia":"🇷🇺","Rwanda":"🇷🇼","Saint Kitts and Nevis":"🇰🇳","Saint Lucia":"🇱🇨","Saint Vincent and the Grenadines":"🇻🇨","Samoa":"🇼🇸","San Marino":"🇸🇲","Saudi Arabia":"🇸🇦","Scotland":"🏴","Senegal":"🇸🇳","Serbia":"🇷🇸","Seychelles":"🇸🇨","Sierra Leone":"🇸🇱","Singapore":"🇸🇬","Slovakia":"🇸🇰","Slovenia":"🇸🇮","Solomon Islands":"🇸🇧","Somalia":"🇸🇴","South Africa":"🇿🇦","South Korea":"🇰🇷","South Sudan":"🇸🇸","Spain":"🇪🇸","Sri Lanka":"🇱🇰","Sudan":"🇸🇩","Suriname":"🇸🇷","Sweden":"🇸🇪","Switzerland":"🇨🇭","Syria":"🇸🇾",
-      "Tahiti":"🇵🇫","Taiwan":"🇹🇼","Tajikistan":"🇹🇯","Tanzania":"🇹🇿","Thailand":"🇹🇭","Togo":"🇹🇬","Tonga":"🇹🇴","Trinidad and Tobago":"🇹🇹","Tunisia":"🇹🇳","Turkey":"🇹🇷","Türkiye":"🇹🇷","Turkmenistan":"🇹🇲",
-      "Uganda":"🇺🇬","Ukraine":"🇺🇦","United Arab Emirates":"🇦🇪","UAE":"🇦🇪","United States":"🇺🇸","USA":"🇺🇸","Uruguay":"🇺🇾","Uzbekistan":"🇺🇿","Vanuatu":"🇻🇺","Venezuela":"🇻🇪","Vietnam":"🇻🇳","Wales":"🏴","Yemen":"🇾🇪","Zambia":"🇿🇲","Zimbabwe":"🇿🇼"
+      "Afghanistan":"af","Albania":"al","Algeria":"dz","American Samoa":"as","Andorra":"ad","Angola":"ao",
+      "Anguilla":"ai","Antigua and Barbuda":"ag","Argentina":"ar","Armenia":"am","Aruba":"aw","Australia":"au",
+      "Austria":"at","Azerbaijan":"az","Bahamas":"bs","Bahrain":"bh","Bangladesh":"bd","Barbados":"bb",
+      "Belarus":"by","Belgium":"be","Belize":"bz","Benin":"bj","Bermuda":"bm","Bhutan":"bt",
+      "Bolivia":"bo","Bosnia and Herzegovina":"ba","Bosnia And Herzagovina":"ba","Botswana":"bw","Brazil":"br","British Virgin Islands":"vg",
+      "Brunei":"bn","Bulgaria":"bg","Burkina Faso":"bf","Burundi":"bi","Cambodia":"kh","Cameroon":"cm",
+      "Canada":"ca","Cape Verde":"cv","Cabo Verde":"cv","Cayman Islands":"ky","Central African Republic":"cf","Chad":"td",
+      "Chile":"cl","China":"cn","Chinese Taipei":"tw","Colombia":"co","Comoros":"km","Congo":"cg",
+      "DR Congo":"cd","Democratic Republic of Congo":"cd","Cook Islands":"ck","Costa Rica":"cr","Croatia":"hr","Cuba":"cu",
+      "Curaçao":"cw","Curacao":"cw","Cyprus":"cy","Czechia":"cz","Czech Republic":"cz","Denmark":"dk",
+      "Djibouti":"dj","Dominica":"dm","Dominican Republic":"do","Ecuador":"ec","Egypt":"eg","El Salvador":"sv",
+      "England":"gb-eng","Equatorial Guinea":"gq","Eritrea":"er","Estonia":"ee","Eswatini":"sz","Ethiopia":"et",
+      "Faroe Islands":"fo","Fiji":"fj","Finland":"fi","France":"fr","Gabon":"ga","Gambia":"gm",
+      "Georgia":"ge","Germany":"de","Ghana":"gh","Gibraltar":"gi","Greece":"gr","Grenada":"gd",
+      "Guam":"gu","Guatemala":"gt","Guinea":"gn","Guinea-Bissau":"gw","Guyana":"gy","Haiti":"ht",
+      "Honduras":"hn","Hong Kong":"hk","Hungary":"hu","Iceland":"is","India":"in","Indonesia":"id",
+      "Iran":"ir","Iraq":"iq","Ireland":"ie","Israel":"il","Italy":"it","Ivory Coast":"ci",
+      "Cote d'Ivoire":"ci","Côte d'Ivoire":"ci","Jamaica":"jm","Japan":"jp","Jordan":"jo","Kazakhstan":"kz",
+      "Kenya":"ke","Kosovo":"xk","Kuwait":"kw","Kyrgyzstan":"kg","Laos":"la","Latvia":"lv",
+      "Lebanon":"lb","Lesotho":"ls","Liberia":"lr","Libya":"ly","Liechtenstein":"li","Lithuania":"lt",
+      "Luxembourg":"lu","Macau":"mo","Madagascar":"mg","Malawi":"mw","Malaysia":"my","Maldives":"mv",
+      "Mali":"ml","Malta":"mt","Mauritania":"mr","Mauritius":"mu","Mexico":"mx","Moldova":"md",
+      "Mongolia":"mn","Montenegro":"me","Montserrat":"ms","Morocco":"ma","Mozambique":"mz","Myanmar":"mm",
+      "Namibia":"na","Nepal":"np","Netherlands":"nl","New Caledonia":"nc","New Zealand":"nz","Nicaragua":"ni",
+      "Niger":"ne","Nigeria":"ng","North Korea":"kp","North Macedonia":"mk","Northern Ireland":"gb-nir","Norway":"no",
+      "Oman":"om","Pakistan":"pk","Palestine":"ps","Panama":"pa","Papua New Guinea":"pg","Paraguay":"py",
+      "Peru":"pe","Philippines":"ph","Poland":"pl","Portugal":"pt","Puerto Rico":"pr","Qatar":"qa",
+      "Romania":"ro","Russia":"ru","Rwanda":"rw","Saint Kitts and Nevis":"kn","Saint Lucia":"lc","Saint Vincent and the Grenadines":"vc",
+      "Samoa":"ws","San Marino":"sm","Saudi Arabia":"sa","Scotland":"gb-sct","Senegal":"sn","Serbia":"rs",
+      "Seychelles":"sc","Sierra Leone":"sl","Singapore":"sg","Slovakia":"sk","Slovenia":"si","Solomon Islands":"sb",
+      "Somalia":"so","South Africa":"za","South Korea":"kr","South Sudan":"ss","Spain":"es","Sri Lanka":"lk",
+      "Sudan":"sd","Suriname":"sr","Sweden":"se","Switzerland":"ch","Syria":"sy","Tahiti":"pf",
+      "Taiwan":"tw","Tajikistan":"tj","Tanzania":"tz","Thailand":"th","Togo":"tg","Tonga":"to",
+      "Trinidad and Tobago":"tt","Tunisia":"tn","Turkey":"tr","Türkiye":"tr","Turkmenistan":"tm","Uganda":"ug",
+      "Ukraine":"ua","United Arab Emirates":"ae","UAE":"ae","United States":"us","USA":"us","Uruguay":"uy",
+      "Uzbekistan":"uz","Vanuatu":"vu","Venezuela":"ve","Vietnam":"vn","Wales":"gb-wls","Yemen":"ye",
+      "Zambia":"zm","Zimbabwe":"zw"
     };
 
     function normaliseNationName(nation) {
       return String(nation || "").trim().replace(/\s+/g, " ").toLowerCase();
     }
 
-    function getNationEmoji(nation) {
+    function getNationCode(nation) {
       const clean = normaliseNationName(nation);
       const match = Object.keys(NATION_FLAGS).find(key => normaliseNationName(key) === clean);
-      return match ? NATION_FLAGS[match] : "🌍";
+      return match ? NATION_FLAGS[match] : "un";
+    }
+
+    function getNationFlagUrl(nation) {
+      return `https://flagcdn.com/${getNationCode(nation)}.svg`;
+    }
+
+    function getNationFlagHtml(nation, className = "nation-flag") {
+      const name = String(nation || "").trim();
+      if (!name) return "";
+      return `<img class="${escapeHtml(className)}" src="${getNationFlagUrl(name)}" alt="${escapeHtml(name)} flag" loading="lazy" onerror="this.onerror=null;this.src='https://flagcdn.com/un.svg';">`;
     }
 
     function renderNationLabel(nation) {
       const name = String(nation || "").trim();
-      return name ? `${getNationEmoji(name)} ${escapeHtml(name)}` : "-";
+      return name
+        ? `<span class="nation-label">${getNationFlagHtml(name)}<span>${escapeHtml(name)}</span></span>`
+        : "-";
     }
 
     function getNationList() {
@@ -7632,7 +7697,9 @@ function renderInternationalTable(){
     function populateNationDatalist() {
       const lists = document.querySelectorAll('datalist[data-nation-list="true"]');
       lists.forEach(list => {
-        list.innerHTML = getNationList().map(nation => `<option value="${escapeHtml(nation)}">${getNationEmoji(nation)} ${escapeHtml(nation)}</option>`).join("");
+        list.innerHTML = getNationList()
+          .map(nation => `<option value="${escapeHtml(nation)}">${escapeHtml(nation)}</option>`)
+          .join("");
       });
     }
 
