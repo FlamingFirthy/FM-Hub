@@ -6359,6 +6359,43 @@ window.HistoricalContextEngine=window.HistoricalContextEngine||(()=>{
 }
 </style>
 
+
+<style id="people-star-meter-final-fix">
+.player-star-meter{
+  display:inline-flex !important;
+  align-items:center;
+  gap:2px;
+  width:auto !important;
+  height:auto !important;
+  line-height:1 !important;
+  overflow:visible !important;
+  white-space:nowrap;
+  vertical-align:middle;
+}
+.player-star-meter .player-star-cell{
+  display:inline-block !important;
+  position:relative !important;
+  inset:auto !important;
+  width:auto !important;
+  height:auto !important;
+  margin:0 !important;
+  font-size:1em !important;
+  line-height:1 !important;
+  letter-spacing:0 !important;
+  color:transparent !important;
+  background:
+    linear-gradient(90deg,#facc15 0 var(--star-fill),rgba(250,204,21,.22) var(--star-fill) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  text-shadow:none !important;
+}
+.player-card-rating > span,
+.player-profile-rating-clean > span,
+.player-stars{
+  overflow:visible !important;
+}
+</style>
+
 </head>
 <body>
   <header>
@@ -13719,6 +13756,7 @@ function playersStars(value,fallbackImpact,source={}){
     source.currentStars,source.starRating,source.stars,source.abilityStars,
     source.currentAbilityStars,source.current_star_rating
   ];
+
   let rating=explicitCandidates
     .map(playersNum)
     .find(n=>n>0&&n<=5)||0;
@@ -13733,13 +13771,15 @@ function playersStars(value,fallbackImpact,source={}){
   }
 
   rating=Math.max(0,Math.min(5,Math.round(rating*2)/2));
-  const width=(rating/5)*100;
   const label=rating?`${rating.toFixed(rating%1?1:0)} out of 5 stars`:'No star rating';
 
-  return `<span class="player-star-meter" role="img" aria-label="${label}" title="${label}">
-    <span class="player-star-base">★★★★★</span>
-    <span class="player-star-fill" style="width:${width}%">★★★★★</span>
-  </span>`;
+  const stars=Array.from({length:5},(_,index)=>{
+    const fill=Math.max(0,Math.min(1,rating-index));
+    const percent=Math.round(fill*100);
+    return `<span class="player-star-cell" style="--star-fill:${percent}%">★</span>`;
+  }).join('');
+
+  return `<span class="player-star-meter" role="img" aria-label="${label}" title="${label}">${stars}</span>`;
 }
 function playersAvatar(person,source,cls){const photo=source.photo||source.image||source.imageUrl||source.photoUrl||'';return `<div class="${cls}">${photo?`<img src="${escapeHtml(photo)}" alt="${escapeHtml(person.name)}">`:initials(person.name)}</div>`}
 function playersBuildRecords(save){
@@ -13758,17 +13798,20 @@ function playersBuildRecords(save){
 }
 function playersSetFilter(key,value){PLAYERS_TAB_STATE[key]=value;renderPolishedPlayersTab(getCurrentSave())}
 function playersBar(label,value,max=200){const n=Math.max(0,Math.min(max,playersNum(value)));return `<div class="player-bar-row"><span>${label}</span><div class="player-bar"><i style="width:${Math.round(n/max*100)}%"></i></div><b>${n||'-'}</b></div>`}
+function playersIsGoalkeeper(position){
+  return /(^|[\s,/|()-])(gk|goalkeeper|keeper)(?=$|[\s,/|()-])/i.test(playersText(position));
+}
 function playersCard(r){const pos=r.role||'Player';const accent=r.source.primaryColour||r.source.clubColour||'var(--accent)';return `<article class="player-showcase-card" style="--player-accent:${escapeHtml(accent)}" onclick="openSavePersonProfile(decodeFromClick('${encodeForClick(r.person.id||r.person.name)}'),decodeFromClick('${encodeForClick(r.person.name)}'))">
- <div class="player-card-top">${playersAvatar(r.person,r.source,'player-card-photo')}<div class="player-card-name"><div><span class="player-position ${playersPositionClass(pos)}">${escapeHtml(pos.split(/[\/,]/)[0]||'P')}</span>${r.nation?renderNationLabel(r.nation):''}</div><h4>${escapeHtml(r.person.name)}</h4><div class="player-card-sub">${escapeHtml(r.club)}${r.age?` • Age ${escapeHtml(r.age)}`:''}</div><span class="player-status ${r.status.key}">${escapeHtml(r.status.label)}</span></div><div class="player-card-rating"><strong>${r.avg?r.avg.toFixed(2):'-'}</strong><span>${playersStars(r.ca||r.pa,r.impact,r.source)}</span></div></div>
+ <div class="player-card-top">${playersAvatar(r.person,r.source,'player-card-photo')}<div class="player-card-name"><div><span class="player-position ${playersPositionClass(pos)}">${escapeHtml(pos.split(/[\/,]/)[0]||'P')}</span>${r.nation?renderNationLabel(r.nation):''}</div><h4>${escapeHtml(r.person.name)}</h4><div class="player-card-sub">${escapeHtml(r.club)}${r.age?` • Age ${escapeHtml(r.age)}`:''}</div><span class="player-status ${r.status.key}">${escapeHtml(r.status.label)}</span></div><div class="player-card-rating"><strong>${r.avg?r.avg.toFixed(2):'-'}</strong><span>${playersStars(r.ca||r.pa,Math.min(200,Math.round(r.legend/3)),r.source)}</span></div></div>
  <div class="player-quick-stats"><div class="player-quick-stat"><span>Apps</span><strong>${r.total.apps}</strong></div><div class="player-quick-stat"><span>Goals</span><strong>${r.total.goals}</strong></div><div class="player-quick-stat"><span>Assists</span><strong>${r.total.assists}</strong></div><div class="player-quick-stat"><span>Honours</span><strong>${r.honours}</strong></div></div>
  <div class="player-impact-block"><div class="player-impact-head"><span>Save Impact</span><strong>${Math.min(200,Math.round(r.legend/3))}</strong></div><div class="player-impact-track"><i style="width:${Math.round(Math.min(200,Math.round(r.legend/3))/2)}%"></i></div><div class="player-impact-caption">Based on appearances, goals, assists, honours and ratings</div></div>
- <div class="player-card-footer"><span class="player-value">${escapeHtml(r.value||`${r.total.goals+r.total.assists} G+A`)}</span><span class="player-open-link">View Profile →</span></div></article>`}
+ <div class="player-card-footer"><span class="player-value">${escapeHtml(r.value||(playersIsGoalkeeper(r.role)?`${r.total.cleanSheets} Clean Sheets`:`${r.total.goals+r.total.assists} G+A`))}</span><span class="player-open-link">View Profile →</span></div></article>`}
 function renderPolishedPlayersTab(save){
  const panel=document.getElementById('saveTabPeople'),legacy=document.getElementById('linkedPeopleList');if(!panel||!legacy||!save)return;
  const card=legacy.closest('.detail-card');if(!card)return;const records=playersBuildRecords(save),players=records.filter(r=>!r.isStaff),staff=records.filter(r=>r.isStaff);let shown=players.filter(r=>{const q=PLAYERS_TAB_STATE.search.toLowerCase();const search=!q||[r.person.name,r.club,r.role,r.nation].some(v=>playersText(v).toLowerCase().includes(q));const pos=PLAYERS_TAB_STATE.position==='all'||playersPositionClass(r.role)===PLAYERS_TAB_STATE.position;const status=PLAYERS_TAB_STATE.status==='all'||r.status.key===PLAYERS_TAB_STATE.status;return search&&pos&&status});
  const sorters={legend:(a,b)=>b.legend-a.legend,apps:(a,b)=>b.total.apps-a.total.apps,goals:(a,b)=>b.total.goals-a.total.goals,assists:(a,b)=>b.total.assists-a.total.assists,rating:(a,b)=>b.avg-a.avg,name:(a,b)=>a.person.name.localeCompare(b.person.name)};shown.sort(sorters[PLAYERS_TAB_STATE.sort]||sorters.legend);const featured=[...players].sort((a,b)=>b.legend-a.legend)[0];const totalApps=players.reduce((s,r)=>s+r.total.apps,0),totalGoals=players.reduce((s,r)=>s+r.total.goals,0),avgAge=(()=>{const a=players.map(r=>playersNum(r.age)).filter(Boolean);return a.length?(a.reduce((s,n)=>s+n,0)/a.length).toFixed(1):'-'})();
  const editor=card.querySelector('.form-grid')?.outerHTML||'';const actions=card.querySelector('.hero-actions')?.outerHTML||'';
- card.innerHTML=`<div class="players-hub"><section class="players-hero"><div class="players-hero-copy"><div class="section-kicker">Squad Collection</div><h2>Players of the Save</h2><p>Browse the stars, prospects and legends who shaped ${escapeHtml(save.name||'this career')}.</p><div class="players-summary-grid"><div class="players-summary-card"><span>Players</span><strong>${players.length}</strong></div><div class="players-summary-card"><span>Total Apps</span><strong>${totalApps}</strong></div><div class="players-summary-card"><span>Total Goals</span><strong>${totalGoals}</strong></div><div class="players-summary-card"><span>Average Age</span><strong>${avgAge}</strong></div></div></div>${featured?`<div class="player-feature" onclick="openSavePersonProfile(decodeFromClick('${encodeForClick(featured.person.id||featured.person.name)}'),decodeFromClick('${encodeForClick(featured.person.name)}'))">${playersAvatar(featured.person,featured.source,'player-feature-photo')}<div><div class="section-kicker">Player of the Save</div><h3>${escapeHtml(featured.person.name)}</h3><div class="player-stars">${playersStars(featured.ca||featured.pa,featured.impact,featured.source)}</div><div class="muted">${escapeHtml(featured.role)} • ${escapeHtml(featured.club)}</div><div class="player-feature-stats"><span>${featured.total.apps} apps</span><span>${featured.total.goals} goals</span><span>${featured.total.assists} assists</span><span>${featured.honours} honours</span></div></div></div>`:'<div class="empty-state">Link players to create a featured player.</div>'}</section>
+ card.innerHTML=`<div class="players-hub"><section class="players-hero"><div class="players-hero-copy"><div class="section-kicker">Squad Collection</div><h2>Players of the Save</h2><p>Browse the stars, prospects and legends who shaped ${escapeHtml(save.name||'this career')}.</p><div class="players-summary-grid"><div class="players-summary-card"><span>Players</span><strong>${players.length}</strong></div><div class="players-summary-card"><span>Total Apps</span><strong>${totalApps}</strong></div><div class="players-summary-card"><span>Total Goals</span><strong>${totalGoals}</strong></div><div class="players-summary-card"><span>Average Age</span><strong>${avgAge}</strong></div></div></div>${featured?`<div class="player-feature" onclick="openSavePersonProfile(decodeFromClick('${encodeForClick(featured.person.id||featured.person.name)}'),decodeFromClick('${encodeForClick(featured.person.name)}'))">${playersAvatar(featured.person,featured.source,'player-feature-photo')}<div><div class="section-kicker">Player of the Save</div><h3>${escapeHtml(featured.person.name)}</h3><div class="player-stars">${playersStars(featured.ca||featured.pa,Math.min(200,Math.round(featured.legend/3)),featured.source)}</div><div class="muted">${escapeHtml(featured.role)} • ${escapeHtml(featured.club)}</div><div class="player-feature-stats"><span>${featured.total.apps} apps</span><span>${featured.total.goals} goals</span><span>${featured.total.assists} assists</span><span>${featured.honours} honours</span></div></div></div>`:'<div class="empty-state">Link players to create a featured player.</div>'}</section>
  <div class="players-toolbar"><input value="${escapeHtml(PLAYERS_TAB_STATE.search)}" placeholder="Search players, clubs or nations..." oninput="playersSetFilter('search',this.value)"><select onchange="playersSetFilter('position',this.value)"><option value="all">All positions</option><option value="pos-gk" ${PLAYERS_TAB_STATE.position==='pos-gk'?'selected':''}>Goalkeepers</option><option value="pos-def" ${PLAYERS_TAB_STATE.position==='pos-def'?'selected':''}>Defenders</option><option value="pos-mid" ${PLAYERS_TAB_STATE.position==='pos-mid'?'selected':''}>Midfielders</option><option value="pos-att" ${PLAYERS_TAB_STATE.position==='pos-att'?'selected':''}>Attackers</option></select><select onchange="playersSetFilter('status',this.value)"><option value="all">All statuses</option><option value="first-team" ${PLAYERS_TAB_STATE.status==='first-team'?'selected':''}>First Team</option><option value="rotation" ${PLAYERS_TAB_STATE.status==='rotation'?'selected':''}>Rotation</option><option value="loan" ${PLAYERS_TAB_STATE.status==='loan'?'selected':''}>On Loan</option><option value="injured" ${PLAYERS_TAB_STATE.status==='injured'?'selected':''}>Injured</option><option value="retired" ${PLAYERS_TAB_STATE.status==='retired'?'selected':''}>Retired</option></select><select onchange="playersSetFilter('sort',this.value)"><option value="legend" ${PLAYERS_TAB_STATE.sort==='legend'?'selected':''}>Sort: Save impact</option><option value="apps" ${PLAYERS_TAB_STATE.sort==='apps'?'selected':''}>Appearances</option><option value="goals" ${PLAYERS_TAB_STATE.sort==='goals'?'selected':''}>Goals</option><option value="assists" ${PLAYERS_TAB_STATE.sort==='assists'?'selected':''}>Assists</option><option value="rating" ${PLAYERS_TAB_STATE.sort==='rating'?'selected':''}>Average rating</option><option value="name" ${PLAYERS_TAB_STATE.sort==='name'?'selected':''}>Name</option></select></div>
  <section class="players-section"><div class="players-section-head"><div><div class="section-kicker">Player Cards</div><h3>Squad & Career Legends</h3></div><span class="players-count">${shown.length} shown</span></div><div class="players-card-grid">${shown.length?shown.map(playersCard).join(''):'<div class="empty-state" style="grid-column:1/-1">No players match these filters.</div>'}</div></section>
  ${staff.length?`<section class="players-section"><div class="players-section-head"><div><div class="section-kicker">Staff</div><h3>Managers & Backroom Team</h3></div><span class="players-count">${staff.length}</span></div><div class="players-staff-grid">${staff.map(r=>`<div class="staff-mini-card" onclick="openSavePersonProfile(decodeFromClick('${encodeForClick(r.person.id||r.person.name)}'),decodeFromClick('${encodeForClick(r.person.name)}'))">${playersAvatar(r.person,r.source,'save-person-avatar')}<div><strong>${escapeHtml(r.person.name)}</strong><div class="muted">${escapeHtml(r.role||r.type)} • ${escapeHtml(r.club)}</div></div><span class="player-open-link">Open →</span></div>`).join('')}</div></section>`:''}
@@ -13810,6 +13853,7 @@ function openSavePersonProfile(id,name){
 
   const displayName=person?.name||squadPlayer?.name||linkedEntry?.name||name||'Person';
   const position=linkedEntry?.position||person?.position||person?.jobTitle||squadPlayer?.position||'-';
+  const isGoalkeeper=playersIsGoalkeeper(position);
   const club=linkedEntry?.club||person?.club||person?.team||squadPlayer?.club||'-';
   const type=linkedEntry?.type||person?.type||person?.jobTitle||'Person';
   const image=getPersonImageFromSources(person,squadPlayer);
@@ -13823,6 +13867,7 @@ function openSavePersonProfile(id,name){
     a.apps+=numberFromValue(row.apps);
     a.goals+=numberFromValue(row.goals);
     a.assists+=numberFromValue(row.assists);
+    a.cleanSheets+=numberFromValue(row.cleanSheets);
     const rating=Number(String(row.rating||'').replace(',','.'));
     const apps=Math.max(1,numberFromValue(row.apps));
     if(Number.isFinite(rating)&&rating>0){
@@ -13830,7 +13875,7 @@ function openSavePersonProfile(id,name){
       a.ratingApps+=apps;
     }
     return a;
-  },{apps:0,goals:0,assists:0,ratingTotal:0,ratingApps:0});
+  },{apps:0,goals:0,assists:0,cleanSheets:0,ratingTotal:0,ratingApps:0});
 
   const averageRating=totals.ratingApps?(totals.ratingTotal/totals.ratingApps).toFixed(2):'-';
   const latestStat=stats.at(-1)||null;
@@ -13912,7 +13957,7 @@ function openSavePersonProfile(id,name){
       <div class="player-profile-kpi"><span>Apps</span><strong>${totals.apps}</strong></div>
       <div class="player-profile-kpi"><span>Goals</span><strong>${totals.goals}</strong></div>
       <div class="player-profile-kpi"><span>Assists</span><strong>${totals.assists}</strong></div>
-      <div class="player-profile-kpi"><span>G+A</span><strong>${totals.goals+totals.assists}</strong></div>
+      <div class="player-profile-kpi"><span>${isGoalkeeper?'Clean Sheets':'G+A'}</span><strong>${isGoalkeeper?totals.cleanSheets:totals.goals+totals.assists}</strong></div>
       <div class="player-profile-kpi"><span>Rating</span><strong>${averageRating}</strong></div>
       <div class="player-profile-kpi"><span>Impact</span><strong>${impact}</strong></div>
     </div>
