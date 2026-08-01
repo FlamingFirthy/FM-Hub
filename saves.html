@@ -7594,7 +7594,7 @@ function renderInternationalTable(){
       <td data-label="Assists"><span class="stat-number-pill">${escapeHtml(r.assists || 0)}</span></td>
       <td data-label="Clean Sheets"><span class="stat-number-pill">${escapeHtml(r.cleanSheets || 0)}</span></td>
       <td data-label="Competition">${escapeHtml(r.competition || "-")}</td>
-      <td data-label="Actions" class="admin-only edit-only"><button class="admin-only secondary small-btn" type="button" onclick="editInternationalStat(${r.__originalIndex ?? i})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteInternationalStat(${r.__originalIndex ?? i})"></button></td>
+      <td data-label="Actions" class="admin-only edit-only record-actions-inline"><button class="admin-only secondary small-btn" type="button" onclick="editInternationalStat(${r.__originalIndex ?? i})">Edit</button> <button class="admin-only secondary small-btn duplicate-record-btn" type="button" onclick="duplicateInternationalStat(${r.__originalIndex ?? i})">Duplicate</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteInternationalStat(${r.__originalIndex ?? i})"></button></td>
     </tr>
   `).join("");
 
@@ -9050,6 +9050,7 @@ function renderHonourCard(award) {
       </div>
       <div class="hero-actions edit-only honour-card-actions honours2-actions">
         <button class="admin-only secondary honour-edit-btn" type="button" onclick="editSeasonAward(${award.__index})">Edit</button>
+        <button class="admin-only secondary honour-duplicate-btn duplicate-record-btn" type="button" onclick="duplicateSeasonAward(${award.__index})">Duplicate</button>
         <button class="admin-only delete-btn small-btn honour-delete-btn" type="button" onclick="deleteSeasonAward(${award.__index})"></button>
       </div>
     <button class="honour-detail-btn" onclick="document.getElementById('honourModal').classList.add('open')">View Details</button></article>`;
@@ -9686,7 +9687,7 @@ function syncTransferWindowFilter(transfers) {
               </div>
             </div>
             ${transfer.notes ? `<div class="transfer-notes">${escapeHtml(transfer.notes)}</div>` : ''}
-            <div class="hero-actions edit-only" style="margin-top:12px;"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})"></button></div>
+            <div class="hero-actions edit-only record-actions-inline" style="margin-top:12px;"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button> <button class="admin-only secondary small-btn duplicate-record-btn" type="button" onclick="duplicateTransferRecord(${originalIndex})">Duplicate</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})"></button></div>
           </div>
         `;
       }).join('');
@@ -9789,7 +9790,7 @@ function syncTransferWindowFilter(transfers) {
             <td data-label="To Nation">${renderNationLabel(transfer.toNation)}</td>
             <td data-label="Fee"><strong>${escapeHtml(transfer.fee || '-')}</strong><div class="muted" style="font-size:0.74rem; margin-top:3px;">${escapeHtml(getFeeTypeLabel(transfer.fee))}</div></td>
             <td data-label="Notes">${escapeHtml(transfer.notes || '-')}</td>
-            <td data-label="Actions" class="admin-only edit-only"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})"></button></td>
+            <td data-label="Actions" class="admin-only edit-only record-actions-inline"><button class="admin-only secondary small-btn" type="button" onclick="editTransferRecord(${originalIndex})">Edit</button> <button class="admin-only secondary small-btn duplicate-record-btn" type="button" onclick="duplicateTransferRecord(${originalIndex})">Duplicate</button> <button class="admin-only delete-btn small-btn" type="button" onclick="deleteTransferRecord(${originalIndex})"></button></td>
           </tr>
         `;
       }).join('');
@@ -14602,6 +14603,110 @@ function openSavePersonProfile(id,name){
   };
 })();
 </script>
+
+
+<script id="record-duplicate-buttons-script">
+function fmHubCloneRecord(record){
+  if(typeof structuredClone === "function"){
+    try{return structuredClone(record);}catch(error){}
+  }
+  return JSON.parse(JSON.stringify(record));
+}
+
+function duplicateInternationalStat(index){
+  const activeTab = typeof getActiveSaveTabKey === "function" ? getActiveSaveTabKey() : "international";
+  if(currentSaveIndex === null || currentSaveIndex === undefined) return;
+
+  const saves = getSaves().map(normaliseSave);
+  const save = saves[currentSaveIndex];
+  if(!save || !Array.isArray(save.internationalStats) || !save.internationalStats[index]) return;
+
+  const duplicate = fmHubCloneRecord(save.internationalStats[index]);
+  save.internationalStats.splice(index + 1, 0, duplicate);
+  saves[currentSaveIndex] = normaliseSave(save);
+  saveNormalisedSaves(saves);
+
+  renderInternationalTable();
+  populateInternationalPlayerDropdown();
+  if(typeof restoreSaveTabAfterRefresh === "function") restoreSaveTabAfterRefresh(activeTab);
+  if(typeof buildOverviewShortcuts === "function") buildOverviewShortcuts(getCurrentSave());
+  if(typeof applyAdminMode === "function") applyAdminMode();
+
+  // Open the copied record for quick changes before saving.
+  editInternationalStat(index + 1);
+}
+
+function duplicateSeasonAward(index){
+  const activeTab = typeof getActiveSaveTabKey === "function" ? getActiveSaveTabKey() : "honours";
+  const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
+  if(!save || !Array.isArray(save.seasonAwards) || !save.seasonAwards[index]) return;
+
+  const duplicate = fmHubCloneRecord(save.seasonAwards[index]);
+  if(duplicate.historicalContext) delete duplicate.historicalContext.capturedAt;
+  save.seasonAwards.splice(index + 1, 0, duplicate);
+  updateCurrentSave(save);
+
+  renderSeasonAwards(save);
+  if(typeof restoreSaveTabAfterRefresh === "function") restoreSaveTabAfterRefresh(activeTab);
+  if(typeof buildOverviewShortcuts === "function") buildOverviewShortcuts(getCurrentSave());
+  if(typeof applyAdminMode === "function") applyAdminMode();
+
+  // Open the copied honour in the editor for quick season/person changes.
+  editSeasonAward(index + 1);
+}
+
+function duplicateTransferRecord(index){
+  const activeTab = typeof getActiveSaveTabKey === "function" ? getActiveSaveTabKey() : "transfers";
+  const save = typeof getCurrentSave === "function" ? getCurrentSave() : null;
+  if(!save || !Array.isArray(save.transfers) || !save.transfers[index]) return;
+
+  const duplicate = fmHubCloneRecord(save.transfers[index]);
+  save.transfers.splice(index + 1, 0, duplicate);
+  updateCurrentSave(save);
+
+  renderTransferRecords(save);
+  if(typeof restoreSaveTabAfterRefresh === "function") restoreSaveTabAfterRefresh(activeTab);
+  if(typeof buildOverviewShortcuts === "function") buildOverviewShortcuts(getCurrentSave());
+  if(typeof applyAdminMode === "function") applyAdminMode();
+
+  // Open the copied transfer in the editor for quick changes.
+  editTransferRecord(index + 1);
+}
+</script>
+
+<style id="record-duplicate-buttons-style">
+.record-actions-inline{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  flex-wrap:wrap !important;
+}
+.duplicate-record-btn{
+  min-width:92px !important;
+  border-color:color-mix(in srgb, var(--accent) 35%, rgba(255,255,255,.08)) !important;
+  background:linear-gradient(135deg, var(--accent-soft), rgba(255,255,255,.025)) !important;
+}
+#saveTabHonours .honour-card-actions{
+  grid-template-columns:minmax(92px,1fr) minmax(108px,1fr) 42px !important;
+}
+#saveTabHonours .honour-duplicate-btn{
+  min-height:40px !important;
+  padding:10px 14px !important;
+  font-size:.82rem !important;
+  font-weight:900 !important;
+  width:100% !important;
+}
+@media(max-width:720px){
+  .record-actions-inline{
+    display:grid !important;
+    grid-template-columns:1fr 1fr 42px !important;
+    width:100% !important;
+  }
+  #saveTabHonours .honour-card-actions{
+    grid-template-columns:1fr 1fr 42px !important;
+  }
+}
+</style>
 
 </body>
 </html> 
