@@ -9534,6 +9534,14 @@ function resetSeasonAwardForm() {
               logo = logo || transfer.toLogo || transfer.toBadge || transfer.newClubLogo || '';
             }
           }
+
+          // Stats records also teach the shared club database its colours.
+          for (const stat of (save.playerStats || [])) {
+            if (normaliseText(stat.club) === key) {
+              primaryColour = primaryColour || stat.clubColors?.primary || stat.clubColours?.primary || '';
+              secondaryColour = secondaryColour || stat.clubColors?.secondary || stat.clubColours?.secondary || '';
+            }
+          }
         }
       } catch (error) {}
 
@@ -11314,6 +11322,16 @@ function renderSavePlayerStats(save) {
         notes: document.getElementById('statNotesInput').value.trim()
       };
       if (!stat.personName || !stat.season) return;
+
+      // Store this club's colours in the shared club identity database.
+      // Future Stats and Transfer records can then fill them automatically.
+      if (stat.club && typeof rememberClubIdentity === 'function') {
+        rememberClubIdentity(stat.club, {
+          primaryColour: stat.clubColors?.primary || '',
+          secondaryColour: stat.clubColors?.secondary || ''
+        });
+      }
+
       save.playerStats = Array.isArray(save.playerStats) ? save.playerStats : [];
 
       if (Number.isInteger(window.editingSavePlayerStatIndex) && save.playerStats[window.editingSavePlayerStatIndex]) {
@@ -14928,6 +14946,84 @@ function duplicateTransferRecord(index){
     }
   });
   observer.observe(document.documentElement, {childList:true, subtree:true});
+})();
+</script>
+
+
+<script id="stats-auto-club-colours">
+(function () {
+  function applyKnownStatsClubColours(force = false) {
+    const clubInput = document.getElementById('statClubInput');
+    const primaryInput = document.getElementById('statClubPrimaryColourInput');
+    const secondaryInput = document.getElementById('statClubSecondaryColourInput');
+
+    if (!clubInput || typeof getClubIdentityByName !== 'function') return;
+
+    const identity = getClubIdentityByName(clubInput.value);
+    if (!identity) return;
+
+    if (primaryInput && identity.primaryColour) {
+      if (force || !primaryInput.dataset.manualStatsClubColour) {
+        primaryInput.value = identity.primaryColour;
+      }
+    }
+
+    if (secondaryInput && identity.secondaryColour) {
+      if (force || !secondaryInput.dataset.manualStatsClubColour) {
+        secondaryInput.value = identity.secondaryColour;
+      }
+    }
+  }
+
+  function setupStatsClubColourAutoFill() {
+    const clubInput = document.getElementById('statClubInput');
+    const primaryInput = document.getElementById('statClubPrimaryColourInput');
+    const secondaryInput = document.getElementById('statClubSecondaryColourInput');
+
+    if (!clubInput || clubInput.dataset.statsClubColourReady === '1') return;
+    clubInput.dataset.statsClubColourReady = '1';
+
+    const resetManualFlags = () => {
+      if (primaryInput) delete primaryInput.dataset.manualStatsClubColour;
+      if (secondaryInput) delete secondaryInput.dataset.manualStatsClubColour;
+    };
+
+    const update = () => {
+      resetManualFlags();
+      applyKnownStatsClubColours(true);
+    };
+
+    clubInput.addEventListener('input', update);
+    clubInput.addEventListener('change', update);
+    clubInput.addEventListener('blur', update);
+
+    [primaryInput, secondaryInput].forEach(input => {
+      if (!input) return;
+      input.addEventListener('input', () => input.dataset.manualStatsClubColour = '1');
+      input.addEventListener('change', () => input.dataset.manualStatsClubColour = '1');
+    });
+  }
+
+  window.applyKnownStatsClubColours = applyKnownStatsClubColours;
+  window.setupStatsClubColourAutoFill = setupStatsClubColourAutoFill;
+
+  function init() {
+    setupStatsClubColourAutoFill();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  // The save profile is re-rendered frequently, so reconnect after rebuilds.
+  const observer = new MutationObserver(() => {
+    if (document.getElementById('statClubInput')) {
+      setupStatsClubColourAutoFill();
+    }
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
 </script>
 
