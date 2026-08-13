@@ -1926,7 +1926,25 @@
   }
 
 </style>
- </head>
+ 
+<style id="firebase-phone-refresh-style">
+#refreshFirebaseBtn:disabled{
+  opacity:.65;
+  cursor:wait;
+  transform:none !important;
+}
+#firebaseRefreshStatus{
+  min-height:1.1em;
+}
+@media(max-width:720px){
+  #refreshFirebaseBtn{
+    min-height:46px;
+    font-size:.9rem;
+  }
+}
+</style>
+
+</head>
  <body>
   <header>
    <div class="container nav-wrap">
@@ -2234,7 +2252,9 @@
 
      <div class="slick-backup-card">
       <strong>Firebase Sync</strong>
-      <p>Manual sync keeps your newest device from being overwritten by old phone data.</p>
+      <p>Refresh this device from Firebase after uploading new data on your PC.</p>
+      <button class="btn btn-primary" id="refreshFirebaseBtn" onclick="refreshPhoneFromFirebase()" type="button">☁ Refresh from Firebase</button>
+      <div class="muted" id="firebaseRefreshStatus" style="font-size:.78rem;line-height:1.35;">Ready to sync this device.</div>
       <button class="admin-only btn btn-secondary" onclick="uploadFMHubDataToFirebase()" type="button">Upload This Device</button>
       <button class="admin-only btn btn-secondary" onclick="downloadFMHubDataFromFirebase()" type="button">Download Firebase Data</button>
      </div>
@@ -2373,6 +2393,15 @@
         initTheme();
         updateHomepageStats();
         updateLastBackupDisplay();
+
+        const firebaseStatus = document.getElementById('firebaseStatus');
+        const refreshStatus = document.getElementById('firebaseRefreshStatus');
+        if (firebaseStatus) firebaseStatus.textContent = 'Firebase: synced ✅';
+        if (refreshStatus) {
+          const syncedAt = cloud.updatedAt ? new Date(cloud.updatedAt) : new Date();
+          refreshStatus.textContent = `Latest Firebase data loaded • ${syncedAt.toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}`;
+        }
+
         console.log('FM Hub cloud data loaded');
       }catch(e){
         cloudLoadComplete=true;
@@ -2785,6 +2814,78 @@
       }
     }
 
+
+    async function refreshPhoneFromFirebase() {
+      const button = document.getElementById('refreshFirebaseBtn');
+      const status = document.getElementById('firebaseRefreshStatus');
+      const firebaseStatus = document.getElementById('firebaseStatus');
+
+      if (!window.FMCloud || typeof window.FMCloud.loadFromCloud !== 'function') {
+        if (status) status.textContent = 'Firebase is still connecting. Try again in a second.';
+        if (firebaseStatus) firebaseStatus.textContent = 'Firebase: connecting…';
+        return;
+      }
+
+      const originalText = button ? button.textContent : '';
+
+      try {
+        if (button) {
+          button.disabled = true;
+          button.textContent = '☁ Refreshing…';
+        }
+        if (status) status.textContent = 'Downloading the newest Firebase data…';
+        if (firebaseStatus) firebaseStatus.textContent = 'Firebase: syncing…';
+
+        const cloud = await window.FMCloud.loadFromCloud();
+
+        if (!cloud) {
+          if (status) status.textContent = 'No Firebase data was found.';
+          if (firebaseStatus) firebaseStatus.textContent = 'Firebase: no cloud data';
+          return;
+        }
+
+        syncingFromCloud = true;
+
+        if (Array.isArray(cloud.saves)) localStorage.setItem(savesKey, JSON.stringify(cloud.saves));
+        if (Array.isArray(cloud.squad)) localStorage.setItem(squadKey, JSON.stringify(cloud.squad));
+        if (Array.isArray(cloud.people)) localStorage.setItem(peopleKey, JSON.stringify(cloud.people));
+        if (Array.isArray(cloud.notes)) localStorage.setItem('fmhub-notes', JSON.stringify(cloud.notes));
+        if (Array.isArray(cloud.todos)) localStorage.setItem('fmhub-todos', JSON.stringify(cloud.todos));
+        if (Array.isArray(cloud.playerNotes)) localStorage.setItem('fmhub-player-notes', JSON.stringify(cloud.playerNotes));
+        if (Array.isArray(cloud.links)) localStorage.setItem('fmhub-links', JSON.stringify(cloud.links));
+        if (cloud.lineup && typeof cloud.lineup === 'object') localStorage.setItem('fmhub-lineup', JSON.stringify(cloud.lineup));
+        if (cloud.theme) localStorage.setItem('fmhub-theme', cloud.theme);
+
+        const syncedAt = cloud.updatedAt || new Date().toISOString();
+        localStorage.setItem('fmhub-last-backup', syncedAt);
+
+        syncingFromCloud = false;
+
+        initTheme();
+        updateHomepageStats();
+        updateLastBackupDisplay();
+
+        const displayTime = new Date(syncedAt);
+        const timeText = Number.isNaN(displayTime.getTime())
+          ? 'just now'
+          : displayTime.toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+
+        if (status) status.textContent = `Latest Firebase data loaded • ${timeText}`;
+        if (firebaseStatus) firebaseStatus.textContent = 'Firebase: synced ✅';
+
+      } catch (error) {
+        syncingFromCloud = false;
+        console.error('Phone Firebase refresh failed:', error);
+        if (status) status.textContent = 'Refresh failed. Check your internet connection and try again.';
+        if (firebaseStatus) firebaseStatus.textContent = 'Firebase: sync failed ❌';
+      } finally {
+        if (button) {
+          button.disabled = false;
+          button.textContent = originalText || '☁ Refresh from Firebase';
+        }
+      }
+    }
+
     async function downloadFMHubDataFromFirebase() {
       if (!window.FMCloud || typeof window.FMCloud.loadFromCloud !== 'function') {
         alert('Firebase is not ready yet. Wait a few seconds and try again.');
@@ -2833,8 +2934,9 @@
     function initTheme(){let t='red';try{t=localStorage.getItem('fmhub-theme')||'red'}catch(e){}applyTheme(t)}
     document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target.id==='modalOverlay')closeModal()});
     initTheme();updateHomepageStats();updateLastBackupDisplay();
-    // window.addEventListener('FMCloudReady', loadFMHubFromCloud);
-    // setTimeout(loadFMHubFromCloud, 800);
+    // Automatically pull the newest cloud data when the app opens.
+    window.addEventListener('FMCloudReady', loadFMHubFromCloud);
+    setTimeout(loadFMHubFromCloud, 800);
     window.addEventListener('storage',e=>{if(['fmhub-theme',savesKey,squadKey,peopleKey].includes(e.key)){if(e.key==='fmhub-theme')initTheme();updateHomepageStats()}});
   </script>
 
