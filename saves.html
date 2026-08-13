@@ -9457,6 +9457,188 @@ function resetSeasonAwardForm() {
       return '';
     }
 
+
+    const CLUB_IDENTITY_STORAGE_KEY = 'fmhub-club-identities-v1';
+
+    function getStoredClubIdentityMap() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(CLUB_IDENTITY_STORAGE_KEY) || '{}');
+        return parsed && typeof parsed === 'object' ? parsed : {};
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function saveStoredClubIdentityMap(map) {
+      try {
+        localStorage.setItem(CLUB_IDENTITY_STORAGE_KEY, JSON.stringify(map || {}));
+      } catch (error) {
+        console.warn('Could not save club identity map.', error);
+      }
+    }
+
+    function normaliseClubIdentityColour(value, fallback='') {
+      const raw = String(value || '').trim();
+      return /^#[0-9a-f]{6}$/i.test(raw) ? raw : fallback;
+    }
+
+    function rememberClubIdentity(clubName, identity={}) {
+      const key = normaliseText(clubName);
+      if (!key) return;
+
+      const map = getStoredClubIdentityMap();
+      const previous = map[key] || {};
+      const primaryColour = normaliseClubIdentityColour(
+        identity.primaryColour || identity.primaryColor || identity.colour || identity.color,
+        previous.primaryColour || ''
+      );
+      const secondaryColour = normaliseClubIdentityColour(
+        identity.secondaryColour || identity.secondaryColor || identity.secondary || '',
+        previous.secondaryColour || ''
+      );
+      const logo = String(identity.logo || identity.badge || previous.logo || '').trim();
+
+      map[key] = {
+        name: String(clubName || previous.name || '').trim(),
+        primaryColour,
+        secondaryColour,
+        logo,
+        updatedAt: Date.now()
+      };
+      saveStoredClubIdentityMap(map);
+    }
+
+    function getClubIdentityByName(clubName) {
+      const key = normaliseText(clubName);
+      if (!key) return { primaryColour:'', secondaryColour:'', logo:'' };
+
+      const stored = getStoredClubIdentityMap()[key] || {};
+
+      let primaryColour = stored.primaryColour || '';
+      let secondaryColour = stored.secondaryColour || '';
+      let logo = stored.logo || '';
+
+      // Learn colours from existing transfer records, so old data also becomes reusable.
+      try {
+        const saves = typeof getSaves === 'function' ? getSaves().map(normaliseSave) : [];
+        for (const save of saves) {
+          for (const transfer of (save.transfers || [])) {
+            if (normaliseText(transfer.from || transfer.fromClub || transfer.oldClub) === key) {
+              primaryColour = primaryColour || transfer.fromColour || transfer.fromColor || '';
+              secondaryColour = secondaryColour || transfer.fromSecondaryColour || transfer.fromSecondaryColor || '';
+              logo = logo || transfer.fromLogo || transfer.fromBadge || transfer.oldClubLogo || '';
+            }
+            if (normaliseText(transfer.to || transfer.toClub || transfer.newClub || transfer.destination) === key) {
+              primaryColour = primaryColour || transfer.toColour || transfer.toColor || '';
+              secondaryColour = secondaryColour || transfer.toSecondaryColour || transfer.toSecondaryColor || '';
+              logo = logo || transfer.toLogo || transfer.toBadge || transfer.newClubLogo || '';
+            }
+          }
+        }
+      } catch (error) {}
+
+      // Also reuse club data already attached to People or Squad records.
+      try {
+        const candidates = [
+          ...(typeof getPeople === 'function' ? getPeople() : []),
+          ...(typeof getSquadPlayers === 'function' ? getSquadPlayers() : [])
+        ];
+        const match = candidates.find(item =>
+          normaliseText(item.club || item.team || item.currentClub) === key
+        );
+        if (match) {
+          primaryColour = primaryColour ||
+            match.clubPrimaryColour || match.clubPrimaryColor ||
+            match.primaryColour || match.primaryColor ||
+            match.clubColour || match.clubColor || '';
+          secondaryColour = secondaryColour ||
+            match.clubSecondaryColour || match.clubSecondaryColor ||
+            match.secondaryColour || match.secondaryColor || '';
+          logo = logo || match.clubBadge || match.clubLogo || match.teamLogo || '';
+        }
+      } catch (error) {}
+
+      // If this is the current save's main club, reuse its club profile colours too.
+      try {
+        const save = typeof getCurrentSave === 'function' ? getCurrentSave() : null;
+        if (save) {
+          const club = typeof getSquadClubDataForSave === 'function'
+            ? getSquadClubDataForSave(save.name || 'global')
+            : null;
+          if (club && normaliseText(club.name || save.club) === key) {
+            primaryColour = primaryColour || club.primaryColour || club.primaryColor || '';
+            secondaryColour = secondaryColour || club.secondaryColour || club.secondaryColor || '';
+            logo = logo || club.logo || '';
+          }
+        }
+      } catch (error) {}
+
+      logo = logo || getClubBadgeByClubName(clubName) || '';
+
+      return {
+        primaryColour: normaliseClubIdentityColour(primaryColour, ''),
+        secondaryColour: normaliseClubIdentityColour(secondaryColour, ''),
+        logo
+      };
+    }
+
+    function applyKnownClubIdentity(side, force=false) {
+      const prefix = side === 'from' ? 'transferFrom' : 'transferTo';
+      const clubInput = document.getElementById(`${prefix}Input`);
+      const primaryInput = document.getElementById(`${prefix}ColourInput`);
+      const secondaryInput = document.getElementById(`${prefix}SecondaryColourInput`);
+      const logoInput = document.getElementById(`${prefix}LogoInput`);
+      if (!clubInput) return;
+
+      const identity = getClubIdentityByName(clubInput.value);
+      if (!identity.primaryColour && !identity.secondaryColour && !identity.logo) return;
+
+      if (primaryInput && identity.primaryColour) {
+        if (force || !primaryInput.dataset.manualClubColour) primaryInput.value = identity.primaryColour;
+      }
+      if (secondaryInput && identity.secondaryColour) {
+        if (force || !secondaryInput.dataset.manualClubColour) secondaryInput.value = identity.secondaryColour;
+      }
+      if (logoInput && identity.logo) {
+        if (force || !logoInput.dataset.manualClubLogo) logoInput.value = identity.logo;
+      }
+    }
+
+    function setupAutomaticClubIdentityInputs() {
+      ['from','to'].forEach(side => {
+        const prefix = side === 'from' ? 'transferFrom' : 'transferTo';
+        const clubInput = document.getElementById(`${prefix}Input`);
+        const primaryInput = document.getElementById(`${prefix}ColourInput`);
+        const secondaryInput = document.getElementById(`${prefix}SecondaryColourInput`);
+        const logoInput = document.getElementById(`${prefix}LogoInput`);
+
+        if (!clubInput || clubInput.dataset.clubIdentityReady === '1') return;
+        clubInput.dataset.clubIdentityReady = '1';
+
+        const resetManualFlags = () => {
+          if (primaryInput) delete primaryInput.dataset.manualClubColour;
+          if (secondaryInput) delete secondaryInput.dataset.manualClubColour;
+          if (logoInput) delete logoInput.dataset.manualClubLogo;
+        };
+
+        clubInput.addEventListener('input', () => {
+          resetManualFlags();
+          applyKnownClubIdentity(side, true);
+        });
+        clubInput.addEventListener('change', () => {
+          resetManualFlags();
+          applyKnownClubIdentity(side, true);
+        });
+        clubInput.addEventListener('blur', () => applyKnownClubIdentity(side, true));
+
+        [primaryInput, secondaryInput].forEach(input => {
+          input?.addEventListener('input', () => input.dataset.manualClubColour = '1');
+          input?.addEventListener('change', () => input.dataset.manualClubColour = '1');
+        });
+        logoInput?.addEventListener('input', () => logoInput.dataset.manualClubLogo = '1');
+      });
+    }
+
     function getTransferLogoForClub(transfer, side) {
       if (!transfer) return '';
 
@@ -9837,6 +10019,22 @@ function syncTransferWindowFilter(transfers) {
       };
 
       if (!transfer.player) return;
+
+      // Remember each club's colours/logo so entering the club next time auto-fills them.
+      if (fromClub) {
+        rememberClubIdentity(fromClub, {
+          primaryColour: transfer.fromColour,
+          secondaryColour: transfer.fromSecondaryColour,
+          logo: transfer.fromLogo
+        });
+      }
+      if (toClub) {
+        rememberClubIdentity(toClub, {
+          primaryColour: transfer.toColour,
+          secondaryColour: transfer.toSecondaryColour,
+          logo: transfer.toLogo
+        });
+      }
 
       save.transfers = Array.isArray(save.transfers) ? save.transfers : [];
 
@@ -14707,6 +14905,31 @@ function duplicateTransferRecord(index){
   }
 }
 </style>
+
+
+<script id="automatic-club-colours-init">
+(function(){
+  function initClubIdentityAutoFill(){
+    if(typeof setupAutomaticClubIdentityInputs === 'function'){
+      setupAutomaticClubIdentityInputs();
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initClubIdentityAutoFill);
+  }else{
+    initClubIdentityAutoFill();
+  }
+
+  // The Saves page rebuilds sections dynamically, so watch for the transfer form reappearing.
+  const observer = new MutationObserver(() => {
+    if(document.getElementById('transferFromInput') || document.getElementById('transferToInput')){
+      initClubIdentityAutoFill();
+    }
+  });
+  observer.observe(document.documentElement, {childList:true, subtree:true});
+})();
+</script>
 
 </body>
 </html> 
